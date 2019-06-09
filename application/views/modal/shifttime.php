@@ -260,7 +260,7 @@
                   <label class="col-md-1">Class</label>
                   <div class="col-md-5 ">
 
-                    <select class="chosen-select form-control" id="class_allow" name="class_allow">
+                    <select class="chosen-select form-control" id="class_allow_2" name="class_allow_2">
                       <option value="0"> - </option>
                       <?php 
                       foreach($class as $row)
@@ -278,7 +278,7 @@
                     <thead>
                       <tr>
                         <th>No</th>
-                        <th>Total Absence</th>
+                        <th>Shift Name</th>
                         <th>Allowance</th>
                         <th>Start Date</th>
                         <th>End Date</th> 
@@ -291,16 +291,45 @@
                   </table>
                 </div>
               </div>
-              <div id="overtime" class="tab-pane"></div>
+              <div id="overtime" class="tab-pane">
+                <div style="background-color: darkgray;color: #fff;padding: 10px;" class="clearfix">
+                  <label class="col-md-2">Working Status</label>
+                  <div class="col-md-5 ">
+
+                    <select class="chosen-select form-control" id="working_status" name="working_status">
+                      <option value="0"> - </option>
+                      <?php 
+                      foreach($working_status as $row)
+                      { 
+                        echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                      }?>
+                    </select>
+                  </div>
+                  <div class="pull-right">
+                    <button class='btn btn-sm btn-white btn-success' id="btnAddGroup"><i class='ace-icon fa fa-plus'></i></button>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table id="tbl-working_status" class="table table-striped table-bordered table-hover" style="margin-bottom: 0" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Component Salary</th>
+                        <th>Start Date</th>
+                        <th>End Date</th> 
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>    
+                                               
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
       </div>
       
-     
-      <div class="modal-footer">
-        <input type="hidden" id="id_working" name="id_working" >
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
       <?php echo form_close() ?>
     </div>
   </div>

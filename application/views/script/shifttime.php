@@ -148,28 +148,13 @@
 		    });
 		$('#addModal').modal({backdrop: 'static', keyboard: false}) ;
 	}
-	
-	$('#btnAddGroup').on('click', function (event) {
-		$("#lbl-title-group").text('Add');
-		$("#name").val('');
-		$("#id_group").val('');
-		$('#ModalGroupShift').modal({backdrop: 'static', keyboard: false}) ;
-	});
-	$('#btnAddShift').on('click', function (event) {
-		$("#lbl-title-shift").text('Add');
-		$("#id_shift").val('');
-		$('#ModalShift').modal({backdrop: 'static', keyboard: false}) ;
-	});
-	$('#btnAllowance').on('click', function (event) {
-		$("#lbl-title-working").text('Add');
-		
-		$("#id_working").val('');
 
+	function showDialog(){
 		$('#tabel-attendence-allowance').DataTable({
 			ajax: {		            
 	            "url": "MasterShiftTime/getdata_attendance_allowance",
 	            "type": "GET",
-	            "data":{'class': 1},
+	            "data":{'class': $("#class_allow").val()},
 	        },
 	        pageLength : 5,
 			lengthMenu: [[5, 10, 20], [5, 10, 20]],
@@ -193,9 +178,9 @@
 
 	    $('#tabel-class-allowance').DataTable({
 			ajax: {		            
-	            "url": "MasterShiftTime/getdata_attendance_allowance",
+	            "url": "MasterShiftTime/getdata_class_allowance",
 	            "type": "GET",
-	            "data":{'class': 1},
+	            "data":{'class': $("#class_allow_2").val()},
 	        },
 	        pageLength : 5,
 			lengthMenu: [[5, 10, 20], [5, 10, 20]],
@@ -216,8 +201,55 @@
 				$("#tabel-class-allowance_wrapper").children().first().remove();
 			}
 	    });
+
+	    $('#tbl-working_status').DataTable({
+			ajax: {		            
+	            "url": "MasterShiftTime/getdata_working_status",
+	            "type": "GET",
+	            "data":{'class': $("#class_allow_2").val()},
+	        },
+	        pageLength : 5,
+			lengthMenu: [[5, 10, 20], [5, 10, 20]],
+			"bPaginate": true,
+			"bLengthChange" : false,
+			"searching": false,
+			"destroy": true,
+			"oLanguage": {
+				"oPaginate": {
+					"sFirst": "<<", 
+					"sPrevious": "<",
+					"sNext": ">",
+					"sLast": ">>"
+				}
+			},
+			"initComplete": function(settings, json) {
+				$("#tbl-working_status").css('width','100%');
+				$("#tbl-working_status_wrapper").children().first().remove();
+			}
+	    });
+	}
+	
+	$('#btnAddGroup').on('click', function (event) {
+		$("#lbl-title-group").text('Add');
+		$("#name").val('');
+		$("#id_group").val('');
+		$('#ModalGroupShift').modal({backdrop: 'static', keyboard: false}) ;
+	});
+	$('#btnAddShift').on('click', function (event) {
+		$("#lbl-title-shift").text('Add');
+		$("#id_shift").val('');
+		$('#ModalShift').modal({backdrop: 'static', keyboard: false}) ;
+	});
+	$('#btnAllowance').on('click', function (event) {
+		$("#lbl-title-working").text('Add');
+		
+		$("#id_working").val('');
+
+		showDialog();
 		$('#ModalWorkingHour').modal({backdrop: 'static', keyboard: false}) ;
 	});
+
+	
 
 	$('.btn-shift-edit').on('click', function (event) {
 		$("#lbl-title-group").text('Edit');
@@ -234,5 +266,14 @@
  				window.location.reload();
             });
 		} 
+	});
+	$('#class_allow').on('change', function() {
+		showDialog();
+	});
+	$('#class_allow_2').on('change', function() {
+		showDialog();
+	});
+	$('#working_status').on('change', function() {
+		showDialog();
 	});
 </script>

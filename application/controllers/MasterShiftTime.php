@@ -24,6 +24,7 @@ class MasterShiftTime extends CI_Controller {
           $data['day_type'] = $this->admin->getmaster('DayType'); 
           $data['class'] = $this->admin->getmaster('Class'); 
           $data['ot'] = $this->admin->getmaster('OTValidation');   
+          $data['working_status'] = $this->admin->getmaster('WorkingStatus'); 
     			$this->load->view('home',$data,FALSE); 
 
     }else{
@@ -155,6 +156,72 @@ class MasterShiftTime extends CI_Controller {
               $no,
               $r->TotalAbsence,
               number_format($r->Allowance),
+              date("Y-m-d",strtotime($r->StartDate)),
+              (empty($r->EndDate)? '' : date("Y-m-d",strtotime($r->EndDate)) ),              
+              "<button class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-pencil'></i></button><button class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-trash-o'></i></button>",
+         );
+    }
+
+    $output = array(
+         "draw" => $draw,
+           "recordsTotal" => $books->num_rows(),
+           "recordsFiltered" => $books->num_rows(),
+           "data" => $data
+      );
+    echo json_encode($output);
+    exit();
+  }
+
+  public function getdata_class_allowance()
+  {
+
+    $draw = intval($this->input->get("draw"));
+    $start = intval($this->input->get("start"));
+    $length = intval($this->input->get("length"));
+
+
+    $books = $this->Datatabel->get_class_allowance($this->input->get('class'));
+
+    $data = array();
+    $no=0;
+    foreach($books->result() as $r) {
+        $no++;
+         $data[] = array(
+              $no,
+              $r->IsDesc,
+              number_format($r->Allowance),
+              date("Y-m-d",strtotime($r->StartDate)),
+              (empty($r->EndDate)? '' : date("Y-m-d",strtotime($r->EndDate)) ),              
+              "<button class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-pencil'></i></button><button class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-trash-o'></i></button>",
+         );
+    }
+
+    $output = array(
+         "draw" => $draw,
+           "recordsTotal" => $books->num_rows(),
+           "recordsFiltered" => $books->num_rows(),
+           "data" => $data
+      );
+    echo json_encode($output);
+    exit();
+  }
+  public function getdata_working_status()
+  {
+
+    $draw = intval($this->input->get("draw"));
+    $start = intval($this->input->get("start"));
+    $length = intval($this->input->get("length"));
+
+
+    $books = $this->Datatabel->get_working_status($this->input->get('class'));
+
+    $data = array();
+    $no=0;
+    foreach($books->result() as $r) {
+        $no++;
+         $data[] = array(
+              $no,
+              $r->IsDesc,
               date("Y-m-d",strtotime($r->StartDate)),
               (empty($r->EndDate)? '' : date("Y-m-d",strtotime($r->EndDate)) ),              
               "<button class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-pencil'></i></button><button class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-trash-o'></i></button>",

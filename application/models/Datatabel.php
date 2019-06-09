@@ -76,6 +76,16 @@ class Datatabel extends CI_Model
         $query = $this->db->query("select * from AttendancePerClass where RecnumClass=" .$event );
         return $query;
     }
+    public function get_class_allowance($event)
+    {
+        $query = $this->db->query("select a.*,b.IsDesc from ShiftPerClass a,MasterShift b where a.RecnumMasterShift=b.Recnum and a.RecnumClass=" .$event );
+        return $query;
+    }
+    public function get_working_status($event)
+    {
+        $query = $this->db->query("select a.*,b.IsDesc from OvertimeComponent a,ComponentSalary b where a.RecnumComponentSalary=b.Recnum and RecnumWorkingStatus=" .$event );
+        return $query;
+    }
 
     public function get_schedule_pattern()
     {
