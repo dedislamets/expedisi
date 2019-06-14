@@ -276,4 +276,43 @@
 	$('#working_status').on('change', function() {
 		showDialog();
 	});
+
+	function modalshift(val){
+		showloader('body');
+		$("#lbl-title-shift").text('Edit');
+		$.get('MasterShiftTime/editshift', { id: $(val).data('id') }, function(data){ 
+         		$("#lbl-title-pattern").text('Edit');
+           		$("#shift_code").val(data[0]['Code']);
+           		$("#shift_name").val(data[0]['IsDesc']);
+           		$("#OTAuto").val(data[0]['OTAuto']);
+	            $("#shift").val(data[0]['RecnumGroupShift']).trigger('chosen:updated');
+	            $("#shift_type").val(data[0]['RecnumShiftType']).trigger('chosen:updated');
+	            $("#day_type").val(data[0]['RecnumDayType']).trigger('chosen:updated');
+	            $("#otVal").val(data[0]['RecnumOTValidation']).trigger('chosen:updated');
+	            var checked = data[0]["StatusHoliday"] == 1 ? true: false;
+            	if(checked){ $("#isHoliday").attr('checked','checked')}else{ $("#isHoliday").removeAttr('checked')}
+
+            	var checked_late = data[0]["LateMinusOT"] == 1 ? true: false;
+            	if(checked_late){ $("#LMO").attr('checked','checked')}else{ $("#LMO").removeAttr('checked')}
+
+            	var checked_early = data[0]["EarlyOutMinusOT"] == 1 ? true: false;
+            	if(checked_early){ $("#EOMO").attr('checked','checked')}else{ $("#EOMO").removeAttr('checked')}
+
+	            $("#id_shift").val(data[0]['Recnum']);
+           		$('#ModalShift').modal({backdrop: 'static', keyboard: false}) ;
+           		hideloader();
+        });
+	$('#btnDelete').on('click', function (event) {
+		var r = confirm("Yakin dihapus?");
+		if (r == true) {
+			$.get('MasterShiftTime/deleteshift', { id: $("#id_shift").val() }, function(data){ 
+				if(!data.error){
+					window.location.reload();
+				}else{
+					alert(data);
+				}
+			});
+		}
+	});
+	}
 </script>

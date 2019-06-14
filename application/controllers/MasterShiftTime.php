@@ -51,7 +51,7 @@ class MasterShiftTime extends CI_Controller {
          $data[] = array(
               "<button class='btn btn-xs btn-primary shift'  data-id='". $r->Recnum ."' onclick='working_sch(this)'>Standar Working</button>",
               $r->Code,
-              "<a href='javascript:void(0)'  data-id='". $r->Recnum ."'>".$r->IsDesc.' </a>',
+              "<a href='javascript:void(0)'  data-id='". $r->Recnum ."' onclick='modalshift(this)'>".$r->IsDesc.' </a>',
               $r->validasiname,
               $r->DayNames,
               $r->ShiftTypeNames
@@ -316,6 +316,63 @@ class MasterShiftTime extends CI_Controller {
     if ($this->db->affected_rows() <= 0){
         $response['error'] = FALSE;
     }
+                
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+
+  public function add_shift() 
+  {
+      $start_date = $this->input->post("start_date", TRUE);
+      $end_date = $this->input->post("end_date", TRUE);
+
+      $sd = date("Y-m-d H:i:s",strtotime($start_date));           
+      $start_date = $sd;           
+ 
+      $end_date = date("Y-m-d H:i:s",strtotime($end_date));
+
+      $recLogin = $this->session->userdata('user_id');
+      $data = array(
+        "IsDesc"        => $this->input->post("shift_name", TRUE),
+        "Code"          => $this->input->post("shift_code", TRUE),
+        "RecnumGroupShift"      => filter_null($this->input->post("shift")) ,
+        "RecnumShiftType"       => filter_null($this->input->post("shift_type")),
+        "RecnumDayType"         => filter_null($this->input->post("day_type")),
+        "RecnumOTValidation"    => filter_null($this->input->post("otVal")),
+        "OTAuto"                => filter_null($this->input->post("OTAuto")),
+        "StatusHoliday"         => format_data($this->input->post("isHoliday"), 'switch'),
+        "LateMinusOT"           => format_data($this->input->post('LMO'), 'switch'),
+        "EarlyOutMinusOT"       => format_data($this->input->post("EOMO"), 'switch'),
+      );
+
+      if($this->input->post('id_shift') != "") {
+        $data['EditBy'] = $recLogin;
+        $data['EditDate'] = date('Y-m-d');
+
+        $this->db->set($data);
+        $this->db->where('Recnum', $this->input->post('id_shift'));
+        $result  =  $this->db->update('MasterShift'); 
+
+      }else{
+        $data['CreateBy'] = $recLogin;
+        $data['CreateDate'] = date('Y-m-d');
+        $result  = $this->db->insert('MasterShift', $data);
+        
+      }
+      
+      redirect(site_url("MasterShiftTime"));
+  }
+  public function editshift(){
+      $id = $this->input->get('id'); 
+      $data = $this->admin->getShift($id);
+      $this->output->set_content_type('application/json')->set_output(json_encode($data));
+  }
+
+  public function deleteshift(){
+    $response = [];
+    $response['error'] = TRUE; 
+    if($this->admin->delShift($this->input->get('id'))){
+      $response['error'] = FALSE;
+    } 
                 
     $this->output->set_content_type('application/json')->set_output(json_encode($response));
   }

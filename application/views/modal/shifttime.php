@@ -74,7 +74,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-shift"></label> <label> Shift</label></h4>
       </div>
-      <?php echo form_open(site_url("MasterShiftTime/add_group_shift"), array("class" => "form-horizontal", "id" => "form1", "method" => "POST")) ?>
+      <?php echo form_open(site_url("MasterShiftTime/add_shift"), array("class" => "form-horizontal", "id" => "form1", "method" => "POST")) ?>
         <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
       <div class="modal-body">
           <div class="form-group">
@@ -142,7 +142,7 @@
           <div class="form-group">
               <label class="col-sm-4 control-label no-padding-right" for="blood">OT Validation</label>
               <div class="col-sm-8">
-                <select class="chosen-select form-control" id="day_type" name="day_type">
+                <select class="chosen-select form-control" id="otVal" name="otVal">
                   <?php 
                   foreach($ot as $row)
                   { 
@@ -170,6 +170,7 @@
       </div>
       <div class="modal-footer">
         <input type="hidden" id="id_shift" name="id_shift" >
+        <input type="button" id="btnDelete" class="btn btn-danger" value="Delete">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
       <?php echo form_close() ?>
@@ -216,7 +217,7 @@
                     </select>
                   </div>
                   <div class="pull-right">
-                    <button class='btn btn-sm btn-white btn-success' id="btnAddGroup"><i class='ace-icon fa fa-plus'></i></button>
+                    <button class='btn btn-sm btn-white btn-success' id="btnAddAllowanceAttendance"><i class='ace-icon fa fa-plus'></i></button>
                   </div>
                 </div>
                 <div class="table-responsive">

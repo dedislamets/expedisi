@@ -5,7 +5,8 @@
  }
 
 function format_data($data, $tipe_data = "")
-{
+{       
+        //vdebug($data);
         $res_data = "";
         if (is_object($data)) {
 
@@ -24,33 +25,41 @@ function format_data($data, $tipe_data = "")
                     $res_data =  date("Y-m-d H:i:s",strtotime($data));
                 }
                 
+            }elseif ($tipe_data == 'switch') {
+                if($data == "on"){
+                    $res_data =  1;
+                }else{
+                    $res_data =  0;
+                }
+                
             }
 
         } elseif (is_int($data)) {
 
             $message = '<span class="vayes-debug-badge vayes-debug-badge-integer">INTEGER</span>';
 
-        } elseif (is_true($data)) {
+        // } elseif (is_true($data)) {
 
-            $message = '<span class="vayes-debug-badge vayes-debug-badge-true">TRUE [BOOLEAN]</span>';
+        //     $message = '<span class="vayes-debug-badge vayes-debug-badge-true">TRUE [BOOLEAN]</span>';
 
-        } elseif (is_false($data)) {
+        } 
+        // elseif (is_false($data)) {
 
-            $message = '<span class="vayes-debug-badge vayes-debug-badge-false">FALSE [BOOLEAN]</span>';
+        //     $message = '<span class="vayes-debug-badge vayes-debug-badge-false">FALSE [BOOLEAN]</span>';
 
-        } elseif (is_null($data)) {
+        // } elseif (is_null($data)) {
 
-            $message = '<span class="vayes-debug-badge vayes-debug-badge-null">NULL</span>';
+        //     $message = '<span class="vayes-debug-badge vayes-debug-badge-null">NULL</span>';
 
-        } elseif (is_float($data)) {
+        // } elseif (is_float($data)) {
 
-            $message = '<span class="vayes-debug-badge vayes-debug-badge-float">FLOAT</span>';
+        //     $message = '<span class="vayes-debug-badge vayes-debug-badge-float">FLOAT</span>';
 
-        } else {
+        // } else {
 
-            $message = 'N/A';
+        //     $message = 'N/A';
 
-        }
+        // }
 
         //echo $res_data;
 

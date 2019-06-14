@@ -207,6 +207,18 @@ class Admin extends CI_Model
           
         }
     }
+    function delShift($id)
+    {        
+        $this->db->from('MasterShift');
+        $this->db->where('Recnum', $id)->delete();
+        if ($this->db->affected_rows() > 0){
+            return true;      
+            
+        }else{
+            return false;
+          
+        }
+    }
     function delPosOrg($id)
     {        
         $this->db->from('Position');
@@ -272,6 +284,10 @@ class Admin extends CI_Model
     }
     function getPattern($id) {
         $query = $this->db->query("SELECT * FROM PatternSchedule where Recnum='".$id."'");
+        return $query->result_array();
+    }
+    function getShift($id) {
+        $query = $this->db->query("SELECT * FROM MasterShift where Recnum='".$id."'");
         return $query->result_array();
     }
     function getEmployee($EmployeeId) {
