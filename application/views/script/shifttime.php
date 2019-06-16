@@ -1,4 +1,64 @@
 <script type="text/javascript">
+	$('#mandat').timepicker({
+		minuteStep: 1,
+		showSeconds: true,
+		showMeridian: false,
+		disableFocus: true,
+		icons: {
+			up: 'fa fa-chevron-up',
+			down: 'fa fa-chevron-down'
+		}
+	}).on('focus', function() {
+		$('#mandat').timepicker('showWidget');
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+
+	$('#mandat1').timepicker({
+		minuteStep: 1,
+		showSeconds: true,
+		showMeridian: false,
+		disableFocus: true,
+		icons: {
+			up: 'fa fa-chevron-up',
+			down: 'fa fa-chevron-down'
+		}
+	}).on('focus', function() {
+		$('#mandat1').timepicker('showWidget');
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+
+	$('#in').timepicker({
+		minuteStep: 1,
+		showSeconds: true,
+		showMeridian: false,
+		disableFocus: true,
+		icons: {
+			up: 'fa fa-chevron-up',
+			down: 'fa fa-chevron-down'
+		}
+	}).on('focus', function() {
+		$('#in').timepicker('showWidget');
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+
+	$('#out').timepicker({
+		minuteStep: 1,
+		showSeconds: true,
+		showMeridian: false,
+		disableFocus: true,
+		icons: {
+			up: 'fa fa-chevron-up',
+			down: 'fa fa-chevron-down'
+		}
+	}).on('focus', function() {
+		$('#out').timepicker('showWidget');
+	}).next().on(ace.click_event, function(){
+		$(this).prev().focus();
+	});
+
 	$("#panel-working").toggle();
 	myTable = $('#tabel-shift-name').DataTable({
 				ajax: {		            
@@ -238,8 +298,48 @@
 	$('#btnAddShift').on('click', function (event) {
 		$("#lbl-title-shift").text('Add');
 		$("#id_shift").val('');
+
+		$("#lbl-title-pattern").text('Edit');
+   		$("#shift_code").val('');
+   		$("#shift_name").val('');
+   		$("#OTAuto").val('');
+        $("#shift").val(0).trigger('chosen:updated');
+        $("#shift_type").val(0).trigger('chosen:updated');
+        $("#day_type").val(0).trigger('chosen:updated');
+        $("#otVal").val(0).trigger('chosen:updated');
+       	$("#btnDelete").css("display","none");
 		$('#ModalShift').modal({backdrop: 'static', keyboard: false}) ;
 	});
+	function modalDayWorking() {
+		$("#lbl-title-standart").text('Edit');
+
+		// $.get('MasterShiftTime/editshift', { id: $(val).data('id') }, function(data){ 
+  //        		$("#lbl-title-pattern").text('Edit');
+  //          		$("#shift_code").val(data[0]['Code']);
+  //          		$("#shift_name").val(data[0]['IsDesc']);
+  //          		$("#OTAuto").val(data[0]['OTAuto']);
+	 //            $("#shift").val(data[0]['RecnumGroupShift']).trigger('chosen:updated');
+	 //            $("#shift_type").val(data[0]['RecnumShiftType']).trigger('chosen:updated');
+	 //            $("#day_type").val(data[0]['RecnumDayType']).trigger('chosen:updated');
+	 //            $("#otVal").val(data[0]['RecnumOTValidation']).trigger('chosen:updated');
+	 //            var checked = data[0]["StatusHoliday"] == 1 ? true: false;
+  //           	if(checked){ $("#isHoliday").attr('checked','checked')}else{ $("#isHoliday").removeAttr('checked')}
+
+  //           	var checked_late = data[0]["LateMinusOT"] == 1 ? true: false;
+  //           	if(checked_late){ $("#LMO").attr('checked','checked')}else{ $("#LMO").removeAttr('checked')}
+
+  //           	var checked_early = data[0]["EarlyOutMinusOT"] == 1 ? true: false;
+  //           	if(checked_early){ $("#EOMO").attr('checked','checked')}else{ $("#EOMO").removeAttr('checked')}
+
+	 //            $("#id_time").val(data[0]['Recnum']);
+  //          		$('#ModalStandart').modal({backdrop: 'static', keyboard: false}) ;
+           		
+  //          		hideloader();
+  //       });
+		
+		$('#ModalStandart').modal({backdrop: 'static', keyboard: false}) ;
+	}
+
 	$('#btnAllowance').on('click', function (event) {
 		$("#lbl-title-working").text('Add');
 		
@@ -300,8 +400,10 @@
 
 	            $("#id_shift").val(data[0]['Recnum']);
            		$('#ModalShift').modal({backdrop: 'static', keyboard: false}) ;
+           		$("#btnDelete").css("display","inline-block");
            		hideloader();
-        });
+        }
+    );
 	$('#btnDelete').on('click', function (event) {
 		var r = confirm("Yakin dihapus?");
 		if (r == true) {

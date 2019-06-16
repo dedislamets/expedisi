@@ -83,7 +83,7 @@ class MasterShiftTime extends CI_Controller {
         
          $data[] = array(
 
-              "<a href='javascript:void(0)'  data-id='". $r->Recnum ."'>".$r->IsDay.' </a>',
+              "<a href='javascript:void(0)' onclick='modalDayWorking(this)' data-id='". $r->Recnum ."'>".$r->IsDay.' </a>',
               "<button class='btn btn-xs btn-warning working-sch'  data-id='". $r->Recnum ."' onclick='showrest(this)'>Rest</button>",
               $r->In1,
               $r->Out1,

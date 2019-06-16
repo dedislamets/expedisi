@@ -78,19 +78,19 @@
         <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
       <div class="modal-body">
           <div class="form-group">
-            <label class="col-md-4 control-label no-padding-right">Code Shift</label>
+            <label class="col-md-3 control-label no-padding-right">Code Shift</label>
             <div class="col-md-8 ui-front">
                 <input type="text" class="form-control" name="shift_code" value="" id="shift_code" required>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-4 control-label no-padding-right">Shift Name</label>
+            <label class="col-md-3 control-label no-padding-right">Shift Name</label>
             <div class="col-md-8 ui-front">
                 <input type="text" class="form-control" name="shift_name" value="" id="shift_name" required>
             </div>
           </div>
           <div class="form-group">
-              <label class="col-sm-4 control-label no-padding-right" for="blood">Shift</label>
+              <label class="col-sm-3 control-label no-padding-right" for="blood">Shift</label>
               <div class="col-sm-8">
                 <select class="chosen-select form-control" id="shift" name="shift">
                   <?php 
@@ -102,7 +102,7 @@
               </div>
           </div>
           <div class="form-group">
-              <label class="col-sm-4 control-label no-padding-right" for="blood">Shift Type</label>
+              <label class="col-sm-3 control-label no-padding-right" for="blood">Shift Type</label>
               <div class="col-sm-8">
                 <select class="chosen-select form-control" id="shift_type" name="shift_type">
                   <?php 
@@ -114,7 +114,7 @@
               </div>
           </div>
           <div class="form-group">
-              <label class="col-sm-4 control-label no-padding-right" for="blood">Day Type</label>
+              <label class="col-sm-3 control-label no-padding-right" for="blood">Day Type</label>
               <div class="col-sm-8">
                 <select class="chosen-select form-control" id="day_type" name="day_type">
                   <?php 
@@ -126,7 +126,7 @@
               </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-4 control-label no-padding-right" for="Official">Status Holiday</label>
+            <label class="col-sm-3 control-label no-padding-right" for="Official">Status Holiday</label>
             <div class="col-sm-2">
               <label style="padding-top: 10px;">
                 <input id="isHoliday" name="isHoliday" class="ace ace-switch" type="checkbox" />
@@ -140,7 +140,7 @@
           </div>
           
           <div class="form-group">
-              <label class="col-sm-4 control-label no-padding-right" for="blood">OT Validation</label>
+              <label class="col-sm-3 control-label no-padding-right" for="blood">OT Validation</label>
               <div class="col-sm-8">
                 <select class="chosen-select form-control" id="otVal" name="otVal">
                   <?php 
@@ -152,7 +152,7 @@
               </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-4 control-label no-padding-right" for="Official">Late Minus OT</label>
+            <label class="col-sm-3 control-label no-padding-right" for="Official">Late Minus OT</label>
             <div class="col-sm-2">
               <label style="padding-top: 10px;">
                 <input id="LMO" name="LMO" class="ace ace-switch" type="checkbox" />
@@ -171,6 +171,97 @@
       <div class="modal-footer">
         <input type="hidden" id="id_shift" name="id_shift" >
         <input type="button" id="btnDelete" class="btn btn-danger" value="Delete">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      <?php echo form_close() ?>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ModalStandart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-standart"></label> <label> Master Time</label></h4>
+      </div>
+      <?php echo form_open(site_url("MasterShiftTime/add_shift"), array("class" => "form-horizontal", "id" => "form1", "method" => "POST")) ?>
+        <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
+      <div class="modal-body">
+          <div class="form-group">
+            <label class="col-md-3 control-label no-padding-right">Code Shift</label>
+            <div class="col-md-9 ui-front">
+                <input type="text" class="form-control" name="shift_code_2" value="" id="shift_code_2" required readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label no-padding-right">Shift Name</label>
+            <div class="col-md-9 ui-front">
+                <input type="text" class="form-control" name="shift_name_2" value="" id="shift_name_2" required readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label no-padding-right">Day Name</label>
+            <div class="col-md-9 ui-front">
+                <input type="text" class="form-control" name="day_name" value="" id="day_name" required readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">Return OT Auto</label>
+            <div class="col-sm-3">
+              <input type="number" id="ROTAuto" name="ROTAuto" placeholder="" value="0" class="form-control" />
+            </div>
+            <label class="col-sm-3 control-label no-padding-right">Total Hour</label>
+            <div class="col-sm-3">
+              <input type="number" id="Th" name="TH" placeholder="" value="0" class="form-control" />
+            </div>
+          </div>
+      
+          
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="Official">Late OT Mandatory</label>
+            <div class="col-sm-3">
+              <div class="input-group bootstrap-timepicker">
+                <input id="mandat" name="mandat" type="text" class="form-control timepicker1" />
+                <span class="input-group-addon">
+                  <i class="fa fa-clock-o bigger-110"></i>
+                </span>
+              </div>
+            </div>
+            <label class="col-sm-3 control-label no-padding-right" for="Official">Early OT Mandatory</label>
+            <div class="col-sm-3">
+              <div class="input-group bootstrap-timepicker">
+                <input id="mandat1" name="mandat1" type="text" class="form-control timepicker1" />
+                <span class="input-group-addon">
+                  <i class="fa fa-clock-o bigger-110"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="Official">IN</label>
+            <div class="col-sm-3">
+              <div class="input-group bootstrap-timepicker">
+                <input id="in" name="in" type="text" class="form-control timepicker1" />
+                <span class="input-group-addon">
+                  <i class="fa fa-clock-o bigger-110"></i>
+                </span>
+              </div>
+            </div>
+            <label class="col-sm-3 control-label no-padding-right" for="Official">Out</label>
+            <div class="col-sm-3">
+              <div class="input-group bootstrap-timepicker">
+                <input id="out" name="out" type="text" class="form-control timepicker1" />
+                <span class="input-group-addon">
+                  <i class="fa fa-clock-o bigger-110"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" id="id_time" name="id_time" >
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
       <?php echo form_close() ?>

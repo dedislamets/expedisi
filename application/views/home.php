@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/chosen.min.css" />
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/fullcalendar.min.css" />
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-timepicker.min.css" />
     <!-- text fonts -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/fonts.googleapis.com.css" />
 
@@ -640,6 +641,7 @@
     <script src="<?= base_url(); ?>assets/js/buttons.print.min.js"></script>
     <script src="<?= base_url(); ?>assets/js/buttons.colVis.min.js"></script>
     <script src="<?= base_url(); ?>assets/js/dataTables.select.min.js"></script>
+    <script src="<?= base_url(); ?>assets/js/bootstrap-timepicker.min.js"></script>
     
     <!-- ace scripts -->
     <script src="<?= base_url(); ?>assets/js/ace-elements.min.js"></script>
@@ -648,6 +650,7 @@
     <script src="<?= base_url(); ?>assets/js/jquery.price_format.min.js"></script>
     <script src="<?= base_url(); ?>assets/js/fullcalendar.min.js"></script>
     <!-- inline scripts related to this page -->
+
 
     <?php if($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1' || $_SERVER['SERVER_NAME'] == '::1') : ?>
         <script type="text/javascript" src="<?= base_url(); ?>assets/js/vue.js"></script>
