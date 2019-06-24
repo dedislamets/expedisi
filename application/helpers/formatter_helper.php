@@ -32,6 +32,13 @@ function format_data($data, $tipe_data = "")
                     $res_data =  0;
                 }
                 
+            }elseif ($tipe_data == 'time') {
+                if(empty($data)){
+                    $res_data =  '1900-01-01 00:00:00.000';
+                }else{
+                    $res_data =  '1900-01-01 ' . $data;
+                }
+                
             }
 
         } elseif (is_int($data)) {

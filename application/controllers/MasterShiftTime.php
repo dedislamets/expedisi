@@ -83,7 +83,7 @@ class MasterShiftTime extends CI_Controller {
         
          $data[] = array(
 
-              "<a href='javascript:void(0)' onclick='modalDayWorking(this)' data-id='". $r->Recnum ."'>".$r->IsDay.' </a>',
+              "<a href='javascript:void(0)' onclick='modalDayWorking(this)' data-id='". $r->Recnum ."' data-shift='". $this->input->get('shift') ."'>".$r->IsDay.' </a>',
               "<button class='btn btn-xs btn-warning working-sch'  data-id='". $r->Recnum ."' onclick='showrest(this)'>Rest</button>",
               $r->In1,
               $r->Out1,
@@ -361,9 +361,55 @@ class MasterShiftTime extends CI_Controller {
       
       redirect(site_url("MasterShiftTime"));
   }
+
+  public function add_time() 
+  {
+      $start_date = $this->input->post("start_date", TRUE);
+      $end_date = $this->input->post("end_date", TRUE);
+
+      $sd = date("Y-m-d H:i:s",strtotime($start_date));           
+      $start_date = $sd;           
+ 
+      $end_date = date("Y-m-d H:i:s",strtotime($end_date));
+
+      $recLogin = $this->session->userdata('user_id');
+      $data = array(
+      
+        "WorkingHour"     => filter_null($this->input->post("TH")),
+        "ReturnOtAuto"    => filter_null($this->input->post("ROTAuto")),
+        "In1"             => format_data($this->input->post("in"), 'time'),
+        "Out1"            => format_data($this->input->post('out'), 'time'),
+        "LateTolerance"   => format_data($this->input->post("mandat"), 'time'),
+        "EarlyOutTolerance"  => format_data($this->input->post("mandat1"), 'time'),
+      );
+
+      if($this->input->post('id_time') != "") {
+        $data['EditBy'] = $recLogin;
+        $data['EditDate'] = date('Y-m-d');
+
+        $this->db->set($data);
+        $this->db->where('Recnum', $this->input->post('id_time'));
+        $result  =  $this->db->update('MasterTime'); 
+
+      }else{
+        $data['CreateBy'] = $recLogin;
+        $data['CreateDate'] = date('Y-m-d');
+        $result  = $this->db->insert('MasterTime', $data);
+        
+      }
+      
+      redirect(site_url("MasterShiftTime"));
+  }
+
   public function editshift(){
       $id = $this->input->get('id'); 
       $data = $this->admin->getShift($id);
+      $this->output->set_content_type('application/json')->set_output(json_encode($data));
+  }
+
+  public function edittime(){
+      $id = $this->input->get('id'); 
+      $data = $this->admin->getTime($id);
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
   }
 

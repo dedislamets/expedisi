@@ -310,32 +310,29 @@
        	$("#btnDelete").css("display","none");
 		$('#ModalShift').modal({backdrop: 'static', keyboard: false}) ;
 	});
-	function modalDayWorking() {
+	function modalDayWorking(val) {
 		$("#lbl-title-standart").text('Edit');
+		$.get('MasterShiftTime/edittime', { id: $(val).data('id') }, function(data){ 
+         		
+           		$("#shift_code_2").val(data[0]['Code']);
+           		$("#shift_name_2").val(data[0]['shiftname']);
+           		$("#day_name").val(data[0]['IsDay']);
 
-		// $.get('MasterShiftTime/editshift', { id: $(val).data('id') }, function(data){ 
-  //        		$("#lbl-title-pattern").text('Edit');
-  //          		$("#shift_code").val(data[0]['Code']);
-  //          		$("#shift_name").val(data[0]['IsDesc']);
-  //          		$("#OTAuto").val(data[0]['OTAuto']);
-	 //            $("#shift").val(data[0]['RecnumGroupShift']).trigger('chosen:updated');
-	 //            $("#shift_type").val(data[0]['RecnumShiftType']).trigger('chosen:updated');
-	 //            $("#day_type").val(data[0]['RecnumDayType']).trigger('chosen:updated');
-	 //            $("#otVal").val(data[0]['RecnumOTValidation']).trigger('chosen:updated');
-	 //            var checked = data[0]["StatusHoliday"] == 1 ? true: false;
-  //           	if(checked){ $("#isHoliday").attr('checked','checked')}else{ $("#isHoliday").removeAttr('checked')}
+           		$("#mandat").val(data[0]['late']);
+           		$("#mandat1").val(data[0]['early']);
 
-  //           	var checked_late = data[0]["LateMinusOT"] == 1 ? true: false;
-  //           	if(checked_late){ $("#LMO").attr('checked','checked')}else{ $("#LMO").removeAttr('checked')}
+           		$("#in").val(data[0]['time_in']);
+           		$("#out").val(data[0]['time_out']);
 
-  //           	var checked_early = data[0]["EarlyOutMinusOT"] == 1 ? true: false;
-  //           	if(checked_early){ $("#EOMO").attr('checked','checked')}else{ $("#EOMO").removeAttr('checked')}
-
-	 //            $("#id_time").val(data[0]['Recnum']);
-  //          		$('#ModalStandart').modal({backdrop: 'static', keyboard: false}) ;
+           		$("#ROTAuto").val(data[0]['ReturnOtAuto']);
            		
-  //          		hideloader();
-  //       });
+           		$("#TH").val(data[0]['WorkingHour']);
+
+	            $("#id_time").val(data[0]['Recnum']);
+           		$('#ModalStandart').modal({backdrop: 'static', keyboard: false}) ;
+           		
+           		hideloader();
+        });
 		
 		$('#ModalStandart').modal({backdrop: 'static', keyboard: false}) ;
 	}

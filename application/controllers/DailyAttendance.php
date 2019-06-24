@@ -12,7 +12,7 @@ class DailyAttendance extends CI_Controller {
      	ini_set('display_errors','on');  
      	ini_set("memory_limit","256M"); 
      	ini_set('sqlsrv.ClientBufferMaxKBSize','524288'); // Setting to 512M
-		ini_set('pdo_sqlsrv.client_buffer_max_kb_size','524288');
+		  ini_set('pdo_sqlsrv.client_buffer_max_kb_size','524288');
      	error_reporting(E_ALL^E_NOTICE);
 	}
 	public function index()

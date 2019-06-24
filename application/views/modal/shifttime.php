@@ -185,7 +185,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-standart"></label> <label> Master Time</label></h4>
       </div>
-      <?php echo form_open(site_url("MasterShiftTime/add_shift"), array("class" => "form-horizontal", "id" => "form1", "method" => "POST")) ?>
+      <?php echo form_open(site_url("MasterShiftTime/add_time"), array("class" => "form-horizontal", "id" => "form1", "method" => "POST")) ?>
         <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
       <div class="modal-body">
           <div class="form-group">
@@ -214,7 +214,7 @@
             </div>
             <label class="col-sm-3 control-label no-padding-right">Total Hour</label>
             <div class="col-sm-3">
-              <input type="number" id="Th" name="TH" placeholder="" value="0" class="form-control" />
+              <input type="number" id="TH" name="TH" placeholder="" value="0" class="form-control" />
             </div>
           </div>
       

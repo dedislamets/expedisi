@@ -290,6 +290,10 @@ class Admin extends CI_Model
         $query = $this->db->query("SELECT * FROM MasterShift where Recnum='".$id."'");
         return $query->result_array();
     }
+    function getTime($id) {
+        $query = $this->db->query("select a.*,b.IsDesc as shiftname, b.Code,convert(varchar, In1, 8) as time_in, convert(varchar, Out1, 8) as time_out, convert(varchar, LateTolerance, 8) as late, convert(varchar, EarlyOutTolerance, 8) as early,ISNULL(ReturnOtAuto,0) as ReturnOtAuto from MasterTime a,MasterShift b where a.RecnumMasterShift=b.Recnum and a.Recnum='".$id."'");
+        return $query->result_array();
+    }
     function getEmployee($EmployeeId) {
         $query = $this->db->query("SELECT * FROM Employee where EmployeeId='".$EmployeeId."'");
         return $query->result_array();
