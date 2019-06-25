@@ -1,4 +1,8 @@
 <script type="text/javascript">
+	$('.date-picker').datepicker({
+		autoclose: true,
+		todayHighlight: true
+	});
 	$('#mandat').timepicker({
 		minuteStep: 1,
 		showSeconds: true,
@@ -143,6 +147,100 @@
 		
 	});
 
+	$('#btnSaveAllowance').on('click', function () {
+        var valid = false;
+        var sParam = $('#form-input-allowance-attendance').serialize();
+        var validator = $('#form-input-allowance-attendance').validate({
+                            rules: {
+                                    start_date: {
+                                        required: true
+                                    },
+                                    total_absen: {
+                                        required: true
+                                    },
+                                    allowance_attendance: {
+                                        required: true
+                                    }
+                                }
+                            });
+        validator.valid();
+        $status = validator.form();
+        if($status) {
+            var link = 'MasterShiftTime/SaveAllowance';
+            $.get(link,sParam, function(data){
+                if(data.error==false){                                  
+                    alert('Berhasil disimpan..');
+                     $("#ModalAttendanceAllowance").modal('hide');
+                    showDialog();
+                }else{  
+                    $("#lblMessage").remove();
+                    $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
+                                                                    
+                }
+            },'json');
+        }
+    });
+
+    $('#btnSaveAttClass').on('click', function () {
+        var valid = false;
+        var sParam = $('#form-input-allowance-class').serialize();
+        var validator = $('#form-input-allowance-class').validate({
+                            rules: {
+                                    start_date_class: {
+                                        required: true
+                                    },
+                                    allowance_attendance_class: {
+                                        required: true
+                                    }
+                                }
+                            });
+        validator.valid();
+        $status = validator.form();
+        if($status) {
+            var link = 'MasterShiftTime/SaveAttendanceClass';
+            $.get(link,sParam, function(data){
+                if(data.error==false){                                  
+                    alert('Berhasil disimpan..');
+                    $("#ModalAttendanceClass").modal('hide');
+                    showDialog();
+                }else{  
+                    $("#lblMessage").remove();
+                    $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
+                                                                    
+                }
+            },'json');
+        }
+    });
+
+    $('#btnSaveOvertime').on('click', function () {
+        var valid = false;
+        var sParam = $('#form-input-overtime').serialize();
+        var validator = $('#form-input-overtime').validate({
+                            rules: {
+                                    start_date_overtime: {
+                                        required: true
+                                    },
+                                    
+                                }
+                            });
+        validator.valid();
+        $status = validator.form();
+        if($status) {
+            var link = 'MasterShiftTime/SaveOvertime';
+            $.get(link,sParam, function(data){
+                if(data.error==false){                                  
+                    alert('Berhasil disimpan..');
+                    $("#ModalOvertime").modal('hide');
+                    showDialog();
+                }else{  
+                    $("#lblMessage").remove();
+                    $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
+                                                                    
+                }
+            },'json');
+        }
+    });
+
 	function working_sch(val){
 		$("#panel-working").removeClass('hidden');
 		$('html, body').animate({
@@ -266,7 +364,7 @@
 			ajax: {		            
 	            "url": "MasterShiftTime/getdata_working_status",
 	            "type": "GET",
-	            "data":{'class': $("#class_allow_2").val()},
+	            "data":{'ws': $("#working_status").val()},
 	        },
 	        pageLength : 5,
 			lengthMenu: [[5, 10, 20], [5, 10, 20]],
@@ -289,6 +387,33 @@
 	    });
 	}
 	
+	$('#btnAddAllowanceAttendance').on('click', function (event) {
+		$("#lbl-title-allow").text('Add');
+		$("#allowance_attendance").val('0');
+		$("#total_absen").val('0');
+		$("#id_allow").val('');
+		$("#start_date").val('');
+		$("#end_date").val('');
+		$('#ModalAttendanceAllowance').modal({backdrop: 'static', keyboard: false}) ;
+	});
+
+	$('#btnAddAllowanceClass').on('click', function (event) {
+		$("#lbl-title-allow_class").text('Add');
+		$("#allowance_attendance_class").val('0');
+		$("#id_allow").val('');
+		$("#start_date").val('');
+		$("#end_date").val('');
+		$('#ModalAttendanceClass').modal({backdrop: 'static', keyboard: false}) ;
+	});
+
+	$('#btnAddOvertime').on('click', function (event) {
+		$("#lbl-title-overtimr").text('Add');
+		$("#id_overtime").val('');
+		$("#start_date_overtime").val('');
+		$("#end_date_overtime").val('');
+		$('#ModalOvertime').modal({backdrop: 'static', keyboard: false}) ;
+	});
+
 	$('#btnAddGroup').on('click', function (event) {
 		$("#lbl-title-group").text('Add');
 		$("#name").val('');
@@ -310,6 +435,68 @@
        	$("#btnDelete").css("display","none");
 		$('#ModalShift').modal({backdrop: 'static', keyboard: false}) ;
 	});
+
+	function showAttendanceAllowance(val){
+		showloader('body');
+		$.get('MasterShiftTime/editallowanceattendance', { id: $(val).data('id') }, function(data){ 
+         		$("#lbl-title-allow").text('Edit');
+           		$("#allowance_attendance").val(data[0]['Allowance']);
+           		$("#total_absen").val(data[0]['TotalAbsence']);
+	            $("#kelas").val(data[0]['RecnumClass']).trigger('chosen:updated');
+
+	            if(data[0]['StartDate'] != null){
+	            	$("#start_date").val(moment(data[0]['StartDate']).format('DD-MM-YYYY'));
+	            }
+	            if(data[0]['EndDate'] != null){
+	            	$("#end_date").val(moment(data[0]['EndDate']).format('DD-MM-YYYY'));
+	            }
+	       
+	            $("#id_allow").val(data[0]['Recnum']);
+           		$('#ModalAttendanceAllowance').modal({backdrop: 'static', keyboard: false}) ;
+           		hideloader();
+        });
+	}
+
+	function showAttendanceClass(val){
+		showloader('body');
+		$.get('MasterShiftTime/editallowanceclass', { id: $(val).data('id') }, function(data){ 
+         		$("#lbl-title-allow_class").text('Edit');
+           		$("#allowance_attendance_class").val(data[0]['Allowance']);
+	            $("#kelas_class").val(data[0]['RecnumClass']).trigger('chosen:updated');
+
+	            if(data[0]['StartDate'] != null){
+	            	$("#start_date_class").val(moment(data[0]['StartDate']).format('DD-MM-YYYY'));
+	            }
+	            if(data[0]['EndDate'] != null){
+	            	$("#end_date_class").val(moment(data[0]['EndDate']).format('DD-MM-YYYY'));
+	            }
+	       
+	            $("#id_att_class").val(data[0]['Recnum']);
+           		$('#ModalAttendanceClass').modal({backdrop: 'static', keyboard: false}) ;
+           		hideloader();
+        });
+	}
+
+	function showOvertime(val){
+		showloader('body');
+		$.get('MasterShiftTime/editovertime', { id: $(val).data('id') }, function(data){ 
+         		$("#lbl-title-overtime").text('Edit');
+	            $("#component_salary").val(data[0]['RecnumComponentSalary']).trigger('chosen:updated');
+	            $("#select_working").val(data[0]['RecnumWorkingStatus']).trigger('chosen:updated');
+
+	            if(data[0]['StartDate'] != null){
+	            	$("#start_date_overtime").val(moment(data[0]['StartDate']).format('DD-MM-YYYY'));
+	            }
+	            if(data[0]['EndDate'] != null){
+	            	$("#end_date_overtime").val(moment(data[0]['EndDate']).format('DD-MM-YYYY'));
+	            }
+	       
+	            $("#id_overtime").val(data[0]['Recnum']);
+           		$('#ModalOvertime').modal({backdrop: 'static', keyboard: false}) ;
+           		hideloader();
+        });
+	}
+
 	function modalDayWorking(val) {
 		$("#lbl-title-standart").text('Edit');
 		$.get('MasterShiftTime/edittime', { id: $(val).data('id') }, function(data){ 
@@ -399,8 +586,10 @@
            		$('#ModalShift').modal({backdrop: 'static', keyboard: false}) ;
            		$("#btnDelete").css("display","inline-block");
            		hideloader();
-        }
-    );
+        });
+	}
+
+	
 	$('#btnDelete').on('click', function (event) {
 		var r = confirm("Yakin dihapus?");
 		if (r == true) {
@@ -413,5 +602,41 @@
 			});
 		}
 	});
+
+	function deleteAttendanceAllowance(val){
+		var r = confirm("Yakin dihapus?");
+		if (r == true) {
+			$.get('MasterShiftTime/deleteAttendanceAllowance', { id: $(val).data('id') }, function(data){ 
+				if(!data.error){
+					showDialog();
+				}else{
+					alert(data);
+				}
+			});
+		}
+	}
+	function deleteAttendanceClass(val){
+		var r = confirm("Yakin dihapus?");
+		if (r == true) {
+			$.get('MasterShiftTime/deleteAttendanceClass', { id: $(val).data('id') }, function(data){ 
+				if(!data.error){
+					showDialog();
+				}else{
+					alert(data);
+				}
+			});
+		}
+	}
+	function deleteOvertime(val){
+		var r = confirm("Yakin dihapus?");
+		if (r == true) {
+			$.get('MasterShiftTime/deleteOvertime', { id: $(val).data('id') }, function(data){ 
+				if(!data.error){
+					showDialog();
+				}else{
+					alert(data);
+				}
+			});
+		}
 	}
 </script>

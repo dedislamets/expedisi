@@ -31,6 +31,36 @@
 		todayHighlight: true
 	});
 
+    $('#in').timepicker({
+        minuteStep: 1,
+        showSeconds: true,
+        showMeridian: false,
+        disableFocus: true,
+        icons: {
+            up: 'fa fa-chevron-up',
+            down: 'fa fa-chevron-down'
+        }
+    }).on('focus', function() {
+        $('#in').timepicker('showWidget');
+    }).next().on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+
+    $('#out').timepicker({
+        minuteStep: 1,
+        showSeconds: true,
+        showMeridian: false,
+        disableFocus: true,
+        icons: {
+            up: 'fa fa-chevron-up',
+            down: 'fa fa-chevron-down'
+        }
+    }).on('focus', function() {
+        $('#out').timepicker('showWidget');
+    }).next().on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+
     
     
 	
@@ -82,4 +112,8 @@
             hideloader();
         });
     });
+
+    function showattendance(val){
+        $('#ModalAttendance').modal({backdrop: 'static', keyboard: false}) ;
+    }
 </script>

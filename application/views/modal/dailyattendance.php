@@ -1,0 +1,146 @@
+<div class="modal fade" id="ModalAttendance" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-attend"></label> <label> Attendance</label></h4>
+      </div>
+      <?php echo form_open(site_url("MasterShiftTime/add_shift"), array("class" => "form-horizontal", "id" => "form1", "method" => "POST")) ?>
+        <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
+      <div class="modal-body">
+          <div class="form-group" >
+            <label class="col-md-3 control-label no-padding-right">Date</label>
+            <div class="col-md-8 ui-front">
+                <input type="text" class="form-control" name="date_attendance" value="" id="date_attendance" readonly>
+            </div>
+          </div>
+          <div class="widget-box">
+            <div class="widget-header"><h4 class="widget-title">Data Attendance</h4></div>
+            <div class="widget-body">
+                <div class="form-group" style="margin-top: 10px">
+                    <label class="col-sm-3 control-label no-padding-right" for="blood">Shift</label>
+                    <div class="col-sm-8">
+                      <select class="chosen-select form-control" id="shift" name="shift">
+                        <?php 
+                        foreach($master_shift as $row)
+                        { 
+                          echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                        }?>
+                      </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 10px">
+                    <label class="col-sm-3 control-label no-padding-right">Type</label>
+                    <div class="col-sm-8">
+                      <select class="chosen-select form-control" id="type" name="type">
+                        <?php 
+                        foreach($absen_type as $row)
+                        { 
+                          echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                        }?>
+                      </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" >IN</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="in_s" name="in_s" type="text" class="form-control timepicker1" readonly />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <label class="col-sm-1 control-label no-padding-right" >Actual</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="in" name="in" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" >Out</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="out_s" name="out_s" type="text" class="form-control timepicker1" readonly />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <label class="col-sm-1 control-label no-padding-right" >Actual</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="out" name="out" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right">Desc</label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control limited" id="form-field-9" maxlength="250"></textarea>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="widget-box">
+            <div class="widget-header"><h4 class="widget-title">Permission</h4></div>
+            <div class="widget-body">
+                <div class="form-group" style="margin-top: 10px">
+                    <label class="col-sm-3 control-label no-padding-right" for="blood">Permit Type</label>
+                    <div class="col-sm-8">
+                      <select class="chosen-select form-control" id="permit_type" name="permit_type">
+                        <?php 
+                        foreach($permit_type as $row)
+                        { 
+                          echo '<option value="'.$row->Recnum.'">'.$row->Reason.'</option>';
+                        }?>
+                      </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" >From</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="from_permit" name="from_permit" type="text" class="form-control timepicker1" readonly />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <label class="col-sm-1 control-label no-padding-right" >To</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="to_permit" name="to_permit" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right">Desc</label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control limited" id="form-field-9" maxlength="250"></textarea>
+                  </div>
+                </div>
+            </div>
+          </div>
+          
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" id="id_shift" name="id_shift" >
+        <input type="button" id="btnDelete" class="btn btn-danger" value="Delete">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      <?php echo form_close() ?>
+    </div>
+  </div>
+</div>

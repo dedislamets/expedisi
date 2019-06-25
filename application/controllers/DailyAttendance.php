@@ -18,20 +18,21 @@ class DailyAttendance extends CI_Controller {
 	public function index()
 	{		
 		if($this->admin->logged_id())
-        {
+    {
         	$data['menu'] = $this->M_menu->getMenu(147,0,"","Class");
-			$data['title'] = 'Daily Attendance';
-			$data['main'] = 'tms/dailyattendance';
-			$data['js'] = 'script/dailyattendance';
-			$data['modal'] = 'modal/dailyattendance';
-			
+    			$data['title'] = 'Daily Attendance';
+    			$data['main'] = 'tms/dailyattendance';
+    			$data['js'] = 'script/dailyattendance';
+    			$data['modal'] = 'modal/dailyattendance';
+		      $data['master_shift'] = $this->admin->getmaster('MasterShift');
+          $data['absen_type'] = $this->admin->getmaster('AbsenType');
+          $data['permit_type'] = $this->admin->getmaster('Permission');
+			   $this->load->view('home',$data,FALSE); 
 
-			$this->load->view('home',$data,FALSE); 
+    }else{
+        redirect("login");
 
-        }else{
-            redirect("login");
-
-        }				  
+    }				  
 						
 	}
 	public function datatabel()
@@ -63,7 +64,7 @@ class DailyAttendance extends CI_Controller {
           foreach($books->result() as $r) {
                $data[] = array(
                     $x,
-                    "<a href='javascript:void(0)' >".$r->EmployeeId.' </a>',
+                    "<a href='javascript:void(0)' onclick='showattendance(this);' >".$r->EmployeeId.' </a>',
                     $r->EmployeeName,
                     $r->DateSchedule,
                     $r->ShiftCode,

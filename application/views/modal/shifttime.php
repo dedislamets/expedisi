@@ -282,14 +282,14 @@
           <div class="tabbable">
             <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
               <li class="take-all-space-you-can active">
-                <a data-toggle="tab" href="#home4" aria-expanded="true">Attendence Allowance</a>
+                <a data-toggle="tab" href="#home4" aria-expanded="true">Attendence Allowance By Class</a>
               </li>
 
               <li class="take-all-space-you-can">
                 <a data-toggle="tab" href="#profile4" aria-expanded="false">Shift Allowance By Class</a>
               </li>
               <li class="take-all-space-you-can">
-                <a data-toggle="tab" href="#overtime" aria-expanded="false">Overtime</a>
+                <a data-toggle="tab" href="#overtime" aria-expanded="false">Component Overtime</a>
               </li>
             </ul>
             <div class="tab-content" style="padding-bottom: 0">
@@ -308,7 +308,7 @@
                     </select>
                   </div>
                   <div class="pull-right">
-                    <button class='btn btn-sm btn-white btn-success' id="btnAddAllowanceAttendance"><i class='ace-icon fa fa-plus'></i></button>
+                    <a href="javascript:" class='btn btn-sm btn-white btn-success' id="btnAddAllowanceAttendance"><i class='ace-icon fa fa-plus'></i></a>
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -362,7 +362,7 @@
                     </select>
                   </div>
                   <div class="pull-right">
-                    <button class='btn btn-sm btn-white btn-success' id="btnAddGroup"><i class='ace-icon fa fa-plus'></i></button>
+                    <button type="button" class='btn btn-sm btn-white btn-success' id="btnAddAllowanceClass"><i class='ace-icon fa fa-plus'></i></button>
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -398,7 +398,7 @@
                     </select>
                   </div>
                   <div class="pull-right">
-                    <button class='btn btn-sm btn-white btn-success' id="btnAddGroup"><i class='ace-icon fa fa-plus'></i></button>
+                    <button type="button" class='btn btn-sm btn-white btn-success' id="btnAddOvertime"><i class='ace-icon fa fa-plus'></i></button>
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -426,3 +426,211 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="ModalAttendanceAllowance" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-allow"></label> Attendance Allowance</h4>
+      </div>
+      <form id="form-input-allowance-attendance" class="form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Class Type</label>
+                <div class="col-sm-8">
+                  <select class="chosen-select form-control" id="kelas" name="kelas">
+                    <?php 
+                    foreach($class as $row)
+                    { 
+                      echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                    }?>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Total Absence</label>
+              <div class="col-sm-8">
+                <input type="number" id="total_absen" name="total_absen" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Allowance</label>
+              <div class="col-sm-8">
+                <input type="number" style="text-align: right;" id="allowance_attendance" name="allowance_attendance" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="p-in" class="col-sm-3 control-label no-padding-right">Start Date</label>
+              <div class="col-sm-4">
+                  <div class="input-group">
+                    <input id="start_date" name="start_date" type="text" class="form-control date-picker" required />
+                    <span class="input-group-addon">
+                      <i class="fa fa-clock-o bigger-110"></i>
+                    </span>
+                  </div>
+              </div>
+              
+            </div> 
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">End Date</label>
+              <div class="col-sm-4">
+                  <div class="input-group">
+                    <input id="end_date" name="end_date" type="text" class="form-control date-picker"  />
+                    <span class="input-group-addon">
+                      <i class="fa fa-clock-o bigger-110"></i>
+                    </span>
+                  </div>
+              </div>
+            </div>        
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="id_allow" name="id_allow" >
+          <button type="button" class="btn btn-primary" id="btnSaveAllowance">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ModalAttendanceClass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-allow_class"></label> Attendance Class</h4>
+      </div>
+      <form id="form-input-allowance-class" class="form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Class Type</label>
+                <div class="col-sm-8">
+                  <select class="chosen-select form-control" id="kelas_class" name="kelas_class">
+                    <?php 
+                    foreach($class as $row)
+                    { 
+                      echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                    }?>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Shift</label>
+                <div class="col-sm-8">
+                  <select class="chosen-select form-control" id="shift_class" name="shift_class">
+                    <?php 
+                    foreach($master_shift as $row)
+                    { 
+                      echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                    }?>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">Allowance</label>
+              <div class="col-sm-8">
+                <input type="number" style="text-align: right;" id="allowance_attendance_class" name="allowance_attendance_class" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="p-in" class="col-sm-3 control-label no-padding-right">Start Date</label>
+              <div class="col-sm-4">
+                  <div class="input-group">
+                    <input id="start_date_class" name="start_date_class" type="text" class="form-control date-picker" required />
+                    <span class="input-group-addon">
+                      <i class="fa fa-clock-o bigger-110"></i>
+                    </span>
+                  </div>
+              </div>
+              
+            </div> 
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">End Date</label>
+              <div class="col-sm-4">
+                  <div class="input-group">
+                    <input id="end_date_class" name="end_date_class" type="text" class="form-control date-picker"  />
+                    <span class="input-group-addon">
+                      <i class="fa fa-clock-o bigger-110"></i>
+                    </span>
+                  </div>
+              </div>
+            </div>        
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="id_att_class" name="id_att_class" >
+          <button type="button" class="btn btn-primary" id="btnSaveAttClass">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ModalOvertime" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-overtime"></label> Overtime</h4>
+      </div>
+      <form id="form-input-overtime" class="form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Class Type</label>
+                <div class="col-sm-8">
+                  <select class="chosen-select form-control" id="select_working" name="select_working">
+                    <?php 
+                    foreach($working_status as $row)
+                    { 
+                      echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                    }?>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Allowance</label>
+                <div class="col-sm-8">
+                  <select class="chosen-select form-control" id="component_salary" name="component_salary">
+                    <?php 
+                    foreach($component_salary as $row)
+                    { 
+                      echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                    }?>
+                  </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="p-in" class="col-sm-3 control-label no-padding-right">Start Date</label>
+              <div class="col-sm-4">
+                  <div class="input-group">
+                    <input id="start_date_overtime" name="start_date_overtime" type="text" class="form-control date-picker" required />
+                    <span class="input-group-addon">
+                      <i class="fa fa-clock-o bigger-110"></i>
+                    </span>
+                  </div>
+              </div>
+              
+            </div> 
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right">End Date</label>
+              <div class="col-sm-4">
+                  <div class="input-group">
+                    <input id="end_date_overtime" name="end_date_overtime" type="text" class="form-control date-picker"  />
+                    <span class="input-group-addon">
+                      <i class="fa fa-clock-o bigger-110"></i>
+                    </span>
+                  </div>
+              </div>
+            </div>        
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="id_overtime" name="id_overtime" >
+          <button type="button" class="btn btn-primary" id="btnSaveOvertime">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

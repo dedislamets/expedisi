@@ -1,9 +1,5 @@
 <style type="text/css">
-  @media (min-width: 768px){
-    .modal-dialog {
-        width: 1000px;
-    }
-  }
+
 
   .popover {
     max-width: 355px;

@@ -22,9 +22,11 @@ class MasterShiftTime extends CI_Controller {
     			$data['group_shift'] = $this->admin->getmaster('GroupShift');
           $data['shift_type'] = $this->admin->getmaster('ShiftType');		
           $data['day_type'] = $this->admin->getmaster('DayType'); 
+          $data['master_shift'] = $this->admin->getmaster('MasterShift'); 
           $data['class'] = $this->admin->getmaster('Class'); 
           $data['ot'] = $this->admin->getmaster('OTValidation');   
           $data['working_status'] = $this->admin->getmaster('WorkingStatus'); 
+          $data['component_salary'] = $this->admin->getmaster('ComponentSalary'); 
     			$this->load->view('home',$data,FALSE); 
 
     }else{
@@ -158,7 +160,7 @@ class MasterShiftTime extends CI_Controller {
               number_format($r->Allowance),
               date("Y-m-d",strtotime($r->StartDate)),
               (empty($r->EndDate)? '' : date("Y-m-d",strtotime($r->EndDate)) ),              
-              "<button class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-pencil'></i></button><button class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-trash-o'></i></button>",
+              "<button type='button' class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showAttendanceAllowance(this)'><i class='ace-icon fa fa-pencil'></i></button><button type='button' class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='deleteAttendanceAllowance(this)'><i class='ace-icon fa fa-trash-o'></i></button>",
          );
     }
 
@@ -192,7 +194,7 @@ class MasterShiftTime extends CI_Controller {
               number_format($r->Allowance),
               date("Y-m-d",strtotime($r->StartDate)),
               (empty($r->EndDate)? '' : date("Y-m-d",strtotime($r->EndDate)) ),              
-              "<button class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-pencil'></i></button><button class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-trash-o'></i></button>",
+              "<button type='button' class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showAttendanceClass(this)'><i class='ace-icon fa fa-pencil'></i></button><button type='button' class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='deleteAttendanceClass(this)'><i class='ace-icon fa fa-trash-o'></i></button>",
          );
     }
 
@@ -213,7 +215,7 @@ class MasterShiftTime extends CI_Controller {
     $length = intval($this->input->get("length"));
 
 
-    $books = $this->Datatabel->get_working_status($this->input->get('class'));
+    $books = $this->Datatabel->get_working_status($this->input->get('ws'));
 
     $data = array();
     $no=0;
@@ -224,7 +226,7 @@ class MasterShiftTime extends CI_Controller {
               $r->IsDesc,
               date("Y-m-d",strtotime($r->StartDate)),
               (empty($r->EndDate)? '' : date("Y-m-d",strtotime($r->EndDate)) ),              
-              "<button class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-pencil'></i></button><button class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='showrest(this)'><i class='ace-icon fa fa-trash-o'></i></button>",
+              "<button type='button' class='btn btn-xs btn-warning'  data-id='". $r->Recnum ."' onclick='showOvertime(this)'><i class='ace-icon fa fa-pencil'></i></button><button type='button' class='btn btn-xs btn-danger'  data-id='". $r->Recnum ."' onclick='deleteOvertime(this)'><i class='ace-icon fa fa-trash-o'></i></button>",
          );
     }
 
@@ -407,6 +409,22 @@ class MasterShiftTime extends CI_Controller {
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
   }
 
+  public function editallowanceattendance(){
+      $id = $this->input->get('id'); 
+      $data = $this->admin->getTable($id, 'AttendancePerClass');
+      $this->output->set_content_type('application/json')->set_output(json_encode($data));
+  }
+  public function editallowanceclass(){
+      $id = $this->input->get('id'); 
+      $data = $this->admin->getTable($id, 'ShiftPerClass');
+      $this->output->set_content_type('application/json')->set_output(json_encode($data));
+  }
+  public function editovertime(){
+      $id = $this->input->get('id'); 
+      $data = $this->admin->getTable($id, 'OvertimeComponent');
+      $this->output->set_content_type('application/json')->set_output(json_encode($data));
+  }
+
   public function edittime(){
       $id = $this->input->get('id'); 
       $data = $this->admin->getTime($id);
@@ -420,6 +438,174 @@ class MasterShiftTime extends CI_Controller {
       $response['error'] = FALSE;
     } 
                 
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+  public function deleteAttendanceAllowance(){
+    $response = [];
+    $response['error'] = TRUE; 
+    if($this->admin->deleteTable($this->input->get('id'),'AttendancePerClass')){
+      $response['error'] = FALSE;
+    } 
+                
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+  public function deleteAttendanceClass(){
+    $response = [];
+    $response['error'] = TRUE; 
+    if($this->admin->deleteTable($this->input->get('id'),'ShiftPerClass')){
+      $response['error'] = FALSE;
+    } 
+                
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+
+  public function deleteOvertime(){
+    $response = [];
+    $response['error'] = TRUE; 
+    if($this->admin->deleteTable($this->input->get('id'),'OvertimeComponent')){
+      $response['error'] = FALSE;
+    } 
+                
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+
+  public function SaveAllowance()
+  {   
+    $response = [];
+    $response['error'] = TRUE; 
+    $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+    $recLogin = $this->session->userdata('user_id');
+    $data = array(
+      'RecnumClass'  => $this->input->get('kelas'),
+      'TotalAbsence'  => $this->input->get('total_absen'),
+      'Allowance'     => $this->input->get('allowance_attendance')                     
+    );
+
+    if(!empty($this->input->get('start_date'))){
+      $data['StartDate'] = implode("-", array_reverse(explode("-", $this->input->get('start_date'))));
+    }
+    if(!empty($this->input->get('end_date'))){
+      $data['EndDate'] = implode("-", array_reverse(explode("-", $this->input->get('end_date'))));
+    }
+
+
+    if($this->input->get('id_allow') != "") {
+      $data['EditBy'] = $recLogin;
+      $data['EditDate'] = date('Y-m-d');
+
+      $this->db->set($data);
+      $this->db->where('Recnum', $this->input->get('id_allow'));
+      $result  =  $this->db->update('AttendancePerClass'); 
+      if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+      }else{
+        $response['error']= FALSE;
+      }
+
+    }else{
+      $data['CreateBy'] = $recLogin;
+      $data['CreateDate'] = date('Y-m-d');
+      $result  = $this->db->insert('AttendancePerClass', $data);
+      if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+      }else{
+        $response['error']= FALSE;
+      }
+    }
+
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+
+  public function SaveAttendanceClass()
+  {   
+    $response = [];
+    $response['error'] = TRUE; 
+    $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+    $recLogin = $this->session->userdata('user_id');
+    $data = array(
+      'RecnumClass'  => $this->input->get('kelas_class'),
+      'RecnumMasterShift'  => $this->input->get('shift_class'),
+      'Allowance'     => $this->input->get('allowance_attendance_class')                     
+    );
+
+    if(!empty($this->input->get('start_date_class'))){
+      $data['StartDate'] = implode("-", array_reverse(explode("-", $this->input->get('start_date_class'))));
+    }
+    if(!empty($this->input->get('end_date_class'))){
+      $data['EndDate'] = implode("-", array_reverse(explode("-", $this->input->get('end_date_class'))));
+    }
+
+
+    if($this->input->get('id_att_class') != "") {
+      $data['EditBy'] = $recLogin;
+      $data['EditDate'] = date('Y-m-d');
+
+      $this->db->set($data);
+      $this->db->where('Recnum', $this->input->get('id_att_class'));
+      $result  =  $this->db->update('ShiftPerClass'); 
+      if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+      }else{
+        $response['error']= FALSE;
+      }
+
+    }else{
+      $data['CreateBy'] = $recLogin;
+      $data['CreateDate'] = date('Y-m-d');
+      $result  = $this->db->insert('ShiftPerClass', $data);
+      if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+      }else{
+        $response['error']= FALSE;
+      }
+    }
+
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+
+  public function SaveOvertime()
+  {   
+    $response = [];
+    $response['error'] = TRUE; 
+    $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+    $recLogin = $this->session->userdata('user_id');
+    $data = array(
+      'RecnumWorkingStatus'  => $this->input->get('select_working'),
+      'RecnumComponentSalary'  => $this->input->get('component_salary'),           
+    );
+
+    if(!empty($this->input->get('start_date_overtime'))){
+      $data['StartDate'] = implode("-", array_reverse(explode("-", $this->input->get('start_date_overtime'))));
+    }
+    if(!empty($this->input->get('end_date_overtime'))){
+      $data['EndDate'] = implode("-", array_reverse(explode("-", $this->input->get('end_date_overtime'))));
+    }
+
+
+    if($this->input->get('id_overtime') != "") {
+      $data['EditBy'] = $recLogin;
+      $data['EditDate'] = date('Y-m-d');
+
+      $this->db->set($data);
+      $this->db->where('Recnum', $this->input->get('id_overtime'));
+      $result  =  $this->db->update('OvertimeComponent'); 
+      if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+      }else{
+        $response['error']= FALSE;
+      }
+
+    }else{
+      $data['CreateBy'] = $recLogin;
+      $data['CreateDate'] = date('Y-m-d');
+      $result  = $this->db->insert('OvertimeComponent', $data);
+      if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+      }else{
+        $response['error']= FALSE;
+      }
+    }
+
     $this->output->set_content_type('application/json')->set_output(json_encode($response));
   }
 }

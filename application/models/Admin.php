@@ -219,6 +219,18 @@ class Admin extends CI_Model
           
         }
     }
+    function deleteTable($id, $table)
+    {        
+        $this->db->from($table);
+        $this->db->where('Recnum', $id)->delete();
+        if ($this->db->affected_rows() > 0){
+            return true;      
+            
+        }else{
+            return false;
+          
+        }
+    }
     function delPosOrg($id)
     {        
         $this->db->from('Position');
@@ -288,6 +300,10 @@ class Admin extends CI_Model
     }
     function getShift($id) {
         $query = $this->db->query("SELECT * FROM MasterShift where Recnum='".$id."'");
+        return $query->result_array();
+    }
+    function getTable($id, $table) {
+        $query = $this->db->query("SELECT * FROM $table where Recnum='".$id."'");
         return $query->result_array();
     }
     function getTime($id) {
