@@ -16,13 +16,24 @@ class Datatabel extends CI_Model
     	$query = $this->db->query("SELECT * FROM [Fn_EmpBrowse] ('','2019-01-01','1')");
         return $query;
     }
-    public function get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign)
+    public function get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign, $absen_type, $shift_type)
     {
-        $sql = "select * from [Fn_AttdList] ('1','". date('Y-m-d') ."') where dateschedule between  '". $start ."' and '". $end . "'";
+        $sql = "select * from [Fn_AttdList] ('1','". date('Y-m-d') ."',$absen,$resign) where dateschedule between  '". $start ."' and '". $end . "'";
         if($ot== 1 )
-             $sql .= " and PointOT=" . $ot ;
+             $sql .= " and RealOT=" . $ot ;
+        if($late== 1 )
+             $sql .= " and Late=" . $late ;
+        if($early== 1 )
+             $sql .= " and EarlyOut=" . $early ;
+        if(!empty($absen_type)){
+                $sql .= " and RecnumAbsenType in(" . $absen_type . ")";
+        }
+        if(!empty($shift_type)){
+                $sql .= " and RecnumMasterShift in(" . $shift_type . ")";
+        }
+             
         $sql .= " order by DateSchedule";
-
+        //vdebug($sql);
         $query = $this->db->query($sql);
         return $query;
     }

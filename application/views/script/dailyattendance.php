@@ -86,7 +86,7 @@
                                 }
                             },
                             {
-                                targets:[5,6,7,8,15,16,17,18], render:function(data){
+                                targets:[5,6,7,8,15,16,17,18,19,20], render:function(data){
                                     return moment(data).format('HH:mm'); 
                                 }
                             },
@@ -108,7 +108,7 @@
             var absen = $("#absen").prop('checked');
             var resign = $("#resign").prop('checked');
 
-            myTable.ajax.url("DailyAttendance/datatabel?start=" + start + "&end=" + end + "&ot=" + ot+ "&late=" + late + "&early=" + early + "&absen=" + absen + "&resign=" + resign).load();
+            myTable.ajax.url("DailyAttendance/datatabel?start=" + start + "&end=" + end + "&ot=" + ot+ "&late=" + late + "&early=" + early + "&absen=" + absen + "&resign=" + resign + "&absen_type=" + $("#absen_type").val() + "&shift_type=" + $("#shift_type").val()).load();
             hideloader();
         });
     });

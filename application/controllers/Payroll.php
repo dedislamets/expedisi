@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class DailyAttendance extends CI_Controller {
+class Payroll extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
@@ -10,9 +10,6 @@ class DailyAttendance extends CI_Controller {
 	   	$this->load->database();
 	   	$this->load->library(array('cek_error'));  
      	ini_set('display_errors','on');  
-     	ini_set("memory_limit","256M"); 
-     	ini_set('sqlsrv.ClientBufferMaxKBSize','524288'); // Setting to 512M
-		  ini_set('pdo_sqlsrv.client_buffer_max_kb_size','524288');
      	error_reporting(E_ALL^E_NOTICE);
 	}
 	public function index()
@@ -20,10 +17,10 @@ class DailyAttendance extends CI_Controller {
 		if($this->admin->logged_id())
     {
         	$data['menu'] = $this->M_menu->getMenu(147,0,"","Class");
-    			$data['title'] = 'Daily Attendance';
-    			$data['main'] = 'tms/dailyattendance';
-    			$data['js'] = 'script/dailyattendance';
-    			$data['modal'] = 'modal/dailyattendance';
+    			$data['title'] = 'Payroll';
+    			$data['main'] = 'payroll/index';
+    			$data['js'] = 'script/payroll';
+    			$data['modal'] = 'modal/payroll';
 		      $data['master_shift'] = $this->admin->getmaster('MasterShift');
           $data['absen_type'] = $this->admin->getmaster('AbsenType');
           $data['permit_type'] = $this->admin->getmaster('Permission');
@@ -51,30 +48,13 @@ class DailyAttendance extends CI_Controller {
           if(!empty($this->input->get('end')))
           	$end = date("Y-m-d", strtotime($this->input->get('end')));
 
-
-          $absen_type = $this->input->get('absen_type');
-          $shift_type = $this->input->get('shift_type');
-          if($absen_type == 'null')
-            $absen_type = '';
-          if($shift_type == 'null')
-            $shift_type = '';
-          if(!empty($absen_type)){
-            $absen_type = explode(",",$absen_type);
-            $absen_type = "'" . implode("','", $absen_type) . "'";
-          }
-          if(!empty($shift_type)){
-            $shift_type = explode(",",$shift_type);
-            $shift_type = "'" . implode("','", $shift_type) . "'";
-          }
-          //vdebug($absen_type);
-
           $ot = ($this->input->get('ot')=='true' ? 1 : 0);
           $late = ($this->input->get('late')=='true' ? 1 : 0);
           $early = ($this->input->get('early')=='true' ? 1 : 0);
           $absen = ($this->input->get('absen')=='true' ? 1 : 0);
           $resign = ($this->input->get('resign')=='true' ? 1 : 0);
           
-          $books = $this->Datatabel->get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign, $absen_type, $shift_type);
+          $books = $this->Datatabel->get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign);
 
           $data = array();
           $x=1;

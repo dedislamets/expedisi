@@ -40,78 +40,101 @@
 
       <div class="table-header" style="padding: 10px">
         <div class="alert alert-block alert-info clearfix" style="margin-bottom: 0">
-          <div class="col-sm-5 no-padding">
-            <div class="form-group">
-              <label class="col-sm-2 control-label no-padding-right" for="Sort">Periode</label>
-              <div class="col-sm-4 no-padding-right">
-                <div class="input-group">
-                  <input class="form-control date-picker" id="periode_start" name="dateRangeStart_stat" type="text" data-date-format="dd-mm-yyyy" />
-                  <span class="input-group-addon">
-                    <i class="fa fa-calendar bigger-110"></i>
-                  </span>
+          <div class="row">
+            <div class="col-sm-5 no-padding">
+              <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-right" for="Sort">Periode</label>
+                <div class="col-sm-4 no-padding-right">
+                  <div class="input-group">
+                    <input class="form-control date-picker" id="periode_start" name="dateRangeStart_stat" type="text" data-date-format="dd-mm-yyyy" />
+                    <span class="input-group-addon">
+                      <i class="fa fa-calendar bigger-110"></i>
+                    </span>
+                  </div>
+                </div>
+                <label class="col-sm-1 control-label ">To</label>
+                <div class="col-sm-5">
+                  <div class="input-group">
+                    <input class="form-control date-picker" id="periode_end" name="dateRangeEnd_stat" type="text" data-date-format="dd-mm-yyyy" />
+                    <span class="input-group-addon">
+                      <i class="fa fa-calendar bigger-110"></i>
+                    </span>
+                  </div>
                 </div>
               </div>
-              <label class="col-sm-1 control-label ">To</label>
-              <div class="col-sm-5">
-                <div class="input-group">
-                  <input class="form-control date-picker" id="periode_end" name="dateRangeEnd_stat" type="text" data-date-format="dd-mm-yyyy" />
-                  <span class="input-group-addon">
-                    <i class="fa fa-calendar bigger-110"></i>
-                  </span>
+            </div>
+            <div class="col-sm-4 no-padding">
+              <label class="col-md-4">Absent Type</label>
+              <div class="col-md-8 " style="padding-left: 16px">
+                <select class="chosen-select form-control" id="absen_type" name="absen_type" multiple="">
+                  <option value="0"> - </option>
+                  <?php 
+                  foreach($absen_type as $row)
+                  { 
+                    echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                  }?>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-3 no-padding">
+              <label class="col-md-4">Shift Type</label>
+              <div class="col-md-8 " style="padding-left: 16px">
+                <select class="chosen-select form-control" id="shift_type" name="shift_type" multiple="">
+                  <option value="0"> - </option>
+                  <?php 
+                  foreach($master_shift as $row)
+                  { 
+                    echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                  }?>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2 no-padding">
+                <button class="btn btn-info btn-block" id="btnAdvance">Advance Filter</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary btn-block" id="btnGo">Go</button>
+            </div>
+            <div class="col-sm-7 no-padding">
+              <div class="col-sm-12">
+                <div class="control-group">
+                  <div class="checkbox-inline">
+                    <label>
+                      <input id="overtime" name="form-field-checkbox" type="checkbox" class="ace">
+                      <span class="lbl"> Overtime</span>
+                    </label>
+                  </div>
+                  <div class="checkbox-inline">
+                    <label>
+                      <input id="late" name="form-field-checkbox" type="checkbox" class="ace">
+                      <span class="lbl"> Late</span>
+                    </label>
+                  </div>
+                  <div class="checkbox-inline">
+                    <label>
+                      <input id="early" name="form-field-checkbox" type="checkbox" class="ace">
+                      <span class="lbl"> Early Out</span>
+                    </label>
+                  </div>
+                  <div class="checkbox-inline">
+                    <label>
+                      <input id="absen" name="form-field-checkbox" type="checkbox" class="ace">
+                      <span class="lbl"> Absent / Abnormal</span>
+                    </label>
+                  </div>
+                  <div class="checkbox-inline">
+                    <label>
+                      <input id="resign" name="form-field-checkbox" type="checkbox" class="ace">
+                      <span class="lbl"> Resign</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-sm-7 no-padding">
-            <div class="col-sm-12">
-              <div class="control-group">
-                <div class="checkbox-inline">
-                  <label>
-                    <input id="overtime" name="form-field-checkbox" type="checkbox" class="ace">
-                    <span class="lbl"> Overtime</span>
-                  </label>
-                </div>
-                <div class="checkbox-inline">
-                  <label>
-                    <input id="late" name="form-field-checkbox" type="checkbox" class="ace">
-                    <span class="lbl"> Late</span>
-                  </label>
-                </div>
-                <div class="checkbox-inline">
-                  <label>
-                    <input id="early" name="form-field-checkbox" type="checkbox" class="ace">
-                    <span class="lbl"> Early Out</span>
-                  </label>
-                </div>
-                <div class="checkbox-inline">
-                  <label>
-                    <input id="absen" name="form-field-checkbox" type="checkbox" class="ace">
-                    <span class="lbl"> Absent</span>
-                  </label>
-                </div>
-                <div class="checkbox-inline">
-                  <label>
-                    <input id="resign" name="form-field-checkbox" type="checkbox" class="ace">
-                    <span class="lbl"> Resign</span>
-                  </label>
-                </div>
-                <div class="checkbox-inline">
-                  <label>
-                    <input id="all" name="form-field-checkbox" type="checkbox" class="ace">
-                    <span class="lbl"> All</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-1"></div>
-          <div class="col-sm-2 no-padding">
-              <button class="btn btn-info btn-block" id="btnAdvance">Advance Filter</button>
-          </div>
-          <div class="col-sm-2">
-              <button class="btn btn-primary btn-block" id="btnGo">Go</button>
-          </div>
-          
         </div>
       </div>
       <div>
