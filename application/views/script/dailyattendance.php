@@ -65,6 +65,67 @@
     
 	
     $(document).ready(function(){ 
+
+        var $progressbar = $("#progressbar");
+        $progressbar.show();
+        var updateProgressBar = function(evt) {
+
+            if(evt.lengthComputable) {
+                var percent = (evt.loaded*100)/evt.total;
+                $(function(){
+                    $progressbar.css('width', percent.toFixed(1) + '%');
+                }); 
+            }
+        }
+
+        $('#ProcessForm').on('submit', function(e){
+            e.preventDefault();
+
+            getProgress();
+            console.log('startProgress');
+            $.ajax({
+                url: "DailyAttendance/process",
+                type: "POST",
+                data: new FormData(this),
+                async: true, 
+                contentType: false,
+                processData: false,
+                success: function(data){
+                    if(data!==''){
+                        alert(data);
+                    }
+                    return false;
+                }
+            });
+            return false;
+            // $.ajax({
+            //     xhr: function() {
+            //         var req = new XMLHttpRequest();
+            //         req.upload.addEventListener("progress", updateProgressBar, false);
+            //         req.addEventListener("progress", updateProgressBar, false);
+            //         return req;
+            //     },
+            //     url: "DailyAttendance/process",
+            //     type: "POST",
+            //     data: new FormData(this),
+            //     contentType: false,
+            //     processData: false,
+            //     success: function(data){
+            //         console.log(data);
+            //         if (data == 'T'){
+            //             $('#txtname').val("");
+            //             $('#txtsex').val("");
+            //             $('#txtage').val("");
+            //             $('#txterr').val('Record Inserted');
+            //             $progressbar.css('width', '100%');
+            //         }
+            //     },
+            //     error: function(data){
+            //         alert("Something went wrong !");
+            //     }
+            // });
+        });
+
         var d = new Date();
 
         $("#periode_start").datepicker("setDate", d);
@@ -111,9 +172,32 @@
             myTable.ajax.url("DailyAttendance/datatabel?start=" + start + "&end=" + end + "&ot=" + ot+ "&late=" + late + "&early=" + early + "&absen=" + absen + "&resign=" + resign + "&absen_type=" + $("#absen_type").val() + "&shift_type=" + $("#shift_type").val()).load();
             hideloader();
         });
+
+        $('#btnProcess').on('click', function (event) {
+            showloader('body');
+            $('#ModalProcess').modal({backdrop: 'static', keyboard: false}) ;
+            hideloader();
+        });
     });
 
     function showattendance(val){
         $('#ModalAttendance').modal({backdrop: 'static', keyboard: false}) ;
+    }
+    function getProgress() {
+        console.log('getProgress');
+        $.ajax({
+            url: "DailyAttendance/progress",
+            type: "GET",
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (data) {
+                console.log(data);
+                $('#progressbar').css('width', data+'%').children('.sr-only').html(data+"% Complete");
+                if(data!=='100'){
+                    setTimeout('getProgress()', 2000);
+                }
+            }
+        });
     }
 </script>

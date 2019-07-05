@@ -144,3 +144,85 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="ModalProcess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-process"></label> <label> Daily Process</label></h4>
+      </div>
+      <form id="ProcessForm" name ="Form" class="grab form-horizontal" role="form">
+        <div class="modal-body">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right" for="Sort">Periode</label>
+                    <div class="col-sm-4 ">
+                      <div class="input-group">
+                        <input class="form-control date-picker" id="periode_start" name="dateRangeStart_stat" type="text" data-date-format="dd-mm-yyyy" />
+                        <span class="input-group-addon">
+                          <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                      </div>
+                    </div>
+                    <label class="col-sm-1 control-label ">To</label>
+                    <div class="col-sm-5">
+                      <div class="input-group">
+                        <input class="form-control date-picker" id="periode_end" name="dateRangeEnd_stat" type="text" data-date-format="dd-mm-yyyy" />
+                        <span class="input-group-addon">
+                          <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label no-padding-right" for="Sort">Shift</label>
+                  <div class="col-sm-8 ">
+                    <select class="chosen-select form-control" id="shift_type" name="shift_type">
+                      <option value="0"> - </option>
+                      <?php 
+                      foreach($master_shift as $row)
+                      { 
+                        echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                      }?>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label no-padding-right" for="Sort">Location</label>
+                  <div class="col-sm-8 ">
+                    <select class="chosen-select form-control" id="location" name="location">
+                      <option value="0"> - </option>
+                      <?php 
+                      foreach($location as $row)
+                      { 
+                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
+                      }?>
+                    </select>
+                  </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="modal-footer">
+          <div class="col-sm-10">
+            <!-- <div class="progress pos-rel" id="progressbar" role="progressbar" data-percent="66%" style="display: none;">
+              <div class="progress-bar" style="width:66%;"></div>
+            </div> -->
+            <div class="progress">
+                <div class="progress-bar active" id="progressbar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                    <span class="sr-only">0% Complete</span>
+                </div>
+            </div>
+            
+          </div>
+          <div class="col-sm-2 no-padding">
+            <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
+            <button type="submit" class="btn btn-primary btn-block">Process</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

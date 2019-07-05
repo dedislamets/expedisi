@@ -95,10 +95,13 @@
             <div class="col-sm-2 no-padding">
                 <button class="btn btn-info btn-block" id="btnAdvance">Advance Filter</button>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-1 no-padding" >
                 <button class="btn btn-primary btn-block" id="btnGo">Go</button>
             </div>
-            <div class="col-sm-7 no-padding">
+            <div class="col-sm-1 no-padding">
+                <button class="btn btn-success btn-block" id="btnProcess">Process</button>
+            </div>
+            <div class="col-sm-6 no-padding">
               <div class="col-sm-12">
                 <div class="control-group">
                   <div class="checkbox-inline">

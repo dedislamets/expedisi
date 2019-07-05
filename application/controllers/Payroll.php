@@ -21,9 +21,7 @@ class Payroll extends CI_Controller {
     			$data['main'] = 'payroll/index';
     			$data['js'] = 'script/payroll';
     			$data['modal'] = 'modal/payroll';
-		      $data['master_shift'] = $this->admin->getmaster('MasterShift');
-          $data['absen_type'] = $this->admin->getmaster('AbsenType');
-          $data['permit_type'] = $this->admin->getmaster('Permission');
+		      $data['periode'] = $this->admin->getperiode();
 			   $this->load->view('home',$data,FALSE); 
 
     }else{

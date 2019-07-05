@@ -44,9 +44,9 @@
                 <select class="chosen-select form-control" id="working_status" name="working_status">
                   <option value="0"> - </option>
                   <?php 
-                  foreach($working_status as $row)
+                  foreach($periode as $row)
                   { 
-                    echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                    echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
                   }?>
                 </select>
               </div>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="checkbox-inline">
                   <label>
-                    <input id="late" name="form-field-checkbox" type="checkbox" class="ace">
+                    <input id="late" name="form-field-checkbox" type="checkbox" class="ace" checked>
                     <span class="lbl"> View</span>
                   </label>
                 </div>

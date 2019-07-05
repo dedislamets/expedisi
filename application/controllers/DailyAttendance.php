@@ -27,6 +27,7 @@ class DailyAttendance extends CI_Controller {
 		      $data['master_shift'] = $this->admin->getmaster('MasterShift');
           $data['absen_type'] = $this->admin->getmaster('AbsenType');
           $data['permit_type'] = $this->admin->getmaster('Permission');
+          $data['location'] = $this->admin->getmaster('Location');
 			   $this->load->view('home',$data,FALSE); 
 
     }else{
@@ -116,33 +117,40 @@ class DailyAttendance extends CI_Controller {
           exit();
 	}
 
+  public function process()
+  {
+    if (strlen(session_id()) === 0) {
+        session_start();
+    }
+    $progress = 0;
+    $max = 100;
+    $_SESSION['max']= $max;
+    for ($i = 1; $i <= $max; $i++) {
+        if (isset($_SESSION['pros'])) {
+            session_start(); //IMPORTANT!
+        }
+        $progress++;
+        $_SESSION['pros'] = $i;
+        
+        session_write_close(); //IMPORTANT!
+        sleep(1); 
+    }
+    echo $_SESSION['max'];
+  }
+  public function progress()
+  {   
 
-	public function resizeImage($filename, $source_path, $target_path, $width, $height)
-	{
-	    //$source_path = 'uploads/profile/' . $filename;
-	    //$target_path = 'uploads/profile/thumbnail/';
-	    $config_manip = array(
-	          'image_library' => 'gd2',
-	          'source_image' => $source_path,
-	          'new_image' => $target_path,
-	          'maintain_ratio' => TRUE,
-	          'create_thumb' => TRUE,
-	          'thumb_marker' => '_thumb',
-	          'width' => $width,
-	          'height' => $height
-	    );
+    if (strlen(session_id()) === 0) {
+        session_start();
+    }
 
-
-	    $this->load->library('image_lib', $config_manip);
-	    if(!$this->image_lib->resize()) {
-	      echo $this->image_lib->display_errors();
-	      return false;
-	    }
-
-	    $this->image_lib->clear();
-	    preg_match('/(?<extension>\.\w+)$/im', $filename, $matches);
-	    $extension = $matches['extension'];
-	    $thumbnail = preg_replace('/(\.\w+)$/im', '', $filename) . '_thumb' . $extension;
-	    return $thumbnail;
-	}
+    if (isset($_SESSION['pros'])) {
+        echo $_SESSION['pros'];
+        if ($_SESSION['pros'] == $_SESSION['max']) {
+            unset($_SESSION['pros']);
+        }
+    } else {
+        echo '0';
+    }
+  }
 }

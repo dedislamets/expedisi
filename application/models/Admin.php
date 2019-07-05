@@ -114,6 +114,10 @@ class Admin extends CI_Model
         $query = $this->db->query('SELECT Recnum,IsName FROM WorkingStatus order by Recnum ASC');
         return $query->result();    
     }
+    function getperiode(){
+        $query = $this->db->query('SELECT Recnum,IsDesc FROM Period where RecnumTypePeriod=1');
+        return $query->result();    
+    }
 
     function getmaster($tabel,$where=''){
         $sql = "SELECT * FROM ". $tabel;
