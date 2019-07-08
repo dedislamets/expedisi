@@ -129,4 +129,9 @@ class Datatabel extends CI_Model
         $query = $this->db->query("[Sp_GenerateSchedule] '" . $recLogin . "',". $recnum .",'" . $startdate ."','" . $enddate ."',". $replace ." ");
         return $query->result();
     }
+    public function find_employee()
+    {
+        $query = $this->db->query("[Sp_FindEmpModal] '1','2019-01-01',0,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','';");
+        return $query;
+    }
 }
