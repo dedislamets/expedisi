@@ -37,49 +37,20 @@ class Payroll extends CI_Controller {
           $start = intval($this->input->get("start"));
           $length = intval($this->input->get("length"));
 
-
-          $start = date('Y-m-d'); 
-          if(!empty($this->input->get('start')))
-          	$start= date("Y-m-d", strtotime($this->input->get('start')));
-        
-          $end = date('Y-m-d'); 
-          if(!empty($this->input->get('end')))
-          	$end = date("Y-m-d", strtotime($this->input->get('end')));
-
-          $ot = ($this->input->get('ot')=='true' ? 1 : 0);
-          $late = ($this->input->get('late')=='true' ? 1 : 0);
-          $early = ($this->input->get('early')=='true' ? 1 : 0);
-          $absen = ($this->input->get('absen')=='true' ? 1 : 0);
-          $resign = ($this->input->get('resign')=='true' ? 1 : 0);
+          $periode = (!empty($this->input->get('periode')) ? $this->input->get('periode') : 0);
           
-          $books = $this->Datatabel->get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign);
+          $books = $this->Datatabel->get_payroll_list($periode);
 
           $data = array();
           $x=1;
           foreach($books->result() as $r) {
                $data[] = array(
                     $x,
-                    "<a href='javascript:void(0)' onclick='showattendance(this);' >".$r->EmployeeId.' </a>',
+                    $r->EmployeeId,
                     $r->EmployeeName,
-                    $r->DateSchedule,
-                    $r->ShiftCode,
-                    $r->In1,
-                    $r->Out1,
-                    empty($r->HourIn) ? '1900-01-01 00:00:00' : $r->HourIn,
-                    empty($r->HourOut) ? '1900-01-01 00:00:00' : $r->HourOut,
-                    $r->AbsenTypeCode,
-                    $r->Late,
-                    $r->EarlyOut,
-                    $r->OutOffice,
-                    $r->RealOT,
-                    $r->PointOT,
-                    empty($r->StartBeforeWD) ? '1900-01-01 00:00:00' : $r->StartBeforeWD,
-                    empty($r->EndBeforeWD) ? '1900-01-01 00:00:00' : $r->EndBeforeWD,
-                    empty($r->StartAfterWD) ? '1900-01-01 00:00:00' : $r->StartAfterWD,
-                    empty($r->EndAfterWD) ? '1900-01-01 00:00:00' : $r->EndAfterWD,
-                    $r->StartHoliday,
-                    $r->EndHoliday,
-                    $r->TotalDailyAllowance,
+                    $r->IsDesc,
+                    number_format($r->Total),
+                    $r->NetSalary,
                );
                $x++;
           }

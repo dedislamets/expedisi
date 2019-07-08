@@ -1,5 +1,7 @@
 <style type="text/css">
-
+  .rata-kanan{
+    text-align: right;
+  }
 
   .popover {
     max-width: 355px;
@@ -41,7 +43,7 @@
               <label class="col-md-2">Periode</label>
               <div class="col-md-10 " style="padding-left: 16px">
 
-                <select class="chosen-select form-control" id="working_status" name="working_status">
+                <select class="chosen-select form-control" id="periode" name="periode">
                   <option value="0"> - </option>
                   <?php 
                   foreach($periode as $row)
@@ -54,21 +56,22 @@
           </div>
           <div class="col-sm-7 no-padding">
             <div class="col-sm-12">
-              <div class="control-group">
-                <div class="checkbox-inline">
+              <div class="control-group"  id="rAction">
+                <div class="radio-inline">
                   <label>
-                    <input id="overtime" name="form-field-checkbox" type="checkbox" class="ace">
-                    <span class="lbl"> Process</span>
+                    <input name="form-field-radio" type="radio" class="ace" value="0" checked>
+                    <span class="lbl"> Process </span>
                   </label>
                 </div>
-                <div class="checkbox-inline">
+
+                <div class="radio-inline">
                   <label>
-                    <input id="late" name="form-field-checkbox" type="checkbox" class="ace" checked>
+                    <input name="form-field-radio" type="radio" class="ace" value="1">
                     <span class="lbl"> View</span>
                   </label>
                 </div>
-                
               </div>
+
             </div>
           </div>
           <div class="col-sm-1"></div>
@@ -91,9 +94,6 @@
                 <td style="vertical-align: middle;">Employee Name</td>
                 <td style="text-align: center;">Component Salary</td>
                 <td style="text-align: center;">Amount</td> 
-                <td style="text-align: center;">Total</td>
-                <td style="text-align: center;">SPL</td>
-                <td style="vertical-align: middle;">Daily Allowance</td>
               </tr>
               
             </thead>

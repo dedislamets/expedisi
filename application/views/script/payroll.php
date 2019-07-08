@@ -62,53 +62,39 @@
     });
 
 	
-    // $(document).ready(function(){ 
-    //     var d = new Date();
+    $(document).ready(function(){ 
 
-    //     $("#periode_start").datepicker("setDate", d);
-    //     $("#periode_end").datepicker("setDate", d);
+        showloader('body');
+        var action = $("#rAction input[type='radio']:checked").val();
+        myTable = $('#ViewTable').DataTable({
+                    ajax: {                 
+                        "url": "Payroll/datatabel",
+                        "type": "GET",
+                        //"data":{'action': action,'periode': $("#periode").val()},
+                    },          
+                    "bPaginate": true,  
+                    dataSrc: "original.data",
+                    "destroy": true,
+                    columnDefs: [
+                        { targets: [3, 4], className: "rata-kanan" },
+                    ],                   
+                    "initComplete": function(settings, json) {
+                        hideloader();
+                    }   
+                });
 
-    //     showloader('body');
-    //     myTable = $('#ViewTable').DataTable({
-    //                 ajax: {                 
-    //                     "url": "DailyAttendance/datatabel",
-    //                     "type": "GET",
-    //                 },          
-    //                 "bPaginate": true,  
-    //                 dataSrc: "original.data",
-    //                 columnDefs:[
-    //                         {
-    //                             targets:3, render:function(data){
-    //                                 return moment(data).format('DD MMM YYYY'); 
-    //                             }
-    //                         },
-    //                         {
-    //                             targets:[5,6,7,8,15,16,17,18], render:function(data){
-    //                                 return moment(data).format('HH:mm'); 
-    //                             }
-    //                         },
-    //                         { "width": "130px", "targets": [3] }
-    //                 ],
-    //                 "destroy": true,
-    //                 "initComplete": function(settings, json) {
-    //                     hideloader();
-    //                 }   
-    //             });
-
-    //     $('#btnGo').on('click', function (event) {
-    //         showloader('body');
-    //         var start = $("#periode_start").val();
-    //         var end = $("#periode_end").val();
-    //         var ot = $("#overtime").prop('checked');
-    //         var late = $("#late").prop('checked');
-    //         var early = $("#early").prop('checked');
-    //         var absen = $("#absen").prop('checked');
-    //         var resign = $("#resign").prop('checked');
-
-    //         myTable.ajax.url("DailyAttendance/datatabel?start=" + start + "&end=" + end + "&ot=" + ot+ "&late=" + late + "&early=" + early + "&absen=" + absen + "&resign=" + resign).load();
-    //         hideloader();
-    //     });
-    // });
+        $('#btnGo').on('click', function (event) {
+            showloader('body');
+            var action = $("#rAction input[type='radio']:checked").val();
+            if(action==1){
+                myTable.ajax.url("Payroll/datatabel?action=" + action + "&periode=" + $("#periode").val()).load();    
+            }else{
+                alert('Sedang dalam pengembangan.');
+            }
+            
+            hideloader();
+        });
+    });
 
     function showattendance(val){
         $('#ModalAttendance').modal({backdrop: 'static', keyboard: false}) ;

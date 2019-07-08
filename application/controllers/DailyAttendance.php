@@ -10,7 +10,7 @@ class DailyAttendance extends CI_Controller {
 	   	$this->load->database();
 	   	$this->load->library(array('cek_error'));  
      	ini_set('display_errors','on');  
-     	ini_set("memory_limit","256M"); 
+     	ini_set("memory_limit","512M"); 
      	ini_set('sqlsrv.ClientBufferMaxKBSize','524288'); // Setting to 512M
 		  ini_set('pdo_sqlsrv.client_buffer_max_kb_size','524288');
      	error_reporting(E_ALL^E_NOTICE);
@@ -146,11 +146,13 @@ class DailyAttendance extends CI_Controller {
 
     if (isset($_SESSION['pros'])) {
         echo $_SESSION['pros'];
+
         if ($_SESSION['pros'] == $_SESSION['max']) {
             unset($_SESSION['pros']);
         }
     } else {
         echo '0';
+        $_SESSION['pros']=0;
     }
   }
 }

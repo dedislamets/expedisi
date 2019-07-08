@@ -62,7 +62,23 @@
     });
 
     
-    
+    function getProgress() {
+        console.log('getProgress');
+        $.ajax({
+            url: "DailyAttendance/progress",
+            type: "GET",
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function (data) {
+                console.log(data);
+                $('#progressbar').css('width', data+'%').children('.sr-only').html(data+"% Complete");
+                if(data!=='100'){
+                    setTimeout('getProgress()', 2000);
+                }
+            }
+        });
+    }
 	
     $(document).ready(function(){ 
 
@@ -132,11 +148,13 @@
         $("#periode_end").datepicker("setDate", d);
 
         showloader('body');
+        var start = $("#periode_start").val();
+        var end = $("#periode_end").val();
         myTable = $('#ViewTable').DataTable({
                     ajax: {                 
                         "url": "DailyAttendance/datatabel",
                         "type": "GET",
-                        //"data" : {'start': strtdate , 'end' : enddate }
+                        "data" : {'start': start , 'end' : end }
                     },          
                     "bPaginate": true,  
                     dataSrc: "original.data",
@@ -156,7 +174,11 @@
                     "destroy": true,
                     "initComplete": function(settings, json) {
                         hideloader();
-                    }   
+                    },
+                    error: function (xhr, status, errorThrown) {
+                        hideloader();
+                        alert(xhr.responseText);
+                    }
                 });
 
         $('#btnGo').on('click', function (event) {
@@ -183,21 +205,5 @@
     function showattendance(val){
         $('#ModalAttendance').modal({backdrop: 'static', keyboard: false}) ;
     }
-    function getProgress() {
-        console.log('getProgress');
-        $.ajax({
-            url: "DailyAttendance/progress",
-            type: "GET",
-            contentType: false,
-            processData: false,
-            async: false,
-            success: function (data) {
-                console.log(data);
-                $('#progressbar').css('width', data+'%').children('.sr-only').html(data+"% Complete");
-                if(data!=='100'){
-                    setTimeout('getProgress()', 2000);
-                }
-            }
-        });
-    }
+    
 </script>
