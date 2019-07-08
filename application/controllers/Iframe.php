@@ -54,4 +54,42 @@ class Iframe extends CI_Controller {
         $this->load->view('iframe',$data,FALSE); 
 
     }
+
+    public function dailyattendance()
+    {
+        //$data['js'] = 'script/dailyattendance';
+        $data['main'] = 'iframe/dailyattendance';
+        $this->load->view('iframe',$data,FALSE); 
+    }
+    public function find()
+    {
+        $draw = intval($this->input->get("draw"));
+        $start = intval($this->input->get("start"));
+        $length = intval($this->input->get("length"));
+
+
+      $books = $this->Datatabel->find_employee();
+
+      $data = array();
+
+      foreach($books->result() as $r) {
+           $data[] = array(
+                $r->EmployeeId,
+                $r->EmployeeName,
+                $r->JoinDate,
+                $r->Age,
+                $r->NameGender,
+                $r->NameOrganization,
+           );
+      }
+
+      $output = array(
+           "draw" => $draw,
+             "recordsTotal" => $books->num_rows(),
+             "recordsFiltered" => $books->num_rows(),
+             "data" => $data
+        );
+      echo json_encode($output);
+      exit();
+    }
 }
