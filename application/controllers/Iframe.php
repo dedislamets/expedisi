@@ -57,7 +57,23 @@ class Iframe extends CI_Controller {
 
     public function dailyattendance()
     {
-        //$data['js'] = 'script/dailyattendance';
+        $data['organization'] = $this->admin->getmaster('Organization');
+        $data['structural'] = $this->admin->getmaster('V_Position','Positiontype=1');
+        $data['fungsional'] = $this->admin->getmaster('V_Position','Positiontype=2');
+        $data['location'] = $this->admin->getmaster('Location');
+        $data['class'] = $this->admin->getmaster('Class');
+        $data['golongan'] = $this->admin->getmaster('Golongan');
+        $data['coa'] = $this->admin->getmaster('COA');
+        $data['grade'] = $this->admin->getmaster('Grade');
+        $data['rank'] = $this->admin->getmaster('Rank');
+        $data['blood'] = $this->admin->getmaster('Blood');
+        $data['gender'] = $this->admin->getmaster('Gender');
+        $data['religion'] = $this->admin->getmaster('Religion');
+        $data['resign_type'] = $this->admin->getmaster('ResignType');
+        $data['find_employee'] = $this->admin->getfindemployee('Vf_FindEmployeeActiveNow');
+        
+        $data['working_status'] = $this->admin->getmasterworking();
+
         $data['main'] = 'iframe/dailyattendance';
         $this->load->view('iframe',$data,FALSE); 
     }
@@ -74,6 +90,7 @@ class Iframe extends CI_Controller {
 
       foreach($books->result() as $r) {
            $data[] = array(
+                '<input type="checkbox" name="selected_courses[]" value="'.$r->EmployeeId .'">',
                 $r->EmployeeId,
                 $r->EmployeeName,
                 $r->JoinDate,

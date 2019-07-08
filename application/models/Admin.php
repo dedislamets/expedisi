@@ -119,6 +119,11 @@ class Admin extends CI_Model
         return $query->result();    
     }
 
+    function getfindemployee(){
+        $query = $this->db->query('SELECT Id,Name FROM Vf_FindEmployeeActiveNow order by Id ASC');
+        return $query->result();    
+    }
+
     function getmaster($tabel,$where=''){
         $sql = "SELECT * FROM ". $tabel;
         if($where !=''){

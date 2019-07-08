@@ -94,6 +94,18 @@
             
             hideloader();
         });
+
+        $('#btnAdvance').on('click', function (event) {
+            showloader('body');
+            $("#iframe").attr('src','Iframe/dailyattendance');
+            $("#iframe").attr('frameBorder','0');
+            $("#iframe").attr('marginHeight','0px');
+            $("#iframe").attr('marginWidth','0px');
+            $("#iframe").attr('width','100%');
+            $("#iframe").attr('style','width:100%; height: 400px; display:block !important');
+            $('#ModalFind').modal({backdrop: 'static', keyboard: false}) ;
+            hideloader();
+        });
     });
 
     function showattendance(val){

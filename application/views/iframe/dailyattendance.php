@@ -78,406 +78,425 @@
           .form-group{
             margin-bottom: 0;
           }
+      /*    .chosen-container-multi .chosen-choices li.search-choice {
+                  z-index: -999;
+          }*/
     </style>
 </head>
 <body>
     <div class="row">
         <div class="col-sm-12">
-            
-                <div class="table-header" style="padding: 10px">
-                    <div class="alert alert-block alert-info clearfix" style="margin-bottom: 0">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group" >
-                                    <label class="col-md-3 control-label no-padding-right">Emp ID</label>
-                                    <div class="col-md-8 ui-front">
-                                        <input type="text" class="form-control" name="empid" value="" id="empid">
-                                    </div>
-                                </div>
-                                <div class="form-group" >
-                                    <label class="col-md-3 control-label no-padding-right">Emp Name</label>
-                                    <div class="col-md-8 ui-front">
-                                        <input type="text" class="form-control" name="emp_name" value="" id="emp_name">
-                                    </div>
-                                </div>
-                                <div class="form-group" >
-                                    <label class="col-md-3 control-label no-padding-right">Emp Name</label>
-                                    <div class="col-md-8 ui-front">
-                                        <input type="text" class="form-control" name="emp_name" value="" id="emp_name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label no-padding-right">Join Date</label>
-                                    <div class="col-md-8 ui-front">
-                                      <div class="input-group">
-                                        <input class="form-control date-picker" id="jd_start" name="jd_start" type="text" data-date-format="dd-mm-yyyy" />
-                                        <span class="input-group-addon">
-                                          <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-8 ui-front">
-                                      <div class="input-group">
-                                        <input class="form-control date-picker" id="jd_end" name="jd_end" type="text" data-date-format="dd-mm-yyyy" />
-                                        <span class="input-group-addon">
-                                          <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label no-padding-right">Age</label>
-                                    <div class="col-md-8 ui-front">
-                                      <div id="slider-range"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label no-padding-right">Date Alert</label>
-                                    <div class="col-md-8 ui-front">
-                                      <div class="input-group">
-                                        <input class="form-control date-picker" id="alert_start" name="alert_start" type="text" data-date-format="dd-mm-yyyy" />
-                                        <span class="input-group-addon">
-                                          <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-8 ui-front">
-                                      <div class="input-group">
-                                        <input class="form-control date-picker" id="alert_end" name="alert_end" type="text" data-date-format="dd-mm-yyyy" />
-                                        <span class="input-group-addon">
-                                          <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label no-padding-right">Resign Date</label>
-                                    <div class="col-md-8 ui-front">
-                                      <div class="input-group">
-                                        <input class="form-control date-picker" id="resign_start" name="resign_start" type="text" data-date-format="dd-mm-yyyy" />
-                                        <span class="input-group-addon">
-                                          <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-8 ui-front">
-                                      <div class="input-group">
-                                        <input class="form-control date-picker" id="resign_end" name="resign_end" type="text" data-date-format="dd-mm-yyyy" />
-                                        <span class="input-group-addon">
-                                          <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Organization</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="organization" name="organization" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Organization Secondary</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="organization_secondary" name="organization_secondary" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Position Structural</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="position_structural" name="position_structural" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Position Structural Sec</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="position_structural_secondary" name="position_structural_secondary" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Position Functional</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="position_functional" name="position_functional" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Position Functional Sec</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="position_functional_secondary" name="position_functional_secondary" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Head 1</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="head1" name="head1" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
+            <div class="widget-box">
+              <div class="widget-header">
+                <h4 class="widget-title">Filter</h4>
 
+                <div class="widget-toolbar">
+                  <a href="#" data-action="collapse">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="widget-body">
+                <div class="widget-main">
+                  <div class="alert alert-block alert-info clearfix" style="margin-bottom: 0">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group" >
+                                <label class="col-md-3 control-label no-padding-right">Emp ID</label>
+                                <div class="col-md-8 ">
+                                    <input type="text" class="form-control" name="empid" value="" id="empid">
+                                </div>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Head 2</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="head2" name="head2" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
+                            <div class="form-group" >
+                                <label class="col-md-3 control-label no-padding-right">Emp Name</label>
+                                <div class="col-md-8 ">
+                                    <input type="text" class="form-control" name="emp_name" value="" id="emp_name">
                                 </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Mentor</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="mentor" name="mentor" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-md-3 control-label no-padding-right">Emp Name</label>
+                                <div class="col-md-8 ">
+                                    <input type="text" class="form-control" name="emp_name" value="" id="emp_name">
                                 </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Admin HR</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="admin_hr" name="admin_hr" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Secretary</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="secretary" name="secretary" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Location</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="location" name="location" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($location as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">COA</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="coa" name="coa" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($coa as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Class</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="class" name="class" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($class as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Golongan</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="golongan" name="golongan" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($golongan as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label no-padding-right">Join Date</label>
+                                <div class="col-md-8 ">
+                                  <div class="input-group">
+                                    <input class="form-control date-picker" id="jd_start" name="jd_start" type="text" data-date-format="dd-mm-yyyy" />
+                                    <span class="input-group-addon">
+                                      <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
                                   </div>
                                 </div>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Grade</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="grade" name="grade" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($grade as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
+                            <div class="form-group">
+                                <div class="col-md-8 ">
+                                  <div class="input-group">
+                                    <input class="form-control date-picker" id="jd_end" name="jd_end" type="text" data-date-format="dd-mm-yyyy" />
+                                    <span class="input-group-addon">
+                                      <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
                                   </div>
                                 </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Rank</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="rank" name="rank" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($rank as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label no-padding-right">Age</label>
+                                <div class="col-md-8 ">
+                                  <div id="slider-range"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label no-padding-right">Date Alert</label>
+                                <div class="col-md-8 ">
+                                  <div class="input-group">
+                                    <input class="form-control date-picker" id="alert_start" name="alert_start" type="text" data-date-format="dd-mm-yyyy" />
+                                    <span class="input-group-addon">
+                                      <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
                                   </div>
                                 </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Working Status</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="ws" name="ws" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($working_status as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-8 ">
+                                  <div class="input-group">
+                                    <input class="form-control date-picker" id="alert_end" name="alert_end" type="text" data-date-format="dd-mm-yyyy" />
+                                    <span class="input-group-addon">
+                                      <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
                                   </div>
                                 </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Blood</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="blood" name="blood" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($blood as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label no-padding-right">Resign Date</label>
+                                <div class="col-md-8 ">
+                                  <div class="input-group">
+                                    <input class="form-control date-picker" id="resign_start" name="resign_start" type="text" data-date-format="dd-mm-yyyy" />
+                                    <span class="input-group-addon">
+                                      <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
                                   </div>
                                 </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Gender</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="gender" name="gender" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($gender as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Religion</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="religion" name="religion" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($religion as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-3 control-label no-padding-right">Resign Type</label>
-                                  <div class="col-md-8 ui-front">
-                                    <select class="chosen-select form-control" id="resign" name="resign" multiple="">
-                                      <option value="0"> - </option>
-                                      <?php 
-                                      foreach($resign_type as $row)
-                                      { 
-                                        echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
-                                      }?>
-                                    </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-8 ">
+                                  <div class="input-group">
+                                    <input class="form-control date-picker" id="resign_end" name="resign_end" type="text" data-date-format="dd-mm-yyyy" />
+                                    <span class="input-group-addon">
+                                      <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
                                   </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Organization</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="organization" name="organization" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($organization as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->OrgName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Organization Secondary</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="organization_secondary" name="organization_secondary" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($organization as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->OrgName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Position Structural</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="position_structural" name="position_structural" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($structural as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->PositionName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Position Structural Sec</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="position_structural_secondary" name="position_structural_secondary" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($structural as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->PositionName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Position Functional</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="position_functional" name="position_functional" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($fungsional as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->PositionName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Position Functional Sec</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="position_functional_secondary" name="position_functional_secondary" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($fungsional as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->PositionName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Head 1</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="head1" name="head1" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($find_employee as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Head 2</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="head2" name="head2" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($find_employee as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Mentor</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="mentor" name="mentor" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($find_employee as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            
+                            
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Admin HR</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="admin_hr" name="admin_hr" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($find_employee as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Secretary</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="secretary" name="secretary" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($find_employee as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Location</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="location" name="location" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($location as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->LocationName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">COA</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="coa" name="coa" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($coa as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Class</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="class" name="class" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($class as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Golongan</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="golongan" name="golongan" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($golongan as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Grade</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="grade" name="grade" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($grade as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Rank</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="rank" name="rank" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($rank as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Working Status</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="ws" name="ws" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($working_status as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Blood</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="blood" name="blood" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($blood as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Gender</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="gender" name="gender" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($gender as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Religion</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="religion" name="religion" multiple="" data-placeholder="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($religion as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-md-3 control-label no-padding-right">Resign Type</label>
+                              <div class="col-md-8 ">
+                                <select class="chosen-select form-control" id="resign" name="resign" multiple="">
+                                  <option value="0"> - </option>
+                                  <?php 
+                                  foreach($resign_type as $row)
+                                  { 
+                                    echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                                  }?>
+                                </select>
+                              </div>
+                            </div>
+
+
+                        </div>
                     </div>
-                </div>
-            
+                  </div>
+              </div>
+            </div>
         </div>
-        <!-- <div class="col-sm-12">
+        <div class="col-sm-12">
             <table id="myTable" class="table table-striped table-bordered table-hover" style="width:100%">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Emp ID</th>
                         <th>Emp Name</th>
                         <th>Join Date</th>
@@ -489,7 +508,7 @@
                 <tbody>
                 </tbody>
             </table>
-        </div> -->
+        </div>
     </div>
     
 
@@ -537,22 +556,22 @@
         }).find('span.ui-slider-handle').on('blur', function(){
             $(this.firstChild).hide();
         });
-        // $(document).ready( function () {
-        //     $('#myTable').DataTable({
-        //         ajax: {                 
-        //             "url": "find",
-        //             "type": "GET"
-        //         },  
-        //         columnDefs:[
-        //                     {
-        //                         targets:2, render:function(data){
-        //                             return moment(data).format('DD MMM YYYY'); 
-        //                         }
-        //                     },
-        //                     { "width": "130px", "targets": [1] }
-        //             ],
-        //     });
-        // });
+        $(document).ready( function () {
+            $('#myTable').DataTable({
+                ajax: {                 
+                    "url": "find",
+                    "type": "GET"
+                },  
+                columnDefs:[
+                            {
+                                targets:2, render:function(data){
+                                    return moment(data).format('DD MMM YYYY'); 
+                                }
+                            },
+                            { "width": "130px", "targets": [1] }
+                    ],
+            });
+        });
     </script>
 </body>
 </html>
