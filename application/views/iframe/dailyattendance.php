@@ -168,6 +168,8 @@
                                   </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-sm-3">
                             <div class="form-group">
                                 <label class="col-md-3 control-label no-padding-right">Resign Date</label>
                                 <div class="col-md-8 ">
@@ -189,8 +191,6 @@
                                   </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
                             <div class="form-group">
                               <label class="col-md-3 control-label no-padding-right">Organization</label>
                               <div class="col-md-8 ">
@@ -269,6 +269,9 @@
                                 </select>
                               </div>
                             </div>
+                        </div>
+                        <div class="col-sm-3">
+                            
                             <div class="form-group">
                               <label class="col-md-3 control-label no-padding-right">Head 1</label>
                               <div class="col-md-8 ">
@@ -308,9 +311,6 @@
                                 </select>
                               </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            
                             
                             <div class="form-group">
                               <label class="col-md-3 control-label no-padding-right">Admin HR</label>
@@ -377,6 +377,9 @@
                                 </select>
                               </div>
                             </div>
+                        </div>
+                        <div class="col-sm-3">
+                            
                             <div class="form-group">
                               <label class="col-md-3 control-label no-padding-right">Golongan</label>
                               <div class="col-md-8 ">
@@ -429,9 +432,6 @@
                                 </select>
                               </div>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            
                             <div class="form-group">
                               <label class="col-md-3 control-label no-padding-right">Blood</label>
                               <div class="col-md-8 ">
@@ -556,6 +556,11 @@
         }).find('span.ui-slider-handle').on('blur', function(){
             $(this.firstChild).hide();
         });
+
+        $("#organization").chosen().change(function(e, params){
+             values = $("#organization").chosen().val();
+            
+        });
         $(document).ready( function () {
             $('#myTable').DataTable({
                 ajax: {                 
@@ -564,13 +569,16 @@
                 },  
                 columnDefs:[
                             {
-                                targets:2, render:function(data){
+                                targets:3, render:function(data){
                                     return moment(data).format('DD MMM YYYY'); 
                                 }
                             },
-                            { "width": "130px", "targets": [1] }
+                            { "width": "130px", "targets": [1] },
+                            { "width": "130px", "targets": [3] }
                     ],
             });
+
+
         });
     </script>
 </body>
