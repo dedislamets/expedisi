@@ -557,16 +557,40 @@
             $(this.firstChild).hide();
         });
 
-        $("#organization").chosen().change(function(e, params){
-             values = $("#organization").chosen().val();
-            
+        $("#organization").change(function(e, params){
+          loadData();
         });
+
+        $("#organization_secondary").change(function(e, params){
+             loadData();
+        });
+
+        function loadData(){
+          $('#myTable').DataTable({
+                ajax: {                 
+                    "url": "find",
+                    "type": "GET",
+                    "data" : {'RecnumOrganization': $("#organization").val() , 'RecnumOrganizationSecondary': $("#organization_secondary").val() }
+                },  
+                "destroy": true,
+                columnDefs:[
+                            {
+                                targets:3, render:function(data){
+                                    return moment(data).format('DD MMM YYYY'); 
+                                }
+                            },
+                            { "width": "130px", "targets": [1] },
+                            { "width": "130px", "targets": [3] }
+                    ],
+            });
+        }
         $(document).ready( function () {
             $('#myTable').DataTable({
                 ajax: {                 
                     "url": "find",
                     "type": "GET"
                 },  
+                "destroy": true,
                 columnDefs:[
                             {
                                 targets:3, render:function(data){

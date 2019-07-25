@@ -83,8 +83,16 @@ class Iframe extends CI_Controller {
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
 
+        $RecnumOrganization = $this->input->get("RecnumOrganization");
+        if(!empty($RecnumOrganization)){
+            $RecnumOrganization = 'and RecnumOrganization in ('.implode (", ", $RecnumOrganization).')' ;
+        }
+        $RecnumOrganizationSecondary = $this->input->get("RecnumOrganizationSecondary");
+        if(!empty($RecnumOrganizationSecondary)){
+            $RecnumOrganizationSecondary = 'and RecnumOrganizationSecondary in ('.implode (", ", $RecnumOrganizationSecondary).')' ;
+        }
 
-      $books = $this->Datatabel->find_employee();
+      $books = $this->Datatabel->find_employee($RecnumOrganization,$RecnumOrganizationSecondary);
 
       $data = array();
 
