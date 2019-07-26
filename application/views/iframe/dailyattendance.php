@@ -114,12 +114,12 @@
                                     <input type="text" class="form-control" name="emp_name" value="" id="emp_name">
                                 </div>
                             </div>
-                            <div class="form-group" >
+                           <!--  <div class="form-group" >
                                 <label class="col-md-3 control-label no-padding-right">Emp Name</label>
                                 <div class="col-md-8 ">
                                     <input type="text" class="form-control" name="emp_name" value="" id="emp_name">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label class="col-md-3 control-label no-padding-right">Join Date</label>
                                 <div class="col-md-8 ">
@@ -280,7 +280,7 @@
                                   <?php 
                                   foreach($find_employee as $row)
                                   { 
-                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                    echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
                                   }?>
                                 </select>
                               </div>
@@ -293,7 +293,7 @@
                                   <?php 
                                   foreach($find_employee as $row)
                                   { 
-                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                    echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
                                   }?>
                                 </select>
                               </div>
@@ -306,7 +306,7 @@
                                   <?php 
                                   foreach($find_employee as $row)
                                   { 
-                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                    echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
                                   }?>
                                 </select>
                               </div>
@@ -320,7 +320,7 @@
                                   <?php 
                                   foreach($find_employee as $row)
                                   { 
-                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                    echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
                                   }?>
                                 </select>
                               </div>
@@ -333,7 +333,7 @@
                                   <?php 
                                   foreach($find_employee as $row)
                                   { 
-                                    echo '<option value="'.$row->Recnum.'">'.$row->Name.'</option>';
+                                    echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
                                   }?>
                                 </select>
                               </div>
@@ -513,6 +513,7 @@
     
 
     <script type="text/javascript">
+      var oTable;
         $('.date-picker').datepicker({
             autoclose: true,
             todayHighlight: true
@@ -557,6 +558,13 @@
             $(this.firstChild).hide();
         });
 
+        $("#empid").change(function(e, params){
+          loadData();
+        });
+        $("#emp_name").change(function(e, params){
+          loadData();
+        });
+
         $("#organization").change(function(e, params){
           loadData();
         });
@@ -564,13 +572,100 @@
         $("#organization_secondary").change(function(e, params){
              loadData();
         });
+        $("#position_structural").change(function(e, params){
+             loadData();
+        });
+        $("#position_structural_secondary").change(function(e, params){
+             loadData();
+        });
+        $("#position_functional").change(function(e, params){
+             loadData();
+        });
+        $("#position_functional_secondary").change(function(e, params){
+             loadData();
+        });
+        $("#head1").change(function(e, params){
+             loadData();
+        });
+        $("#head2").change(function(e, params){
+             loadData();
+        });
+        $("#mentor").change(function(e, params){
+             loadData();
+        });
+        $("#admin_hr").change(function(e, params){
+             loadData();
+        });
+        $("#secretary").change(function(e, params){
+             loadData();
+        });
+        $("#location").change(function(e, params){
+             loadData();
+        });
+        $("#coa").change(function(e, params){
+             loadData();
+        });
+        $("#class").change(function(e, params){
+             loadData();
+        });
+        $("#golongan").change(function(e, params){
+             loadData();
+        });
+        $("#grade").change(function(e, params){
+             loadData();
+        });
+        $("#rank").change(function(e, params){
+             loadData();
+        });
+        $("#ws").change(function(e, params){
+             loadData();
+        });
+        $("#blood").change(function(e, params){
+             loadData();
+        });
+        $("#gender").change(function(e, params){
+             loadData();
+        });
+        $("#religion").change(function(e, params){
+             loadData();
+        });
+        $("#resign").change(function(e, params){
+             loadData();
+        });
 
         function loadData(){
-          $('#myTable').DataTable({
+          var param = {
+              'EmployeeId': $("#empid").val(),
+              'EmployeeName': $("#emp_name").val(),
+              'RecnumOrganization': $("#organization").val(),
+              'RecnumOrganizationSecondary': $("#organization_secondary").val(),
+              'RecnumPositionStructural': $("#position_structural").val(),
+              'RecnumPositionStructuralSecondary': $("#position_structural_secondary").val(),
+              'RecnumPositionFunctional': $("#position_functional").val(),
+              'RecnumPositionFunctionalSecondary': $("#position_functional_secondary").val(),
+              'RecnumHead1': $("#head1").val(),
+              'RecnumHead2': $("#head2").val(),
+              'RecnumMentor': $("#mentor").val(),
+              'RecnumAdminHR': $("#admin_hr").val(),
+              'RecnumSecretary': $("#secretary").val(),
+              'RecnumLocation': $("#location").val(),
+              'RecnumCOA': $("#coa").val(),
+              'RecnumClass': $("#class").val(),
+              'RecnumGolongan': $("#golongan").val(),
+              'RecnumGrade': $("#grade").val(),
+              'RecnumRank': $("#rank").val(),
+              'RecnumWorkingStatus': $("#ws").val(),
+              'RecnumBlood': $("#blood").val(),
+              'RecnumGender': $("#gender").val(),
+              'RecnumReligion': $("#religion").val(),
+              'RecnumResignType': $("#resign").val(),
+              
+          };
+          oTable =  $('#myTable').DataTable({
                 ajax: {                 
                     "url": "find",
                     "type": "GET",
-                    "data" : {'RecnumOrganization': $("#organization").val() , 'RecnumOrganizationSecondary': $("#organization_secondary").val() }
+                    "data" : param
                 },  
                 "destroy": true,
                 columnDefs:[
@@ -585,7 +680,7 @@
             });
         }
         $(document).ready( function () {
-            $('#myTable').DataTable({
+            oTable = $('#myTable').DataTable({
                 ajax: {                 
                     "url": "find",
                     "type": "GET"

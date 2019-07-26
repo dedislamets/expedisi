@@ -55,6 +55,7 @@ class DailyAttendance extends CI_Controller {
 
           $absen_type = $this->input->get('absen_type');
           $shift_type = $this->input->get('shift_type');
+          
           if($absen_type == 'null')
             $absen_type = '';
           if($shift_type == 'null')
@@ -67,7 +68,13 @@ class DailyAttendance extends CI_Controller {
             $shift_type = explode(",",$shift_type);
             $shift_type = "'" . implode("','", $shift_type) . "'";
           }
-          //vdebug($absen_type);
+          
+          $advance = $this->input->get('advance');
+          if(!empty($advance)){
+            $advance = substr($advance, 0, -1);
+            $advance = explode(";",$advance);
+            $advance = "'" . implode("','", $advance) . "'";
+          }
 
           $ot = ($this->input->get('ot')=='true' ? 1 : 0);
           $late = ($this->input->get('late')=='true' ? 1 : 0);
@@ -75,14 +82,21 @@ class DailyAttendance extends CI_Controller {
           $absen = ($this->input->get('absen')=='true' ? 1 : 0);
           $resign = ($this->input->get('resign')=='true' ? 1 : 0);
           
-          $books = $this->Datatabel->get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign, $absen_type, $shift_type);
+          $books = $this->Datatabel->get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign, $absen_type, $shift_type, $advance);
 
           $data = array();
           $x=1;
           foreach($books->result() as $r) {
                $data[] = array(
                     $x,
-                    "<a href='javascript:void(0)' onclick='showattendance(this);' >".$r->EmployeeId.' </a>',
+                    '<button class="btn btn-primary btn-xs">
+                        <i class="ace-icon fa fa-book  bigger-110 icon-only"></i>
+                      </button><button class="btn btn-info btn-xs">
+                        <i class="ace-icon fa fa-info-circle  bigger-110 icon-only"></i>
+                      </button></button><button class="btn btn-warning btn-xs" onclick="showattendance(this);"">
+                        <i class="ace-icon fa fa-pencil-square-o  bigger-110 icon-only"></i>
+                      </button>',
+                    $r->EmployeeId,
                     $r->EmployeeName,
                     $r->DateSchedule,
                     $r->ShiftCode,

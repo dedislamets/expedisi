@@ -11,7 +11,8 @@
           <div class="form-group" >
             <label class="col-md-3 control-label no-padding-right">Date</label>
             <div class="col-md-8 ui-front">
-                <input type="text" class="form-control" name="date_attendance" value="" id="date_attendance" readonly>
+                <input type="text" class="form-control" name="date_attendance_1" value="" id="date_attendance_1" readonly style="text-align: center;">
+                <input type="hidden" class="form-control" name="date_attendance" value="" id="date_attendance">
             </div>
           </div>
           <div class="widget-box">
@@ -108,7 +109,7 @@
                   <label class="col-sm-3 control-label no-padding-right" >From</label>
                   <div class="col-sm-3">
                     <div class="input-group bootstrap-timepicker">
-                      <input id="from_permit" name="from_permit" type="text" class="form-control timepicker1" readonly />
+                      <input id="from_permit" name="from_permit" type="text" class="form-control timepicker1" />
                       <span class="input-group-addon">
                         <i class="fa fa-clock-o bigger-110"></i>
                       </span>
@@ -133,7 +134,107 @@
                 </div>
             </div>
           </div>
-          
+          <div class="widget-box">
+            <div class="widget-header"><h4 class="widget-title">Overtime</h4></div>
+            <div class="widget-body">
+
+                <div class="form-group" style="margin-top: 10px">
+                  <label class="col-sm-3 control-label no-padding-right" >Early From</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="from_permit" name="early_from" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <label class="col-sm-1 control-label no-padding-right" >To</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="to_permit" name="early_to" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" >Return From</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="from_permit" name="return_from" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <label class="col-sm-1 control-label no-padding-right" >To</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="to_permit" name="return_to" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right" >Holiday From</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="from_permit" name="holiday_from" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <label class="col-sm-1 control-label no-padding-right" >To</label>
+                  <div class="col-sm-3">
+                    <div class="input-group bootstrap-timepicker">
+                      <input id="to_permit" name="holiday_to" type="text" class="form-control timepicker1" />
+                      <span class="input-group-addon">
+                        <i class="fa fa-clock-o bigger-110"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label no-padding-right">Desc</label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control limited" id="form-field-9" maxlength="250"></textarea>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="widget-box">
+            <div class="widget-header"><h4 class="widget-title">Adjustment</h4></div>
+            <div class="widget-body">
+              <div class="form-group" style="margin-top: 10px">
+                <label class="col-sm-3 control-label no-padding-right">Real OT</label>
+                <div class="col-sm-8">
+                  <input type="number" id="real_ot" name="real_ot" class="form-control" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Point OT</label>
+                <div class="col-sm-8">
+                  <input type="number" id="point_ot" name="point_ot" class="form-control" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Adjust(+)</label>
+                <div class="col-sm-8">
+                  <input type="number" id="adjust_plus" name="adjust_plus" class="form-control" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Adjust(-)</label>
+                <div class="col-sm-8">
+                  <input type="number" id="adjust_min" name="adjust_min" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
       <div class="modal-footer">
         <input type="hidden" id="id_shift" name="id_shift" >
@@ -247,7 +348,8 @@
           </div>
           <div class="col-sm-2 no-padding">
             <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
-            <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Find</button>
+            <input type="hidden" id="txtSelected" name="txtSelected" />
+            <button type="button" id="btnFind" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Find</button>
           </div>
         </div>
     </div>

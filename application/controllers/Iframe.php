@@ -83,16 +83,97 @@ class Iframe extends CI_Controller {
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
 
-        $RecnumOrganization = $this->input->get("RecnumOrganization");
-        if(!empty($RecnumOrganization)){
-            $RecnumOrganization = 'and RecnumOrganization in ('.implode (", ", $RecnumOrganization).')' ;
-        }
-        $RecnumOrganizationSecondary = $this->input->get("RecnumOrganizationSecondary");
-        if(!empty($RecnumOrganizationSecondary)){
-            $RecnumOrganizationSecondary = 'and RecnumOrganizationSecondary in ('.implode (", ", $RecnumOrganizationSecondary).')' ;
-        }
+        $EmpID = $this->input->get("EmployeeId");
+        $EmpName = $this->input->get("EmployeeName");
 
-      $books = $this->Datatabel->find_employee($RecnumOrganization,$RecnumOrganizationSecondary);
+        $RecnumOrganization = $this->input->get("RecnumOrganization");
+        if(!empty($RecnumOrganization))
+            $RecnumOrganization = 'and RecnumOrganization in ('.implode (", ", $RecnumOrganization).')' ;
+        $RecnumOrganizationSecondary = $this->input->get("RecnumOrganizationSecondary");
+        if(!empty($RecnumOrganizationSecondary))
+            $RecnumOrganizationSecondary = 'and RecnumOrganizationSecondary in ('.implode (", ", $RecnumOrganizationSecondary).')';
+
+        $RecnumPositionStructural = $this->input->get("RecnumPositionStructural");
+        if(!empty($RecnumPositionStructural))
+            $RecnumPositionStructural = 'and RecnumPositionStructural in ('.implode (", ", $RecnumPositionStructural).')';
+
+        $RecnumPositionStructuralSecondary = $this->input->get("RecnumPositionStructuralSecondary");
+        if(!empty($RecnumPositionStructuralSecondary))
+            $RecnumPositionStructuralSecondary = 'and RecnumPositionStructuralSecondary in ('.implode (", ", $RecnumPositionStructuralSecondary).')';
+
+        $RecnumPositionFunctional = $this->input->get("RecnumPositionFunctional");
+        if(!empty($RecnumPositionFunctional))
+            $RecnumPositionFunctional = 'and RecnumPositionFunctional in ('.implode (", ", $RecnumPositionFunctional).')';
+
+        $RecnumPositionFunctionalSecondary = $this->input->get("RecnumPositionFunctionalSecondary");
+        if(!empty($RecnumPositionFunctionalSecondary))
+            $RecnumPositionFunctionalSecondary = 'and RecnumPositionFunctionalSecondary in ('.implode (", ", $RecnumPositionFunctionalSecondary).')';
+
+        $RecnumHead1 = $this->input->get("RecnumHead1");
+        if(!empty($RecnumHead1))
+            $RecnumHead1 = 'and RecnumHead1 in ('.implode (", ", $RecnumHead1).')';
+
+        $RecnumHead2 = $this->input->get("RecnumHead2");
+        if(!empty($RecnumHead2))
+            $RecnumHead2 = 'and RecnumHead2 in ('.implode (", ", $RecnumHead2).')';
+
+        $RecnumMentor = $this->input->get("RecnumMentor");
+        if(!empty($RecnumMentor))
+            $RecnumMentor = 'and RecnumMentor in ('.implode (", ", $RecnumMentor).')';
+
+        $RecnumAdminHR = $this->input->get("RecnumAdminHR");
+        if(!empty($RecnumAdminHR))
+            $RecnumAdminHR = 'and RecnumAdminHR in ('.implode (", ", $RecnumAdminHR).')';
+
+        $RecnumSecretary = $this->input->get("RecnumSecretary");
+        if(!empty($RecnumSecretary))
+            $RecnumSecretary = 'and RecnumSecretary in ('.implode (", ", $RecnumSecretary).')';
+
+        $RecnumLocation = $this->input->get("RecnumLocation");
+        if(!empty($RecnumLocation))
+            $RecnumLocation = 'and RecnumLocation in ('.implode (", ", $RecnumLocation).')';
+
+        $RecnumCOA = $this->input->get("RecnumCOA");
+        if(!empty($RecnumCOA))
+            $RecnumCOA = 'and RecnumCOA in ('.implode (", ", $RecnumCOA).')';
+
+        $RecnumClass = $this->input->get("RecnumClass");
+        if(!empty($RecnumClass))
+            $RecnumClass = 'and RecnumClass in ('.implode (", ", $RecnumClass).')';
+
+        $RecnumGolongan = $this->input->get("RecnumGolongan");
+        if(!empty($RecnumGolongan))
+            $RecnumGolongan = 'and RecnumGolongan in ('.implode (", ", $RecnumGolongan).')';
+
+        $RecnumGrade = $this->input->get("RecnumGrade");
+        if(!empty($RecnumGrade))
+            $RecnumGrade = 'and RecnumGrade in ('.implode (", ", $RecnumGrade).')';
+
+        $RecnumRank = $this->input->get("RecnumRank");
+        if(!empty($RecnumRank))
+            $RecnumRank = 'and RecnumRank in ('.implode (", ", $RecnumRank).')';
+
+        $RecnumWorkingStatus = $this->input->get("RecnumWorkingStatus");
+        if(!empty($RecnumWorkingStatus))
+            $RecnumWorkingStatus = 'and RecnumWorkingStatus in ('.implode (", ", $RecnumWorkingStatus).')';
+
+        $RecnumBlood = $this->input->get("RecnumBlood");
+        if(!empty($RecnumBlood))
+            $RecnumBlood = 'and RecnumBlood in ('.implode (", ", $RecnumBlood).')';
+
+        $RecnumGender = $this->input->get("RecnumGender");
+        if(!empty($RecnumGender))
+            $RecnumGender = 'and RecnumGender in ('.implode (", ", $RecnumGender).')';
+
+        $RecnumReligion = $this->input->get("RecnumReligion");
+        if(!empty($RecnumReligion))
+            $RecnumReligion = 'and RecnumReligion in ('.implode (", ", $RecnumReligion).')';
+
+        $RecnumResignType = $this->input->get("RecnumResignType");
+        if(!empty($RecnumResignType))
+            $RecnumResignType = 'and RecnumResignType in ('.implode (", ", $RecnumResignType).')';
+
+      $books = $this->Datatabel->find_employee($EmpID,$EmpName,$RecnumOrganization,$RecnumOrganizationSecondary, $RecnumPositionStructural, $RecnumPositionStructuralSecondary, $RecnumPositionFunctional, $RecnumPositionFunctionalSecondary, $RecnumHead1, $RecnumHead2,$RecnumMentor, $RecnumAdminHR, $RecnumSecretary, $RecnumLocation, $RecnumCOA, $RecnumClass, $RecnumGolongan, $RecnumGrade, $RecnumRank, $RecnumWorkingStatus, $RecnumBlood, $RecnumGender, $RecnumReligion, $RecnumResignType);
 
       $data = array();
 

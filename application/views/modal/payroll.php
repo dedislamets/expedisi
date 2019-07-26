@@ -18,7 +18,8 @@
           </div>
           <div class="col-sm-2 no-padding">
             <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
-            <button type="submit" class="btn btn-primary btn-block">Process</button>
+            <input type="hidden" id="txtSelected" name="txtSelected" />
+            <button type="button" id="btnFind" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Find</button>
           </div>
         </div>
     </div>

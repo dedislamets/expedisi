@@ -16,12 +16,17 @@ class Datatabel extends CI_Model
     	$query = $this->db->query("SELECT * FROM [Fn_EmpBrowse] ('','2019-01-01','1')");
         return $query;
     }
-    public function get_payroll_list($periode)
+    public function get_payroll_list($periode, $advance)
     {
-        $query = $this->db->query("SELECT * FROM [Fn_PayrollList] ('',$periode) order by EmployeeId,Sort");
+        $sql = "SELECT * FROM [Fn_PayrollList] ('',$periode) ";
+        if(!empty($advance)){
+                $sql .= " where EmployeeId in(" . $advance . ")";
+        }
+        $sql .= " order by EmployeeId,Sort";
+        $query = $this->db->query($sql);
         return $query;
     }
-    public function get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign, $absen_type, $shift_type)
+    public function get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign, $absen_type, $shift_type, $advance)
     {
         $sql = "select * from [Fn_AttdList] ('1','". date('Y-m-d') ."',$absen,$resign) where dateschedule between  '". $start ."' and '". $end . "'";
         if($ot== 1 )
@@ -36,9 +41,13 @@ class Datatabel extends CI_Model
         if(!empty($shift_type)){
                 $sql .= " and RecnumMasterShift in(" . $shift_type . ")";
         }
+
+        if(!empty($advance)){
+                $sql .= " and EmployeeId in(" . $advance . ")";
+        }
              
         $sql .= " order by DateSchedule";
-        //vdebug($sql);
+        //vdebug($advance);
         $query = $this->db->query($sql);
         return $query;
     }
@@ -129,9 +138,37 @@ class Datatabel extends CI_Model
         $query = $this->db->query("[Sp_GenerateSchedule] '" . $recLogin . "',". $recnum .",'" . $startdate ."','" . $enddate ."',". $replace ." ");
         return $query->result();
     }
-    public function find_employee($RecnumOrganization,$RecnumOrganizationSecondary )
+    public function find_employee($EmpID,$EmpName,$RecnumOrganization,$RecnumOrganizationSecondary, $RecnumPositionStructural, $RecnumPositionStructuralSecondary, $RecnumPositionFunctional, $RecnumPositionFunctionalSecondary, $RecnumHead1, $RecnumHead2,$RecnumMentor, $RecnumAdminHR, $RecnumSecretary, $RecnumLocation, $RecnumCOA, $RecnumClass, $RecnumGolongan, $RecnumGrade, $RecnumRank, $RecnumWorkingStatus, $RecnumBlood, $RecnumGender, $RecnumReligion, $RecnumResignType)
     {
-        $query = $this->db->query("[Sp_FindEmpModal] '1','2019-01-01',0,'','','". $RecnumOrganization."','". $RecnumOrganizationSecondary ."','','','','','','','','','','','','','','','','','','','','','','','','','';");
+
+//         @RecnumPositionStructural varchar(max),
+// @RecnumPositionStructuralSecondary  varchar(max),
+// @RecnumPositionFunctional varchar(max),
+// @RecnumPositionFunctionalSecondary varchar(max),
+// @RecnumHead1 varchar(max),
+// @RecnumHead2 varchar(max),
+// @RecnumMentor varchar(max),
+// @RecnumAdminHR varchar(max),
+// @RecnumSecretary varchar(max),
+// @RecnumLocation varchar(max), 
+// @RecnumCOA varchar(max),
+// @RecnumClass varchar(max),
+// @RecnumGolongan varchar(max),
+// @RecnumGrade varchar(max),
+// @RecnumRank  varchar(max),
+// @RecnumWorkingStatus  varchar(max),
+// @JoinDate varchar(Max),
+// @RecnumBlood varchar(Max),
+// @RecnumGender varchar(Max),
+// @RecnumReligion varchar(Max),
+// @ServicePeriodYear varchar(Max),
+// @Age varchar(Max),
+// @DateAlert varchar(max),
+// @ResignDate varchar(max),
+// @RecnumResignType varchar(max) 
+        $sql = "[Sp_FindEmpModal] '1','2019-01-01',0,'". $EmpID."','". $EmpName."','". $RecnumOrganization."','". $RecnumOrganizationSecondary ."','". $RecnumPositionStructural ."','". $RecnumPositionStructuralSecondary ."','". $RecnumPositionFunctional ."','". $RecnumPositionFunctionalSecondary ."','". $RecnumHead1 ."','". $RecnumHead2 ."','". $RecnumMentor ."','". $RecnumAdminHR ."','". $RecnumSecretary ."','". $RecnumLocation ."','". $RecnumCOA ."','". $RecnumClass ."','". $RecnumGolongan ."','". $RecnumGrade ."','". $RecnumRank ."','". $RecnumWorkingStatus ."','','". $RecnumBlood ."','". $RecnumGender ."','". $RecnumReligion ."','','','','','". $RecnumResignType ."';";
+        //print("<pre>".print_r($sql,true)."</pre>");
+        $query = $this->db->query($sql);
         return $query;
     }
 }

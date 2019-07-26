@@ -146,6 +146,7 @@
             <thead>
               <tr style="background: repeat-x #F2F2F2;font-weight: bold;">
                 <td rowspan="2" style="vertical-align: middle;">#</td>
+                <td rowspan="2" style="vertical-align: middle;">Action</td>
                 <td rowspan="2" style="vertical-align: middle;">Emp. ID</td>
                 <td rowspan="2" style="vertical-align: middle;">Employee Name</td>
                 <td colspan="4" style="text-align: center;">Schedule</td>

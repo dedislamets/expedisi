@@ -106,7 +106,33 @@
             $('#ModalFind').modal({backdrop: 'static', keyboard: false}) ;
             hideloader();
         });
+
+        $('#btnFind').on('click', function (event) {
+            var checked_courses = $('#iframe').contents().find('input[name="selected_courses[]"]:checked').length;
+            if (checked_courses != 0) {
+                CheckedTrue();
+            } else {
+                alert("Silahkan pilih terlebih dahulu");
+            }
+        });
     });
+
+    function CheckedTrue() {
+        var b = $("#txtSelected");
+        b.val('');
+        var str = "";
+        var oTable = document.getElementById("iframe").contentWindow.oTable;
+        var rowcollection = oTable.$(':checkbox', { "page": "all" });
+        rowcollection.each(function () {
+            if (this.checked) {
+                str += this.value + ";";
+            }
+        });
+        b.val(str);                        
+        $('#ModalFind').modal('hide') ;
+        var action = $("#rAction input[type='radio']:checked").val();
+        myTable.ajax.url("Payroll/datatabel?action=" + action + "&periode=" + $("#periode").val() + "&advance=" + str).load();  
+    }
 
     function showattendance(val){
         $('#ModalAttendance').modal({backdrop: 'static', keyboard: false}) ;

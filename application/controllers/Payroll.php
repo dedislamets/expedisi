@@ -42,7 +42,14 @@ class Payroll extends CI_Controller {
 
           $periode = (!empty($this->input->get('periode')) ? $this->input->get('periode') : 0);
           
-          $books = $this->Datatabel->get_payroll_list($periode);
+          $advance = $this->input->get('advance');
+          if(!empty($advance)){
+            $advance = substr($advance, 0, -1);
+            $advance = explode(";",$advance);
+            $advance = "'" . implode("','", $advance) . "'";
+          }
+          
+          $books = $this->Datatabel->get_payroll_list($periode, $advance);
 
           $data = array();
           $x=1;
