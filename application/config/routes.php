@@ -74,4 +74,6 @@ $route['datatabel_standard_working'] = "MasterShiftTime/getdata_standart";
 $route['datatabel_rest'] = "MasterShiftTime/getdata_rest";
 $route['datatabel_schedule'] = "ScheduleGroup/getdata_schedule";
 
+$route['getTableTree'] = "GenerateTable/getItem";
+
 $route['logout'] = "Login/keluar";

@@ -153,6 +153,11 @@ class Admin extends CI_Model
         $query = $this->db->query('SELECT Recnum,IsName FROM Rank order by Recnum ASC');
         return $query->result();        
     }
+    function execEmpProcessDaily($tgl)
+    {        
+        $query = $this->db->query("SELECT * FROM [Fn_EmpProcessDaily] ('','". $tgl ."') ");
+        return $query->result();        
+    }
     function getgrade()
     {        
         $query = $this->db->query('SELECT Recnum,IsName FROM Grade order by Recnum ASC');

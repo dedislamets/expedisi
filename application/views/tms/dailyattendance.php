@@ -1,6 +1,9 @@
 <style type="text/css">
-
-
+  @media (min-width: 768px){
+    .mp {
+        width: 1000px;
+    }
+  }
   .popover {
     max-width: 355px;
   }
@@ -142,7 +145,7 @@
       </div>
       <div>
         <div class="table-responsive">
-          <table id="ViewTable" class="table table-striped table-bordered table-hover">
+          <table id="ViewTable_daily" class="table table-striped table-bordered table-hover">
             <thead>
               <tr style="background: repeat-x #F2F2F2;font-weight: bold;">
                 <td rowspan="2" style="vertical-align: middle;">#</td>
@@ -189,7 +192,8 @@
     </div>
 </div>
 <?php
-  $this->load->view($modal); 
+  $this->load->view('modal/personal');
+  $this->load->view($modal);
 ?>
 
 

@@ -89,9 +89,9 @@ class DailyAttendance extends CI_Controller {
           foreach($books->result() as $r) {
                $data[] = array(
                     $x,
-                    '<button class="btn btn-primary btn-xs">
+                    '<button class="btn btn-primary btn-xs" onclick="showModal(\''. $r->EmployeeId .'\')">
                         <i class="ace-icon fa fa-book  bigger-110 icon-only"></i>
-                      </button><button class="btn btn-info btn-xs">
+                      </button><button class="btn btn-info btn-xs" onclick="showModal3(\''. $r->EmployeeId .'\')">
                         <i class="ace-icon fa fa-info-circle  bigger-110 icon-only"></i>
                       </button></button><button class="btn btn-warning btn-xs" onclick="showattendance(this);"">
                         <i class="ace-icon fa fa-pencil-square-o  bigger-110 icon-only"></i>
@@ -133,24 +133,37 @@ class DailyAttendance extends CI_Controller {
 
   public function process()
   {
-    if (strlen(session_id()) === 0) {
-        session_start();
+    $start= date("Y-m-d", strtotime($this->input->post('periode_start')));
+    $end= date("Y-m-d", strtotime($this->input->post('periode_end')));
+    
+    // $config['upload_path']   = './uploaded_file/';
+    // $config['allowed_types'] = 'doc|docx|xls|xlsx|pdf|zip|rar|jpg|jpeg';
+    // $this->load->library('upload', $config);
+           
+    // if ( ! $this->upload->do_upload('file_nya')) {
+    //     $data['error_upload'] = array('error' => $this->upload->display_errors());
+    //     $this->session->set_userdata('status_upload',
+    //     '<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'.
+    //     $data['error_upload']['error'].'</div>');
+    // }else {
+    //     $this->session->set_userdata('status_upload','<div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>File berhasil diupload</div>');
+                                               
+    // }
+
+    // redirect(base_url());
+    $books = $this->Datatabel->get_list_day($start,$end);
+
+    $data = array();
+    $x=1;
+    foreach($books->result() as $r) {
+      //$data[] = array($r->calc_date);
+      $this->admin->execEmpProcessDaily($r->calc_date);  
     }
-    $progress = 0;
-    $max = 100;
-    $_SESSION['max']= $max;
-    for ($i = 1; $i <= $max; $i++) {
-        if (isset($_SESSION['pros'])) {
-            session_start(); //IMPORTANT!
-        }
-        $progress++;
-        $_SESSION['pros'] = $i;
-        
-        session_write_close(); //IMPORTANT!
-        sleep(1); 
-    }
-    echo $_SESSION['max'];
+
+    echo json_encode($data);
+    exit();
   }
+
   public function progress()
   {   
 

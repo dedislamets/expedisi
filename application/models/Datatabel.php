@@ -16,6 +16,17 @@ class Datatabel extends CI_Model
     	$query = $this->db->query("SELECT * FROM [Fn_EmpBrowse] ('','2019-01-01','1')");
         return $query;
     }
+    public function get_list_day($start,$end)
+    {
+        $query = $this->db->query("WITH date_range (calc_date) AS (
+                SELECT DATEADD(DAY, DATEDIFF(DAY, 0, '". $end ."') - DATEDIFF(DAY, '". $start ."', '". $end ."'), 0)
+                    UNION ALL SELECT DATEADD(DAY, 1, calc_date)
+                        FROM date_range
+                        WHERE DATEADD(DAY, 1, calc_date) <= '". $end ."')
+            SELECT calc_date
+            FROM date_range;");
+        return $query;
+    }
     public function get_payroll_list($periode, $advance)
     {
         $sql = "SELECT * FROM [Fn_PayrollList] ('',$periode) ";
@@ -24,6 +35,7 @@ class Datatabel extends CI_Model
         }
         $sql .= " order by EmployeeId,Sort";
         $query = $this->db->query($sql);
+        
         return $query;
     }
     public function get_daily_attendance($start,$end,$ot,$late,$early,$absen,$resign, $absen_type, $shift_type, $advance)

@@ -1,35 +1,5 @@
 
 <script type="text/javascript">
-	$('.number').priceFormat({
-        prefix: '',
-        centsSeparator: '',
-        centsLimit: 0,
-        thousandsSeparator: ''
-    });
-	function chosen(){
-		$('.chosen-select').chosen({allow_single_deselect:true}); 
-		//resize the chosen on window resize
-
-		$(window).off('resize.chosen')
-		.on('resize.chosen', function() {
-			$('.chosen-select').each(function() {
-				 var $this = $(this);
-				 $this.next().css({'width': '100%'});
-			})
-		}).trigger('resize.chosen');
-		$(document).on('settings.ace.chosen', function(e, event_name, event_val) {
-			if(event_name != 'sidebar_collapsed') return;
-			$('.chosen-select').each(function() {
-				 var $this = $(this);
-				 $this.next().css({'width': $this.parent().width()});
-			})
-		});
-	}
-	chosen();
-	$('.date-picker').datepicker({
-		autoclose: true,
-		todayHighlight: true
-	});
 
     $('#in').timepicker({
         minuteStep: 1,
@@ -109,41 +79,28 @@
             }
         });
     }
+    function progressUpload(event){
+        var percent = (event.loaded / event.total) * 100;
+        document.getElementById("progress-bar").style.width = Math.round(percent)+'%';    
+        document.getElementById("status").innerHTML = Math.round(percent)+"%";
+        if(event.loaded==event.total){
+            alert('komplit');
+        }
+    }
 	
     $(document).ready(function(){ 
-
-        var $progressbar = $("#progressbar");
-        $progressbar.show();
-        var updateProgressBar = function(evt) {
-
-            if(evt.lengthComputable) {
-                var percent = (evt.loaded*100)/evt.total;
-                $(function(){
-                    $progressbar.css('width', percent.toFixed(1) + '%');
-                }); 
-            }
-        }
 
         $('#ProcessForm').on('submit', function(e){
             e.preventDefault();
 
-            getProgress();
-            console.log('startProgress');
-            $.ajax({
-                url: "DailyAttendance/process",
-                type: "POST",
-                data: new FormData(this),
-                async: true, 
-                contentType: false,
-                processData: false,
-                success: function(data){
-                    if(data!==''){
-                        alert(data);
-                    }
-                    return false;
-                }
-            });
-            return false;
+            var file = document.getElementById("fileku").files[0];
+            var formdata = new FormData(this);
+            formdata.append("file_nya", file);
+            var ajax = new XMLHttpRequest();
+            ajax.upload.addEventListener("progress", progressUpload, false);
+            ajax.open("POST", "<?php echo site_url('DailyAttendance/process');?>", true);
+            ajax.send(formdata);
+
             // $.ajax({
             //     xhr: function() {
             //         var req = new XMLHttpRequest();
@@ -180,7 +137,7 @@
         showloader('body');
         var start = $("#periode_start").val();
         var end = $("#periode_end").val();
-        myTable = $('#ViewTable').DataTable({
+        myTable_daily = $('#ViewTable_daily').DataTable({
                     ajax: {                 
                         "url": "DailyAttendance/datatabel",
                         "type": "GET",
@@ -261,12 +218,12 @@
         var absen = $("#absen").prop('checked');
         var resign = $("#resign").prop('checked');
 
-        myTable.ajax.url("DailyAttendance/datatabel?start=" + start + "&end=" + end + "&ot=" + ot+ "&late=" + late + "&early=" + early + "&absen=" + absen + "&resign=" + resign + "&absen_type=" + $("#absen_type").val() + "&shift_type=" + $("#shift_type").val()).load();
+        myTable_daily.ajax.url("DailyAttendance/datatabel?start=" + start + "&end=" + end + "&ot=" + ot+ "&late=" + late + "&early=" + early + "&absen=" + absen + "&resign=" + resign + "&absen_type=" + $("#absen_type").val() + "&shift_type=" + $("#shift_type").val()).load();
         hideloader();
     }
 
     function showattendance(val){
-        var data = myTable.row($(val).closest('tr')).data();
+        var data = myTable_daily.row($(val).closest('tr')).data();
         $("#date_attendance_1").val(moment(data[4]).format('DD MMM YYYY'));
         $("#date_attendance").val(data[4]);
         $("#in_s").val(moment(data[6]).format('HH:mm'));
@@ -289,7 +246,11 @@
         });
         b.val(str);                        
         $('#ModalFind').modal('hide') ;
-        myTable.ajax.url("DailyAttendance/datatabel?advance=" + str).load();
+        myTable_daily.ajax.url("DailyAttendance/datatabel?advance=" + str).load();
     }
+
     
 </script>
+<?php
+  $this->load->view('script/personal');
+?>

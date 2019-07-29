@@ -1,7 +1,7 @@
 <div class="modal fade" id="ModalAttendance" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header table-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-attend"></label> <label> Attendance</label></h4>
       </div>
@@ -253,14 +253,14 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><label id="lbl-title-process"></label> <label> Daily Process</label></h4>
       </div>
-      <form id="ProcessForm" name ="Form" class="grab form-horizontal" role="form">
+      <form id="ProcessForm" name="Form" class="grab form-horizontal" role="form" enctype="multipart/form-data">
         <div class="modal-body">
             <div class="col-sm-12">
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right" for="Sort">Periode</label>
                     <div class="col-sm-4 ">
                       <div class="input-group">
-                        <input class="form-control date-picker" id="periode_start" name="dateRangeStart_stat" type="text" data-date-format="dd-mm-yyyy" />
+                        <input class="form-control date-picker" id="periode_start" name="periode_start" type="text" data-date-format="dd-mm-yyyy" />
                         <span class="input-group-addon">
                           <i class="fa fa-calendar bigger-110"></i>
                         </span>
@@ -269,7 +269,7 @@
                     <label class="col-sm-1 control-label ">To</label>
                     <div class="col-sm-5">
                       <div class="input-group">
-                        <input class="form-control date-picker" id="periode_end" name="dateRangeEnd_stat" type="text" data-date-format="dd-mm-yyyy" />
+                        <input class="form-control date-picker" id="periode_end" name="periode_end" type="text" data-date-format="dd-mm-yyyy" />
                         <span class="input-group-addon">
                           <i class="fa fa-calendar bigger-110"></i>
                         </span>
@@ -302,6 +302,10 @@
                     </select>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label>Pilih File</label>
+                  <input type="file" name="file_nya" id="fileku" class="filestyle" data-buttonText=" Cari file" data-iconName="fa fa-folder-open-o">
+              </div>
             </div>
 
             <div class="clearfix"></div>
@@ -312,10 +316,15 @@
               <div class="progress-bar" style="width:66%;"></div>
             </div> -->
             <div class="progress">
+                  <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                    <span id="status"></span>
+                  </div>
+            </div>
+            <!-- <div class="progress">
                 <div class="progress-bar active" id="progressbar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                     <span class="sr-only">0% Complete</span>
                 </div>
-            </div>
+            </div> -->
             
           </div>
           <div class="col-sm-2 no-padding">
