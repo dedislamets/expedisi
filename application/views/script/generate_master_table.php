@@ -5,7 +5,63 @@
 	  	$('#jstree').jstree(true).settings.core.data.url = 'getTableTree';
 		$('#jstree').jstree(true).refresh();
 	});
-	function gridview(val){
+	function gridview(val,tabel_name){
+
+		$.ajax({
+            url: 'GenerateTable/viewColumn?id='+val,
+            dataType: 'json',
+            success: function(msg) { 
+             	var ColModel1 = [];
+             	var ColNames1 = [];
+             	var strName, strValue ;
+             	var tabel = '';
+             	//Get Index Name
+             	for(strName in msg)
+				{
+				   tabel = strName;
+				}
+
+             	ColNames1.push('Action');
+             	ColModel1.push({
+             		name:'myac',
+             		index:'', 
+             		width:80, 
+             		fixed:true, 
+             		sortable:false, 
+             		resize:false,
+					formatter:'actions', 
+					formatoptions:{ 
+						keys:true,
+						delbutton: true,//disable delete button
+					}
+				});
+             	for (j=0; j<msg[tabel].length; j++) {
+					ColNames1.push(msg[tabel][j]['COLUMN_NAME']);
+			    	if(msg[tabel][j]['COLUMN_NAME'] == 'IsDesc' || msg[tabel][j]['COLUMN_NAME'] == 'IsName'){
+			    		ColModel1.push({
+				    		'name' : msg[tabel][j]['COLUMN_NAME'],
+				    		'index': msg[tabel][j]['COLUMN_NAME'], 
+				    		'width': 200,
+				    		'editable':true
+				    	});
+			    	}else{
+			    		ColModel1.push({
+				    		'name' : msg[tabel][j]['COLUMN_NAME'],
+				    		'index': msg[tabel][j]['COLUMN_NAME'], 
+				    		'editable':true
+				    	});
+			    	}
+				}
+				$("#grid-table").jqGrid('clearGridData');
+				bindingdata(ColNames1,ColModel1,tabel,tabel_name);
+				$("#grid-table").jqGrid('setGridParam',{
+					datatype:'json',
+					editurl: 'clientArray',
+					url: 'GenerateTable/viewTable?tabel='+ tabel }).trigger('reloadGrid');
+            }
+        });
+	}
+	function bindingdata(colName,colMod, tabel, tabel_name){
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
 		
@@ -25,30 +81,13 @@
 				}, 20);
 			}
 	    })
-		
 		jQuery(grid_selector).jqGrid({
-			url:'getPosEmployeeOrg?id='+val+'&sub='+ $('#include-sub').prop('checked')+'&jenis='+ $("#jenis").val(),
+			url:'GenerateTable/viewTable?tabel='+tabel,
             editurl: 'clientArray',
             datatype: "json",
-			height: 250,
-			colNames:['Actions','Emp.ID','Name','Section','Position','Status'],
-			colModel:[
-				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-					formatter:'actions', 
-					formatoptions:{ 
-						keys:true,
-						delbutton: false,//disable delete button
-						
-						//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-						//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-					}
-				},
-				{name:'EmployeeId',index:'EmployeeId', width:60,  editable: true},
-				{name:'EmployeeName',index:'EmployeeName',width:150, editable:true,},
-				{name:'Section',index:'Section', width:90,editable: true,editoptions:{size:"20",maxlength:"30"}},
-				{name:'Position',index:'Position', width:90,editable: true,editoptions:{size:"20",maxlength:"30"}},
-				{name:'Status',index:'Status', width:90,editable: true,editoptions:{size:"20",maxlength:"30"}},
-			], 
+			height: 400,
+			colNames: colName,
+			colModel: colMod, 
 			loadonce: true,
 			viewrecords : true,
 			rowNum:10,
@@ -69,7 +108,7 @@
 			},
 	
 			//editurl: "./dummy.php",//nothing is saved
-			caption: "Organization Member"
+			caption: tabel_name
 			//,autowidth: true,
 	
 		});
@@ -197,32 +236,9 @@
 			})
 		}
 		function styleCheckbox(table) {
-		/**
-			$(table).find('input:checkbox').addClass('ace')
-			.wrap('<label />')
-			.after('<span class="lbl align-top" />')
-	
-	
-			$('.ui-jqgrid-labels th[id*="_cb"]:first-child')
-			.find('input.cbox[type=checkbox]').addClass('ace')
-			.wrap('<label />').after('<span class="lbl align-top" />');
-		*/
 		}
 		function updateActionIcons(table) {
-			
-			// var replacement = 
-			// {
-			// 	'ui-ace-icon fa fa-pencil' : 'ace-icon fa fa-pencil blue',
-			// 	'ui-ace-icon fa fa-trash-o' : 'ace-icon fa fa-trash-o red',
-			// 	'ui-icon-disk' : 'ace-icon fa fa-check green',
-			// 	'ui-icon-cancel' : 'ace-icon fa fa-times red'
-			// };
-			// $(table).find('.ui-pg-div span.ui-icon').each(function(){
-			// 	var icon = $(this);
-			// 	var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-			// 	if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-			// })
-			
+		
 		}
 		function enableTooltips(table) {
 			$('.navtable .ui-pg-button').tooltip({container:'body'});
@@ -277,14 +293,14 @@
 	    $('#jstree').jstree('search', $(this).val());
 	});
 
-    $('#jstree').on("changed.jstree", function (e, data) {				    	
-   		gridview(data.selected);
-   		$("#grid-table").jqGrid('setGridParam',{datatype:'json',url: 'getPosEmployeeOrg?id='+data.selected+'&sub='+ $('#include-sub').prop('checked')+'&jenis='+ $("#jenis").val()}).trigger('reloadGrid');		      			      
+    $('#jstree').on("changed.jstree", function (e, data) {		
+    	$.jgrid.gridUnload("#grid-table")		    	
+   		gridview(data.selected, data.node.text);	      
     });   
     $('#jstree').on('ready.jstree', function() {   
-	     $("#jstree").jstree("open_all");  
+	     $("#jstree").jstree("open_node",0);  
 	});			 						 			
-	gridview(23);
+	//gridview(23);
 	$('.date-picker').datepicker({
 		autoclose: true,
 		todayHighlight: true

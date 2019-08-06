@@ -44,20 +44,21 @@ class GenerateTable extends CI_Controller {
    		
           echo json_encode($data);
     }
-    public function getEmployeeOrg()
+    public function viewColumn()
     {
-    	$recnumEmployee = $this->input->get('id'); 
-    	$sub = $this->input->get('sub')=='false' ? '0':'1'; 
-    	if($this->input->get('_search')== 'true'){
-    		$filter = json_decode($this->input->get('filters'));
-   	
-    		$row = $this->db->query("SELECT EmployeeId,EmployeeName,NameOrganization as Section,NamePositionStructural as Position, NameWorkingStatus as Status from [Fn_EmpPositionTree] ('1','2019-01-01','". $recnumEmployee ."',".$sub.") where ". $filter->rules[0]->field ." like '%". $filter->rules[0]->data."%'")->result_array();
-    		 	//echo $this->db->last_query();
-    	}else{
-    		$row = $this->db->query("SELECT EmployeeId,EmployeeName,NameOrganization as Section,NamePositionStructural as Position, NameWorkingStatus as Status from [Fn_EmpPositionTree] ('1','2019-01-01','". $recnumEmployee ."',".$sub.")")->result_array();
-    	}
-      	
- 
+    	$id = $this->input->get('id'); 
+    	$row_data = $this->db->query("SELECT * from GeneralTableMaster WHERE Recnum=".$id)->result_array();
+    	$row = $this->db->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '". $row_data[0]['IsTable'] ."' ORDER BY ORDINAL_POSITION")->result_array();
+    	
+    	$arr_tabel = array();
+    	$arr_tabel[$row_data[0]['IsTable']] = $row;
+    	//print("<pre>".print_r($arr_tabel,true)."</pre>");
+        echo json_encode($arr_tabel);
+    }
+    public function viewTable()
+    {
+    	$table = $this->input->get('tabel'); 
+    	$row = $this->db->query("SELECT * from ".$table)->result_array();
         echo json_encode($row);
     }
     public function getParent()
