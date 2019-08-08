@@ -155,4 +155,21 @@ class GenerateTable extends CI_Controller {
 	  						
 	  	$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
+	public function crud(){
+		$response = [];
+		$response['error'] = TRUE;
+		$oper = $this->input->get('oper');
+		switch ($oper) {
+			case 'del':
+				$response['error'] = FALSE;
+				$response['msg'] = 'Sukses';
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
 }

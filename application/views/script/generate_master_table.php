@@ -32,25 +32,64 @@
 					formatter:'actions', 
 					formatoptions:{ 
 						keys:true,
-						delbutton: true,//disable delete button
+						delbutton: true,
+						editbutton:true,
+						addbutton:true,
+						editformbutton: false,
+						delOptions: {
+						    url: 'GenerateTable/crud',
+						    mtype: 'GET',
+						    reloadAfterSubmit: true,
+						    ajaxDelOptions: {
+						        contentType: "application/json"
+						    },
+						    onclickSubmit: function (eparams) {
+                                 alert(eparams);
+                             },
+						    serializeDelData: function(postdata) {
+						        return JSON.stringify(postdata);
+						    }
+						},
+						editOptions: {
+						    url: 'GenerateTable/crud',
+						    mtype: "POST",
+						    keys: true,
+						    ajaxEditOptions: {
+						        contentType: "application/json"
+						    },
+						    onclickSubmit: function (eparams) {
+                                 alert(eparams);
+                             },
+						    afterSave:function (rowid) {
+                              alert(rowid); 
+
+                            },
+                            serializeEditData: function(postdata) {
+						        return JSON.stringify(postdata);
+						    }
+						}
 					}
 				});
              	for (j=0; j<msg[tabel].length; j++) {
 					ColNames1.push(msg[tabel][j]['COLUMN_NAME']);
+
+					var arr = {
+				    		'name' : msg[tabel][j]['COLUMN_NAME'],
+				    		'index': msg[tabel][j]['COLUMN_NAME'], 
+				    	};
 			    	if(msg[tabel][j]['COLUMN_NAME'] == 'IsDesc' || msg[tabel][j]['COLUMN_NAME'] == 'IsName'){
-			    		ColModel1.push({
-				    		'name' : msg[tabel][j]['COLUMN_NAME'],
-				    		'index': msg[tabel][j]['COLUMN_NAME'], 
-				    		'width': 200,
-				    		'editable':true
-				    	});
+				    	arr['editable'] = true;
+				    	arr['width'] = 200;
+			    	}else if(msg[tabel][j]['COLUMN_NAME'] == 'Recnum'){
+			    		arr['hidden'] = true;
+			    		arr['editable'] = false;
+			    	}else if(msg[tabel][j]['COLUMN_NAME'] == 'CreateBy' || msg[tabel][j]['COLUMN_NAME'] == 'CreateDate' || msg[tabel][j]['COLUMN_NAME'] == 'EditBy' || msg[tabel][j]['COLUMN_NAME'] == 'EditDate'){
+			    		arr['editable'] = false;
 			    	}else{
-			    		ColModel1.push({
-				    		'name' : msg[tabel][j]['COLUMN_NAME'],
-				    		'index': msg[tabel][j]['COLUMN_NAME'], 
-				    		'editable':true
-				    	});
+			    		arr['editable'] = true;
+			    		arr['editrules'] = { required : true };
 			    	}
+			    	ColModel1.push(arr);
 				}
 				$("#grid-table").jqGrid('clearGridData');
 				bindingdata(ColNames1,ColModel1,tabel,tabel_name);
@@ -88,25 +127,15 @@
 			height: 400,
 			colNames: colName,
 			colModel: colMod, 
-			loadonce: true,
+			//loadonce: true,
 			viewrecords : true,
+			cellsubmit: 'clientArray',
 			rowNum:10,
 			rowList:[10,20,30],
 			pager : pager_selector,
 			rownumbers: true,
 			gridview: true,
-	        //multiboxonly: true,
-			loadComplete : function() {
-				var table = this;
-				setTimeout(function(){
-					styleCheckbox(table);
-							
-					updateActionIcons(table);
-					updatePagerIcons(table);
-					enableTooltips(table);
-				}, 0);
-			},
-	
+			multiselect:false,
 			//editurl: "./dummy.php",//nothing is saved
 			caption: tabel_name
 			//,autowidth: true,
@@ -116,11 +145,11 @@
 		//navButtons
 		jQuery(grid_selector).jqGrid('navGrid',pager_selector,
 			{ 	//navbar options
-				edit: false,
+				edit: true,
 				editicon : 'ace-icon fa fa-pencil blue',
-				add: false,
+				add: true,
 				addicon : 'ace-icon fa fa-plus-circle purple',
-				del: false,
+				del: true,
 				delicon : 'ace-icon fa fa-trash-o red',
 				search: true,
 				searchicon : 'ace-icon fa fa-search orange',
@@ -130,43 +159,56 @@
 				viewicon : 'ace-icon fa fa-search-plus grey',
 			},
 			{
-				//edit record form
-				//closeAfterEdit: true,
-				//width: 700,
-				recreateForm: true,
+				height: 'auto',
+                width: 620,
+                editCaption: "The Edit Dialog",
+                recreateForm: true,
+                closeAfterEdit: true,
+                reloadAfterSubmit: true,
 				beforeShowForm : function(e) {
-					var form = $(e[0]);
-					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-					style_edit_form(form);
+					//var form = $(e[0]);
+					//form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+					//style_edit_form(form);
+				},
+                errorTextFormat: function (data) {
+                    return 'Error: ' + data.responseText
+                },
+                onclickSubmit: function (response, postdata) {
+                	alert('Edit');
+					// EditPost(postdata);
+					// $("#jqGrid").jqGrid('setGridParam',{datatype:'json',url: '/ajax_data/rincian_coa?id='+ $("#kd_coa").val()}).trigger('reloadGrid');			      
 				}
 			},
 			{
-				//new record form
-				//width: 700,
-				closeAfterAdd: true,
-				recreateForm: true,
-				viewPagerButtons: false,
+				height: 'auto',
+                width: 620,
+                closeAfterAdd: true,
+                recreateForm: true,
+                savekey: [true, 13], 
+                reloadAfterSubmit: true,
 				beforeShowForm : function(e) {
 					var form = $(e[0]);
 					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
 					.wrapInner('<div class="widget-header" />')
-					style_edit_form(form);
+					//style_edit_form(form);
+				},
+				errorTextFormat: function (data) {
+                    return 'Error: ' + data.responseText
+                },
+                onclickSubmit: function (response, postdata) {
+                	alert('add');
+					// AddPost(postdata);
+					// $("#jqGrid").jqGrid('setGridParam',{datatype:'json',url: '/ajax_data/rincian_coa?id='+ $("#kd_coa").val()}).trigger('reloadGrid');			      
 				}
 			},
 			{
-				//delete record form
-				recreateForm: true,
-				beforeShowForm : function(e) {
-					var form = $(e[0]);
-					if(form.data('styled')) return false;
-					
-					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-					style_delete_form(form);
-					
-					form.data('styled', true);
-				},
-				onClick : function(e) {
-					//alert(1);
+				errorTextFormat: function (data) {
+                    return 'Error: ' + data.responseText
+                },
+                onclickSubmit: function (response, postdata) {
+                	alert('Delete');
+					DeletePost(postdata);
+					// $("#jqGrid").jqGrid('setGridParam',{datatype:'json',url: '/ajax_data/rincian_coa?id='+ $("#kd_coa").val()}).trigger('reloadGrid');			      
 				}
 			},
 			{
@@ -195,59 +237,24 @@
 					form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
 				}
 			}
-		)
-
-		function style_search_filters(form) {
-			form.find('.delete-rule').val('X');
-			form.find('.add-rule').addClass('btn btn-xs btn-primary');
-			form.find('.add-group').addClass('btn btn-xs btn-success');
-			form.find('.delete-group').addClass('btn btn-xs btn-danger');
-		}
-		function style_search_form(form) {
-			var dialog = form.closest('.ui-jqdialog');
-			var buttons = dialog.find('.EditTable')
-			buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
-			buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
-			buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
-		}
-		function beforeDeleteCallback(e) {
-					var form = $(e[0]);
-					if(form.data('styled')) return false;
-					
-					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-					style_delete_form(form);
-					
-					form.data('styled', true);
-				}
-		function updatePagerIcons(table) {
-			var replacement = 
-			{
-				'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-				'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-				'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-				'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
-			};
-			$('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
-
-				var icon = $(this);
-				var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-				
-				if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
-			})
-		}
-		function styleCheckbox(table) {
-		}
-		function updateActionIcons(table) {
+		);
 		
-		}
-		function enableTooltips(table) {
-			$('.navtable .ui-pg-button').tooltip({container:'body'});
-			$(table).find('.ui-pg-div').tooltip({container:'body'});
-		}
 		$(document).one('ajaxloadstart.page', function(e) {
 			$.jgrid.gridDestroy(grid_selector);
 			$('.ui-jqdialog').remove();
 		});
+	}
+
+	function DeletePost(params) {				
+		alert(params);
+		// $.get('/ajax_data/delete_coa_rincian',{id:params}, function(data){				
+		// 	if(data.error==false){				
+		// 		swal("Data telah dihapus!", "", "success");	
+		// 		$('#jqGrid').trigger('reloadGrid');								  		
+		// 	}else{	
+		// 		alertpop("Maaf, data gagal dihapus!!");						  					  	
+		// 	}
+		//   },'json');
 	}
 </script>
 

@@ -1,3 +1,8 @@
+<style type="text/css">
+	.FormGrid .EditTable tr:first-child {
+	    display: table-row;;
+	}
+</style>
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
   <ul class="breadcrumb">
     <li>
