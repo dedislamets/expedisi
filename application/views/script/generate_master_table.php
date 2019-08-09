@@ -35,7 +35,7 @@
 						delbutton: true,
 						editbutton:true,
 						addbutton:true,
-						editformbutton: false,
+						editformbutton: true,
 						delOptions: {
 						    url: 'GenerateTable/crud',
 						    mtype: 'GET',
@@ -51,15 +51,13 @@
 						    }
 						},
 						editOptions: {
-						    url: 'GenerateTable/crud',
-						    mtype: "POST",
+						    editurl: 'GenerateTable/crud',
+						    reloadAfterSubmit: false,
+						    closeAfterEdit: true,
 						    keys: true,
 						    ajaxEditOptions: {
 						        contentType: "application/json"
 						    },
-						    onclickSubmit: function (eparams) {
-                                 alert(eparams);
-                             },
 						    afterSave:function (rowid) {
                               alert(rowid); 
 
@@ -145,11 +143,11 @@
 		//navButtons
 		jQuery(grid_selector).jqGrid('navGrid',pager_selector,
 			{ 	//navbar options
-				edit: true,
+				edit: false,
 				editicon : 'ace-icon fa fa-pencil blue',
 				add: true,
 				addicon : 'ace-icon fa fa-plus-circle purple',
-				del: true,
+				del: false,
 				delicon : 'ace-icon fa fa-trash-o red',
 				search: true,
 				searchicon : 'ace-icon fa fa-search orange',
