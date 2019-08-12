@@ -48,7 +48,7 @@ class GenerateTable extends CI_Controller {
     {
     	$id = $this->input->get('id'); 
     	$row_data = $this->db->query("SELECT * from GeneralTableMaster WHERE Recnum=".$id)->result_array();
-    	$row = $this->db->query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '". $row_data[0]['IsTable'] ."' ORDER BY ORDINAL_POSITION")->result_array();
+    	$row = $this->db->query("SELECT COLUMN_NAME,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '". $row_data[0]['IsTable'] ."' ORDER BY ORDINAL_POSITION")->result_array();
     	
     	$arr_tabel = array();
     	$arr_tabel[$row_data[0]['IsTable']] = $row;
@@ -105,39 +105,7 @@ class GenerateTable extends CI_Controller {
 	  						
 	  $this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
-	public function UpdateOrg()
-	{		
-	  	$response = [];
-		$response['error'] = TRUE; 
-		$response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
-	  	$recLogin = $this->session->userdata('user_id');
-		$data = array(
-		    'PositionId' 			=> $this->input->get('codeEdit'),
-		    'ParentId'			=> $this->input->get('parentIDEdit'),
-		    'PositionName'			=> $this->input->get('OrgNameEdit'),	
-		    'StartDate'			=> implode("-", array_reverse(explode("-", $this->input->get('dateRangeStartEdit')))),
-		    'EndDate'			=> implode("-", array_reverse(explode("-", $this->input->get('dateRangeEndEdit')))),
-		    'Sort'				=> $this->input->get('SortEdit'),
-		    'TotalManPowerPlan'	=> $this->input->get('EmpReqEdit'),	
-		    'EditBy'			=> $recLogin,
-		    'EditDate'			=> date('Y-m-d'),	        		        
-		);
-		if(!empty($this->input->get('isActiveEdit'))){
-			$data['isActive'] = TRUE;
-		}
 
-		$this->db->where('Recnum', $this->input->get('Recnum'));
-        $this->db->update('Position',$data);
-
-        //echo $this->db->last_query();
-
-	  	if ($this->db->affected_rows() > 0){
-	  		$response['error']= FALSE;
-	  		
-	  	}
-	  						
-	  $this->output->set_content_type('application/json')->set_output(json_encode($response));
-	}
 	public function EditOrg()
 	{		
 	  	$response = [];
@@ -157,17 +125,41 @@ class GenerateTable extends CI_Controller {
 	}
 	public function crud(){
 		$response = [];
+		$data = array();
 		$response['error'] = TRUE;
-		$oper = $this->input->get('oper');
-		switch ($oper) {
-			case 'del':
-				$response['error'] = FALSE;
-				$response['msg'] = 'Sukses';
-				break;
-			
-			default:
-				# code...
-				break;
+		$jsonArray = json_decode(file_get_contents('php://input'),true);
+
+		if ($jsonArray['oper'] == 'del' ) {
+				try {
+					$this->db->from($this->input->get('tabel'));
+			        $this->db->where('Recnum', $jsonArray['id'])->delete();
+			        if ($this->db->affected_rows() > 0){
+			            $response['error'] = FALSE;
+						$response['msg'] = 'Sukses';  
+			        }
+				} catch (Exception $e) {
+					$response['msg'] = $e->getMessage();
+				}
+				
+				
+		}else{
+				$response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+			  	$recLogin = $this->session->userdata('user_id');
+			  	foreach($this->input->post() as $key=>$value){
+				    if($key != 'tabel' && $key != 'grid-table_id' && $key != 'Recnum'){
+					    $data[$key] = $value;
+					}
+				}
+				$data['EditBy'] = $recLogin;
+				$data['EditDate'] = date('Y-m-d');
+
+				$this->db->where('Recnum', $this->input->post('Recnum'));
+		  		$this->db->update($this->input->post('tabel'),$data);
+
+			  	if ($this->db->affected_rows() > 0){
+			  		$response['error']= FALSE;
+			  		
+			  	}
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));

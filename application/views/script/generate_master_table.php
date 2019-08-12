@@ -23,8 +23,8 @@
 
              	ColNames1.push('Action');
              	ColModel1.push({
-             		name:'myac',
-             		index:'', 
+             		name:'Recnum',
+             		index:'Recnum', 
              		width:80, 
              		fixed:true, 
              		sortable:false, 
@@ -37,14 +37,14 @@
 						addbutton:true,
 						editformbutton: true,
 						delOptions: {
-						    url: 'GenerateTable/crud',
-						    mtype: 'GET',
+						    url: 'GenerateTable/crud?tabel='+tabel,
+						    mtype: 'POST',
 						    reloadAfterSubmit: true,
 						    ajaxDelOptions: {
 						        contentType: "application/json"
 						    },
 						    onclickSubmit: function (eparams) {
-                                 alert(eparams);
+                                 console.log(eparams);
                              },
 						    serializeDelData: function(postdata) {
 						        return JSON.stringify(postdata);
@@ -52,16 +52,23 @@
 						},
 						editOptions: {
 						    editurl: 'GenerateTable/crud',
-						    reloadAfterSubmit: false,
+						    reloadAfterSubmit: true,
 						    closeAfterEdit: true,
+						    refreshtext: 'Reload',
 						    keys: true,
 						    ajaxEditOptions: {
 						        contentType: "application/json"
 						    },
-						    afterSave:function (rowid) {
-                              alert(rowid); 
+						    beforeShowForm : function(e) {
+								$('<tr class="FormData" style="display:none"><td class="CaptionTD">Tabel</td><td class="DataTD"><input type="text" id="tabel" name="tabel" class="FormElement form-control" ></td></tr>')
+						        .appendTo("#TblGrid_grid-table>tbody");
+						        $("#tabel").val(tabel);
+						        $("#tr_Recnum").css('display','none');
+							},
+						    onclickSubmit: function (response, postdata) {                   	
+								EditPost(postdata);
 
-                            },
+							},
                             serializeEditData: function(postdata) {
 						        return JSON.stringify(postdata);
 						    }
@@ -79,10 +86,14 @@
 				    	arr['editable'] = true;
 				    	arr['width'] = 200;
 			    	}else if(msg[tabel][j]['COLUMN_NAME'] == 'Recnum'){
-			    		arr['hidden'] = true;
+			    		arr['hidden'] = false;
+			    		arr['editable'] = true;
+			    	}else if(msg[tabel][j]['COLUMN_NAME'] == 'CreateBy' || msg[tabel][j]['COLUMN_NAME'] == 'CreateDate' ||msg[tabel][j]['COLUMN_NAME'] == 'EditBy' || msg[tabel][j]['COLUMN_NAME'] == 'EditDate'){
 			    		arr['editable'] = false;
-			    	}else if(msg[tabel][j]['COLUMN_NAME'] == 'CreateBy' || msg[tabel][j]['COLUMN_NAME'] == 'CreateDate' || msg[tabel][j]['COLUMN_NAME'] == 'EditBy' || msg[tabel][j]['COLUMN_NAME'] == 'EditDate'){
-			    		arr['editable'] = false;
+			    		if(msg[tabel][j]['DATA_TYPE'] == 'datetime'){
+			    			arr['formatter'] = 'date';
+			    			arr['formatoptions'] = { srcformat: 'd/m/Y', newformat: 'd/m/Y'};
+			    		}
 			    	}else{
 			    		arr['editable'] = true;
 			    		arr['editrules'] = { required : true };
@@ -157,25 +168,8 @@
 				viewicon : 'ace-icon fa fa-search-plus grey',
 			},
 			{
-				height: 'auto',
-                width: 620,
-                editCaption: "The Edit Dialog",
-                recreateForm: true,
-                closeAfterEdit: true,
-                reloadAfterSubmit: true,
-				beforeShowForm : function(e) {
-					//var form = $(e[0]);
-					//form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-					//style_edit_form(form);
-				},
-                errorTextFormat: function (data) {
-                    return 'Error: ' + data.responseText
-                },
-                onclickSubmit: function (response, postdata) {
-                	alert('Edit');
-					// EditPost(postdata);
-					// $("#jqGrid").jqGrid('setGridParam',{datatype:'json',url: '/ajax_data/rincian_coa?id='+ $("#kd_coa").val()}).trigger('reloadGrid');			      
-				}
+				refreshtext: 'Reload',
+		     	closeAfterEdit: true
 			},
 			{
 				height: 'auto',
@@ -200,14 +194,7 @@
 				}
 			},
 			{
-				errorTextFormat: function (data) {
-                    return 'Error: ' + data.responseText
-                },
-                onclickSubmit: function (response, postdata) {
-                	alert('Delete');
-					DeletePost(postdata);
-					// $("#jqGrid").jqGrid('setGridParam',{datatype:'json',url: '/ajax_data/rincian_coa?id='+ $("#kd_coa").val()}).trigger('reloadGrid');			      
-				}
+				
 			},
 			{
 				//search form
@@ -253,6 +240,17 @@
 		// 		alertpop("Maaf, data gagal dihapus!!");						  					  	
 		// 	}
 		//   },'json');
+	}
+	function EditPost(params) {				
+		$.post('GenerateTable/crud',params, function(data){
+			if(data.error==false){		
+				$("#cData").trigger('click');
+				$("#grid-table").trigger('reloadGrid');		
+			}else{
+				alert(data.msg);
+			}					
+		},'json');
+		
 	}
 </script>
 
