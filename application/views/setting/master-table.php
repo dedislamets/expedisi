@@ -2,6 +2,9 @@
 	.FormGrid .EditTable tr:first-child {
 	    display: table-row;;
 	}
+	.modal.in .modal-dialog {
+		width: 700px;
+	}
 </style>
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
   <ul class="breadcrumb">

@@ -85,6 +85,7 @@
 			    	if(msg[tabel][j]['COLUMN_NAME'] == 'IsDesc' || msg[tabel][j]['COLUMN_NAME'] == 'IsName'){
 				    	arr['editable'] = true;
 				    	arr['width'] = 200;
+				    	arr['editrules'] = { required : true };
 			    	}else if(msg[tabel][j]['COLUMN_NAME'] == 'Recnum'){
 			    		arr['hidden'] = false;
 			    		arr['editable'] = true;
@@ -178,18 +179,17 @@
                 recreateForm: true,
                 savekey: [true, 13], 
                 reloadAfterSubmit: true,
-				beforeShowForm : function(e) {
-					var form = $(e[0]);
-					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-					.wrapInner('<div class="widget-header" />')
-					//style_edit_form(form);
+			    beforeShowForm : function(e) {
+					$('<tr class="FormData" style="display:none"><td class="CaptionTD">Tabel</td><td class="DataTD"><input type="text" id="tabel" name="tabel" class="FormElement form-control" ></td></tr>')
+			        .appendTo("#TblGrid_grid-table>tbody");
+			        $("#tabel").val(tabel);
+			        $("#tr_Recnum").css('display','none');
 				},
 				errorTextFormat: function (data) {
                     return 'Error: ' + data.responseText
                 },
                 onclickSubmit: function (response, postdata) {
-                	alert('add');
-					// AddPost(postdata);
+					AddPost(postdata);
 					// $("#jqGrid").jqGrid('setGridParam',{datatype:'json',url: '/ajax_data/rincian_coa?id='+ $("#kd_coa").val()}).trigger('reloadGrid');			      
 				}
 			},
@@ -249,9 +249,51 @@
 			}else{
 				alert(data.msg);
 			}					
-		},'json');
-		
+		},'json');	
 	}
+	function AddPost(params) {				
+		$.post('GenerateTable/crud',params, function(data){
+			if(data.error==false){		
+				$("#cData").trigger('click');
+				$("#grid-table").trigger('reloadGrid');		
+			}else{
+				alert(data.msg);
+			}					
+		},'json');	
+	}
+
+	function addRow() {
+		var nomor = $('.baris').length;
+		if( nomor>0 ) 	{
+			nomor = parseInt(nomor) + 1;
+		}else{		
+			nomor = 1
+		}
+
+		var html = $(".cl").clone();
+		renameCloneIdsAndNames(html, nomor);
+		$('.baris').last().after(html);
+	}
+	function delRow(val) {
+		$(val).parent().parent().parent().remove();
+	}
+
+	$('#submit_button').on('click', function (e) {
+
+        var valid = false;
+        var sParam = $('#form1').serialize() + "&count=" + $('.baris').length;
+        $.post('GenerateTable/alter',sParam, function(data){
+          
+        }).done(function() {
+		    alert("Create Table Success" );
+		    window.location.reload();
+		})
+		.fail(function(error) {
+			$("#lblMessage").remove();
+		    $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+error.responseText+"!</strong></div>").appendTo(".modal-footer");
+		});
+		return false;
+    });
 </script>
 
 <script type="text/javascript">
@@ -315,37 +357,7 @@
 	        'item1' : {
 	            'label' : 'Create',
 	            'action' : function () { 	     
-					var html = $(".grab").clone();
-					
-		 			bootboxmodal('Input Position', renameCloneIdsAndNames(html,'Add'));
-		 			
-					$("#parentTextAdd").attr('value',node.text);
-					$("#parentTextAdd").val(node.text);
-					$("#SortAdd").val(1);
-					$("#EmpReqAdd").val(0);
-					$("#jenisAdd").val($("#jenis").val()).change();
-					$("<span id='Recnum' data-id=''></span").appendTo(".modal-footer");
-
-		 			$('.date-picker').datepicker({
-						autoclose: true,
-						todayHighlight: true
-					});
-					$('.dec').priceFormat({
-				        prefix: '',
-				        centsSeparator: '.',
-				        centsLimit: 0,
-				        thousandsSeparator: ','
-				    });
-
-				    $.get('Position/getParent', { jenis: $("#jenis").val(),sub: $('#include-sub').prop('checked') }, function(data){  
-				    		
-				    		$("#parentIDAdd").empty();
-				    		$.each(data,function(i,value){
-			                	$("#parentIDAdd").append('<option value='+value.Recnum+'>'+value.PositionName+'- '+value.PositionId+'</option>');
-			            	})
-				    		$("#parentIDAdd").val(node.id);
-							$("#parentIDAdd").attr('value',node.id);
-				    });
+					$('#addModal').modal({backdrop: 'static', keyboard: false}) ;
 	             }
 	        },
 	        'item2' : {
@@ -402,9 +414,8 @@
 	            	var r = confirm("Yakin dihapus?");
 					if (r == true) {
 						var id= node.id; 
-					    $.get('Position/DelOrg', { id:id }, function(data){  			 				
-			 				$('#jstree').jstree(true).settings.core.data.url = 'getPositionTree?sub='+ $('#include-sub').prop('checked')+'&jenis='+ $("#jenis").val();
-							$('#jstree').jstree(true).refresh();
+					    $.get('GenerateTable/delete', { id:id }, function(data){  			 				
+			 				window.location.reload();
 			            });
 					} 
 	             }
@@ -414,119 +425,22 @@
 	    return items;
 	}
 
-	function bootboxmodal(title, html){
-		var dialog = bootbox.dialog({
-			title: title,
-			message: html,
-			buttons: {
-			    cancel: {
-			        label: "Cancel",
-			        callback: function(){
-			            //Example.show('Custom cancel clicked');
-			        }
-			    },
-			    noclose: {
-			        label: "Submit",
-			        callback: function(e){
-			        	if($("#Recnum").attr("data-id")==''){
-			        		var validator = $('#FormAdd').validate({
-							rules: {
-								  	codeAdd: {
-							  			required: true
-									},
-									OrgNameAdd: {
-							  			required: true
-									},
-									SortAdd: {
-							  			required: true
-									},
-									dateRangeStartAdd: {
-							  			required: true
-									}          
-								}
-							});
-						 	validator.valid();
-						 	$status = validator.form();
-						 	if($status) {	
-						 		$('#jenisAdd').removeAttr('disabled');
-					        	var sParam = $('#FormAdd').serialize();
-					        	$('#jenisAdd').attr('disabled', 'disabled');
-					        	$.get('Position/SaveOrg',sParam, function(data){
-									if(data.error==false){				
-										$('#jstree').jstree(true).settings.core.data.url = 'getPositionTree?sub='+ $('#include-sub').prop('checked')+'&jenis='+ $("#jenis").val();
-										$('#jstree').jstree(true).refresh();
-										
-										dialog.modal('hide');
-									}else{	
-										$("#lblMessage").remove();
-										$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
-																  					  	
-									}
-								  },'json');
-					           	return false;
-				           	}else{
-				           		return false;
-				           	}
-			        	}else{
-			        		var validator = $('#FormEdit').validate({
-							rules: {
-								  	codeEdit: {
-							  			required: true
-									},
-									OrgNameEdit: {
-							  			required: true
-									},
-									SortEdit: {
-							  			required: true
-									},
-									dateRangeStartAdd: {
-							  			required: true
-									}          
-								}
-							});
-						 	validator.valid();
-						 	$status = validator.form();
-						 	if($status) {	
-					        	var sParam = $('#FormEdit').serialize()+ "&Recnum="+ $("#Recnum").attr("data-id");
-					        	$.get('Position/UpdateOrg',sParam, function(data){
-									if(data.error==false){				
-										$('#jstree').jstree(true).settings.core.data.url = 'getPositionTree?sub='+ $('#include-sub').prop('checked')+'&jenis='+ $("#jenis").val();
-										$('#jstree').jstree(true).refresh();
-										
-										dialog.modal('hide');
-									}else{	
-										$("#lblMessage").remove();
-										$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
-																  					  	
-									}
-								  },'json');
-					           	return false;
-				           	}else{
-				           		return false;
-				           	}
-			        	}
-			        	
-			        }
-			    }
-			}
-		});
-	}
 	function renameCloneIdsAndNames( objClone, ref ) {
-		$(objClone).attr('id',$(objClone).attr('id')+ ref);
+		$(objClone).removeClass('cl');
 		objClone.find( '[id]' ).each( function() {
 	        var strNewId = $(this).attr('id')+ ref;
 	        var strNewName  = $( this ).attr( 'name' )+ ref;
-	        var strNewDate  = $( this ).attr( 'name' )+ ref;
 	        if($(this).attr('id') != "csrf_token"){
 	        	$( this ).attr( 'id', strNewId );
 	        	$( this ).attr( 'name', strNewName );
+	        	if($( this ).context.tagName == "SELECT"){
+					$( this ).val('varchar');
+	        	}else{
+	        		$( this ).val('');
+	        	}
 	        }
-	    });
-	    objClone.find('.input-daterange').each( function() {
-	    	
-	    	$(this).removeClass('input-daterange');
-	    	$( this ).addClass('input-daterange'+ ref);
-
+	        if($(this).hasClass('label-name'))
+	        	$( this ).text('Field '+ref );
 	    });
 	    
 	    return objClone;

@@ -16,8 +16,8 @@ class GenerateTable extends CI_Controller {
 			$data['title'] = 'Generate Master Table';
 			$data['main'] = 'setting/master-table';
 			$data['js'] = 'script/generate_master_table';
-			$data['modal'] = 'modal/position';
-			$data['org'] = $this->admin->getPosParentOrg(1,1);	
+			$data['modal'] = 'modal/master-table';
+			$data['parent'] = $this->admin->getmaster('GeneralTableMaster','ISNULL(ParentId,0)=0');
 			$this->load->view('home',$data,FALSE); 
 
         }else{
@@ -52,7 +52,7 @@ class GenerateTable extends CI_Controller {
     	
     	$arr_tabel = array();
     	$arr_tabel[$row_data[0]['IsTable']] = $row;
-    	//print("<pre>".print_r($arr_tabel,true)."</pre>");
+    	
         echo json_encode($arr_tabel);
     }
     public function viewTable()
@@ -69,60 +69,55 @@ class GenerateTable extends CI_Controller {
 	  						
 	  	$this->output->set_content_type('application/json')->set_output(json_encode($this->admin->getPosParentOrg($this->input->get('jenis'),$sub)));
 	}
-    public function SaveOrg()
+
+	public function delete(){
+	    $response = [];
+	    $response['error'] = TRUE; 
+	    if($this->admin->deleteTable($this->input->get('id'),'GeneralTableMaster')){
+	      $response['error'] = FALSE;
+	    } 
+	                
+	    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+	  }
+	public function alter()
 	{		
-	  	$response = [];
-		$response['error'] = TRUE; 
-		$response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
-	  	$recLogin = $this->session->userdata('user_id');
-		$data = array(
-		    'PositionId' 			=> $this->input->get('codeAdd'),
-		    'ParentId'			=> $this->input->get('parentIDAdd'),
-		    'PositionName'			=> $this->input->get('OrgNameAdd'),	
-		    'StartDate'			=> implode("-", array_reverse(explode("-", $this->input->get('dateRangeStartAdd')))),
-		    'EndDate'			=> implode("-", array_reverse(explode("-", $this->input->get('dateRangeEndAdd')))),
-		    'Sort'				=> $this->input->get('SortAdd'),
-		    'TotalManPowerPlan'	=> $this->input->get('EmpReqAdd'),
-		    'Positiontype'	=> $this->input->get('jenisAdd'),	
-		    'CreateBy'			=> $recLogin,
-		    'CreateDate'		=> date('Y-m-d'),	        		        
-		);
-		if($this->input->get('OfficialAdd')!=''){
-			$data['Official'] = $this->input->get('OfficialAdd');
+		$recLogin = $this->session->userdata('user_id');
+		$data = array();
+  		$data['IsDesc'] = $this->input->post('tabel_name');
+  		$data['IsTable'] = ( $this->input->post('parent_table')== 0 ? '' : $this->input->post('tabel_name'));
+  		$data['Icon'] = '';
+  		$data['ParentId'] = ( $this->input->post('parent_table')== 0 ? NULL : $this->input->post('parent_table'));
+  		$data['CreateBy'] = $recLogin;
+		$data['CreateDate'] = date('Y-m-d');
+		$query =$this->db->insert('GeneralTableMaster', $data);
+
+		if($this->input->post('parent_table')> 0){
+			$sql = "CREATE TABLE " . $this->input->post('tabel_name') . "(";
+			for ($i=1; $i <= $this->input->post('count') ; $i++) { 
+				if($i==1){	
+					$sql .= $this->input->post('field') ." " . $this->input->post('type_data') ;
+					$sql .= ($this->input->post('val_limit')=='' || $this->input->post('type_data')=='int' ? '' : '('.$this->input->post('val_limit').')') ;
+					$sql .= " ". ($this->input->post('isNull')=='on' ? '' : 'NOT NULL');
+					$sql .= " " . ($this->input->post('isPK')=='on' && $this->input->post('type_data')=='int' ? 'IDENTITY(1,1)' : '');
+					$sql .= " " . ($this->input->post('isPK')=='on' ? 'PRIMARY KEY' : '')  .",";
+				}else{
+					$sql .= $this->input->post('field'.$i) ." " . $this->input->post('type_data'.$i) ;
+					$sql .= ($this->input->post('val_limit'.$i)=='' || $this->input->post('type_data'.$i)=='int' ? '' : '('.$this->input->post('val_limit'.$i).')') ;
+					$sql .= " ". ($this->input->post('isNull'.$i)=='on' ? '' : 'NOT NULL') ;
+					$sql .= " " . ($this->input->post('isPK'.$i)=='on' && $this->input->post('type_data'.$i)=='int' ? 'DENTITY(1,1)' : '');
+					$sql .= " " . ($this->input->post('isPK'.$i)=='on' ? 'PRIMARY KEY' : '')  .",";
+				}
+			}
+			//$sql = substr_replace($sql ,"", -1);
+			$sql .="CreateBy varchar(20),CreateDate datetime,EditBy varchar(20), EditDate datetime)";
+
+		  	$query = $this->db->query($sql); 
 		}
-		if(!empty($this->input->get('isActiveAdd'))){
-			$data['isActive'] = TRUE;
-		}
-
-		$this->db->insert('Position', $data);
-	  	$lastid = $this->db->insert_id();
-
-	  	if($lastid !=null){
-	  		$response['error']= FALSE;
-	  		$response['id']= $lastid;
-	  		
-	  	}
-	  						
-	  $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  		
+	  	
+	  	$this->output->set_content_type('application/json')->set_output(json_encode($query));
 	}
 
-	public function EditOrg()
-	{		
-	  	$response = [];
-		$response['error'] = TRUE; 
-		$data['data'] = $this->admin->getPosEditOrg($this->input->get('id'));	
-	  						
-	  	$this->output->set_content_type('application/json')->set_output(json_encode($data));
-	}
-	public function DelOrg(){
-		$response = [];
-		$response['error'] = TRUE; 
-		if($this->admin->delPosOrg($this->input->get('id'))){
-			$response['error'] = FALSE;
-		}	
-	  						
-	  	$this->output->set_content_type('application/json')->set_output(json_encode($response));
-	}
 	public function crud(){
 		$response = [];
 		$data = array();
@@ -146,15 +141,24 @@ class GenerateTable extends CI_Controller {
 				$response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
 			  	$recLogin = $this->session->userdata('user_id');
 			  	foreach($this->input->post() as $key=>$value){
-				    if($key != 'tabel' && $key != 'grid-table_id' && $key != 'Recnum'){
+				    if($key != 'tabel' && $key != 'grid-table_id' && $key != 'Recnum' && $key != 'csrf_token'){
 					    $data[$key] = $value;
 					}
 				}
-				$data['EditBy'] = $recLogin;
-				$data['EditDate'] = date('Y-m-d');
 
-				$this->db->where('Recnum', $this->input->post('Recnum'));
-		  		$this->db->update($this->input->post('tabel'),$data);
+				if($this->input->post('Recnum') != "") {
+			        $data['EditBy'] = $recLogin;
+			        $data['EditDate'] = date('Y-m-d');
+
+			        $this->db->where('Recnum', $this->input->post('Recnum'));
+		  			$this->db->update($this->input->post('tabel'),$data);
+
+			    }else{
+			        $data['CreateBy'] = $recLogin;
+			        $data['CreateDate'] = date('Y-m-d');
+			        $this->db->insert($this->input->post('tabel'), $data);
+			        
+			    }
 
 			  	if ($this->db->affected_rows() > 0){
 			  		$response['error']= FALSE;
