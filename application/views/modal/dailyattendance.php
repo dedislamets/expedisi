@@ -302,10 +302,6 @@
                     </select>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label>Pilih File</label>
-                  <input type="file" name="file_nya" id="fileku" class="filestyle" data-buttonText=" Cari file" data-iconName="fa fa-folder-open-o">
-              </div>
             </div>
 
             <div class="clearfix"></div>
@@ -316,9 +312,8 @@
               <div class="progress-bar" style="width:66%;"></div>
             </div> -->
             <div class="progress">
-                  <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                    <span id="status"></span>
-                  </div>
+              <div id="bulk-action-progbar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:1%">                 
+              </div>
             </div>
             <!-- <div class="progress">
                 <div class="progress-bar active" id="progressbar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%">

@@ -36,12 +36,14 @@
 						<div class="col-sm-2">
 							<select id="type_data" name="type_data" class="form-control">
 								<option value="varchar">Varchar</option>
+								<option value="nvarchar">Nvarchar</option>
 			                    <option value="datetime">Datetime</option>
 								<option value="text">Text</option>
 								<option value="decimal">Decimal</option>
 								<option value="float">Float</option>
 								<option value="bit">Boolean</option>
 								<option value="int">Integer</option>
+								<option value="numeric">Numeric</option>
 			                </select>
 						</div>
 						<div class="col-sm-1 no-padding">

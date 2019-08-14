@@ -153,14 +153,25 @@ class DailyAttendance extends CI_Controller {
     // redirect(base_url());
     $books = $this->Datatabel->get_list_day($start,$end);
 
+    $startTime = time(); 
+     
+    $endTime = time() - $startTime; 
+    header('Content-Length: '.strlen($endTime));
+
     $data = array();
     $x=1;
     foreach($books->result() as $r) {
       //$data[] = array($r->calc_date);
       $this->admin->execEmpProcessDaily($r->calc_date);  
+      sleep(10);
+      $response['success'] = true;
+      echo json_encode($response);
     }
 
-    echo json_encode($data);
+    
+    
+
+    //echo json_encode($data);
     exit();
   }
 

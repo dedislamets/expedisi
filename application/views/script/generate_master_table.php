@@ -271,7 +271,7 @@
 		}
 
 		var html = $(".cl").clone();
-		renameCloneIdsAndNames(html, nomor);
+		renameCloneIdsAndNames(html, nomor,'add');
 		$('.baris').last().after(html);
 	}
 	function delRow(val) {
@@ -345,7 +345,7 @@
     $('#jstree').on('ready.jstree', function() {   
 	     $("#jstree").jstree("open_node",0);  
 	});			 						 			
-	//gridview(23);
+	gridview(1,'Organization');
 	$('.date-picker').datepicker({
 		autoclose: true,
 		todayHighlight: true
@@ -356,56 +356,34 @@
 	    var items = {
 	        'item1' : {
 	            'label' : 'Create',
-	            'action' : function () { 	     
+	            'action' : function () { 
+	            	$("#myModalLabel").text('Add Table');	     
 					$('#addModal').modal({backdrop: 'static', keyboard: false}) ;
 	             }
 	        },
 	        'item2' : {
 	            'label' : 'Edit',
-	            'action' : function () { 	  	     
-		 			var html = $(".grab").clone();
-					
-		 			bootboxmodal('Edit Position', renameCloneIdsAndNames(html,'Edit'));
-		 			$.get('Position/EditOrg', { id: node.id }, function(data){  			 				
-			 			$("#parentIDEdit").val(data["data"][0]["ParentId"]);
-						$("#parentIDEdit").attr('value',data["data"][0]["ParentId"]);
-
-						$("#codeEdit").val(data["data"][0]["PositionId"]);
-						$("#codeEdit").attr('value',data["data"][0]["PositionId"]);
-						$("#OrgNameEdit").val(data["data"][0]["PositionName"]);
-						$("#OrgNameEdit").attr('value',data["data"][0]["OrgName"]);
-						$("#SortEdit").val(data["data"][0]["Sort"]);
-						$("#SortEdit").attr('value',data["data"][0]["Sort"]);
-						$("#EmpReqEdit").attr('value',data["data"][0]["TotalManPowerPlan"]);
-					
-						$("#jenisEdit").val(data["data"][0]["Positiontype"]).change();
-						$("#dateRangeStartEdit").attr('value',data["data"][0]["fStartDate"]);
-						$("#dateRangeEndEdit").attr('value',data["data"][0]["fEndDate"]);
-
-						var checked = data["data"][0]["IsActive"] == 1 ? true: false;
-
-						if(checked){
-							$("#isActiveEdit").attr('checked','checked');
-						}else{
-							$("#isActiveEdit").removeAttr('checked');
-						}
-						$("<span id='Recnum' data-id='"+node.id+"'></span").appendTo(".modal-footer");
-			        });
-		 			
-					// $("#SortAdd").val(1);
-					// $("#EmpReqAdd").val(0);
-
-		 			$('.date-picker').datepicker({
-						autoclose: true,
-						todayHighlight: true
-					});
-					$('.dec').priceFormat({
-				        prefix: '',
-				        centsSeparator: '.',
-				        centsLimit: 0,
-				        thousandsSeparator: ','
-				    });
-		            	            	
+	            'action' : function () { 
+	            	$("#myModalLabel").text('Edit Table');
+	            	var id= node.id; 
+	            	var tabel_name = node.text;
+	            	$("#tabel_name").val(tabel_name);
+	            	$("#parent_table").val(node.parent).trigger('chosen:updated');
+	            	$.get('GenerateTable/viewColumn',{ id:id }, function(data){
+          				for (j=0; j<data[tabel_name].length; j++) {
+          					var html = $(".cl").clone();
+							renameCloneIdsAndNames(html, j, data[tabel_name][j],'edit');
+							$('.baris').last().after(html);
+          				}
+          				$('.baris').first().remove();
+			        }).done(function() {
+					    
+					})
+					.fail(function(error) {
+						$("#lblMessage").remove();
+					    $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+error.responseText+"!</strong></div>").appendTo(".modal-footer");
+					});	  	     
+		 			$('#addModal').modal({backdrop: 'static', keyboard: false}) ;            	
 	             }
 	        },
 	        'item3' : {
@@ -425,22 +403,52 @@
 	    return items;
 	}
 
-	function renameCloneIdsAndNames( objClone, ref ) {
+	function renameCloneIdsAndNames( objClone, ref, data=[], status ) {
 		$(objClone).removeClass('cl');
+		var x = 1;
 		objClone.find( '[id]' ).each( function() {
+
 	        var strNewId = $(this).attr('id')+ ref;
 	        var strNewName  = $( this ).attr( 'name' )+ ref;
 	        if($(this).attr('id') != "csrf_token"){
 	        	$( this ).attr( 'id', strNewId );
 	        	$( this ).attr( 'name', strNewName );
-	        	if($( this ).context.tagName == "SELECT"){
-					$( this ).val('varchar');
+	        	if(status=="add"){
+		        	if($( this ).context.tagName == "SELECT"){
+						$( this ).val('varchar');
+		        	}else{
+		        		$( this ).val('');
+		        	}
 	        	}else{
-	        		$( this ).val('');
-	        	}
+	        		switch(x) {
+					  	case 3:
+						    $( this ).val(data['DATA_TYPE']);
+						    break;
+						case 4:
+						    $( this ).val(data['CHARACTER_MAXIMUM_LENGTH']);
+						    break;
+						case 5:
+						  	if(data['IS_NULLABLE'] == 'YES'){
+						  		$(this).attr('checked','checked');
+						  	}else{
+						  		$(this).removeAttr('checked');
+						  	}
+						    break;
+						case 6:
+						  	if(data['PRIMARYKEYCOLUMN'] != ""){
+						  		$(this).attr('checked','checked');
+						  	}else{
+						  		$(this).removeAttr('checked');
+						  	}
+						    break;
+					  	default:
+					    	$( this ).val(data['COLUMN_NAME']);
+					}
+		        }
 	        }
 	        if($(this).hasClass('label-name'))
 	        	$( this ).text('Field '+ref );
+	        x++;
 	    });
 	    
 	    return objClone;

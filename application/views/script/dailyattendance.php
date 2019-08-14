@@ -93,40 +93,40 @@
         $('#ProcessForm').on('submit', function(e){
             e.preventDefault();
 
-            var file = document.getElementById("fileku").files[0];
-            var formdata = new FormData(this);
-            formdata.append("file_nya", file);
-            var ajax = new XMLHttpRequest();
-            ajax.upload.addEventListener("progress", progressUpload, false);
-            ajax.open("POST", "<?php echo site_url('DailyAttendance/process');?>", true);
-            ajax.send(formdata);
+            var percentComplete = 1;
+            $.ajax({
+                method: 'post',
+                url: 'DailyAttendance/process',
+                data:{'actionPerform':'actionPerform'},
+                xhr: function(){
+                      var xhr = new window.XMLHttpRequest();
+                      //Upload progress, request sending to server
+                      xhr.upload.addEventListener("progress", function(evt){
+                        console.log("in Upload progress");
+                        console.log("Upload Done");
+                      }, false);
+                      //Download progress, waiting for response from server
+                      xhr.addEventListener("progress", function(e){
+                        console.log("in Download progress");
+                        if (e.lengthComputable) {
+                          //percentComplete = (e.loaded / e.total) * 100;
+                          percentComplete = parseInt( (e.loaded / e.total * 100), 10);
+                          console.log(percentComplete);
+                          $('#bulk-action-progbar').data("aria-valuenow",percentComplete);
+                          $('#bulk-action-progbar').css("width",percentComplete+'%');
 
-            // $.ajax({
-            //     xhr: function() {
-            //         var req = new XMLHttpRequest();
-            //         req.upload.addEventListener("progress", updateProgressBar, false);
-            //         req.addEventListener("progress", updateProgressBar, false);
-            //         return req;
-            //     },
-            //     url: "DailyAttendance/process",
-            //     type: "POST",
-            //     data: new FormData(this),
-            //     contentType: false,
-            //     processData: false,
-            //     success: function(data){
-            //         console.log(data);
-            //         if (data == 'T'){
-            //             $('#txtname').val("");
-            //             $('#txtsex').val("");
-            //             $('#txtage').val("");
-            //             $('#txterr').val('Record Inserted');
-            //             $progressbar.css('width', '100%');
-            //         }
-            //     },
-            //     error: function(data){
-            //         alert("Something went wrong !");
-            //     }
-            // });
+                        }
+                        else{
+                             console.log("Length not computable.");
+                        }
+                      }, false);
+                      return xhr;
+                },
+                success: function (res) {
+                    //...
+                }
+            });
+           
         });
 
         var d = new Date();
