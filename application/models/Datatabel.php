@@ -144,6 +144,13 @@ class Datatabel extends CI_Model
         $query = $this->db->query("[Sp_ViewPatternSchedule] 0,". $recnum .",'" . $startdate ."','" . $enddate ."' ");
         return $query->result();
     }
+    public function generate_list($istabel)
+    {
+        $recLogin = $this->session->userdata('user_id');
+        $query = $this->db->query("select * from ". $istabel ." (" .$recLogin .")" );
+        return $query->result();
+    }
+
     public function generate_schedule_pattern($recnum,$startdate,$enddate,$replace)
     {
         $recLogin = $this->session->userdata('user_id');
