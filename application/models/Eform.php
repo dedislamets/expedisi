@@ -59,4 +59,14 @@ class Eform extends CI_Model
                 </div>';
         return $text;
     }
+    public function Uploadfile($name,$id_name)
+    {
+    	$text = '<div class="form-group">
+	    			<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1">'.$name.'</label>
+	    			<div class="col-sm-9">
+						<input type="file" id="'.$id_name.'" name="'.$id_name.'">
+					</div>
+				</div>';
+		return $text;
+    }
 }

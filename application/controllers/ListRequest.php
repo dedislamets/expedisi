@@ -92,10 +92,51 @@ class ListRequest extends CI_Controller {
                $output .= $this->Eform->Date($value['IsCaption'],$value['IsField']);
             }elseif ($data_column[$k]['type_kolom'] == 'Time') {
                $output .= $this->Eform->Time($value['IsCaption'],$value['IsField']);
+            }elseif ($data_column[$k]['type_kolom'] == 'Upload Photo') {
+               $output .= $this->Eform->Uploadfile($value['IsCaption'],$value['IsField']);
             }
         }
         echo $output;
         exit();
+    }
+
+    public function save()
+    {
+        $userid = $this->session->userdata('user_id');
+        $row_data = $this->db->query("SELECT * from WorkflowMaster WHERE IsTable='". $this->input->post('recnum_page') ."'")->result_array();
+
+        $exec_qry = $row_data[0]['IsSP'];
+        $text = explode("@",$exec_qry);
+        for ($i=0; $i < count($text) ;$i++) { 
+            $pos = strpos($text[$i], 'Exec');
+            if(!$pos){
+                if(trim($text[$i]) == 'Status,'){
+
+                    $exec_qry = str_replace('@'.$text[$i], "'Input'," ,$exec_qry);
+                }
+                foreach ($this->input->post() as $k => $value)
+                {
+                    if(strtolower($k).',' == strtolower($text[$i])){
+                        $exec_qry = str_replace('@'.$text[$i], "'". $value."'," ,$exec_qry);
+                    }
+                    if($text[$i] == 'UserId'){
+                        $exec_qry = str_replace('@'.$text[$i], "'". $userid."'," ,$exec_qry);
+                    }
+                    if($text[$i] == 'Recnum,'){
+                        $exec_qry = str_replace('@'.$text[$i], "'0'," ,$exec_qry);
+                    }
+                }
+                
+            }
+        }
+
+        print("<pre>".print_r($exec_qry,true)."</pre>");
+
+
+        // $query = $this->db->query("[Sp_ViewPatternSchedule] 0,". $recnum .",'" . $startdate ."','" . $enddate ."' ");
+        // return $query->result();
+
+        
     }
     
 }
