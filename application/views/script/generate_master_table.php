@@ -370,6 +370,7 @@
 	            	$("#tabel_name").val(tabel_name);
 	            	$("#parent_table").val(node.parent).trigger('chosen:updated');
 	            	$.get('GenerateTable/viewColumn',{ id:id }, function(data){
+	            		//debugger;
           				for (j=0; j<data[tabel_name].length; j++) {
           					var html = $(".cl").clone();
 							renameCloneIdsAndNames(html, j, data[tabel_name][j],'edit');
@@ -403,7 +404,7 @@
 	    return items;
 	}
 
-	function renameCloneIdsAndNames( objClone, ref, data=[], status ) {
+	function renameCloneIdsAndNames( objClone, ref, data=[], status ) {		
 		$(objClone).removeClass('cl');
 		var x = 1;
 		objClone.find( '[id]' ).each( function() {
@@ -440,6 +441,9 @@
 						  	}else{
 						  		$(this).removeAttr('checked');
 						  	}
+						    break;
+						case 7:
+						  	$( this ).val('');
 						    break;
 					  	default:
 					    	$( this ).val(data['COLUMN_NAME']);

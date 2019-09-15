@@ -31,7 +31,7 @@
     <div class="row">
 
       <div class="table-header">
-      	List <?php echo $title ?> &nbsp;&nbsp;
+      	<?php echo $title ?> &nbsp;&nbsp;
         <button class="btn btn-success" id="btnAdd">
               <i class="ace-icon fa fa-plus align-top bigger-125"></i>&nbsp;Add
         </button>
@@ -43,7 +43,6 @@
         </button> -->
       </div>
       <div>
-        <input type="hidden" name="recnumForm" id="recnumForm" value="<?php echo $page ?>">
         
         <div id="isi-tabel">
           	<?php echo $tabel ?>

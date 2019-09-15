@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ListRequest extends CI_Controller {
+class Approval extends CI_Controller {
 
     public function __construct()
     {
@@ -19,28 +19,23 @@ class ListRequest extends CI_Controller {
     {
         $recLogin = $this->session->userdata('user_id');
         $data['menu'] = $this->M_menu->getMenu($recLogin,0,"");
-        $userid = $this->session->userdata('user_id');
-        $form = $this->input->get('f');
+        $userid = $this->session->userdata('user_id');        
         
-        $row_data = $this->db->query("SELECT * from WorkflowMaster WHERE IsTable='".$form."'")->result_array();
-        $data_pattern = $this->Datatabel->generate_list($row_data[0]['GridQuery']);
-        $data_column = $this->db->query("SELECT * from WorkflowMasterColumn WHERE RecnumWorkflowMaster=".$row_data[0]['Recnum'])->result_array();
+        
+        $data_pattern = $this->Datatabel->generate_approval(0);
+        
         
         $table = '<table id="tabel-request" class="table table-striped table-bordered table-hover" style="margin-bottom: 0" style="width: 100%">';
         $myArray = $data_pattern;
-        
+        //print("<pre>".print_r($data_pattern,true)."</pre>");
         $table .="<thead><tr>";
         $table .="<td style='text-align:center;'>Action</td>";
-        foreach($myArray[0] as $key => $item) {
-            $found = $key;
-            foreach($data_column as $k => $value) {
-                if($data_column[$k]['IsField'] == $key) {
-                    $found = $value['IsCaption'];
-                    break;
-                }
-            }
-            $table .="<td class=". ($found=='Recnum' ? 'hidden':'').">". $found ."</td>";
-        }
+        $table .="<td>Status</td>";
+        $table .="<td>Employee Name</td>";
+        $table .="<td>Request Date</td>";
+        $table .="<td>Type</td>";
+        $table .="<td>Remark</td>";
+       
         $table .="</tr></thead><tbody>";  
 
         foreach($myArray as $ky => $it) {
@@ -49,24 +44,26 @@ class ListRequest extends CI_Controller {
                         <i class="ace-icon fa fa-pencil-square-o  bigger-110 icon-only"></i>Edit
                       </button> | <button onclick="removeList('.$it->Recnum.');">
                         <i class="ace-icon fa fa-trash  bigger-110 icon-only" ></i> Remove
-                      </button> | <button>
-                        <i class="ace-icon fa fa-exclamation-circle  bigger-110 icon-only"></i> History
                       </button></td>';
-            foreach($myArray[$ky] as $key => $item) {
-                
-                $table .="<td class=". ($key=='Recnum' ? 'hidden':'').">". $item ."</td>";
-                
+            if($it->NameRequestStatus=="Open"){
+                $color ="green";
+            }elseif ($it->NameRequestStatus=="Rejected") {
+                $color ="red";
             }
+            $table .="<td><div style='color:#fff;padding:5px;background-color:".$color."'>". $it->NameRequestStatus ."</div></td>";
+            $table .="<td>". $it->EmployeeName ."</td>";
+            $table .="<td>". $it->RequestDate ."</td>";
+            $table .="<td>". $it->NameWorkflowMaster ."</td>";
+            $table .="<td>". $it->Remark ."</td>";
             $table .="</tr>"; 
         }
          
         $table .= "</tbody></table>";
 
-        $data['main']  = 'setting/generateRequest';
+        $data['main']  = 'setting/approval';
         $data['modal'] = 'modal/generateRequest';
-        $data['tabel'] = $table;
-        $data['page'] = $form;
-        $data['title'] = $row_data[0]['IsDesc'];
+        $data['tabel'] = $table;        
+        $data['title'] = 'List Approval';
         $data['js'] = 'script/generateRequest';
 
         $this->load->view('home',$data,FALSE); 

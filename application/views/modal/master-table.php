@@ -68,8 +68,9 @@
 							<button type="button" class="btn btn-info btn-xs" onclick="addRow()">
 								<i class="ace-icon fa fa-plus fa-2x icon-only"></i>
 							</button>
-						</div>
+						</div>						
 					</div>
+
 					<div class="form-group">
 						<label class="col-sm-1 control-label no-padding-right" for="parentID"></label>
 						<label class="col-sm-3">Column Name</label>
@@ -77,6 +78,11 @@
 						<label class="col-sm-1 no-padding">Length</label>
 						<label class="col-sm-1 col-sm-1 no-padding text-right" >Null</label>
 						<label class="col-sm-1 col-sm-1 no-padding text-right">PK</label>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-8 pull-right">
+							<input type="text" id="comment" name="comment" class="form-control" placeholder="Comment" />
+						</div>
 					</div>
 				</div>
 				

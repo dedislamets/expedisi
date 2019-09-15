@@ -12,6 +12,7 @@
       </div>
       <div class="modal-footer">
         <input type="hidden" id="recnum_page" name="recnum_page" value="" >
+        <input type="hidden" name="Recnumid" id="Recnumid" value="">
         <button type="submit" id="submit_button" class="btn btn-primary">Submit</button>
       </div>
       <?php echo form_close() ?>

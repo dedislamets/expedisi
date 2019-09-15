@@ -48,16 +48,25 @@ class GenerateTable extends CI_Controller {
     {
     	$id = $this->input->get('id'); 
     	$row_data = $this->db->query("SELECT * from GeneralTableMaster WHERE Recnum=".$id)->result_array();
-		$sql = "SELECT A.COLUMN_NAME,DATA_TYPE,IS_NULLABLE,CHARACTER_MAXIMUM_LENGTH,ISNULL(PRIMARYKEYCOLUMN,'') as PRIMARYKEYCOLUMN FROM INFORMATION_SCHEMA.COLUMNS A
-		OUTER APPLY (
-			SELECT column_name as PRIMARYKEYCOLUMN
-			FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS TC
-			INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KU
-			ON TC.CONSTRAINT_TYPE = 'PRIMARY KEY' AND
-				TC.CONSTRAINT_NAME = KU.CONSTRAINT_NAME AND 
-				KU.table_name=A.TABLE_NAME and KU.COLUMN_NAME= A.COLUMN_NAME
-		)pk_table
-		WHERE TABLE_NAME = '". $row_data[0]['IsTable'] ."' ORDER BY ORDINAL_POSITION";
+		$sql = "SELECT A.COLUMN_NAME,DATA_TYPE,IS_NULLABLE,CHARACTER_MAXIMUM_LENGTH,ISNULL(PRIMARYKEYCOLUMN,'') as PRIMARYKEYCOLUMN 
+			FROM INFORMATION_SCHEMA.COLUMNS A
+			OUTER APPLY (
+				SELECT column_name as PRIMARYKEYCOLUMN
+				FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS TC
+				INNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KU
+				ON TC.CONSTRAINT_TYPE = 'PRIMARY KEY' AND
+					TC.CONSTRAINT_NAME = KU.CONSTRAINT_NAME AND 
+					KU.table_name=A.TABLE_NAME and KU.COLUMN_NAME= A.COLUMN_NAME
+			)pk_table
+			/*OUTER APPLY (
+				select sep.value as DESKRIPSI
+				from sys.tables st
+				inner join sys.columns sc on st.object_id = sc.object_id
+				left join sys.extended_properties sep on st.object_id = sep.major_id and sc.column_id = sep.minor_id
+					and sep.name = 'MS_Description'
+				where st.name = A.TABLE_NAME and sc.name=A.COLUMN_NAME
+			)ext_p*/
+			WHERE TABLE_NAME = '". $row_data[0]['IsTable'] ."' ORDER BY ORDINAL_POSITION";
 
     	$row = $this->db->query($sql)->result_array();
     	
