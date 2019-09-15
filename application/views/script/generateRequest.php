@@ -149,7 +149,6 @@
 			$.ajax({
 	            type: "POST",
 	            url: 'ListRequest/delete',
-	            //dataType: 'json', //not sure but works for me without this
 	            data: formData,
 	            contentType: false,
 	            processData: false, 

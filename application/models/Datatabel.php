@@ -150,10 +150,10 @@ class Datatabel extends CI_Model
         $query = $this->db->query("select * from ". $istabel ." (" .$recLogin .")" );
         return $query->result();
     }
-    public function generate_approval($RecnumWorkflowMaster)
+    public function generate_approval($start,$end,$RecnumWorkflowMaster,$status)
     {
         $recLogin = $this->session->userdata('user_id');
-        $query = $this->db->query("select * from [Fn_ListRequestApproval] (20,'2019-01-01','2019-12-31',0," .$RecnumWorkflowMaster .")" );
+        $query = $this->db->query("select * from [Fn_ListRequestApproval] (".$recLogin.",'". $start."','". $end."',". $status ."," .$RecnumWorkflowMaster .")" );
         return $query->result();
     }
 

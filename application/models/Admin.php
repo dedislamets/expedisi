@@ -124,12 +124,14 @@ class Admin extends CI_Model
         return $query->result();    
     }
 
-    function getmaster($tabel,$where=''){
+    function getmaster($tabel,$where='',$noorder=0){
         $sql = "SELECT * FROM ". $tabel;
         if($where !=''){
             $sql.= " WHERE ". $where ;
         }
-        $sql .= " order by Recnum ASC";
+        if($noorder==0){
+            $sql .= " order by Recnum ASC";
+        }
         $query = $this->db->query($sql);
         return $query->result();    
     }

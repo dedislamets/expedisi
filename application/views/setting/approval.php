@@ -21,6 +21,7 @@
 
   </div><!-- /.nav-search -->
 </div>
+
 <div class="page-content">
     <div class="page-header">
       <h1 id="judul">
@@ -28,22 +29,73 @@
       </h1>
     </div><!-- /.page-header -->
 
-    <div class="row">
-
-      <div class="table-header">
-      	<?php echo $title ?> &nbsp;&nbsp;
-        <button class="btn btn-success" id="btnAdd">
-              <i class="ace-icon fa fa-plus align-top bigger-125"></i>&nbsp;Add
-        </button>
-        <button class="btn btn-info" id="btnRefresh">
-              <i class="ace-icon fa fa-refresh align-top bigger-125"></i>&nbsp;Refresh
-        </button>
-        <!-- <button class="btn btn-warning" id="btnExport">
-              <i class="ace-icon fa fa-file align-top bigger-125"></i>&nbsp;Export
-        </button> -->
+    <div class="row">      
+      <div class="row" style="background-color: #dee1e5;padding: 10px;margin-left: 0;margin-right: 0;">
+        <div class="col-sm-5 no-padding">
+          <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right" for="Sort">Periode</label>
+            <div class="col-sm-4 no-padding-right">
+              <div class="input-group">
+                <input class="form-control date-picker" id="periode_start" name="dateRangeStart_stat" type="text" data-date-format="dd-mm-yyyy" />
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar bigger-110"></i>
+                </span>
+              </div>
+            </div>
+            <label class="col-sm-1 control-label ">To</label>
+            <div class="col-sm-5">
+              <div class="input-group">
+                <input class="form-control date-picker" id="periode_end" name="dateRangeEnd_stat" type="text" data-date-format="dd-mm-yyyy" />
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar bigger-110"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 no-padding">
+          <label class="col-md-3">Type</label>
+          <div class="col-md-9" style="padding-left: 16px">
+            <select class="chosen-select form-control" id="workflow" name="workflow">
+              <option value="0"> - </option>
+              <?php 
+              foreach($workflow as $row)
+              { 
+                echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
+              }?>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-2 no-padding">
+          <label class="col-md-4">Status</label>
+          <div class="col-md-8" style="padding-left: 16px">
+            <select class="chosen-select form-control" id="status" name="status">
+              <option value="0"> - </option>
+              <?php 
+              foreach($status as $row)
+              { 
+                echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
+              }?>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-2 no-padding">
+          <button type="button" id="btnFind" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Find</button>
+        </div>
       </div>
+      <div class="clearfix" style="margin-bottom: 10px"></div>
+      <div class="row" style="margin-right: 0;margin-left: 0">
+        <input type="hidden" id="txtSelected" name="txtSelected" />
+        <button class="btn btn-xs btn-primary" id="btnApprove">          
+          Approve Selected
+        </button>
+        <button class="btn btn-xs btn-danger" id="btnReject">          
+          Reject Selected
+        </button>
+      </div>
+      <div class="clearfix" style="margin-bottom: 10px"></div>
+      
       <div>
-        
         <div id="isi-tabel">
           	<?php echo $tabel ?>
         </div>
