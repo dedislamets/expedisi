@@ -421,44 +421,7 @@
                   </a>
                 </li>
               </ul>
-            </li>
-
-            <li class="light-blue dropdown-modal">
-              <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                <img class="nav-user-photo" src="assets/images/avatars/user.jpg" alt="Jason's Photo" />
-                <span class="user-info">
-                  <small>Welcome,</small>
-                  Jason
-                </span>
-
-                <i class="ace-icon fa fa-caret-down"></i>
-              </a>
-
-              <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                <li>
-                  <a href="#">
-                    <i class="ace-icon fa fa-cog"></i>
-                    Settings
-                  </a>
-                </li>
-
-                <li>
-                  <a href="profile.html">
-                    <i class="ace-icon fa fa-user"></i>
-                    Profile
-                  </a>
-                </li>
-
-                <li class="divider"></li>
-
-                <li>
-                  <a href="logout">
-                    <i class="ace-icon fa fa-power-off"></i>
-                    Logout
-                  </a>
-                </li>
-              </ul>
-            </li>
+            </li>          
           </ul>
         </div>
       </div><!-- /.navbar-container -->
@@ -469,40 +432,20 @@
         try{ace.settings.loadState('main-container')}catch(e){}
       </script>
 
-      <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+      <div id="sidebar" class="sidebar responsive ace-save-state">
         <script type="text/javascript">
           try{ace.settings.loadState('sidebar')}catch(e){}
         </script>
 
-        <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-          <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-            <button class="btn btn-success">
-              <i class="ace-icon fa fa-signal"></i>
-            </button>
-
-            <button class="btn btn-info">
-              <i class="ace-icon fa fa-pencil"></i>
-            </button>
-
-            <button class="btn btn-warning">
-              <i class="ace-icon fa fa-users"></i>
-            </button>
-
-            <button class="btn btn-danger">
-              <i class="ace-icon fa fa-cogs"></i>
-            </button>
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="<?= base_url(); ?>assets/images/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
           </div>
-
-          <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-            <span class="btn btn-success"></span>
-
-            <span class="btn btn-info"></span>
-
-            <span class="btn btn-warning"></span>
-
-            <span class="btn btn-danger"></span>
+          <div class="info">
+            <a href="#" class="d-block">Alexander Pierce</a>
+            <a href="logout">Logout</a>
           </div>
-        </div><!-- /.sidebar-shortcuts -->
+        </div>
 
         <ul class="nav nav-list">
           <!-- <li class="active">
