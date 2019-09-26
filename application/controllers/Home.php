@@ -20,6 +20,10 @@ class Home extends CI_Controller {
 			$data['live'] = $live;	
 			$data['title'] = 'Home';
 			$data['main'] = 'home';
+			$data['dashboard_category'] = $this->admin->getmaster('Vf_FindDashboardCategory','',1);
+			$data['category_period'] = $this->admin->getmaster('Vf_FindDashboardPeriod','',1);
+			$data['jenis'] = $this->admin->getmaster('DashboardType');
+			//$data['policy'] = $this->admin->getmaster('Fn_DashboardLeaveEmployees ');
 			$data['js'] = 'home/js';
 			$this->load->view('home',$data,FALSE); 
 
@@ -36,6 +40,26 @@ class Home extends CI_Controller {
     {
         $this->session->sess_destroy();
         redirect('login');
+    }
+
+    public function generateDashboard(){
+    	
+    	$row_data = $this->db->query("SELECT * from DashboardType WHERE Recnum='". $this->input->get('recnum') ."'")->result_array();
+    	$query = $row_data[0]['IsQuery'];
+    	$title = $row_data[0]['IsDesc'];
+    	$query = str_replace('@RecnumEmployee', $this->session->userdata('user_id'), $query);
+    	$query = str_replace('@StartDate', 'GETDATE()', $query);
+    	$query = str_replace('@EndDate', 'GETDATE()', $query);
+    	$data_column = $this->db->query($query)->result_array();
+    	$arr_data = [];
+    	$arr_data['judul'] = $title;
+    	$arr_data['data'] = [];
+    	foreach($data_column as $k => $value) {
+            if(!empty($data_column[$k]['IsDesc'])) {
+               array_push($arr_data['data'], $data_column[$k]);
+            }
+        }
+    	$this->output->set_content_type('application/json')->set_output(json_encode($arr_data));
     }
 
 	

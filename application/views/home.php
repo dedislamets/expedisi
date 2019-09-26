@@ -141,6 +141,156 @@
           transform: rotate(360deg);
         }
       }
+
+      .users-list {
+        padding-left: 0;
+        list-style: none;
+      }
+      .users-list>li {
+        float: left;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+      }
+      .users-list>li img {
+        border-radius: 50%;
+        height: auto;
+        max-width: 100%;
+      }
+      .users-list-name {
+        color: #495057;
+        font-size: 2.4rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .users-list-date, .users-list-name {
+          display: block;
+      }
+      .users-list-date {
+        color: #748290;
+        font-size: 12px;
+      }
+      .card {
+        box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+        margin-bottom: 1rem!important;
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0,0,0,.125);
+        border-radius: .25rem;
+      }
+
+      .card-header {
+        background-color: transparent;
+        border-bottom: 1px solid rgba(0,0,0,.125);
+        position: relative;
+        padding: .75rem 1.25rem;
+        border-top-left-radius: .25rem;
+        border-top-right-radius: .25rem;
+        margin-bottom: 0;
+      }
+      .border-0 {
+        border: 0!important;
+      }
+      .card-body {
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 1.25rem;
+      }
+      .justify-content-between {
+        -ms-flex-pack: justify!important;
+        justify-content: space-between!important;
+      }
+      .d-flex {
+          display: -ms-flexbox!important;
+          display: flex!important;
+      }
+      .card-body::after, .card-footer::after, .card-header::after {
+        display: block;
+        clear: both;
+        content: "";
+      }
+      .card-title {
+        float: left;
+        font-size: 2.1rem;
+        font-weight: 400;
+        margin: 0;
+      }
+      .position-relative {
+        position: relative!important;
+      }
+      .justify-content-end {
+        -ms-flex-pack: end!important;
+        justify-content: flex-end!important;
+      }
+      .justify-content-between {
+        -ms-flex-pack: justify!important;
+        justify-content: space-between!important;
+      }
+
+      .flex-row {
+          -ms-flex-direction: row!important;
+          flex-direction: row!important;
+      }
+
+     /* .user-panel {
+        border-bottom: 1px solid #4f5962;
+      }*/
+      .user-panel, .user-panel .info {
+          overflow: hidden;
+          white-space: nowrap;
+      }
+      .user-panel {
+          position: relative;
+      }
+      .pb-3, .py-3 {
+          padding-bottom: 1rem!important;
+      }
+      .callout, .card, .info-box, .mb-3, .my-3, .small-box {
+          margin-bottom: 1rem!important;
+      }
+      .mt-3, .my-3 {
+          margin-top: 1.5rem!important;
+      }
+      .user-panel .image {
+        display: inline-block;
+        padding-left: .8rem;
+      }
+
+      .user-panel img {
+        height: auto;
+        width: 4.5rem;
+      }
+      .elevation-2 {
+          box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)!important;
+      }
+      .img-circle {
+          border-radius: 50%;
+      }
+      .user-panel .info {
+        transition: margin-left .3s linear,opacity .3s ease,visibility .3s ease;
+      }
+      .user-panel .info {
+          display: inline-block;
+          padding: 5px 5px 5px 10px;
+      }
+      .user-panel, .user-panel .info {
+          overflow: hidden;
+          white-space: nowrap;
+      }
+      .d-block {
+        display: block!important;
+        font-size: 17px;
+        white-space: normal;
+        line-height: 17px;
+      }
     </style>
   </head>
 

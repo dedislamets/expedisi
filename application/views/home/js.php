@@ -1,141 +1,290 @@
 <script src="<?= base_url(); ?>assets/js/chart/Chart.min.js"></script>
+<script src="<?= base_url(); ?>assets/js/flot/jquery.flot.js"></script>
+<script src="<?= base_url(); ?>assets/js/flot-old/jquery.flot.resize.min.js"></script>
+<script src="<?= base_url(); ?>assets/js/flot-old/jquery.flot.pie.min.js"></script>
 <script type="text/javascript">
+  $('#carouselHacked').carousel();
+  $('#onleave').carousel();
+
+  $("#dashboard_category").val(1).trigger('chosen:updated');
+  $("#category_period").val(1).trigger('chosen:updated');
+  $("#periode_start").prop("disabled", true);
+  $("#periode_end").prop("disabled", true);
+
   var ticksStyle = {
     fontColor: '#495057',
     fontStyle: 'bold'
   }
 
-  var mode      = 'index'
-  var intersect = true
+  var mode      = 'index';
+  var intersect = true;
 
-  var $salesChart = $('#sales-chart')
-  var salesChart  = new Chart($salesChart, {
-    type   : 'bar',
-    data   : {
-      labels  : ['JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-      datasets: [
-        {
-          backgroundColor: '#007bff',
-          borderColor    : '#007bff',
-          data           : [1000, 2000, 3000, 2500, 2700, 2500, 3000]
-        },
-        {
-          backgroundColor: '#ced4da',
-          borderColor    : '#ced4da',
-          data           : [700, 1700, 2700, 2000, 1800, 1500, 2000]
-        }
-      ]
-    },
-    options: {
-      maintainAspectRatio: false,
-      tooltips           : {
-        mode     : mode,
-        intersect: intersect
-      },
-      hover              : {
-        mode     : mode,
-        intersect: intersect
-      },
-      legend             : {
-        display: false
-      },
-      scales             : {
-        yAxes: [{
-          // display: false,
-          gridLines: {
-            display      : true,
-            lineWidth    : '4px',
-            color        : 'rgba(0, 0, 0, .2)',
-            zeroLineColor: 'transparent'
-          },
-          ticks    : $.extend({
-            beginAtZero: true,
+  donat_chart(1);
+  chart_one(8);
+  chart_two(11);
+  chart_three(10);
 
-            // Include a dollar sign in the ticks
-            callback: function (value, index, values) {
-              if (value >= 1000) {
-                value /= 1000
-                value += 'k'
+  function donat_chart(recnum){
+    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum }, function(data){  
+      var donutData =[];
+      $("#judul-donat").text(data['judul']);
+      for (var i = 0; i < data['data'].length; i++) {
+        donutData.push({
+          label : data['data'][i]['IsDesc'],
+          data : (data['data'][i]['TotalData']== undefined ? data['data'][i]['Total']:data['data'][i]['TotalData'])
+        })
+      }
+      $.plot('#donut-chart', donutData, {
+        series: {
+          pie: {
+            show       : true,
+            radius     : 1,
+            innerRadius: 0.5,
+            label      : {
+              show     : true,
+              radius   : 2 / 3,
+              formatter: labelFormatter,
+              background: { 
+                  opacity: 0.5,
+                  color: '#000'
               }
-              return '$' + value
             }
-          }, ticksStyle)
-        }],
-        xAxes: [{
-          display  : true,
-          gridLines: {
-            display: false
-          },
-          ticks    : ticksStyle
-        }]
-      }
-    }
-  })
 
-  var $visitorsChart = $('#visitors-chart')
-  var visitorsChart  = new Chart($visitorsChart, {
-    data   : {
-      labels  : ['18th', '20th', '22nd', '24th', '26th', '28th', '30th'],
-      datasets: [{
-        type                : 'line',
-        data                : [100, 120, 170, 167, 180, 177, 160],
-        backgroundColor     : 'transparent',
-        borderColor         : '#007bff',
-        pointBorderColor    : '#007bff',
-        pointBackgroundColor: '#007bff',
-        fill                : false
-        // pointHoverBackgroundColor: '#007bff',
-        // pointHoverBorderColor    : '#007bff'
-      },
-        {
-          type                : 'line',
-          data                : [60, 80, 70, 67, 80, 77, 100],
-          backgroundColor     : 'tansparent',
-          borderColor         : '#ced4da',
-          pointBorderColor    : '#ced4da',
-          pointBackgroundColor: '#ced4da',
-          fill                : false
-          // pointHoverBackgroundColor: '#ced4da',
-          // pointHoverBorderColor    : '#ced4da'
-        }]
-    },
-    options: {
-      maintainAspectRatio: false,
-      tooltips           : {
-        mode     : mode,
-        intersect: intersect
-      },
-      hover              : {
-        mode     : mode,
-        intersect: intersect
-      },
-      legend             : {
-        display: false
-      },
-      scales             : {
-        yAxes: [{
-          // display: false,
-          gridLines: {
-            display      : true,
-            lineWidth    : '4px',
-            color        : 'rgba(0, 0, 0, .2)',
-            zeroLineColor: 'transparent'
+          }
+        },
+        legend: {
+          show: false
+        }
+      })
+    });
+  }
+
+  function chart_one(recnum){
+    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum }, function(arr_data){  
+      var $chartone = $('#chart-one');
+      var labels =[];
+      var datas =[];
+      $("#judul-chart-one").text(arr_data['judul']);
+      for (var i = 0; i < arr_data['data'].length; i++) {
+        labels.push(arr_data['data'][i]['IsDesc']);
+        datas.push((arr_data['data'][i]['TotalData']== undefined ? arr_data['data'][i]['Total']:arr_data['data'][i]['TotalData']));
+      }
+      var visitorsChart  = new Chart($chartone, {
+        data   : {
+          labels  : labels,
+          datasets: [{
+            type                : 'line',
+            data                : datas,
+            backgroundColor     : 'transparent',
+            borderColor         : '#007bff',
+            pointBorderColor    : '#007bff',
+            pointBackgroundColor: '#007bff',
+            fill                : false,
+            pointHoverBackgroundColor: '#007bff',
+            pointHoverBorderColor    : '#007bff'
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          tooltips           : {
+            mode     : mode,
+            intersect: intersect
           },
-          ticks    : $.extend({
-            beginAtZero : true,
-            suggestedMax: 200
-          }, ticksStyle)
-        }],
-        xAxes: [{
-          display  : true,
-          gridLines: {
+          hover              : {
+            mode     : mode,
+            intersect: intersect
+          },
+          legend             : {
             display: false
           },
-          ticks    : ticksStyle
-        }]
-      }
-    }
-  })
+          scales             : {
+            yAxes: [{
+              // display: false,
+              gridLines: {
+                display      : true,
+                lineWidth    : '4px',
+                color        : 'rgba(0, 0, 0, .2)',
+                zeroLineColor: 'transparent'
+              },
+              ticks    : $.extend({
+                beginAtZero : true,
+                suggestedMax: 200
+              }, ticksStyle)
+            }],
+            xAxes: [{
+              display  : true,
+              gridLines: {
+                display: false
+              },
+              ticks    : ticksStyle
+            }]
+          }
+        }
+      })
+    });
+  }
+
+  function chart_two(recnum){
+    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum }, function(arr_data){  
+        var labels =[];
+        var datas =[];
+        $("#judul-chart-two").text(arr_data['judul']);
+        for (var i = 0; i < arr_data['data'].length; i++) {
+          labels.push(arr_data['data'][i]['IsDesc']);
+          datas.push((arr_data['data'][i]['TotalData']== undefined ? arr_data['data'][i]['Total']:arr_data['data'][i]['TotalData']));
+        }
+        var $salesChart = $('#chart-two');
+        var salesChart  = new Chart($salesChart, {
+          type   : 'bar',
+          data   : {
+            labels  : labels,
+            datasets: [
+              {
+                backgroundColor: '#007bff',
+                borderColor    : '#007bff',
+                data           : datas
+              }
+            ]
+          },
+          options: {
+            maintainAspectRatio: false,
+            tooltips           : {
+              mode     : mode,
+              intersect: intersect
+            },
+            hover              : {
+              mode     : mode,
+              intersect: intersect
+            },
+            legend             : {
+              display: false
+            },
+            scales             : {
+              yAxes: [{
+                // display: false,
+                gridLines: {
+                  display      : true,
+                  lineWidth    : '4px',
+                  color        : 'rgba(0, 0, 0, .2)',
+                  zeroLineColor: 'transparent'
+                },
+                ticks    : $.extend({
+                  beginAtZero: true,
+
+                  // Include a dollar sign in the ticks
+                  callback: function (value, index, values) {
+                    if (value >= 1000) {
+                      value /= 1000
+                      value += 'k'
+                    }
+                    return  value
+                  }
+                }, ticksStyle)
+              }],
+              xAxes: [{
+                display  : true,
+                gridLines: {
+                  display: false
+                },
+                ticks    : ticksStyle
+              }]
+            }
+          }
+        })
+
+    })
+  }
+  function chart_three(recnum){
+    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum }, function(arr_data){  
+        var labels =[];
+        var datas =[];
+        $("#judul-chart-three").text(arr_data['judul']);
+        for (var i = 0; i < arr_data['data'].length; i++) {
+          labels.push(arr_data['data'][i]['IsDesc']);
+          datas.push((arr_data['data'][i]['TotalData']== undefined ? arr_data['data'][i]['Total']:arr_data['data'][i]['TotalData']));
+        }
+        
+        var areaChartCanvas = $('#chart-three').get(0).getContext('2d')
+
+        var areaChartData = {
+          labels  : labels,
+          datasets: [
+            {
+              label               : 'Digital Goods',
+              backgroundColor     : 'rgba(60,141,188,0.9)',
+              borderColor         : 'rgba(60,141,188,0.8)',
+              pointRadius          : false,
+              pointColor          : '#3b8bba',
+              pointStrokeColor    : 'rgba(60,141,188,1)',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(60,141,188,1)',
+              data                : datas
+            }
+          ]
+        }
+
+        var areaChartOptions = {
+          maintainAspectRatio : false,
+          responsive : true,
+          legend: {
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              gridLines : {
+                display : true,
+              }
+            }],
+            yAxes: [{
+              gridLines : {
+                display : false,
+              }
+            }]
+          }
+        }
+
+        // This will get the first returned node in the jQuery collection.
+        var areaChart       = new Chart(areaChartCanvas, { 
+          type: 'line',
+          data: areaChartData, 
+          options: areaChartOptions
+        })
+
+        //-------------
+        //- LINE CHART -
+        //--------------
+        var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+        var lineChartOptions = jQuery.extend(true, {}, areaChartOptions)
+        var lineChartData = jQuery.extend(true, {}, areaChartData)
+        lineChartData.datasets[0].fill = false;
+        lineChartData.datasets[1].fill = false;
+        lineChartOptions.datasetFill = false
+
+        var lineChart = new Chart(lineChartCanvas, { 
+          type: 'line',
+          data: lineChartData, 
+          options: lineChartOptions
+        })
+    })
+  }
+
+  function labelFormatter(label, series) {
+    return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+      + label
+      + '<br>'
+      + Math.round(series.percent) + '%</div>'
+  }
+
+  var d = new Date();
+  $('.date-picker').datepicker({
+      autoclose: true,
+      todayHighlight: true
+    });
+    $("#periode_start").datepicker("setDate", d);
+    $("#periode_end").datepicker("setDate", d);
+
+  
+  
 </script>
 <script type="text/javascript">
       $.ajaxSetup({
