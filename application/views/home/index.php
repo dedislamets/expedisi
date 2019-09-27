@@ -165,7 +165,7 @@
                                   </span>
                                 </div>
                               </div>
-                              <div class="col-sm-5">
+                              <div class="col-sm-5 periode-end">
                                 <div class="input-group">
                                   <input class="form-control date-picker" id="periode_end" name="periode_end" type="text" data-date-format="dd-mm-yyyy" />
                                   <span class="input-group-addon">
@@ -178,15 +178,30 @@
                           <div class="col-sm-2 no-padding">
                             <button type="button" id="btnFind" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Refresh</button>
                           </div>
+                          <div class="col-sm-3 no-padding"></div>
+                          <div class="col-sm-5 no-padding payroll-period hidden">
+                            <div class="col-md-12 no-padding">
+                              <select class="chosen-select form-control" id="payroll_period" name="payroll_period">
+                                <option value="0"> - </option>
+                                <?php 
+                                foreach($payroll_period as $row)
+                                { 
+                                  echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
+                                }?>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-3 no-padding"></div>
+                          <div class="col-sm-2 no-padding"></div>
                         </div>
                       </div>
 
                       <div class="row">
                           <div class="col-lg-6">
-                            <div class="card">
+                            <div class="card card-1">
                               <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                  <h3 class="card-title" id="judul-chart-one"></h3>
+                                  <h3 class="card-title" id="judul-chart-one" data-id="8"></h3>
                                   <div class="btn-group" style="position: absolute;right: 40px;">
                                     <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right">
                                       <span class="ace-icon fa fa-bar-chart-o icon-on-right"></span>
@@ -196,7 +211,7 @@
                                       <?php 
                                       foreach($jenis as $row)
                                       { 
-                                        echo '<li><a href="#" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
+                                        echo '<li><a href="javascript:void(0)" class="create-chart" data-chart="1" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
                                       }?>
                                     
                                     </ul>
@@ -220,10 +235,10 @@
                             </div>            
                           </div>          
                           <div class="col-lg-6">
-                            <div class="card">
+                            <div class="card card-2">
                               <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                  <h3 class="card-title" id="judul-chart-two"></h3>
+                                  <h3 class="card-title" id="judul-chart-two" data-id="11"></h3>
                                   <div class="btn-group" style="position: absolute;right: 40px;">
                                     <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right">
                                       <span class="ace-icon fa fa-bar-chart-o icon-on-right"></span>
@@ -233,7 +248,7 @@
                                       <?php 
                                       foreach($jenis as $row)
                                       { 
-                                        echo '<li><a href="#" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
+                                        echo '<li><a href="javascript:void(0)" class="create-chart" data-chart="2" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
                                       }?>
                                     
                                     </ul>
@@ -254,10 +269,10 @@
                             <!-- /.card -->
                           </div> 
                           <div class="col-lg-6">
-                            <div class="card">
+                            <div class="card card-4">
                               <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                  <h3 class="card-title" id="judul-donat"></h3>
+                                  <h3 class="card-title" id="judul-donat" data-id="1"></h3>
                                   <div class="btn-group" style="position: absolute;right: 40px;">
                                     <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right">
                                       <span class="ace-icon fa fa-bar-chart-o icon-on-right"></span>
@@ -267,7 +282,7 @@
                                       <?php 
                                       foreach($jenis as $row)
                                       { 
-                                        echo '<li><a href="#" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
+                                        echo '<li><a href="javascript:void(0)" class="create-chart" data-chart="4" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
                                       }?>
                                     
                                     </ul>
@@ -282,10 +297,10 @@
                             </div>            
                           </div>          
                           <div class="col-lg-6">
-                            <div class="card">
+                            <div class="card card-3">
                               <div class="card-header border-0">
                                 <div class="d-flex justify-content-between">
-                                  <h3 class="card-title" id="judul-chart-three"></h3>
+                                  <h3 class="card-title" id="judul-chart-three" data-id="10"></h3>
                                   <div class="btn-group" style="position: absolute;right: 40px;">
                                     <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right">
                                       <span class="ace-icon fa fa-bar-chart-o icon-on-right"></span>
@@ -295,7 +310,7 @@
                                       <?php 
                                       foreach($jenis as $row)
                                       { 
-                                        echo '<li><a href="#" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
+                                        echo '<li><a href="javascript:void(0)" class="create-chart" data-chart="3" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
                                       }?>
                                     
                                     </ul>

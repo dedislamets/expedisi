@@ -23,6 +23,7 @@ class Home extends CI_Controller {
 			$data['dashboard_category'] = $this->admin->getmaster('Vf_FindDashboardCategory','',1);
 			$data['category_period'] = $this->admin->getmaster('Vf_FindDashboardPeriod','',1);
 			$data['jenis'] = $this->admin->getmaster('DashboardType');
+			$data['payroll_period'] = $this->admin->getmaster('Vf_PeriodPayroll','',1);
 			//$data['policy'] = $this->admin->getmaster('Fn_DashboardLeaveEmployees ');
 			$data['js'] = 'home/js';
 			$this->load->view('home',$data,FALSE); 
@@ -43,13 +44,21 @@ class Home extends CI_Controller {
     }
 
     public function generateDashboard(){
-    	
+
+    	$start = date('Y-m-d'); 
+        if(!empty($this->input->get('start')))
+        	$start= date("Y-m-d", strtotime($this->input->get('start')));
+        
+        $end = date('Y-m-d'); 
+        if(!empty($this->input->get('end')))
+        	$end = date("Y-m-d", strtotime($this->input->get('end')));
+
     	$row_data = $this->db->query("SELECT * from DashboardType WHERE Recnum='". $this->input->get('recnum') ."'")->result_array();
     	$query = $row_data[0]['IsQuery'];
     	$title = $row_data[0]['IsDesc'];
     	$query = str_replace('@RecnumEmployee', $this->session->userdata('user_id'), $query);
-    	$query = str_replace('@StartDate', 'GETDATE()', $query);
-    	$query = str_replace('@EndDate', 'GETDATE()', $query);
+    	$query = str_replace('@StartDate', "'".$start. "'", $query);
+    	$query = str_replace('@EndDate', "'". $end . "'", $query);
     	$data_column = $this->db->query($query)->result_array();
     	$arr_data = [];
     	$arr_data['judul'] = $title;
@@ -61,6 +70,9 @@ class Home extends CI_Controller {
         }
     	$this->output->set_content_type('application/json')->set_output(json_encode($arr_data));
     }
-
+    public function getPeriode(){
+    	$id = $this->input->get('id');
+    	$this->output->set_content_type('application/json')->set_output(json_encode($this->admin->getmaster('Period', 'Recnum=' . $id)));
+    }
 	
 }

@@ -24,10 +24,11 @@
   chart_two(11);
   chart_three(10);
 
-  function donat_chart(recnum){
-    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum }, function(data){  
+  function donat_chart(recnum, start='', end=''){
+    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum,start: start,end: end  }, function(data){  
       var donutData =[];
       $("#judul-donat").text(data['judul']);
+      $("#judul-donat").data('id',recnum);
       for (var i = 0; i < data['data'].length; i++) {
         donutData.push({
           label : data['data'][i]['IsDesc'],
@@ -59,12 +60,13 @@
     });
   }
 
-  function chart_one(recnum){
-    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum }, function(arr_data){  
+  function chart_one(recnum, start='', end=''){
+    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum,start: start,end: end }, function(arr_data){  
       var $chartone = $('#chart-one');
       var labels =[];
       var datas =[];
       $("#judul-chart-one").text(arr_data['judul']);
+      $("#judul-chart-one").data('id',recnum);
       for (var i = 0; i < arr_data['data'].length; i++) {
         labels.push(arr_data['data'][i]['IsDesc']);
         datas.push((arr_data['data'][i]['TotalData']== undefined ? arr_data['data'][i]['Total']:arr_data['data'][i]['TotalData']));
@@ -124,11 +126,12 @@
     });
   }
 
-  function chart_two(recnum){
-    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum }, function(arr_data){  
+  function chart_two(recnum , start='', end=''){
+    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum ,start: start,end: end }, function(arr_data){  
         var labels =[];
         var datas =[];
         $("#judul-chart-two").text(arr_data['judul']);
+        $("#judul-chart-two").data('id',recnum);
         for (var i = 0; i < arr_data['data'].length; i++) {
           labels.push(arr_data['data'][i]['IsDesc']);
           datas.push((arr_data['data'][i]['TotalData']== undefined ? arr_data['data'][i]['Total']:arr_data['data'][i]['TotalData']));
@@ -194,11 +197,12 @@
 
     })
   }
-  function chart_three(recnum){
-    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum }, function(arr_data){  
+  function chart_three(recnum, start='', end=''){
+    $.get("<?php echo base_url(); ?>Home/generateDashboard",{recnum: recnum ,start: start,end: end }, function(arr_data){  
         var labels =[];
         var datas =[];
         $("#judul-chart-three").text(arr_data['judul']);
+        $("#judul-chart-three").data('id',recnum);
         for (var i = 0; i < arr_data['data'].length; i++) {
           labels.push(arr_data['data'][i]['IsDesc']);
           datas.push((arr_data['data'][i]['TotalData']== undefined ? arr_data['data'][i]['Total']:arr_data['data'][i]['TotalData']));
@@ -275,6 +279,48 @@
       + Math.round(series.percent) + '%</div>'
   }
 
+  $("#category_period").change(function(e, params){
+    var period = $(this).val();
+    var date = new Date();
+    $(".payroll-period").addClass('hidden');
+    $("#periode_start").prop("disabled", true);
+    $(".periode-end").removeClass('hidden');
+    if(period == 1){
+      $("#periode_start").val(moment(date).format('DD-MM-YYYY'));
+      $("#periode_end").val(moment(date).format('DD-MM-YYYY'));
+      
+    }else if(period == 2){
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      $("#periode_start").val(moment(firstDay).format('DD-MM-YYYY'));
+      $("#periode_end").val(moment(lastDay).format('DD-MM-YYYY'));
+    }else if(period == 3){
+      var firstYear = new Date(new Date().getFullYear(), 0, 1);
+      var lastYear = new Date(new Date().getFullYear(), 11, 31);
+      $("#periode_start").val(moment(firstYear).format('DD-MM-YYYY'));
+      $("#periode_end").val(moment(lastYear).format('DD-MM-YYYY'));
+    }else if(period == 4){
+      $(".payroll-period").removeClass('hidden');
+      $("#periode_start").val('');
+      $("#periode_end").val('');
+    }else if(period == 5){
+      $("#periode_start").prop("disabled", false);
+      $(".periode-end").addClass('hidden');
+    }else{
+      $("#periode_start").val('');
+      $("#periode_end").val('');
+    }
+  });
+
+  $("#payroll_period").change(function(e, params){
+    $.get("<?php echo base_url(); ?>Home/getPeriode",{id: $(this).val() }, function(data){ 
+      var start = (typeof data[0] == 'undefined' ? '' : moment(data[0]["StartDate"]).format('DD-MM-YYYY'));
+      var end = (typeof data[0] == 'undefined' ? '' : moment(data[0]["EndDate"]).format('DD-MM-YYYY'));
+        $("#periode_start").val(start);
+        $("#periode_end").val(end);
+    });
+  });
+
   var d = new Date();
   $('.date-picker').datepicker({
       autoclose: true,
@@ -284,7 +330,39 @@
     $("#periode_end").datepicker("setDate", d);
 
   
-  
+  $('.create-chart').on('click', function()
+  {
+    var jenis = $(this).data('id');
+    var kolom = $(this).data('chart');
+    showloader('.card-'+ kolom);
+    if(kolom=="1"){
+      chart_one(jenis);
+    }else if(kolom == "2"){
+      chart_two(jenis);
+    }else if(kolom == "3"){
+      chart_three(jenis);
+    }else if(kolom == "4"){
+      donat_chart(jenis);
+    }
+    hideloader();
+  });
+
+  $('#btnFind').on('click', function()
+  {
+    var jenis = $(this).data('id');
+    var kolom = $(this).data('chart');
+    showloader('body');
+
+    var start = $("#periode_start").val();
+    var end = $("#periode_end").val();
+
+    donat_chart($("#judul-donat").data('id'),start,end);
+    chart_one($("#judul-chart-one").data('id'),start,end);
+    chart_two($("#judul-chart-two").data('id'),start,end);
+    chart_three($("#judul-chart-three").data('id'),start,end);
+    
+    hideloader();
+  });
 </script>
 <script type="text/javascript">
       $.ajaxSetup({
