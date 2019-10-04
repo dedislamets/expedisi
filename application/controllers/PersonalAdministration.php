@@ -34,7 +34,7 @@ class PersonalAdministration extends CI_Controller {
 			$data['family_tax'] = $this->admin->getfamtax();
 			$data['education'] = $this->admin->getmastereducation();
 			$data['major'] = $this->admin->getmastermajoring();
-			$data['training'] = $this->admin->getmastertraining();
+			//$data['training'] = $this->admin->getmastertraining();
 			$data['emp'] = $this->admin->getmasterkaryawan();
 			$data['punishment'] = $this->admin->getmasterpunishment();
 			$data['inventaris'] = $this->admin->getmasterinventaris();

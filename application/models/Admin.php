@@ -135,6 +135,18 @@ class Admin extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();    
     }
+    function getHRPolicies(){
+        $query = $this->db->query("select * from [Fn_DashboardHRPolicies] ('','2019-07-08')");
+        return $query->result(); 
+    }
+    function getNewEmployee(){
+        $query = $this->db->query("select * from [Fn_DashboardNewEmployee] ('','2019-07-08')");
+        return $query->result(); 
+    }
+    function getLeaveEmployee(){
+        $query = $this->db->query("select * from [Fn_DashboardLeaveEmployees] ('','2019-07-08')");
+        return $query->result(); 
+    }
     function getgender()
     {        
         $query = $this->db->query('SELECT Recnum,IsDesc FROM Gender order by Recnum ASC');

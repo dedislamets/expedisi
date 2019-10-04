@@ -3,9 +3,14 @@
 <script src="<?= base_url(); ?>assets/js/flot-old/jquery.flot.resize.min.js"></script>
 <script src="<?= base_url(); ?>assets/js/flot-old/jquery.flot.pie.min.js"></script>
 <script type="text/javascript">
-  $('#carouselHacked').carousel();
+  $(document).ready(function(){ 
+    $('#carouselHacked').find('.item').first().addClass('active');
+    $('#onleave').find('.item').first().addClass('active');
+    $('#carouselHacked').carousel();
+    
+  });
+  
   $('#onleave').carousel();
-
   $("#dashboard_category").val(1).trigger('chosen:updated');
   $("#category_period").val(1).trigger('chosen:updated');
   $("#periode_start").prop("disabled", true);
@@ -279,6 +284,45 @@
       + Math.round(series.percent) + '%</div>'
   }
 
+  $(".product-title").on('click', function()
+  {
+    var judul = $(this).text().trim();
+
+    $.get("<?php echo base_url(); ?>Home/getKontenPolicy",{recnum: $(this).data('id')  }, function(data){
+      bootboxmodal(judul, data[0]['IsContent']);
+    });
+  });
+
+  $(".btn-detail").on('click', function()
+  {
+    showloader('body');
+    var start = $("#periode_start").val();
+    var end = $("#periode_end").val();
+    var recnum = $(this).parent().children().first().data('id');
+    $.get("<?php echo base_url(); ?>Home/getDetailDashboard",{recnum: recnum,start: start,end: end  }, function(data){
+      bootboxmodal(data['judul'], data['tabel']);
+      $('#tabel-detail').DataTable({    
+          "bPaginate": true,  
+          dataSrc: "original.data",
+          "destroy": true,                  
+          "initComplete": function(settings, json) {
+              hideloader();
+          }   
+      });
+    });
+  });
+
+  $("#sidebar-collapse").on('click', function()
+  {
+    if($("#sidebar").attr('class') == "sidebar responsive ace-save-state menu-min"){
+      $(".user-panel img").css("width","4.5rem");
+    }else{
+      $(".user-panel img").css("width","2.5rem");
+    }
+    
+  });
+  
+
   $("#category_period").change(function(e, params){
     var period = $(this).val();
     var date = new Date();
@@ -363,6 +407,14 @@
     
     hideloader();
   });
+
+  function bootboxmodal(title, html){
+    var dialog = bootbox.dialog({
+      title: title,
+      message: html,
+      buttons: {}
+    });
+  }
 </script>
 <script type="text/javascript">
       $.ajaxSetup({

@@ -83,6 +83,13 @@
   .text-gray {
     color: #6c757d;
   }
+
+  .slide-list img {
+    height: 130px;
+  }
+  #tabel-detail{
+    width: 100% !important;
+  }
     
 </style>
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -216,7 +223,7 @@
                                     
                                     </ul>
                                   </div>
-                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right"><span class="ace-icon fa fa-external-link icon-on-right"></span>
+                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right btn-detail"><span class="ace-icon fa fa-external-link icon-on-right"></span>
                                   </button>
                                 </div>
                               </div>
@@ -253,7 +260,7 @@
                                     
                                     </ul>
                                   </div>
-                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right"><span class="ace-icon fa fa-external-link icon-on-right"></span>
+                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right btn-detail"><span class="ace-icon fa fa-external-link icon-on-right"></span>
                                   </button>
                                 </div>
                               </div>
@@ -287,7 +294,7 @@
                                     
                                     </ul>
                                   </div>
-                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right"><span class="ace-icon fa fa-external-link icon-on-right"></span>
+                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right btn-detail"><span class="ace-icon fa fa-external-link icon-on-right"></span>
                                   </button>
                                 </div>
                               </div>
@@ -315,7 +322,7 @@
                                     
                                     </ul>
                                   </div>
-                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right"><span class="ace-icon fa fa-external-link icon-on-right"></span>
+                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right btn-detail"><span class="ace-icon fa fa-external-link icon-on-right"></span>
                                   </button>
                                 
                                 </div>
@@ -345,27 +352,24 @@
                               <div class="card-body p-0">
                                 <div id="carouselHacked" class="carousel slide carousel-fade" data-ride="carousel">
                                   <div class="carousel-inner" role="listbox">
-                                      <div class="item active">
-                                        <div class="slide-list">
-                                          <img src="<?= base_url(); ?>assets/images/user8-128x128.jpg" alt="User Image">
-                                          <a class="users-list-name" href="#">Norman 1</a>
-                                          <span class="users-list-date">Yesterday</span>
-                                        </div>
-                                      </div>
+
+                                    <?php 
+                                    foreach($new_employee as $row)
+                                    { 
+                                      ?>
                                       <div class="item">
                                         <div class="slide-list">
-                                          <img src="<?= base_url(); ?>assets/images/user8-128x128.jpg" alt="User Image">
-                                          <a class="users-list-name" href="#">Norman 2</a>
-                                          <span class="users-list-date">Yesterday</span>
+                                          <img src="<?php echo $row->url ?>" alt="User Image">
+                                          <a class="users-list-name" href="#"><?php echo $row->EmployeeName ?></a>
+                                          <p style="font-weight: bold;line-height: 1"><?php echo $row->PositionStructural ?></p>
+
+                                          <p style="font-weight: bold;margin-bottom: 0"><?php echo $row->LocationName ?></p>
+                                          <span class="users-list-date"><?php echo $row->JoinDate ?></span>
                                         </div>
                                       </div>
-                                      <div class="item">
-                                        <div class="slide-list">
-                                          <img src="<?= base_url(); ?>assets/images/user8-128x128.jpg" alt="User Image">
-                                          <a class="users-list-name" href="#">Norman 3</a>
-                                          <span class="users-list-date">Yesterday</span>
-                                        </div>
-                                      </div>
+                                      
+                                      <?php
+                                    }?>  
                                   </div>
 
                                   <!-- Controls -->
@@ -388,27 +392,22 @@
                               <div class="card-body p-0">
                                 <div id="onleave" class="carousel slide carousel-fade" data-ride="carousel">
                                   <div class="carousel-inner" role="listbox">
-                                      <div class="item active">
-                                        <div class="slide-list">
-                                          <img src="<?= base_url(); ?>assets/images/user8-128x128.jpg" alt="User Image">
-                                          <a class="users-list-name" href="#">Norman 1</a>
-                                          <span class="users-list-date">Yesterday</span>
+                                      <?php 
+                                      foreach($leave as $row)
+                                      { 
+                                        ?>
+                                        <div class="item">
+                                          <div class="slide-list">
+                                            <img src="<?php echo $row->url ?>" alt="User Image">
+                                            <a class="users-list-name" href="#"><?php echo $row->EmployeeName ?></a>
+                                            <p style="font-weight: bold;line-height: 1"><?php echo $row->PositionStructural ?></p>
+
+                                            <p style="font-weight: bold;margin-bottom: 0"><?php echo $row->LocationName ?></p>
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div class="item">
-                                        <div class="slide-list">
-                                          <img src="<?= base_url(); ?>assets/images/user8-128x128.jpg" alt="User Image">
-                                          <a class="users-list-name" href="#">Norman 2</a>
-                                          <span class="users-list-date">Yesterday</span>
-                                        </div>
-                                      </div>
-                                      <div class="item">
-                                        <div class="slide-list">
-                                          <img src="<?= base_url(); ?>assets/images/user8-128x128.jpg" alt="User Image">
-                                          <a class="users-list-name" href="#">Norman 3</a>
-                                          <span class="users-list-date">Yesterday</span>
-                                        </div>
-                                      </div>
+                                        
+                                        <?php
+                                      }?>  
                                   </div>
 
                                   <!-- Controls -->
@@ -430,39 +429,18 @@
                             <!-- /.card-header -->
                             <div class="card-body p-0">
                               <ul class="products-list product-list-in-card pl-2 pr-2">
+                                <?php 
+                                foreach($policy as $row)
+                                { 
+                                  ?>
                                   <li class="item">
                                     <div class="product-info">
-                                      <a href="javascript:void(0)" class="product-title">
-                                        <i class="ace-icon fa fa-folder fa-1x blue"></i>&nbsp;&nbsp;Samsung TV</a>
+                                      <a href="javascript:void(0)" data-id="<?php echo $row->Recnum ?>" class="product-title">
+                                        <i class="ace-icon fa fa-folder fa-1x blue"></i>&nbsp;&nbsp;<?php echo $row->IsDesc ?></a>
                                     </div>
                                   </li>
-                                  <!-- /.item -->
-                                  <li class="item">
-                                    
-                                    <div class="product-info">
-                                      <a href="javascript:void(0)" class="product-title">
-                                      <i class="ace-icon fa fa-folder fa-1x blue"></i>&nbsp;&nbsp;Bicycle</a>
-                                    </div>
-                                  </li>
-                                  <!-- /.item -->
-                                  <li class="item">
-                                    
-                                    <div class="product-info">
-                                      <a href="javascript:void(0)" class="product-title">
-                                        <i class="ace-icon fa fa-folder fa-1x blue"></i>&nbsp;&nbsp;Xbox One
-                                      </a>
-                                    </div>
-                                  </li>
-                                  <!-- /.item -->
-                                  <li class="item">
-                                   
-                                    <div class="product-info">
-                                      <a href="javascript:void(0)" class="product-title">
-                                        <i class="ace-icon fa fa-folder fa-1x blue"></i>&nbsp;&nbsp;PlayStation 4
-                                        </a>
-                                    </div>
-                                  </li>
-                                  <!-- /.item -->
+                                  <?php
+                                }?>    
                                 </ul>
                             </div>                                
                           </div>
