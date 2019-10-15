@@ -139,6 +139,10 @@ class Admin extends CI_Model
         $query = $this->db->query("select * from [Fn_DashboardHRPolicies] ('','2019-07-08')");
         return $query->result(); 
     }
+    function getLoker($EmployeeId){
+        $query = $this->db->query("select * from [Fn_ListRequestVacancyInternal] ('". $EmployeeId."')");
+        return $query->result(); 
+    }
     function getEmpAdmin(){
         $query = $this->db->query("select * from  [Fn_EmpAdmin] ('',GETDATE(),1)");
         return $query->result();
