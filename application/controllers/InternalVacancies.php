@@ -24,7 +24,7 @@ class InternalVacancies extends CI_Controller {
         $data['loker'] = $this->admin->getLoker($recLogin);
 
         $data['main']  = 'carrier/internalvacancies';
-        $data['modal'] = 'modal/generateRequest';     
+        $data['modal'] = 'modal/internal-vacancies';     
         $data['title'] = 'Internal Vacancies';
         $data['js'] = 'script/internalvacancies';
 
@@ -97,25 +97,11 @@ class InternalVacancies extends CI_Controller {
         exit();
     }
 
-    public function approval()
-    {
-        $str = $this->input->post('str');
-        $mode = $this->input->post('mode');
-        if(!empty($str)){
-            $str = substr($str, 0, -1);
-            $str = explode(";",$str);            
-        }
-        foreach($str as $k => $value) {
-            $value = explode("-",$value); 
-            $recnum = $value[0];
-            $recnumworkflow = $value[1];
-            $recnumstatus = $value[2];            
-            $query = $this->db->query("[Sp_ApprovalReject] ". $recnum ."," . $recnumworkflow .",'Test'," . $mode )->result();
-        
-        }
-        echo "ok";
-        exit();
-    }
     
+    public function getKontenVacancy(){
+        $id = $this->input->get('recnum');
+        $recLogin = $this->session->userdata('user_id');
+        $this->output->set_content_type('application/json')->set_output(json_encode($this->admin->getmaster('Fn_ListRequestVacancyInternal ('.$recLogin.')', 'Recnum=' . $id)));
+    }
     
 }

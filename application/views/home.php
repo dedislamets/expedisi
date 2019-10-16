@@ -767,6 +767,14 @@
           }); 
       }
 
+      function bootboxmodal(title, html){
+        var dialog = bootbox.dialog({
+          title: title,
+          message: html,
+          buttons: {}
+        });
+      }
+
       function chosen(){
         $('.chosen-select').chosen({allow_single_deselect:true}); 
         //resize the chosen on window resize

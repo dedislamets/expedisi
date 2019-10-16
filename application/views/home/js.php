@@ -408,13 +408,7 @@
     hideloader();
   });
 
-  function bootboxmodal(title, html){
-    var dialog = bootbox.dialog({
-      title: title,
-      message: html,
-      buttons: {}
-    });
-  }
+  
 </script>
 <script type="text/javascript">
       $.ajaxSetup({

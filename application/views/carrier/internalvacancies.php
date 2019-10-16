@@ -127,15 +127,15 @@
               <div class="user-block">
                
                 <span class="username"><a href="#"><?php echo $row->PositionStructural ?></a></span>
-                <span class="description"><?php echo $row->Location ?> - 7:30 PM Today</span>
+                <span class="description"><?php echo $row->Location ?> - <?php echo date("d M Y h:i", strtotime($row->RequestDate))  ?></span>
               </div>
             </div>
             <div class="box-body">
               <?php echo $row->RemarkJobDescription ?>
               
-              <button type="button" class="btn btn-default btn-xs"><i class="fa fa-get-pocket"></i> More</button>
-              <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
-              <span class="pull-right text-muted">2 comments</span>
+              <!-- <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> More</button> -->
+              <button type="button" class="btn btn-default btn-xs btn-view-more" data-id="<?php echo $row->Recnum ?>"> View More</button>
+              <!-- <span class="pull-right text-muted">2 comments</span> -->
             </div>
           </div>
         </div>
