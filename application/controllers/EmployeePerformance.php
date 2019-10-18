@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Leave extends CI_Controller {
+class EmployeePerformance extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
@@ -13,9 +13,9 @@ class Leave extends CI_Controller {
 		if($this->admin->logged_id())
         {
         	$data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
-			$data['title'] = 'Leave Form';
-			$data['main'] = 'tms/leave';
-			$data['js'] = 'script/leave';
+			$data['title'] = 'Performance Development';
+			$data['main'] = 'performance/performance';
+			$data['js'] = 'script/performance';
 			$data['modal'] = 'modal/leave';
 			$data['empadmin'] = $this->admin->getEmpAdmin();
 			$this->load->view('home',$data,FALSE); 

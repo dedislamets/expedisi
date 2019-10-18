@@ -20,138 +20,149 @@
 			}, 20);
 		}
     })
-	
+	function gridview_left(val){
+		$(grid_selector_left).jqGrid('clearGridData');
+
+		$(grid_selector_left).jqGrid('setGridParam',{
+			datatype:'json',
+			editurl: 'clientArray',
+			url: 'Leave/listLeave?id='+ val }
+		).trigger('reloadGrid');
+	}
+
 	jQuery(grid_selector_left).jqGrid({
-		url: 'Leave/listLeave',
-        editurl: 'clientArray',
-        datatype: "json",
-		height: 250,
-		colNames:['Actions','Periode','Saldo'],
-		colModel:[
-			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-				formatter:'actions', 
-				formatoptions:{ 
-					keys:true,
-					delbutton: true,
+			url: 'Leave/listLeave?id=0',
+	        editurl: 'clientArray',
+	        datatype: "json",
+			height: 250,
+			colNames:['Actions','Recnum','Periode','Saldo'],
+			colModel:[
+				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+					formatter:'actions', 
+					formatoptions:{ 
+						keys:true,
+						delbutton: true,
+						editformbutton: true,
+					}
+				},
+				// {name:'StartDate',index:'StartDate', width:60,  editable: true,
+				// 	formatter:'date', 
+				// 	formatoptions:{ 
+				// 		srcformat:'d/m/Y', 
+				// 		newformat: 'd/m/Y'
+				// 	}
+				// },
+				{name:'Recnum',index:'Recnum',width:100, editable:false, hidden: true},
+				{name:'Periode',index:'Periode',width:350, editable:true,},
+				{name:'EndingBalance',index:'EndingBalance',width:100, editable:true,},
+				
+			], 
+			loadonce: true,
+			viewrecords : true,
+			rowNum:10,
+			rowList:[10,20,30],
+			pager : pager_selector_left,
+			rownumbers: false,
+			gridview: true,
+	        //multiboxonly: true,
+			loadComplete : function() {
+				var table = this;
+				setTimeout(function(){
+					//styleCheckbox(table);
+							
+					//updateActionIcons(table);
+					//updatePagerIcons(table);
+					//enableTooltips(table);
+				}, 0);
+			},
+
+			//editurl: "./dummy.php",//nothing is saved
+			caption: ""
+		});
+		$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+		//navButtons
+		jQuery(grid_selector_left).jqGrid('navGrid',pager_selector_left,
+			{ 	//navbar options
+				edit: false,
+				editicon : 'ace-icon fa fa-pencil blue',
+				add: true,
+				addicon : 'ace-icon fa fa-plus-circle purple',
+				del: false,
+				delicon : 'ace-icon fa fa-trash-o red',
+				search: true,
+				searchicon : 'ace-icon fa fa-search orange',
+				refresh: true,
+				refreshicon : 'ace-icon fa fa-refresh green',
+				view: true,
+				viewicon : 'ace-icon fa fa-search-plus grey',
+			},
+			{
+				//edit record form
+				//closeAfterEdit: true,
+				//width: 700,
+				recreateForm: true,
+				beforeShowForm : function(e) {
+					var form = $(e[0]);
+					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+					style_edit_form(form);
 				}
 			},
-			// {name:'StartDate',index:'StartDate', width:60,  editable: true,
-			// 	formatter:'date', 
-			// 	formatoptions:{ 
-			// 		srcformat:'d/m/Y', 
-			// 		newformat: 'd/m/Y'
-			// 	}
-			// },
-			{name:'Periode',index:'Periode',width:350, editable:true,},
-			{name:'EndingBalance',index:'EndingBalance',width:100, editable:true,},
-			
-		], 
-		loadonce: true,
-		viewrecords : true,
-		rowNum:10,
-		rowList:[10,20,30],
-		pager : pager_selector_left,
-		rownumbers: false,
-		gridview: true,
-        //multiboxonly: true,
-		loadComplete : function() {
-			var table = this;
-			setTimeout(function(){
-				styleCheckbox(table);
-						
-				updateActionIcons(table);
-				updatePagerIcons(table);
-				enableTooltips(table);
-			}, 0);
-		},
-
-		//editurl: "./dummy.php",//nothing is saved
-		caption: ""
-	});
-	$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-	//navButtons
-	jQuery(grid_selector_left).jqGrid('navGrid',pager_selector_left,
-		{ 	//navbar options
-			edit: false,
-			editicon : 'ace-icon fa fa-pencil blue',
-			add: true,
-			addicon : 'ace-icon fa fa-plus-circle purple',
-			del: false,
-			delicon : 'ace-icon fa fa-trash-o red',
-			search: true,
-			searchicon : 'ace-icon fa fa-search orange',
-			refresh: true,
-			refreshicon : 'ace-icon fa fa-refresh green',
-			view: true,
-			viewicon : 'ace-icon fa fa-search-plus grey',
-		},
-		{
-			//edit record form
-			//closeAfterEdit: true,
-			//width: 700,
-			recreateForm: true,
-			beforeShowForm : function(e) {
-				var form = $(e[0]);
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-				style_edit_form(form);
-			}
-		},
-		{
-			//new record form
-			//width: 700,
-			closeAfterAdd: true,
-			recreateForm: true,
-			viewPagerButtons: false,
-			beforeShowForm : function(e) {
-				var form = $(e[0]);
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-				.wrapInner('<div class="widget-header" />')
-				style_edit_form(form);
-			}
-		},
-		{
-			//delete record form
-			recreateForm: true,
-			beforeShowForm : function(e) {
-				var form = $(e[0]);
-				if(form.data('styled')) return false;
-				
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-				style_delete_form(form);
-				
-				form.data('styled', true);
+			{
+				//new record form
+				//width: 700,
+				closeAfterAdd: true,
+				recreateForm: true,
+				viewPagerButtons: false,
+				beforeShowForm : function(e) {
+					var form = $(e[0]);
+					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+					.wrapInner('<div class="widget-header" />')
+					style_edit_form(form);
+				}
 			},
-			onClick : function(e) {
-				//alert(1);
-			}
-		},
-		{
-			//search form
-			recreateForm: true,
-			afterShowSearch: function(e){
-				var form = $(e[0]);
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-				style_search_form(form);
+			{
+				//delete record form
+				recreateForm: true,
+				beforeShowForm : function(e) {
+					var form = $(e[0]);
+					if(form.data('styled')) return false;
+					
+					form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+					style_delete_form(form);
+					
+					form.data('styled', true);
+				},
+				onClick : function(e) {
+					//alert(1);
+				}
 			},
-			afterRedraw: function(){
-				style_search_filters($(this));
+			{
+				//search form
+				recreateForm: true,
+				afterShowSearch: function(e){
+					var form = $(e[0]);
+					form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+					style_search_form(form);
+				},
+				afterRedraw: function(){
+					style_search_filters($(this));
+				}
+				,
+				multipleSearch: true,
+				/**
+				multipleGroup:true,
+				showQuery: true
+				*/
+			},
+			{
+				//view record form
+				recreateForm: true,
+				beforeShowForm: function(e){
+					var form = $(e[0]);
+					form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+				}
 			}
-			,
-			multipleSearch: true,
-			/**
-			multipleGroup:true,
-			showQuery: true
-			*/
-		},
-		{
-			//view record form
-			recreateForm: true,
-			beforeShowForm: function(e){
-				var form = $(e[0]);
-				form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-			}
-		}
-	)
+		)
 	function gridview(val){
 
 		$.ajax({
@@ -160,16 +171,16 @@
             success: function(msg) { 
              	
 				$("#grid-table").jqGrid('clearGridData');
-				bindingdata("List Emp Leave");
+				bindingdata("List Emp Leave", val);
 				$("#grid-table").jqGrid('setGridParam',{
 					datatype:'json',
 					editurl: 'clientArray',
-					url: 'Leave/ListEmp?id='+ tabel }
+					url: 'Leave/ListEmp?id='+ val }
 				).trigger('reloadGrid');
             }
         });
 	}
-	function bindingdata(tabel_name){
+	function bindingdata(tabel_name, val){
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
 		
@@ -190,7 +201,7 @@
 			}
 	    })
 		jQuery(grid_selector).jqGrid({
-			url:'Leave/ListEmp?id=1',
+			url:'Leave/ListEmp?id='+val,
             editurl: 'clientArray',
             datatype: "json",
 			height: 400,
@@ -372,11 +383,22 @@
 		});
 		return false;
     });
+	jQuery(grid_selector_left).click(function(e) {
+
+		var el = e.target;
+		var recnum = $(el).parent().children().first().next().text();
+		gridview(recnum);
+	});
+
+	$('#emp').on('change', function() {
+	  	gridview_left($("#emp").val());	
+	});
+
 </script>
 
 <script type="text/javascript">
 								 		
-				 						 			
+	//gridview_left(0);						 			
 	gridview(1);
 	$('.date-picker').datepicker({
 		autoclose: true,
