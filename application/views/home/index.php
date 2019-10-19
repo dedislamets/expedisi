@@ -1,4 +1,66 @@
 <style type="text/css">
+  .carousel-fade .carousel-inner .item {
+        opacity: 0;
+        transition-property: opacity;
+      }
+
+      .carousel-fade .carousel-inner .active {
+        opacity: 1;
+      }
+
+      .carousel-fade .carousel-inner .active.left,
+      .carousel-fade .carousel-inner .active.right {
+        left: 0;
+        opacity: 0;
+        z-index: 1;
+      }
+
+      .carousel-fade .carousel-inner .next.left,
+      .carousel-fade .carousel-inner .prev.right {
+        opacity: 1;
+      }
+
+      .carousel-fade .carousel-control {
+        z-index: 2;
+      }
+
+      /*
+      WHAT IS NEW IN 3.3: "Added transforms to improve carousel performance in modern browsers."
+      now override the 3.3 new styles for modern browsers & apply opacity
+      */
+      @media all and (transform-3d), (-webkit-transform-3d) {
+          .carousel-fade .carousel-inner > .item.next,
+          .carousel-fade .carousel-inner > .item.active.right {
+            opacity: 0;
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+          }
+          .carousel-fade .carousel-inner > .item.prev,
+          .carousel-fade .carousel-inner > .item.active.left {
+            opacity: 0;
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+          }
+          .carousel-fade .carousel-inner > .item.next.left,
+          .carousel-fade .carousel-inner > .item.prev.right,
+          .carousel-fade .carousel-inner > .item.active {
+            opacity: 1;
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+          }
+      }
+
+      .slide-list {
+        float: left;
+        padding: 10px;
+        text-align: center;
+        width: 100%;
+      }
+      .slide-list img {
+        border-radius: 50%;
+        height: auto;
+        max-width: 100%;
+      }
   .products-list {
     list-style: none;
       margin: 0;
@@ -11,70 +73,7 @@
       padding-right: .5rem!important;
   }
 
-  .carousel-fade .carousel-inner .item {
-    opacity: 0;
-    transition-property: opacity;
-  }
-
-  .carousel-fade .carousel-inner .active {
-    opacity: 1;
-  }
-
-  .carousel-fade .carousel-inner .active.left,
-  .carousel-fade .carousel-inner .active.right {
-    left: 0;
-    opacity: 0;
-    z-index: 1;
-  }
-
-  .carousel-fade .carousel-inner .next.left,
-  .carousel-fade .carousel-inner .prev.right {
-    opacity: 1;
-  }
-
-  .carousel-fade .carousel-control {
-    z-index: 2;
-  }
-
-  /*
-  WHAT IS NEW IN 3.3: "Added transforms to improve carousel performance in modern browsers."
-  now override the 3.3 new styles for modern browsers & apply opacity
-  */
-  @media all and (transform-3d), (-webkit-transform-3d) {
-      .carousel-fade .carousel-inner > .item.next,
-      .carousel-fade .carousel-inner > .item.active.right {
-        opacity: 0;
-        -webkit-transform: translate3d(0, 0, 0);
-                transform: translate3d(0, 0, 0);
-      }
-      .carousel-fade .carousel-inner > .item.prev,
-      .carousel-fade .carousel-inner > .item.active.left {
-        opacity: 0;
-        -webkit-transform: translate3d(0, 0, 0);
-                transform: translate3d(0, 0, 0);
-      }
-      .carousel-fade .carousel-inner > .item.next.left,
-      .carousel-fade .carousel-inner > .item.prev.right,
-      .carousel-fade .carousel-inner > .item.active {
-        opacity: 1;
-        -webkit-transform: translate3d(0, 0, 0);
-                transform: translate3d(0, 0, 0);
-      }
-  }
-
-  .slide-list {
-    float: left;
-    padding: 10px;
-    text-align: center;
-    width: 100%;
-  }
-  .slide-list img {
-    border-radius: 50%;
-    height: auto;
-    max-width: 100%;
-  }
-
-  .widget-toolbar {
+    .widget-toolbar {
     float: left;
   }
   .text-primary {

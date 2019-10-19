@@ -16,6 +16,11 @@ class Datatabel extends CI_Model
     	$query = $this->db->query("SELECT * FROM [Fn_EmpBrowse] ('','2019-01-01','1')");
         return $query;
     }
+    public function get_Performance()
+    {
+        $query = $this->db->query("select * from Fn_ListEmpPerformance (11,GETDATE(),GETDATE())");
+        return $query;
+    }
     public function get_list_day($start,$end)
     {
         $query = $this->db->query("WITH date_range (calc_date) AS (
