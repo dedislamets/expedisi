@@ -1,5 +1,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){ 
+		$('#myCarousel').find('.item').first().addClass('active');
 		$('#myCarousel').carousel({
 		  interval: 4000
 		})
@@ -21,22 +22,22 @@
 		  }
 		});    
 
-		// $('#ViewTable').DataTable({
-		// 	ajax: {		            
-	 //            "url": "EmployeePerformance/dataTable",
-	 //            "type": "GET"
-	 //        },			
-		// 	"bPaginate": true,	
-		// 	"ordering": false,
-		// 	columnDefs:[
-		// 			{
-		// 				targets:[3,4], render:function(data){
-		// 	      			return moment(data).format('DD MMM YYYY'); 
-		// 	    		}
-		// 	    	},
-		// 	]
+		$('#ViewTable').DataTable({
+			ajax: {		            
+	            "url": "ListPerformanceKPM",
+	            "type": "GET"
+	        },			
+			"bPaginate": true,	
+			"ordering": false,
+			// columnDefs:[
+			// 		{
+			// 			targets:[3,4], render:function(data){
+			//       			return moment(data).format('DD MMM YYYY'); 
+			//     		}
+			//     	},
+			// ]
 
-	 //    });
+	    });
 
 	});
 </script>

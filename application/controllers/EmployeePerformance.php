@@ -96,22 +96,46 @@ class EmployeePerformance extends CI_Controller {
 
             $data_new_emp = array();
             $i=0;
-            foreach($this->admin->getNewEmployee() as $r) {
+            foreach($this->admin->getDetailPersonPerformance($this->session->userdata('user_id')) as $r) {
                 $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
                 if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
                     $url = base_url() .'assets/profile/no-profile-copy.png' ; 
                 }
 
+                $url_head = base_url() .'assets/profile/'. $r->IdHead .'.jpg' ; 
+                if(!$this->admin->checkRemoteFile($r->IdHead .'.jpg')){
+                    $url_head = base_url() .'assets/profile/no-profile-copy.png' ; 
+                }
+
                 $data_new_emp[$i]['EmployeeId'] = $r->EmployeeId;
                 $data_new_emp[$i]['url'] = $url;
+                $data_new_emp[$i]['url_head'] = $url_head;
                 $data_new_emp[$i]['EmployeeName'] = $r->EmployeeName;
-                $data_new_emp[$i]['LocationName'] = $r->LocationName;
+                $data_new_emp[$i]['WorkingStatus'] = $r->WorkingStatus;
+                $data_new_emp[$i]['Class'] = $r->Class;
                 $data_new_emp[$i]['PositionStructural'] = $r->PositionStructural;
-                $data_new_emp[$i]['JoinDate'] = date("d M Y", strtotime($r->JoinDate));
+                $data_new_emp[$i]['PositionFunctional'] = $r->PositionFunctional;
                 $data_new_emp[$i] = (object) $data_new_emp[$i];
                 $i++;
             }
-            $data['new_employee'] = $data_new_emp;
+            $data['detail'] = $data_new_emp;
+            //$data['detail'] = $this->admin->getDetailPersonPerformance($this->session->userdata('user_id'));
+            $cek_subordinat = $this->admin->getSubOrdinat($this->session->userdata('user_id'));
+
+
+            $subordinat = array();
+            $i=0;
+            foreach($cek_subordinat as $r) {
+                $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
+                if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
+                    $url = base_url() .'assets/profile/no-profile-copy.png' ; 
+                }
+                $subordinat[$i]['url'] = $url;
+                $subordinat[$i] = (object) $subordinat[$i];
+                $i++;
+            }
+            $data['subordinat'] = $subordinat;
+            //print_r($data['subordinat']);exit();
             $this->load->view('home',$data,FALSE); 
 
         }else{
@@ -136,13 +160,40 @@ class EmployeePerformance extends CI_Controller {
     	
         $this->output->set_content_type('application/json')->set_output(json_encode($row_data));
     }
-    public function ListEmp()
+    public function ListPerformanceKPM()
     {
-    	$id = $this->input->get('id'); 
-    	$row_data = $this->db->query("SELECT * from Fn_ListEmpByLeaveByPeriod (". $id .")")->result_array();
     	
-    	
-        $this->output->set_content_type('application/json')->set_output(json_encode($row_data));
+        $draw = intval($this->input->get("draw"));
+        $start = intval($this->input->get("start"));
+        $length = intval($this->input->get("length"));
+
+
+        $row_data = $this->Datatabel->get_KPM($this->session->userdata('user_id'));
+
+        $data = array();
+
+        foreach($row_data->result() as $r) {
+               $data[] = array(
+                    $r->IsDesc,
+                    $r->WeightPercentage,
+                    $r->CalculationMethod,
+                    $r->IsTarget,
+                    $r->IsActual,
+                    $r->Score,
+                    $r->TotalScore,
+                    $r->Remark,
+               );
+          }
+
+          $output = array(
+               "draw" => $draw,
+                 "recordsTotal" => $row_data->num_rows(),
+                 "recordsFiltered" => $row_data->num_rows(),
+                 "data" => $data
+            );
+          echo json_encode($output);
+          exit();
+
     }
 
 }

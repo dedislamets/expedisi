@@ -155,6 +155,14 @@ class Admin extends CI_Model
         $query = $this->db->query("select * from [Fn_DashboardLeaveEmployees] ('','2019-07-08')");
         return $query->result(); 
     }
+    function getDetailPersonPerformance($EmployeeId){
+        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $EmployeeId.",GETDATE(),GETDATE())");
+        return $query->result(); 
+    }
+    function getSubOrdinat($EmployeeId){
+        $query = $this->db->query("select * from Fn_ListSubOrdinat (". $EmployeeId.",GETDATE())");
+        return $query->result(); 
+    }
     function getgender()
     {        
         $query = $this->db->query('SELECT Recnum,IsDesc FROM Gender order by Recnum ASC');
