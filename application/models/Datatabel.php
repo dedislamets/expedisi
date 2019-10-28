@@ -26,6 +26,11 @@ class Datatabel extends CI_Model
         $query = $this->db->query("SELECT * from Fn_ListPerformanceKPM (". $id.")");
         return $query;
     }
+    public function get_Competency($id)
+    {
+        $query = $this->db->query("SELECT * from Fn_ListPerformanceCompetency (". $id.")");
+        return $query;
+    }
     public function get_list_day($start,$end)
     {
         $query = $this->db->query("WITH date_range (calc_date) AS (

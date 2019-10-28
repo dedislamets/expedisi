@@ -92,19 +92,24 @@ class EmployeePerformance extends CI_Controller {
             $data['title'] = 'Performance Development';
             $data['main'] = 'performance/performance';
             $data['js'] = 'script/detail-performance';
-            $data['modal'] = 'modal/leave';
+            $data['modal'] = 'modal/performance';
+
+            $id = $this->input->get('id');
+            $data['id'] = $id; 
 
             $data_new_emp = array();
             $i=0;
-            foreach($this->admin->getDetailPersonPerformance($this->session->userdata('user_id')) as $r) {
+            foreach($this->admin->getDetailPersonPerformance($id) as $r) {
                 $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
                 if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
-                    $url = base_url() .'assets/profile/no-profile-copy.png' ; 
+                    $url = base_url() .'assets/profile/nophoto.jpg' ; 
                 }
 
-                $url_head = base_url() .'assets/profile/'. $r->IdHead .'.jpg' ; 
-                if(!$this->admin->checkRemoteFile($r->IdHead .'.jpg')){
-                    $url_head = base_url() .'assets/profile/no-profile-copy.png' ; 
+                $IdHead = $this->db->get_where('Employee', array('Recnum' => $r->RecnumHead1))->result();
+            
+                $url_head = base_url() .'assets/profile/'. $IdHead[0]->EmployeeId .'.jpg' ; 
+                if(!$this->admin->checkRemoteFile($IdHead[0]->EmployeeId .'.jpg')){
+                    $url_head = base_url() .'assets/profile/nophoto.jpg' ; 
                 }
 
                 $data_new_emp[$i]['EmployeeId'] = $r->EmployeeId;
@@ -119,22 +124,24 @@ class EmployeePerformance extends CI_Controller {
                 $i++;
             }
             $data['detail'] = $data_new_emp;
-            //$data['detail'] = $this->admin->getDetailPersonPerformance($this->session->userdata('user_id'));
+           
             $cek_subordinat = $this->admin->getSubOrdinat($this->session->userdata('user_id'));
-
 
             $subordinat = array();
             $i=0;
             foreach($cek_subordinat as $r) {
                 $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
                 if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
-                    $url = base_url() .'assets/profile/no-profile-copy.png' ; 
+                    $url = base_url() .'assets/profile/nophoto.jpg' ; 
                 }
                 $subordinat[$i]['url'] = $url;
                 $subordinat[$i] = (object) $subordinat[$i];
                 $i++;
             }
             $data['subordinat'] = $subordinat;
+            $data['keyperformancescore'] = $this->admin->getmaster('ScoreKeyPerformance');
+            $data['keypercompetency'] = $this->admin->getmaster('ScoreCompetency');
+            $data['calc'] = $this->admin->getmaster('CalculationMethod');
             //print_r($data['subordinat']);exit();
             $this->load->view('home',$data,FALSE); 
 
@@ -167,8 +174,7 @@ class EmployeePerformance extends CI_Controller {
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
 
-
-        $row_data = $this->Datatabel->get_KPM($this->session->userdata('user_id'));
+        $row_data = $this->Datatabel->get_KPM($this->input->get("id"));
 
         $data = array();
 
@@ -182,6 +188,9 @@ class EmployeePerformance extends CI_Controller {
                     $r->Score,
                     $r->TotalScore,
                     $r->Remark,
+                    '<button type="button" class="btnEdit btn btn-block btn-sm" onclick="editmodal(this)"  data-id="'.$r->Recnum.'">
+                        Edit
+                      </button>',
                );
           }
 
@@ -191,9 +200,104 @@ class EmployeePerformance extends CI_Controller {
                  "recordsFiltered" => $row_data->num_rows(),
                  "data" => $data
             );
+
           echo json_encode($output);
           exit();
 
+    }
+
+    public function ListCompetency()
+    {
+        
+        $draw = intval($this->input->get("draw"));
+        $start = intval($this->input->get("start"));
+        $length = intval($this->input->get("length"));
+
+        $row_data = $this->Datatabel->get_Competency($this->input->get("id"));
+
+        $data = array();
+
+        foreach($row_data->result() as $r) {
+               $data[] = array(
+                    $r->Competency,
+                    $r->CompetencyGroup,
+                    $r->IsTarget,
+                    $r->IsActual,
+                    // $r->Gap,
+                    '<button type="button" class="btnEdit btn btn-block btn-sm" onclick="editmodal_2(this)"  data-id="'.$r->Recnum.'">
+                        Edit
+                      </button>',
+               );
+          }
+
+          $output = array(
+               "draw" => $draw,
+                 "recordsTotal" => $row_data->num_rows(),
+                 "recordsFiltered" => $row_data->num_rows(),
+                 "data" => $data
+            );
+          
+          echo json_encode($output);
+          exit();
+
+    }
+
+    public function SaveKPR()
+    {       
+        
+        $response = [];
+        $response['error'] = TRUE; 
+        $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+        $recLogin = $this->session->userdata('user_id');
+        $data = array(
+            'RecnumEmpPerformance'  => $this->input->get('id'),
+            'IsDesc'                => $this->input->get('IsDesc'),
+            'WeightPercentage'      => $this->input->get('WeightPercentage'),
+            'RecnumCalculationMethod' => $this->input->get('calc'),
+            'IsTarget'          => format_data($this->input->get("IsTarget"), 'number'),
+            'IsActual'          => format_data($this->input->get("IsActual"), 'number'),
+            'Remark'            => $this->input->get('remark'),              
+        );
+
+        //print("<pre>".print_r($data,true)."</pre>");exit();
+
+        $this->db->trans_begin();
+
+        if($this->input->get('txtRecnum') != "") {
+            $data['EditBy'] = $recLogin;
+            $data['EditDate'] = date('Y-m-d');
+
+            $this->db->set($data);
+            $this->db->where('Recnum', $this->input->get('txtRecnum'));
+            $result  =  $this->db->update('PerformanceKPM');  
+
+            if(!$result){
+                print("<pre>".print_r($this->db->error(),true)."</pre>");
+            }else{
+                $response['error']= FALSE;
+            }
+        }else{
+            $data['CreateBy'] = $recLogin;
+            $data['CreateDate'] = date('Y-m-d');
+
+            $result  = $this->db->insert('PerformanceKPM', $data);
+            
+            if(!$result){
+                print("<pre>".print_r($this->db->error(),true)."</pre>");
+            }else{
+                $response['error']= FALSE;
+            }
+        }
+
+        $this->db->trans_complete();
+                            
+      $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+
+    public function edit(){
+        $id = $this->input->get('id'); 
+        $data = $this->admin->getmaster('PerformanceKPM',"Recnum=" . $id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
 }

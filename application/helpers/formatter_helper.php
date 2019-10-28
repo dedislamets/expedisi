@@ -39,6 +39,14 @@ function format_data($data, $tipe_data = "")
                     $res_data =  '1900-01-01 ' . $data;
                 }
                 
+            }elseif ($tipe_data == 'number') {
+
+                if(empty($data)){
+                    $res_data =  0;
+                }else{
+                    $res_data =  implode("", explode(",", $data));
+                }
+                
             }
 
         } elseif (is_int($data)) {
