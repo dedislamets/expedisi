@@ -23,13 +23,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="code">Code Structure</label>
+			<label class="col-sm-3 control-label no-padding-right" for="code">Code Structure<span style="color:red"> *</span></label>
 			<div class="col-sm-9">
 				<input type="text" id="code" name="code" placeholder="" class="form-control" value="" maxlength="30" />
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="OrgName">Position Name</label>
+			<label class="col-sm-3 control-label no-padding-right" for="OrgName">Position Name<span style="color:red"> *</span></label>
 			<div class="col-sm-9">
 				<input type="text" id="OrgName" name="OrgName" class="form-control" maxlength="300" />
 			</div>
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="Sort">Effective Date</label>
+			<label class="col-sm-3 control-label no-padding-right" for="Sort">Effective Date<span style="color:red"> *</span></label>
 			<div class="col-sm-4 no-padding-right">
 				<div class="input-group">
 					<input class="form-control date-picker" id="dateRangeStart" name="dateRangeStart" type="text" data-date-format="dd-mm-yyyy" />

@@ -64,18 +64,18 @@
             editurl: 'clientArray',
             datatype: "json",
 			height: 250,
-			colNames:['Actions','Emp.ID','Name','Section','Position','Status'],
+			colNames:['Emp.ID','Name','Section','Position','Status'],
 			colModel:[
-				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-					formatter:'actions', 
-					formatoptions:{ 
-						keys:true,
-						delbutton: false,//disable delete button
+				// {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				// 	formatter:'actions', 
+				// 	formatoptions:{ 
+				// 		keys:true,
+				// 		delbutton: false,//disable delete button
 						
-						//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-						//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-					}
-				},
+				// 		//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+				// 		//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+				// 	}
+				// },
 				{name:'EmployeeId',index:'EmployeeId', width:60,  editable: true},
 				{name:'EmployeeName',index:'EmployeeName',width:150, editable:true,},
 				{name:'Section',index:'Section', width:90,editable: true,editoptions:{size:"20",maxlength:"30"}},
@@ -335,16 +335,17 @@
 					var html = $(".grab").clone();
 					
 		 			bootboxmodal('Input Class', renameCloneIdsAndNames(html,'Add'));
+		 			$("#parentIDEdit").removeAttr("disabled");
 					$("#SortAdd").val(1);
 					$("#EmpReqAdd").val(0);
 					$("<span id='Recnum' data-id=''></span").appendTo(".modal-footer");
 
 		 			$('.date-picker').datepicker({
 						showWeek: true,
-        onSelect: function(dateText, inst) {
-        	alert(dateText);
-            $(this).val("'Week Number '" + $.datepicker.iso8601Week(new Date(dateText)));
-        }
+				        onSelect: function(dateText, inst) {
+				        	alert(dateText);
+				            $(this).val("'Week Number '" + $.datepicker.iso8601Week(new Date(dateText)));
+				        }
 					});
 					$('.dec2').priceFormat({
 				        prefix: '',
@@ -376,7 +377,8 @@
 		 			var html = $(".grab").clone();
 					
 		 			bootboxmodal('Edit Class', renameCloneIdsAndNames(html,'Edit'));
-		 			$.get('Klas/EditOrg', { id: node.id }, function(data){  			 				
+		 			$.get('Klas/EditOrg', { id: node.id }, function(data){  
+		 				$("#parentIDEdit").attr("disabled","disabled");			 				
 			 			$("#parentIDEdit").val(data["data"][0]["ParentId"]).trigger('chosen:updated');
 			 			$("#igolEdit").val(data["data"][0]["RecnumGolongan"]).trigger('chosen:updated');
 			 			$("#igradeEdit").val(data["data"][0]["RecnumGrade"]).trigger('chosen:updated');
@@ -440,7 +442,12 @@
 	        },
 	        'item3' : {
 	            'label' : 'Delete',
-	            'action' : function () { 
+	            'action' : function (e) {
+	            	var jml = $(e.reference).text().split("(")[1].replace(")","");
+	            	if(jml>0){
+	            		alert("Data tidak bisa dihapus");
+	            		return;
+	            	} 
 	            	var r = confirm("Yakin dihapus?");
 					if (r == true) {
 						var id= node.id; 
@@ -470,6 +477,7 @@
 			    noclose: {
 			        label: "Submit",
 			        callback: function(e){
+			        	$("#parentIDEdit").removeAttr("disabled");
 			        	if($("#Recnum").attr("data-id")==''){
 							$.validator.addMethod("valueNotEquals", function(value, element, arg){
 							  return arg !== value;

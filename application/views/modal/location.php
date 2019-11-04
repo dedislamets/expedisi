@@ -15,7 +15,7 @@
 		</div>
 		
 		<div class="form-group" >
-			<label class="col-sm-3 control-label no-padding-right" style="padding-top: 6px" for="code">City</label>
+			<label class="col-sm-3 control-label no-padding-right" style="padding-top: 6px" for="code">City<span style="color:red"> *</span></label>
 			<div class="col-sm-9" >
 				<select id="icity" name="icity" class="form-control" style="background-color: darkslategrey;color: #fff;">
 					<option value="0" selected>--Choose a City--</option>
@@ -29,7 +29,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="OrgName">Location Name</label>
+			<label class="col-sm-3 control-label no-padding-right" for="OrgName">Location Name<span style="color:red"> *</span></label>
 			<div class="col-sm-9">
 				<input type="text" id="OrgName" name="OrgName" class="form-control" maxlength="200" />
 			</div>
@@ -43,7 +43,7 @@
 			
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="Sort">Effective Date</label>
+			<label class="col-sm-3 control-label no-padding-right" for="Sort">Effective Date<span style="color:red"> *</span></label>
 			<div class="col-sm-4 no-padding-right">
 				<div class="input-group">
 					<input class="form-control date-picker" id="dateRangeStart" name="dateRangeStart" type="text" data-date-format="dd-mm-yyyy" />

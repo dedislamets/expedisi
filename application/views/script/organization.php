@@ -298,6 +298,7 @@
 					var html = $(".grab").clone();
 					
 		 			bootboxmodal('Input Section', renameCloneIdsAndNames(html,'Add'));
+		 			$("#parentIDEdit").removeAttr("disabled");
 		 			$("#parentIDAdd").val(node.id);
 					$("#parentIDAdd").attr('value',node.id);
 					$("#parentTextAdd").attr('value',node.text);
@@ -327,6 +328,7 @@
 		 			$.get('Organization/EditOrg', { id: node.id }, function(data){  			 				
 			 			$("#parentIDEdit").val(data["data"][0]["ParentId"]);
 						$("#parentIDEdit").attr('value',data["data"][0]["ParentId"]);
+						$("#parentIDEdit").attr("disabled","disabled");
 
 						$("#codeEdit").val(data["data"][0]["OrgId"]);
 						$("#codeEdit").attr('value',data["data"][0]["OrgId"]);
@@ -420,6 +422,7 @@
 						 	validator.valid();
 						 	$status = validator.form();
 						 	if($status) {	
+						 		$("#parentIDEdit").removeAttr("disabled");
 					        	var sParam = $('#FormAdd').serialize();
 					        	$.get('Organization/SaveOrg',sParam, function(data){
 									if(data.error==false){				
@@ -457,6 +460,7 @@
 						 	validator.valid();
 						 	$status = validator.form();
 						 	if($status) {	
+						 		$("#parentIDEdit").removeAttr("disabled");
 					        	var sParam = $('#FormEdit').serialize()+ "&Recnum="+ $("#Recnum").attr("data-id");
 					        	$.get('Organization/UpdateOrg',sParam, function(data){
 									if(data.error==false){				

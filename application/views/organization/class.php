@@ -49,7 +49,7 @@
 						<div class="widget-body">
 							<div class="widget-main padding-8">
 								<div class="form-group" >
-									<label class="col-sm-3 control-label no-padding-right" style="padding-top: 6px" for="code">Golongan</label>
+									<label class="col-sm-3 control-label no-padding-right" style="padding-top: 6px" for="code">Golongan </label>
 									<div class="col-sm-9" >
 										<select id="gol" name="gol" class="chosen-select form-control" style="background-color: darkslategrey;color: #fff;">
 											<option value="0" selected>--Choose a Golongan--</option>

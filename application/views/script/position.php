@@ -9,6 +9,7 @@
 		$('#jstree').jstree(true).refresh();
 	});
 	function gridview(val){
+	
 		var grid_selector = "#grid-table";
 		var pager_selector = "#grid-pager";
 		
@@ -34,18 +35,9 @@
             editurl: 'clientArray',
             datatype: "json",
 			height: 250,
-			colNames:['Actions','Emp.ID','Name','Section','Position','Status'],
+			colNames:['Emp.ID','Name','Section','Position','Status'],
 			colModel:[
-				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-					formatter:'actions', 
-					formatoptions:{ 
-						keys:true,
-						delbutton: false,//disable delete button
-						
-						//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-						//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-					}
-				},
+				
 				{name:'EmployeeId',index:'EmployeeId', width:60,  editable: true},
 				{name:'EmployeeName',index:'EmployeeName',width:150, editable:true,},
 				{name:'Section',index:'Section', width:90,editable: true,editoptions:{size:"20",maxlength:"30"}},
@@ -302,7 +294,7 @@
 					var html = $(".grab").clone();
 					
 		 			bootboxmodal('Input Position', renameCloneIdsAndNames(html,'Add'));
-		 			
+		 			$("#parentIDEdit").removeAttr("disabled");		
 					$("#parentTextAdd").attr('value',node.text);
 					$("#parentTextAdd").val(node.text);
 					$("#SortAdd").val(1);
@@ -338,7 +330,8 @@
 		 			var html = $(".grab").clone();
 					
 		 			bootboxmodal('Edit Position', renameCloneIdsAndNames(html,'Edit'));
-		 			$.get('Position/EditOrg', { id: node.id }, function(data){  			 				
+		 			$.get('Position/EditOrg', { id: node.id }, function(data){  
+		 				$("#parentIDEdit").attr("disabled","disabled");					 				
 			 			$("#parentIDEdit").val(data["data"][0]["ParentId"]);
 						$("#parentIDEdit").attr('value',data["data"][0]["ParentId"]);
 
@@ -412,6 +405,8 @@
 			    noclose: {
 			        label: "Submit",
 			        callback: function(e){
+			        	debugger;
+			        	$("#parentIDEdit").removeAttr("disabled");
 			        	if($("#Recnum").attr("data-id")==''){
 			        		var validator = $('#FormAdd').validate({
 							rules: {
