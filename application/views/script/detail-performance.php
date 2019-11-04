@@ -56,6 +56,36 @@
 			"ordering": false,
 			"destroy": true,
 	    });
+	    $('#ViewTable_summary_1').DataTable({
+			ajax: {		            
+	            "url": "ListSummaryPerformance",
+	            "type": "GET",
+	            "data":{'id': $("#txtID").val()},
+	        },			
+			"bPaginate": true,	
+			"ordering": false,
+			"destroy": true,
+	    });
+	    $('#ViewTable_summary_2').DataTable({
+			ajax: {		            
+	            "url": "ListSummaryCompetency",
+	            "type": "GET",
+	            "data":{'id': $("#txtID").val()},
+	        },			
+			"bPaginate": true,	
+			"ordering": false,
+			"destroy": true,
+	    });
+	    $('#ViewTable_summary_3').DataTable({
+			ajax: {		            
+	            "url": "ListSummary",
+	            "type": "GET",
+	            "data":{'id': $("#txtID").val()},
+	        },			
+			"bPaginate": true,	
+			"ordering": false,
+			"destroy": true,
+	    });
 
 	    $('#btnRefresh').on('click', function (event) {
 	    	showloader('body');

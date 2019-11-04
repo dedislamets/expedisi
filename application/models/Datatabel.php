@@ -31,6 +31,21 @@ class Datatabel extends CI_Model
         $query = $this->db->query("SELECT * from Fn_ListPerformanceCompetency (". $id.")");
         return $query;
     }
+    public function get_Summary_Performance($id)
+    {
+        $query = $this->db->query("SELECT * from Fn_SummaryPerformanceCompetency (". $id.")");
+        return $query;
+    }
+    public function get_Summary_Competency($id)
+    {
+        $query = $this->db->query("SELECT * from Fn_SummaryPerformanceKPM (". $id.")");
+        return $query;
+    }
+    public function get_Summary($id)
+    {
+        $query = $this->db->query("SELECT * from Fn_TotalSummaryEmpPerformance (". $id.")");
+        return $query;
+    }
     public function get_list_day($start,$end)
     {
         $query = $this->db->query("WITH date_range (calc_date) AS (

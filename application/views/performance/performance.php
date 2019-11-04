@@ -334,57 +334,95 @@
         </div>
         <div id="education" class="tab-pane fade">
           <div class="table-responsive">
-            <table id="ViewTable_summary_1" class="table table-striped table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Emp. ID</th>
-                  <th>Employee Name</th>
-                  <th>Department</th>
-                  <th>Location Name</th> 
-                  <th>Working Status</th>
-                  <th>Class</th>
-                  <th>Position Structural</th>                
-                  <th>Join Date</th>
-                </tr>
-              </thead>
-              <tbody>                                    
-              </tbody>
-            </table>
-            <table id="ViewTable_summary_2" class="table table-striped table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Emp. ID</th>
-                  <th>Employee Name</th>
-                  <th>Department</th>
-                  <th>Location Name</th> 
-                  <th>Working Status</th>
-                  <th>Class</th>
-                  <th>Position Structural</th>                
-                  <th>Join Date</th>
-                </tr>
-              </thead>
-              <tbody>                                    
-              </tbody>
-            </table>
-            <table id="ViewTable_summary_3" class="table table-striped table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Emp. ID</th>
-                  <th>Employee Name</th>
-                  <th>Department</th>
-                  <th>Location Name</th> 
-                  <th>Working Status</th>
-                  <th>Class</th>
-                  <th>Position Structural</th>                
-                  <th>Join Date</th>
-                </tr>
-              </thead>
-              <tbody>                                    
-              </tbody>
-            </table>
+          
+            <div class="widget-box widget-color-blue2">
+              <div class="widget-header">
+                <h4 class="widget-title lighter smaller"> 
+                </h4>
+                  Summary Performance
+                <div style="float: right;padding-top: 5px;padding-right: 5px">
+                  <button class='btn btn-sm btn-white btn-success' id="btnRefresh_2"><i class='ace-icon fa fa-refresh'></i>
+                  Refresh</button>
+                </div>
+              </div>
+
+              <div class="widget-body">
+                <div class="widget-main padding-8">      
+                  <table  style="width: 100%"  id="ViewTable_summary_1" class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Performance</th>
+                        <th>Score</th>
+                        <th>Bobot</th>
+                        <th>Total Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>                                    
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="widget-box widget-color-blue2">
+              <div class="widget-header">
+                <h4 class="widget-title lighter smaller"> 
+                </h4>
+                  Summary Competency
+                <div style="float: right;padding-top: 5px;padding-right: 5px">
+                  <button class='btn btn-sm btn-white btn-success' id="btnRefresh_2"><i class='ace-icon fa fa-refresh'></i>
+                  Refresh</button>
+                </div>
+              </div>
+
+              <div class="widget-body">
+                <div class="widget-main padding-8">      
+                  <table  style="width: 100%"  id="ViewTable_summary_2" class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Competency</th>
+                        <th>Score</th>
+                        <th>Bobot</th>
+                        <th>Total Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>                                    
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="widget-box widget-color-blue2">
+              <div class="widget-header">
+                <h4 class="widget-title lighter smaller"> 
+                </h4>
+                  Summary
+                <div style="float: right;padding-top: 5px;padding-right: 5px">
+                  <button class='btn btn-sm btn-white btn-success' id="btnRefresh_2"><i class='ace-icon fa fa-refresh'></i>
+                  Refresh</button>
+                </div>
+              </div>
+
+              <div class="widget-body">
+                <div class="widget-main padding-8">      
+                  <table  style="width: 100%"  id="ViewTable_summary_3" class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Summary</th>
+                        <th>Score</th>
+                        <th>Bobot</th>
+                        <th>Total Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>                                    
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            
             
           </div>
 

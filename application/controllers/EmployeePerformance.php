@@ -241,6 +241,100 @@ class EmployeePerformance extends CI_Controller {
           exit();
 
     }
+    public function ListSummaryPerformance()
+    {
+        
+        $draw = intval($this->input->get("draw"));
+        $start = intval($this->input->get("start"));
+        $length = intval($this->input->get("length"));
+
+        $row_data = $this->Datatabel->get_Summary_Performance($this->input->get("id"));
+
+        $data = array();
+
+        foreach($row_data->result() as $r) {
+               $data[] = array(
+                    $r->Category,
+                    $r->IsScore,
+                    $r->IsWeight,
+                    $r->TotalScore,
+               );
+          }
+
+          $output = array(
+               "draw" => $draw,
+                 "recordsTotal" => $row_data->num_rows(),
+                 "recordsFiltered" => $row_data->num_rows(),
+                 "data" => $data
+            );
+          
+          echo json_encode($output);
+          exit();
+
+    }
+    public function ListSummaryCompetency()
+    {
+        
+        $draw = intval($this->input->get("draw"));
+        $start = intval($this->input->get("start"));
+        $length = intval($this->input->get("length"));
+
+        $row_data = $this->Datatabel->get_Summary_Competency($this->input->get("id"));
+
+        $data = array();
+
+        foreach($row_data->result() as $r) {
+               $data[] = array(
+                    $r->Category,
+                    $r->IsScore,
+                    $r->IsWeight,
+                    $r->TotalScore,
+               );
+          }
+
+          $output = array(
+               "draw" => $draw,
+                 "recordsTotal" => $row_data->num_rows(),
+                 "recordsFiltered" => $row_data->num_rows(),
+                 "data" => $data
+            );
+          
+          echo json_encode($output);
+          exit();
+
+    }
+
+    public function ListSummary()
+    {
+        
+        $draw = intval($this->input->get("draw"));
+        $start = intval($this->input->get("start"));
+        $length = intval($this->input->get("length"));
+
+        $row_data = $this->Datatabel->get_Summary($this->input->get("id"));
+
+        $data = array();
+
+        foreach($row_data->result() as $r) {
+               $data[] = array(
+                    $r->Category,
+                    $r->IsScore,
+                    $r->IsWeight,
+                    $r->TotalScore,
+               );
+          }
+
+          $output = array(
+               "draw" => $draw,
+                 "recordsTotal" => $row_data->num_rows(),
+                 "recordsFiltered" => $row_data->num_rows(),
+                 "data" => $data
+            );
+          
+          echo json_encode($output);
+          exit();
+
+    }
 
     public function SaveKPR()
     {       
