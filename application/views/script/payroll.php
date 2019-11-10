@@ -109,12 +109,15 @@
         });
 
         $('#btnFind').on('click', function (event) {
+            showloader('#ModalFind');
             var checked_courses = $('#iframe').contents().find('input[name="selected_courses[]"]:checked').length;
             if (checked_courses != 0) {
                 CheckedTrue();
+                
             } else {
-                alert("Silahkan pilih terlebih dahulu");
+                //alert("Silahkan pilih terlebih dahulu");
             }
+            hideloader();
         });
     });
 

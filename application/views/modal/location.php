@@ -1,7 +1,7 @@
 <div class="hidden">
 	<form id="Form" name ="Form" class="grab form-horizontal" role="form">
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="parentID">Parent</label>
+			<label class="col-sm-3 control-label no-padding-right" for="parentID">Parent <span style="color:red"> *</span></label>
 			<div class="col-sm-9">
 				<select id="parentID" name="parentID" class="form-control">
                     <?php 

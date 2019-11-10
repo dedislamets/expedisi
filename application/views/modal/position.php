@@ -1,7 +1,7 @@
 <div class="hidden">
 	<form id="Form" name ="Form" class="grab form-horizontal" role="form">
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="parentID">Parent</label>
+			<label class="col-sm-3 control-label no-padding-right" for="parentID">Parent<span style="color:red"> *</span></label>
 			<div class="col-sm-9">
 				<select id="parentID" name="parentID" class="form-control">
                     <?php 
@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="jenis">Type</label>
+			<label class="col-sm-3 control-label no-padding-right" for="jenis">Type <span style="color:red"> *</span></label>
 			<div class="col-sm-9">
 				<select id="jenis" name="jenis" class="form-control" disabled>
                     <option value="1">Structural</option>
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label no-padding-right" for="code">Code Structure<span style="color:red"> *</span></label>
+			<label class="col-sm-3 control-label no-padding-right" for="code">Position Code<span style="color:red"> *</span></label>
 			<div class="col-sm-9">
 				<input type="text" id="code" name="code" placeholder="" class="form-control" value="" maxlength="30" />
 			</div>

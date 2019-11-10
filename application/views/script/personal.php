@@ -31,7 +31,7 @@
 		autoclose: true,
 		todayHighlight: true
 	});//.datepicker("setDate", new Date());
-	myTable = $('#ViewTable').DataTable({
+	myTabel  = $('#ViewTable').DataTable({
 		     	//processing	: true,
 				//serverSide	: true,
 				ajax: {		            
@@ -66,6 +66,44 @@
 			      
 			    }
 		    });
+
+
+    $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
+    
+    new $.fn.dataTable.Buttons( myTabel , {
+                    buttons: [
+                      
+                      {
+                        "extend": "csv",
+                        "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>Export to CSV</span>",
+                        "className": "btn btn-white btn-primary btn-bold"
+                      },
+                      {
+                        "extend": "excel",
+                        "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'>Export to Excel</span>",
+                        "className": "btn btn-white btn-primary btn-bold"
+                      },
+                      {
+                        "extend": "pdf",
+                        "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>Export to PDF</span>",
+                        "className": "btn btn-white btn-primary btn-bold"
+                      }     
+                    ]
+                } );
+    myTabel .buttons().container().appendTo( $('.tableTools-container') );
+    
+    
+    ////
+
+    setTimeout(function() {
+        $($('.tableTools-container')).find('a.dt-button').each(function() {
+            var div = $(this).find(' > div').first();
+            if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
+            else $(this).tooltip({container: 'body', title: $(this).text()});
+        });
+    }, 500);
+    
+    
 
 	function showModal(empid){
 		$.get("<?php echo base_url(); ?>PersonalAdministration/get_foto_profil",{id: empid}, function(data){    
@@ -287,8 +325,8 @@
                 tabel += '<tr>';
                 tabel += '<td>'+ (index+1) +'</td>';
                 tabel += '<td><a href="javascript:void(0)" onclick="EditModalInventory(\''+ data['inventaris'][index]["Recnum"] +'\')">'+ data['inventaris'][index]["InventoryName"] +'</a></td>';
-                tabel += '<td>'+ formatnomor(data['inventaris'][index]["Jumlah"]) +'</td>';
-                tabel += '<td>'+ moment(data['inventaris'][index]["ReceiveDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<td>'+ formatnomor(data['inventaris'][index]["Total"]) +'</td>';
+                //tabel += '<td>'+ moment(data['inventaris'][index]["ReceiveDate"]).format('DD MMM YYYY') +'</td>';
                 tabel += '<td>'+ moment(data['inventaris'][index]["ExpiredDate"]).format('DD MMM YYYY') +'</td>';
                 tabel += '<td>'+ data['inventaris'][index]["StatusInventory"] +'</td>';
                 tabel += '<td>'+ (data['inventaris'][index]["ReturnDate"]== null ? '': moment(data['inventaris'][index]["ReturnDate"]).format('DD MMM YYYY'))  +'</td>';
@@ -1361,4 +1399,42 @@
             	$('#'+kel).val(val).trigger('chosen:updated');			
 	    });
 	}
+    $('.btn-filter').on('click', function (event) {
+            showloader('body');
+            $("#iframe").attr('src','Iframe/dailyattendance');
+            $("#iframe").attr('frameBorder','0');
+            $("#iframe").attr('marginHeight','0px');
+            $("#iframe").attr('marginWidth','0px');
+            $("#iframe").attr('width','100%');
+            $("#iframe").attr('style','width:100%; height: 400px; display:block !important');
+            $('#ModalFind').modal({backdrop: 'static', keyboard: false}) ;
+            hideloader();
+        });
+    $('#btnFind').on('click', function (event) {
+        showloader('#ModalFind');
+        var checked_courses = $('#iframe').contents().find('input[name="selected_courses[]"]:checked').length;
+        if (checked_courses != 0) {
+            CheckedTrue();
+            
+        } else {
+            alert("Silahkan pilih terlebih dahulu");
+        }
+        hideloader();
+    });
+    function CheckedTrue() {
+        var b = $("#txtSelected");
+        b.val('');
+        var str = "";
+        var oTable = document.getElementById("iframe").contentWindow.oTable;
+        var rowcollection = oTable.$(':checkbox', { "page": "all" });
+        rowcollection.each(function () {
+            if (this.checked) {
+                str += this.value + ";";
+            }
+        });
+        b.val(str);                        
+        $('#ModalFind').modal('hide') ;
+        var action = $("#rAction input[type='radio']:checked").val();
+        myTabel .ajax.url("datatabel?advance=" + str).load();  
+    }
 </script>

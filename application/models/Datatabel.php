@@ -11,9 +11,13 @@ class Datatabel extends CI_Model
         //$this->datatables->where('email', $email);        
         return $this->datatables->generate();
     }
-    public function get_personal()
+    public function get_personal($advance="")
     {
-    	$query = $this->db->query("SELECT * FROM [Fn_EmpBrowse] ('','2019-01-01','1')");
+        $sql = "SELECT * FROM [Fn_EmpBrowse] ('','2019-01-01','1')";
+         if(!empty($advance)){
+                $sql .= " where EmployeeId in(" . $advance . ")";
+        }
+    	$query = $this->db->query($sql);
         return $query;
     }
     public function get_Performance()

@@ -86,7 +86,7 @@ class Admin extends CI_Model
         return $query->result();    
     }
     function getmastertraining(){
-        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM MateriTraining order by Recnum ASC');
+        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM TrnTheme order by Recnum ASC');
         return $query->result();    
     }
     function getmasterkaryawan(){
@@ -98,11 +98,11 @@ class Admin extends CI_Model
         return $query->result();    
     }
     function getmasterinventaris(){
-        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM Inventaris order by Recnum ASC');
+        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM Inventory order by Recnum ASC');
         return $query->result();    
     }
     function getmasterinventarisstatus(){
-        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM StatusInventaris order by Recnum ASC');
+        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM StatusInventory order by Recnum ASC');
         return $query->result();    
     }
 
@@ -456,13 +456,13 @@ class Admin extends CI_Model
         return $query->result_array();
     }
     function getTraining($EmployeeId){
-        $query = $this->db->query("SELECT A.*,B.IsName as materi from EmployeeTraining A left join MateriTraining B on A.RecnumMateriTraining=B.Recnum where RecnumEmployee='".$EmployeeId."'");
+        $query = $this->db->query("SELECT A.*,B.IsName as materi from EmployeeTraining A left join TrnTheme B on A.RecnumMateriTraining=B.Recnum where RecnumEmployee='".$EmployeeId."'");
         return $query->result_array();
     }
     function getInventaris($EmployeeId){
-        $query = $this->db->query("select B.*,A.IsName as InventoryName,C.IsName as StatusInventory from EmployeeInventaris B 
-            left join Inventaris A ON A.Recnum=B.RecnumInventaris
-            left join StatusInventaris C ON C.Recnum=B.RecnumStatusInventaris where RecnumEmployee='".$EmployeeId."' order by CreateDate asc");
+        $query = $this->db->query("select B.*,A.IsName as InventoryName,C.IsName as StatusInventory from EmployeeInventory B 
+            left join Inventory A ON A.Recnum=B.RecnumInventory
+            left join StatusInventory C ON C.Recnum=B.RecnumStatusInventory where RecnumEmployee='".$EmployeeId."' order by CreateDate asc");
         return $query->result_array();
     }
     function getClass($EmployeeId){

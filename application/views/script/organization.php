@@ -30,18 +30,18 @@
             editurl: 'clientArray',
             datatype: "json",
 			height: 250,
-			colNames:['Actions','Emp.ID','Name','Section','Position','Status'],
+			colNames:['Emp.ID','Name','Section','Position','Status'],
 			colModel:[
-				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-					formatter:'actions', 
-					formatoptions:{ 
-						keys:true,
-						delbutton: false,//disable delete button
+				// {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+				// 	formatter:'actions', 
+				// 	formatoptions:{ 
+				// 		keys:true,
+				// 		delbutton: false,//disable delete button
 						
-						//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
-						//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-					}
-				},
+				// 		//delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback},
+				// 		//editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+				// 	}
+				// },
 				{name:'EmployeeId',index:'EmployeeId', width:60,  editable: true},
 				{name:'EmployeeName',index:'EmployeeName',width:150, editable:true,},
 				{name:'Section',index:'Section', width:90,editable: true,editoptions:{size:"20",maxlength:"30"}},

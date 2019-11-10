@@ -35,7 +35,7 @@
             editurl: 'clientArray',
             datatype: "json",
 			height: 250,
-			colNames:['Emp.ID','Name','Section','Position','Status'],
+			colNames:['Emp.ID','Name','Section','Position Member','Status'],
 			colModel:[
 				
 				{name:'EmployeeId',index:'EmployeeId', width:60,  editable: true},

@@ -66,8 +66,16 @@ class PersonalAdministration extends CI_Controller {
           $start = intval($this->input->get("start"));
           $length = intval($this->input->get("length"));
 
+          $advance = $this->input->get('advance');
+          if(!empty($advance)){
+            $advance = substr($advance, 0, -1);
+            $advance = explode(";",$advance);
+            $advance = "'" . implode("','", $advance) . "'";
+          }
+          
+          //$books = $this->Datatabel->get_payroll_list($periode, $advance);
 
-          $books = $this->Datatabel->get_personal();
+          $books = $this->Datatabel->get_personal($advance);
 
           $data = array();
 
@@ -948,9 +956,9 @@ class PersonalAdministration extends CI_Controller {
 	  	$recLogin = $this->session->userdata('user_id');
 		$data = array(
 			'RecnumEmployee' 		=> $this->input->get('recnumid'),
-			'RecnumStatusInventaris' 	=> $this->input->get('item_status'),
-			'RecnumInventaris' 	=> $this->input->get('item'),
-		    'Jumlah' 			=> $this->input->get('qty'),		        
+			'RecnumStatusInventory' 	=> $this->input->get('item_status'),
+			'RecnumInventory' 	=> $this->input->get('item'),
+		    'Total' 			=> $this->input->get('qty'),		        
 		);
 
 		if(!empty($this->input->get('return_date'))){
@@ -969,7 +977,7 @@ class PersonalAdministration extends CI_Controller {
 
         	$this->db->set($data);
 		   	$this->db->where('Recnum', $this->input->get('RecnumInventaris'));
-		   	$result  =  $this->db->update('EmployeeInventaris');	
+		   	$result  =  $this->db->update('EmployeeInventory');	
 
 		   	if(!$result){
 	        	print("<pre>".print_r($this->db->error(),true)."</pre>");
@@ -977,11 +985,10 @@ class PersonalAdministration extends CI_Controller {
 	        	$response['error']= FALSE;
 	        }
         }else{
-        	$data['ReceiveDate'] = date('Y-m-d');;
         	$data['CreateBy'] = $recLogin;
         	$data['CreateDate'] = date('Y-m-d');
 
-        	$result  = $this->db->insert('EmployeeInventaris', $data);
+        	$result  = $this->db->insert('EmployeeInventory', $data);
 	        
 	        if(!$result){
 	        	print("<pre>".print_r($this->db->error(),true)."</pre>");
