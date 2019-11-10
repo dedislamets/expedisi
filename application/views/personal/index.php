@@ -44,9 +44,9 @@
         <button class="btn btn-success" id="btnAdd">
               <i class="ace-icon fa fa-plus align-top bigger-125"></i>&nbsp;Add
         </button>
-        <button class="btn btn-warning">
+       <!--  <button class="btn btn-warning">
               <i class="ace-icon fa fa-book align-top bigger-125"></i>&nbsp;Export
-        </button>
+        </button> -->
         <button class="btn btn-filter pull-right">
               <i class="ace-icon fa fa-filter align-top bigger-125 "></i>&nbsp;Filter
         </button>
