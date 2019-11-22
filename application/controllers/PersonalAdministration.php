@@ -698,7 +698,7 @@ class PersonalAdministration extends CI_Controller {
 		$this->db->trans_begin();
 
         $this->db->from('EmployeeFamily');
-        $ck_status = $this->db->where('Recnum', $this->input->get('RecnumFamily'))->get();
+        $ck_status = $this->db->where('Recnum', empty($this->input->get('RecnumFamily'))? 0 : $this->input->get('RecnumFamily'))->get();
         if($ck_status->num_rows()>0) {
         	$this->db->set($data);
 		   	$this->db->where('Recnum', $this->input->get('RecnumFamily'));
@@ -1204,7 +1204,7 @@ class PersonalAdministration extends CI_Controller {
 			'RecnumComponentSalary' => $this->input->get('component'),
 			'SkNo' 				=> $this->input->get('SKNo4'),
 		    'Remark' 			=> $this->input->get('salary_remark'),		
-		    'Jumlah' 			=> $this->input->get('salary_value'),        
+		    'Total' 			=> $this->input->get('salary_value'),        
 		);
 
 		if(!empty($this->input->get('dateRangeStart_salary'))){

@@ -1,3 +1,10 @@
+<style type="text/css">
+ /* #modal-personal {
+    opacity: 1.5!important;
+  }
+  */
+
+</style>
 <div id="modal-personal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog mp" role="document">
     <div class="modal-content">
@@ -118,7 +125,14 @@
                                 <div class="form-group">
                                   <label class="col-sm-4 control-label no-padding-right" for="form-field-1-1"> Place Of Birth * </label>
                                   <div class="col-sm-8">
-                                    <input type="text" id="empplace" name="empplace" placeholder="" class="form-control" />
+                                  
+                                    <select class="chosen-select form-control" id="empplace" name="empplace">
+                                      <?php 
+                                      foreach($city as $row_city)
+                                      { 
+                                        echo '<option value="'.$row_city->Recnum.'">'.$row_city->IsDesc.'</option>';
+                                      }?>
+                                    </select>
                                   </div>
                                 </div>
                                 <div class="form-group">

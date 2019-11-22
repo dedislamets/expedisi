@@ -433,7 +433,7 @@ class Admin extends CI_Model
         return $query->result_array();
     }
     function getPunishment($EmployeeId){
-        $query = $this->db->query("select B.*,A.IsName as IsDesc from EmployeePunishment B left join PunishmentType A ON A.Recnum=B.RecnumEmployee where RecnumEmployee='".$EmployeeId."' order by CreateDate asc");
+        $query = $this->db->query("select B.*,A.IsName as IsDesc from EmployeePunishment B left join PunishmentType A ON A.Recnum=B.RecnumPunishmentType where RecnumEmployee='".$EmployeeId."' order by CreateDate asc");
         return $query->result_array();
     }
     function getFamilyStatus($EmployeeId){
@@ -456,7 +456,7 @@ class Admin extends CI_Model
         return $query->result_array();
     }
     function getTraining($EmployeeId){
-        $query = $this->db->query("SELECT A.*,B.IsName as materi from EmployeeTraining A left join TrnTheme B on A.RecnumMateriTraining=B.Recnum where RecnumEmployee='".$EmployeeId."'");
+        $query = $this->db->query("SELECT A.*,B.IsDesc as materi from EmployeeTraining A left join TrnTheme B on A.RecnumMateriTraining=B.Recnum where RecnumEmployee='".$EmployeeId."'");
         return $query->result_array();
     }
     function getInventaris($EmployeeId){

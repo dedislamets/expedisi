@@ -28,9 +28,9 @@
 	}
 	chosen();
 	$('.date-picker').datepicker({
-		autoclose: true,
+		autoclose: false,
 		todayHighlight: true
-	});//.datepicker("setDate", new Date());
+	});
 	myTabel  = $('#ViewTable').DataTable({
 		     	//processing	: true,
 				//serverSide	: true,
@@ -154,52 +154,53 @@
             if(checked){ $("#isLens").attr('checked','checked')}else{ $("#isLens").removeAttr('checked')}
             
             // Present Address
-        	$("#address").text(data['address'][0]['PAddress']);
-        	$("#rt").val(data['address'][0]['PRT']);
-        	$("#rw").val(data['address'][0]['PRW']);
-        	$("#pos").val(data['address'][0]['PPostCode']);
-        	$("#countryAddress").val(data['address'][0]['PRecnumCountry']).trigger('chosen:updated');
+   
+        	$("#address").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PAddress']));
+        	$("#rt").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRT']));
+        	$("#rw").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRW']));
+        	$("#pos").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PPostCode']));
+        	$("#countryAddress").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumCountry'])).trigger('chosen:updated');
 
-        	$("#prov").val(data['address'][0]['PRecnumProvince']).trigger('chosen:updated');
+        	$("#prov").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumProvince'])).trigger('chosen:updated');
         	setprov('prov','city');
         	setTimeout(function(){ 
-        		$("#city").val(data['address'][0]['PRecnumCity']).trigger('chosen:updated');
-        		setcity('city','state', data['address'][0]['PRecnumKecamatan']);
-        		setstate('state', 'kel',data['address'][0]['PRecnumKelurahan']);
+        		$("#city").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumCity'])).trigger('chosen:updated');
+        		setcity('city','state', (typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKecamatan']));
+        		setstate('state', 'kel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKelurahan']));
         	 }, 1000);
 
         	setTimeout(function(){ 
-        		setstate('state', 'kel',data['address'][0]['PRecnumKelurahan']);
+        		setstate('state', 'kel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKelurahan']));
         	 }, 3000);
 
-        	$("#name_emergency_1").val(data['address'][0]['EC1Name']);
-        	$("#relation_emergency_1").val(data['address'][0]['EC1Relation']);
-        	$("#phone2_emergency_1").val(data['address'][0]['EC1Handphone']);
-        	$("#address_emergency_1").text(data['address'][0]['EC1Address']);
+        	$("#name_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Name']));
+        	$("#relation_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Relation']));
+        	$("#phone2_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Handphone']));
+        	$("#address_emergency_1").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Address']));
 
         	// CUrrent Address
-        	$("#address_current").text(data['address'][0]['CAddress']);
-        	$("#rt_current").val(data['address'][0]['CRT']);
-        	$("#rw_current").val(data['address'][0]['CRW']);
-        	$("#pos_current").val(data['address'][0]['CPostCode']);
-        	$("#ccountryAddress").val(data['address'][0]['CRecnumCountry']).trigger('chosen:updated');
+        	$("#address_current").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CAddress']));
+        	$("#rt_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRT']));
+        	$("#rw_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRW']));
+        	$("#pos_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CPostCode']));
+        	$("#ccountryAddress").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumCountry'])).trigger('chosen:updated');
 
-        	$("#cprov").val(data['address'][0]['CRecnumProvince']).trigger('chosen:updated');
+        	$("#cprov").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumProvince'])).trigger('chosen:updated');
         	setprov('cprov','ccity');
         	setTimeout(function(){ 
-        		$("#ccity").val(data['address'][0]['CRecnumCity']).trigger('chosen:updated');
-        		setcity('ccity','cstate', data['address'][0]['CRecnumKecamatan']);
-        		setstate('cstate', 'ckel',data['address'][0]['CRecnumKelurahan']);
+        		$("#ccity").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumCity'])).trigger('chosen:updated');
+        		setcity('ccity','cstate', (typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKecamatan']));
+        		setstate('cstate', 'ckel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKelurahan']));
         	 }, 1000);
 
         	setTimeout(function(){ 
-        		setstate('cstate', 'ckel',data['address'][0]['CRecnumKelurahan']);
+        		setstate('cstate', 'ckel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKelurahan']));
         	 }, 3000);
 
-        	$("#name_emergency_2").val(data['address'][0]['EC2Name']);
-        	$("#relation_emergency_2").val(data['address'][0]['EC2Relation']);
-        	$("#phone2_emergency_2").val(data['address'][0]['EC2Handphone']);
-        	$("#address_emergency_2").text(data['address'][0]['EC2Address']);
+        	$("#name_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Name'])['EC2Name']);
+        	$("#relation_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Relation']));
+        	$("#phone2_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Handphone']));
+        	$("#address_emergency_2").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Address']));
 
         	// Family Detail
         	var tabel='';
