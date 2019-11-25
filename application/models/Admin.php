@@ -432,6 +432,14 @@ class Admin extends CI_Model
         $query = $this->db->query("select B.*,A.EmployeeName from EmployeeReward B left join Employee A ON A.Recnum=B.RecnumEmployee where RecnumEmployee='".$EmployeeId."' order by CreateDate asc");
         return $query->result_array();
     }
+    function getVehicle($EmployeeId){
+        $query = $this->db->query("select B.*,A.IsName from EmployeeHisVehicle B left join VehicleCode A ON A.Recnum=B.RecnumVehicleCode where RecnumEmployee='".$EmployeeId."' order by CreateDate asc");
+        return $query->result_array();
+    }
+    function getSIM($EmployeeId){
+        $query = $this->db->query("select B.*,A.IsName from EmployeeHisSim B left join SimCode A ON A.Recnum=B.RecnumSimCode where RecnumEmployee='".$EmployeeId."' order by CreateDate asc");
+        return $query->result_array();
+    }
     function getPunishment($EmployeeId){
         $query = $this->db->query("select B.*,A.IsName as IsDesc from EmployeePunishment B left join PunishmentType A ON A.Recnum=B.RecnumPunishmentType where RecnumEmployee='".$EmployeeId."' order by CreateDate asc");
         return $query->result_array();

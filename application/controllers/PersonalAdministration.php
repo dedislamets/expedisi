@@ -154,6 +154,19 @@ class PersonalAdministration extends CI_Controller {
   		$data['salary'] = $this->admin->getSalary($recnum);
   		$this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+    public function get_additional()
+    {
+      $id = $this->input->get('id'); 
+      $recnum='';
+      $data['basic'] = $this->admin->getEmployee($id);
+      if(count($data['basic'])>0){
+        $recnum = $data['basic'][0]['Recnum']; 
+      }
+
+      $data['vehicle'] = $this->admin->getVehicle($recnum);
+      $data['sim'] = $this->admin->getSIM($recnum);
+      $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
     public function getCity()
     {
     	$id = $this->input->get('id'); 
@@ -447,9 +460,11 @@ class PersonalAdministration extends CI_Controller {
 		    'PRT'			 	=> $this->input->get('rt'),	
 		    'PRW'			 	=> $this->input->get('rw'),	
 		    'PPostCode'			=> $this->input->get('pos'),
+        'PNo'           => $this->input->get('hp'),
+        'CNo'           => $this->input->get('hp_current'),
 		    'CAddress'			=> $this->input->get('address_current'),
-		    'CRT'				=> $this->input->get('rt_current'),
-		    'CRW'				=> $this->input->get('rw_current'),
+		    'CRT'				    => $this->input->get('rt_current'),
+		    'CRW'				    => $this->input->get('rw_current'),
 		    'CPostCode'			=> $this->input->get('pos_current'),
 		    'EC1Name'			=> $this->input->get('name_emergency_1'),
 		    'EC1Relation'		=> $this->input->get('relation_emergency_1'),
@@ -495,31 +510,31 @@ class PersonalAdministration extends CI_Controller {
 			$data['CRecnumKelurahan'] = $this->input->get('ckel');
 		}
 
-        $this->db->trans_begin();
+    $this->db->trans_begin();
 
-        $this->db->from('EmployeeAddress');
-        $ck_status = $this->db->where('RecnumEmployee', $this->input->get('recnumid'))->get();
-        if($ck_status->num_rows()>0) {
-        	$this->db->set($data);
-		   	$this->db->where('RecnumEmployee', $this->input->get('recnumid'));
-		   	$result  =  $this->db->update('EmployeeAddress');	
+    $this->db->from('EmployeeAddress');
+    $ck_status = $this->db->where('RecnumEmployee', $this->input->get('recnumid'))->get();
+    if($ck_status->num_rows()>0) {
+    	$this->db->set($data);
+   	$this->db->where('RecnumEmployee', $this->input->get('recnumid'));
+   	$result  =  $this->db->update('EmployeeAddress');	
 
-		   	if(!$result){
-	        	print("<pre>".print_r($this->db->error(),true)."</pre>");
-	        }else{
-	        	$response['error']= FALSE;
-	        }
-        }else{
-        	$result  = $this->db->insert('EmployeeAddress', $data);
-	        
-	        if(!$result){
-	        	print("<pre>".print_r($this->db->error(),true)."</pre>");
-	        }else{
-	        	$response['error']= FALSE;
-	        }
-        }
-        //echo $this->db->last_query();
-        $this->db->trans_complete();
+   	if(!$result){
+      	print("<pre>".print_r($this->db->error(),true)."</pre>");
+    }else{
+      	$response['error']= FALSE;
+      }
+    }else{
+    	$result  = $this->db->insert('EmployeeAddress', $data);
+      
+      if(!$result){
+      	print("<pre>".print_r($this->db->error(),true)."</pre>");
+      }else{
+      	$response['error']= FALSE;
+      }
+    }
+    //echo $this->db->last_query();
+    $this->db->trans_complete();
 
 	  						
 	  $this->output->set_content_type('application/json')->set_output(json_encode($response));
@@ -547,7 +562,7 @@ class PersonalAdministration extends CI_Controller {
 		$this->db->trans_begin();
 
         $this->db->from('EmployeeHisFamilyStatus');
-        $ck_status = $this->db->where('Recnum', $this->input->get('RecnumFamilyStatus'))->get();
+        $ck_status = $this->db->where('Recnum', (empty($this->input->get('RecnumFamilyStatus'))? 0 : $this->input->get('RecnumFamilyStatus')))->get();
         if($ck_status->num_rows()>0) {
         	$this->db->set($data);
 		   	$this->db->where('Recnum', $this->input->get('RecnumFamilyStatus'));

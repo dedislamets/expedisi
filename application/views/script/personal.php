@@ -197,7 +197,7 @@
         		setstate('cstate', 'ckel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKelurahan']));
         	 }, 3000);
 
-        	$("#name_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Name'])['EC2Name']);
+        	$("#name_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Name']));
         	$("#relation_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Relation']));
         	$("#phone2_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Handphone']));
         	$("#address_emergency_2").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Address']));
@@ -285,9 +285,13 @@
 
 			$(tabel).appendTo($("#tabel-training").children('tbody'));
 
+
         });
         $("#action").text('Edit');
-		$('#modal-personal').modal({backdrop: 'static', keyboard: false}) ;
+        $("#liFamily").removeClass("hidden");
+        $("#liAddress").removeClass("hidden");
+        $("#liEducation").removeClass("hidden");
+        $('#modal-personal').modal({backdrop: 'static', keyboard: false}) ;
 	}
     function showModal2(empid){
         $.get("<?php echo base_url(); ?>PersonalAdministration/get_employee_data",{id: empid}, function(data){ 
@@ -418,17 +422,49 @@
 
             // Reward
             var tabel='';
-            for (index = 0, len = data['reward'].length; index < len; ++index) {
+            // for (index = 0, len = data['reward'].length; index < len; ++index) {
+            //     tabel += '<tr>';
+            //     tabel += '<td>'+ (index+1) +'</td>';
+            //     tabel += '<td><a href="javascript:void(0)" onclick="EditModalReward(\''+ data['reward'][index]["Recnum"] +'\')">'+ data['reward'][index]["RewardDesc"] +'</a></td>';
+            //     tabel += '<td>'+ moment(data['reward'][index]["RewardDate"]).format('DD MMM YYYY') +'</td>';
+            //     tabel += '<td>'+ formatnomor(data['reward'][index]["Allowance"]) +'</td>';
+            //     tabel += '<tr>';                
+            // }
+            // $("#tabel-reward > tbody").html('');
+            // $(tabel).appendTo($("#tabel-reward").children('tbody'));
+
+            // Vehicle
+            tabel='';
+            for (index = 0, len = data['vehicle'].length; index < len; ++index) {
                 tabel += '<tr>';
                 tabel += '<td>'+ (index+1) +'</td>';
-                tabel += '<td><a href="javascript:void(0)" onclick="EditModalReward(\''+ data['reward'][index]["Recnum"] +'\')">'+ data['reward'][index]["RewardDesc"] +'</a></td>';
-                tabel += '<td>'+ moment(data['reward'][index]["RewardDate"]).format('DD MMM YYYY') +'</td>';
-                tabel += '<td>'+ formatnomor(data['reward'][index]["Allowance"]) +'</td>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalTraining(\''+ data['vehicle'][index]["Recnum"] +'\')">'+ data['vehicle'][index]["PoliceNo"] +'</a></td>';
+                tabel += '<td>'+ data['vehicle'][index]["FrameNo"] +'</td>';
+                tabel += '<td>'+ data['vehicle'][index]["MachineNo"] +'</td>';
+
+                tabel += '<td>'+ moment(data['vehicle'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
+                
+                tabel += '<td>'+ data['vehicle'][index]["Remark"] +'</td>';
                 tabel += '<tr>';                
             }
-            $("#tabel-reward > tbody").html('');
-            $(tabel).appendTo($("#tabel-reward").children('tbody'));
-           
+
+            $(tabel).appendTo($("#tabel-vehicle").children('tbody'));
+
+            // SIM
+            tabel='';
+            for (index = 0, len = data['sim'].length; index < len; ++index) {
+                tabel += '<tr>';
+                tabel += '<td>'+ (index+1) +'</td>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalTraining(\''+ data['sim'][index]["Recnum"] +'\')">'+ data['sim'][index]["IsName"] +'</a></td>';
+                tabel += '<td>'+ data['sim'][index]["SimNo"] +'</td>';
+
+                tabel += '<td>'+ moment(data['sim'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<td>'+ moment(data['sim'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<tr>';                
+            }
+
+            $(tabel).appendTo($("#tabel-sim").children('tbody'));
+
         });
         $('#modal-additional').modal({backdrop: 'static', keyboard: false}) ;
     }
@@ -804,6 +840,9 @@
     	$("#empid").removeAttr('readonly');
         $("#empname").val('');
         $("#empplace").val('');
+        $("#liFamily").addClass("hidden");
+        $("#liAddress").addClass("hidden");
+        $("#liEducation").addClass("hidden");
 	   	$('#modal-personal').modal({backdrop: 'static', keyboard: false});
 	});
 	$('#btnAddDetail').on('click', function () {

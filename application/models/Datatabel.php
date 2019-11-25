@@ -7,13 +7,13 @@ class Datatabel extends CI_Model
        	$this->load->library('datatables');
         
 		$this->datatables->select('*');
-        $this->datatables->from("[Fn_EmpBrowse] ('','2019-01-01','1')"); 
+        $this->datatables->from("[Fn_EmpBrowse] ('',GETDATE(),'1')"); 
         //$this->datatables->where('email', $email);        
         return $this->datatables->generate();
     }
     public function get_personal($advance="")
     {
-        $sql = "SELECT * FROM [Fn_EmpBrowse] ('','2019-01-01','1')";
+        $sql = "SELECT * FROM [Fn_EmpBrowse] ('',GETDATE(),'1')";
          if(!empty($advance)){
                 $sql .= " where EmployeeId in(" . $advance . ")";
         }

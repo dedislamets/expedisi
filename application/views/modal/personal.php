@@ -23,18 +23,18 @@
                     </a>
                   </li>
 
-                  <li>
+                  <li id="liFamily">
                     <a data-toggle="tab" href="#messages">
                       Family & Tax
                     </a>
                   </li>
 
-                  <li class="dropdown">
+                  <li class="dropdown" id="liAddress">
                     <a data-toggle="tab" href="#tab-address">
                       Address
                     </a>
                   </li>
-                  <li class="dropdown">
+                  <li class="dropdown" id="liEducation">
                     <a data-toggle="tab" href="#education">
                       Education
                     </a>
@@ -1724,12 +1724,11 @@
                               <thead>
                                 <tr>
                                   <th>No</th>
-                                  <th>Item</th>
-                                  <th>Qty</th>
-                                  <th>Receive Date</th> 
-                                  <th>Expired Date</th> 
-                                  <th>Status</th> 
-                                  <th>Return Date</th>          
+                                  <th>Police No</th>
+                                  <th>Frame No</th>
+                                  <th>Machine No</th> 
+                                  <th>Start Date</th> 
+                                  <th>Remark</th>          
                                 </tr>
                               </thead>
                               <tbody>    
@@ -1741,24 +1740,21 @@
                     </div>
                     <div class="widget-box">
                         <div class="widget-header">
-                          <h4 class="widget-title">STNK</h4>
+                          <h4 class="widget-title">SIM</h4>
                           <div class="widget-toolbar">
                              <button class="btn btn-sm btn-white btn-success btn-round" id="btnAddSTNK"><i class="ace-icon fa fa-plus red2"></i></button>
                           </div>
                         </div>
                         <div class="widget-body">
                           <div class="table-responsive">
-                            <table id="tabel-stnk" class="table table-striped table-bordered table-hover">
+                            <table id="tabel-sim" class="table table-striped table-bordered table-hover">
                               <thead>
                                 <tr>
                                   <th>No</th>
-                                  <th>Organization</th>
-                                  <th>Position Structural</th>
-                                  <th>Position Functional</th>
+                                  <th>SIM</th>
+                                  <th>SIM No</th>
                                   <th>Start Date</th>
-                                  <th>End Date</th>
-                                  <th>SK No.</th>
-                                  <th>Remark</th>          
+                                  <th>End Date</th>       
                                 </tr>
                               </thead>
                               <tbody>    

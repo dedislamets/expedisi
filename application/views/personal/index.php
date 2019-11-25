@@ -44,17 +44,15 @@
         <button class="btn btn-success" id="btnAdd">
               <i class="ace-icon fa fa-plus align-top bigger-125"></i>&nbsp;Add
         </button>
-       <!--  <button class="btn btn-warning">
-              <i class="ace-icon fa fa-book align-top bigger-125"></i>&nbsp;Export
-        </button> -->
-        <button class="btn btn-filter pull-right">
-              <i class="ace-icon fa fa-filter align-top bigger-125 "></i>&nbsp;Filter
-        </button>
-      </div>
-      <div>
-        <div class="clearfix">
-          <div class="pull-right tableTools-container"></div>
+        <div class="pull-right">
+          <div class="pull-right tableTools-container btn" style="padding: 2px 0;border: 2px solid #FFF;"></div>
+          <button class="btn btn-filter">
+                <i class="ace-icon fa fa-filter align-top bigger-125 "></i>&nbsp;Filter
+          </button>
         </div>
+      </div>
+      <div class="clearfix"></div>
+      <div>
         <div class="table-responsive">
           <table id="ViewTable" class="table table-striped table-bordered table-hover">
             <thead>
