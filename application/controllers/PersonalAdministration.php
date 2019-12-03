@@ -168,6 +168,7 @@ class PersonalAdministration extends CI_Controller {
 
       $data['vehicle'] = $this->admin->getVehicle($recnum);
       $data['sim'] = $this->admin->getSIM($recnum);
+      $data['experience'] = $this->admin->getExperience($recnum);
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
     public function getCity()

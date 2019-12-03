@@ -431,18 +431,20 @@
         $.get("<?php echo base_url(); ?>PersonalAdministration/get_additional",{id: empid}, function(data){ 
             $("#recnumid").val(data['basic'][0]['Recnum']);
             $("#empid").val(data['basic'][0]['EmployeeId']);
-            // Reward
+            // experience
             var tabel='';
-            // for (index = 0, len = data['reward'].length; index < len; ++index) {
-            //     tabel += '<tr>';
-            //     tabel += '<td>'+ (index+1) +'</td>';
-            //     tabel += '<td><a href="javascript:void(0)" onclick="EditModalReward(\''+ data['reward'][index]["Recnum"] +'\')">'+ data['reward'][index]["RewardDesc"] +'</a></td>';
-            //     tabel += '<td>'+ moment(data['reward'][index]["RewardDate"]).format('DD MMM YYYY') +'</td>';
-            //     tabel += '<td>'+ formatnomor(data['reward'][index]["Allowance"]) +'</td>';
-            //     tabel += '<tr>';                
-            // }
-            // $("#tabel-reward > tbody").html('');
-            // $(tabel).appendTo($("#tabel-reward").children('tbody'));
+            for (index = 0, len = data['experience'].length; index < len; ++index) {
+                tabel += '<tr>';
+                tabel += '<td>'+ (index+1) +'</td>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalReward(\''+ data['experience'][index]["Recnum"] +'\')">'+ data['experience'][index]["Company"] +'</a></td>';
+                tabel += '<td>'+ data['experience'][index]["Position"] +'</td>';
+                tabel += '<td>'+ moment(data['experience'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<td>'+ moment(data['experience'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<td>'+ data['experience'][index]["Remark"] +'</td>';
+                tabel += '<tr>';                
+            }
+            $("#tabel-reward > tbody").html('');
+            $(tabel).appendTo($("#tabel-reward").children('tbody'));
 
             // Vehicle
             tabel='';
@@ -1434,6 +1436,44 @@
         }
     });
     $('#btnSaveSalary').on('click', function () {
+        var valid = false;
+        var sParam = $('#form-input-salary').serialize()+ "&recnumid="+ $("#recnumid").val();
+
+        $.validator.addMethod("valueNotEquals", 
+            function(value, element, arg){
+                              return arg !== value;
+        }, "Value must not equal arg.");
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
+        var validator = $('#form-input-salary').validate({
+                            rules: {
+                                    component: {
+                                        valueNotEquals: "0"
+                                    },
+                                    dateRangeStart_salary: {
+                                        required: true
+                                    },
+                                }
+                            });
+        validator.valid();
+        $status = validator.form();
+        if($status) {
+            var link = 'PersonalAdministration/SaveSalary';
+            $.get(link,sParam, function(data){
+                if(data.error==false){                                  
+                    generateDataModalEmployee($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
+                }else{  
+                    $("#lblMessage").remove();
+                    alerterror(data.msg); 
+                    $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
+                                                                    
+                }
+            },'json');
+        }
+    });
+
+    $('#btnSaveExperience').on('click', function () {
         var valid = false;
         var sParam = $('#form-input-salary').serialize()+ "&recnumid="+ $("#recnumid").val();
 
