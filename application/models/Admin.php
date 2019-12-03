@@ -403,7 +403,7 @@ class Admin extends CI_Model
         return $query->result_array();
     }
     function getTabInv($id) {
-        $query = $this->db->query("SELECT * FROM EmployeeInventaris where Recnum='".$id."'");
+        $query = $this->db->query("SELECT * FROM EmployeeInventory where Recnum='".$id."'");
         return $query->result_array();
     }
     function getTabClass($id) {

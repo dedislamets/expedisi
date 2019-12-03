@@ -1053,6 +1053,7 @@
                       <label class="col-sm-3 control-label no-padding-right" for="blood">Blood *</label>
                       <div class="col-sm-9">
                         <select class="chosen-select form-control" id="fa_blood" name="fa_blood">
+                          <option value="0">-- Choose --</option>
                           <?php 
                           foreach($darah as $row_darah)
                           { 
@@ -1715,7 +1716,7 @@
                         <div class="widget-header">
                           <h4 class="widget-title">Vehicle</h4>
                           <div class="widget-toolbar">
-                             <button class="btn btn-sm btn-white btn-success btn-round" id="btnAddInventory"><i class="ace-icon fa fa-plus red2"></i></button>
+                             <button class="btn btn-sm btn-white btn-success btn-round" id="btnAddVehicle"><i class="ace-icon fa fa-plus red2"></i></button>
                           </div>
                         </div>
                         <div class="widget-body">
@@ -1742,7 +1743,7 @@
                         <div class="widget-header">
                           <h4 class="widget-title">SIM</h4>
                           <div class="widget-toolbar">
-                             <button class="btn btn-sm btn-white btn-success btn-round" id="btnAddSTNK"><i class="ace-icon fa fa-plus red2"></i></button>
+                             <button class="btn btn-sm btn-white btn-success btn-round" id="btnAddSIM"><i class="ace-icon fa fa-plus red2"></i></button>
                           </div>
                         </div>
                         <div class="widget-body">
@@ -1771,19 +1772,24 @@
                         <div class="widget-header">
                           <h4 class="widget-title">Membership</h4>
                           <div class="widget-toolbar">
-                             <button class="btn btn-sm btn-white btn-success btn-round" id="btnAddGrade"><i class="ace-icon fa fa-plus red2"></i></button>
+                             <button class="btn btn-sm btn-white btn-success btn-round" id="btnAddMembership"><i class="ace-icon fa fa-plus red2"></i></button>
                           </div>
                         </div>
                         <div class="widget-body">
                           <div class="table-responsive">
-                            <table id="tabel-grade" class="table table-striped table-bordered table-hover">
+                            <table id="tabel-membership" class="table table-striped table-bordered table-hover">
                               <thead>
                                 <tr>
                                   <th>No</th>
-                                  <th>Class</th>
+                                  <th>Membership Type</th>
+                                  <th>Membership No</th>
+                                  <th>Value From Employee</th>
+                                  <th>Percent From Employee</th>
+                                  <th>Value From Company</th>
+                                  <th>Percent From Company</th>
                                   <th>Start Date</th>
                                   <th>End Date</th>
-                                  <th>SK No.</th>
+                                  <th>Maximum Salary</th>
                                   <th>Remark</th>          
                                 </tr>
                               </thead>
@@ -1880,7 +1886,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Allowance</label>
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Allowance *</label>
                 <div class="col-sm-9">
                   <input type="number" id="allowance" name="allowance" placeholder="" value="0" class="form-control" />
                 </div>
@@ -2564,6 +2570,314 @@
   </div>
 </div>
 <div class="sub-modal-additional">
+  <div id="modal-experience" tabindex="-1" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+      <div class="modal-content">
+        <div class="modal-header table-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title "><span>Experience Input </span></h4>
+        </div>
+        <form id="form-input-experience" class="form-horizontal" role="form">
+          <div class="modal-body"> 
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Company *</label>
+              <div class="col-sm-9">
+                <input type="text" id="company" name="company" placeholder="" value="" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="Sort">Start </label>
+              <div class="col-sm-4 no-padding-right">
+                <div class="input-group">
+                  <input class="form-control date-picker" id="dateRangeStart_experience" name="dateRangeStart_experience" type="text" data-date-format="dd-mm-yyyy" />
+                  <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                  </span>
+                </div>
+              </div>
+              <label class="col-sm-1 control-label ">To</label>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input class="form-control date-picker" id="dateRangeEnd_experience" name="dateRangeEnd_experience" type="text" data-date-format="dd-mm-yyyy" />
+                  <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Netto</label>
+              <div class="col-sm-9">
+                <input type="number" id="netto" name="netto" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> PPH</label>
+              <div class="col-sm-9">
+                <input type="number" id="pph" name="pph" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Position</label>
+              <div class="col-sm-9">
+                <input type="text" id="experience_position" name="experience_position" placeholder="" value="" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="address"> Remark </label>
+
+              <div class="col-sm-9">
+                <textarea class="form-control" id="experience_remark" name="experience_remark" placeholder="" rows="4" maxlength="300"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btnSaveExperience">Save</button>
+            <input type="hidden" name="RecnumExperience" id="RecnumExperience" value="">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="modal-vehicle" tabindex="-1" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+      <div class="modal-content">
+        <div class="modal-header table-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title "><span>Salary Input </span></h4>
+        </div>
+        <form id="form-input-vehicle" class="form-horizontal" role="form">
+          <div class="modal-body"> 
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="blood">Vehicle Code</label>
+                <div class="col-sm-9">
+                  <select class="chosen-select form-control" id="vehicle_code" name="vehicle_code">
+                    <option value="0">-- Choose --</option>
+                    <?php 
+                    foreach($vehicle as $row)
+                    { 
+                      echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                    }?>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Police No. *</label>
+              <div class="col-sm-9">
+                <input type="text" id="police_no" name="police_no" placeholder="" value="" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Frame No.</label>
+              <div class="col-sm-9">
+                <input type="text" id="frame_no" name="frame_no" placeholder="" value="" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Machine No.</label>
+              <div class="col-sm-9">
+                <input type="text" id="machine_no" name="machine_no" placeholder="" value="" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="Sort">Start </label>
+              <div class="col-sm-4 no-padding-right">
+                <div class="input-group">
+                  <input class="form-control date-picker" id="dateRangeStart_vehicle" name="dateRangeStart_vehicle" type="text" data-date-format="dd-mm-yyyy" />
+                  <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                  </span>
+                </div>
+              </div>
+              <label class="col-sm-1 control-label ">To</label>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input class="form-control date-picker" id="dateRangeEnd_vehicle" name="dateRangeEnd_vehicle" type="text" data-date-format="dd-mm-yyyy" />
+                  <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="address"> Remark </label>
+
+              <div class="col-sm-9">
+                <textarea class="form-control" id="vehicle_remark" name="vehicle_remark" placeholder="" rows="4" maxlength="300"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btnSaveVehicle">Save</button>
+            <input type="hidden" name="RecnumVehicle" id="RecnumVehicle" value="">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="modal-sim" tabindex="-1" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+      <div class="modal-content">
+        <div class="modal-header table-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title "><span>SIM Input </span></h4>
+        </div>
+        <form id="form-input-sim" class="form-horizontal" role="form">
+          <div class="modal-body"> 
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="blood">SIM Code</label>
+                <div class="col-sm-9">
+                  <select class="chosen-select form-control" id="sim_code" name="sim_code">
+                    <option value="0">-- Choose --</option>
+                    <?php 
+                    foreach($SIM as $row)
+                    { 
+                      echo '<option value="'.$row->Recnum.'">'.$row->IsName.'</option>';
+                    }?>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> SIM No. *</label>
+              <div class="col-sm-9">
+                <input type="text" id="sim_no" name="sim_no" placeholder="" value="" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="Sort">Start </label>
+              <div class="col-sm-4 no-padding-right">
+                <div class="input-group">
+                  <input class="form-control date-picker" id="dateRangeStart_sim" name="dateRangeStart_sim" type="text" data-date-format="dd-mm-yyyy" />
+                  <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                  </span>
+                </div>
+              </div>
+              <label class="col-sm-1 control-label ">To</label>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input class="form-control date-picker" id="dateRangeEnd_sim" name="dateRangeEnd_sim" type="text" data-date-format="dd-mm-yyyy" />
+                  <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="address"> Remark </label>
+
+              <div class="col-sm-9">
+                <textarea class="form-control" id="sim_remark" name="sim_remark" placeholder="" rows="4" maxlength="300"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btnSaveSIM">Save</button>
+            <input type="hidden" name="RecnumSIM" id="RecnumSIM" value="">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="modal-membership" tabindex="-1" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+      <div class="modal-content">
+        <div class="modal-header table-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title "><span>SIM Input </span></h4>
+        </div>
+        <form id="form-input-membership" class="form-horizontal" role="form">
+          <div class="modal-body"> 
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="blood">Membership Type *</label>
+                <div class="col-sm-9">
+                  <select class="chosen-select form-control" id="membership_type" name="membership_type">
+                    <option value="0">-- Choose --</option>
+                    <?php 
+                    foreach($membership as $row)
+                    { 
+                      echo '<option value="'.$row->Recnum.'">'.$row->IsDesc.'</option>';
+                    }?>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Membership No. *</label>
+              <div class="col-sm-9">
+                <input type="text" id="membership_no" name="membership_no" placeholder="" value="" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Value From Employee</label>
+              <div class="col-sm-9">
+                <input type="number" id="value_from_employee" name="value_from_employee" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Percent From Employee</label>
+              <div class="col-sm-9">
+                <input type="number" id="percent_from_employee" name="percent_from_employee" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Value From Company</label>
+              <div class="col-sm-9">
+                <input type="number" id="value_from_company" name="value_from_company" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Percent From Company</label>
+              <div class="col-sm-9">
+                <input type="number" id="percent_from_company" name="percent_from_company" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="Sort">Start </label>
+              <div class="col-sm-4 no-padding-right">
+                <div class="input-group">
+                  <input class="form-control date-picker" id="dateRangeStart_membership" name="dateRangeStart_membership" type="text" data-date-format="dd-mm-yyyy" />
+                  <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                  </span>
+                </div>
+              </div>
+              <label class="col-sm-1 control-label ">To</label>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <input class="form-control date-picker" id="dateRangeEnd_membership" name="dateRangeEnd_membership" type="text" data-date-format="dd-mm-yyyy" />
+                  <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Maximum Salary</label>
+              <div class="col-sm-9">
+                <input type="number" id="max_salary" name="max_salary" placeholder="" value="0" class="form-control" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-sm-3 control-label no-padding-right" for="address"> Remark </label>
+
+              <div class="col-sm-9">
+                <textarea class="form-control" id="membership_remark" name="membership_remark" placeholder="" rows="4" maxlength="300"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="btnSaveMembership">Save</button>
+            <input type="hidden" name="RecnumMembership" id="RecnumMembership" value="">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="modal fade" id="ModalFind" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

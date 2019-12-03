@@ -49,6 +49,9 @@ class PersonalAdministration extends CI_Controller {
 			$data['location'] = $this->admin->getmaster('Location');
 			$data['coa'] = $this->admin->getmaster('COA');
 			$data['component'] = $this->admin->getmaster('ComponentSalary');
+      $data['vehicle'] = $this->admin->getmaster('VehicleCode');
+      $data['SIM'] = $this->admin->getmaster('SimCode');
+      $data['membership'] = $this->admin->getmaster('MembershipType');
 
 			$this->load->view('home',$data,FALSE); 
 

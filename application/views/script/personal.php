@@ -103,10 +103,8 @@
         });
     }, 500);
     
-    
-
-	function showModal(empid){
-		$.get("<?php echo base_url(); ?>PersonalAdministration/get_foto_profil",{id: empid}, function(data){    
+    function generateDataModalEdit(empid){
+        $.get("<?php echo base_url(); ?>PersonalAdministration/get_foto_profil",{id: empid}, function(data){    
             $("#profileimg").attr("src",data+"?t=" + new Date().getTime());
         });
         $.get("<?php echo base_url(); ?>PersonalAdministration/get_biodata",{id: empid}, function(data){   
@@ -137,13 +135,13 @@
             $("#poh").val(data['basic'][0]['HomeBase']);
             $("#phone").val(data['basic'][0]['Handphone']);
             if(data['basic'][0]['DateOfBirth'] != null){
-            	$("#dateBirth").val(moment(data['basic'][0]['DateOfBirth']).format('DD-MM-YYYY'));
+                $("#dateBirth").val(moment(data['basic'][0]['DateOfBirth']).format('DD-MM-YYYY'));
             }
             if(data['basic'][0]['MarriedDate'] != null){
-            	$("#married").val(moment(data['basic'][0]['MarriedDate']).format('DD-MM-YYYY'));
+                $("#married").val(moment(data['basic'][0]['MarriedDate']).format('DD-MM-YYYY'));
             }
             if(data['basic'][0]['JoinDate'] != null){
-            	$("#join").val(moment(data['basic'][0]['JoinDate']).format('DD-MM-YYYY'));
+                $("#join").val(moment(data['basic'][0]['JoinDate']).format('DD-MM-YYYY'));
             }
             $("#country").val(data['basic'][0]['RecnumCountry']).trigger('chosen:updated');
             $("#religion").val(data['basic'][0]['RecnumReligion']).trigger('chosen:updated');
@@ -155,135 +153,141 @@
             
             // Present Address
    
-        	$("#address").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PAddress']));
-        	$("#rt").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRT']));
-        	$("#rw").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRW']));
-        	$("#pos").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PPostCode']));
-        	$("#countryAddress").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumCountry'])).trigger('chosen:updated');
+            $("#address").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PAddress']));
+            $("#rt").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRT']));
+            $("#rw").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRW']));
+            $("#pos").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PPostCode']));
+            $("#countryAddress").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumCountry'])).trigger('chosen:updated');
 
-        	$("#prov").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumProvince'])).trigger('chosen:updated');
-        	setprov('prov','city');
-        	setTimeout(function(){ 
-        		$("#city").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumCity'])).trigger('chosen:updated');
-        		setcity('city','state', (typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKecamatan']));
-        		setstate('state', 'kel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKelurahan']));
-        	 }, 1000);
+            $("#prov").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumProvince'])).trigger('chosen:updated');
+            setprov('prov','city');
+            setTimeout(function(){ 
+                $("#city").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumCity'])).trigger('chosen:updated');
+                setcity('city','state', (typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKecamatan']));
+                setstate('state', 'kel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKelurahan']));
+             }, 1000);
 
-        	setTimeout(function(){ 
-        		setstate('state', 'kel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKelurahan']));
-        	 }, 3000);
+            setTimeout(function(){ 
+                setstate('state', 'kel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['PRecnumKelurahan']));
+             }, 3000);
 
-        	$("#name_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Name']));
-        	$("#relation_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Relation']));
-        	$("#phone2_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Handphone']));
-        	$("#address_emergency_1").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Address']));
+            $("#name_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Name']));
+            $("#relation_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Relation']));
+            $("#phone2_emergency_1").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Handphone']));
+            $("#address_emergency_1").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC1Address']));
 
-        	// CUrrent Address
-        	$("#address_current").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CAddress']));
-        	$("#rt_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRT']));
-        	$("#rw_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRW']));
-        	$("#pos_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CPostCode']));
-        	$("#ccountryAddress").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumCountry'])).trigger('chosen:updated');
+            // CUrrent Address
+            $("#address_current").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CAddress']));
+            $("#rt_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRT']));
+            $("#rw_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRW']));
+            $("#pos_current").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CPostCode']));
+            $("#ccountryAddress").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumCountry'])).trigger('chosen:updated');
 
-        	$("#cprov").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumProvince'])).trigger('chosen:updated');
-        	setprov('cprov','ccity');
-        	setTimeout(function(){ 
-        		$("#ccity").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumCity'])).trigger('chosen:updated');
-        		setcity('ccity','cstate', (typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKecamatan']));
-        		setstate('cstate', 'ckel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKelurahan']));
-        	 }, 1000);
+            $("#cprov").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumProvince'])).trigger('chosen:updated');
+            setprov('cprov','ccity');
+            setTimeout(function(){ 
+                $("#ccity").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumCity'])).trigger('chosen:updated');
+                setcity('ccity','cstate', (typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKecamatan']));
+                setstate('cstate', 'ckel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKelurahan']));
+             }, 1000);
 
-        	setTimeout(function(){ 
-        		setstate('cstate', 'ckel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKelurahan']));
-        	 }, 3000);
+            setTimeout(function(){ 
+                setstate('cstate', 'ckel',(typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['CRecnumKelurahan']));
+             }, 3000);
 
-        	$("#name_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Name']));
-        	$("#relation_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Relation']));
-        	$("#phone2_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Handphone']));
-        	$("#address_emergency_2").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Address']));
+            $("#name_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Name']));
+            $("#relation_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Relation']));
+            $("#phone2_emergency_2").val((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Handphone']));
+            $("#address_emergency_2").text((typeof data['address'][0]== 'undefined' ? '' : data['address'][0]['EC2Address']));
 
-        	// Family Detail
-        	var tabel='';
-        	for (index = 0, len = data['family_detail'].length; index < len; ++index) {
-        		tabel += '<tr>';
-        		tabel += '<td>'+ (index+1) +'</td>';
-        		tabel += '<td><a href="javascript:void(0)" onclick="EditModalFamily(\''+ data['family_detail'][index]["Recnum"] +'\')">'+ data['family_detail'][index]["KTPNo"] +'</a></td>';
-        		tabel += '<td>'+ data['family_detail'][index]["FamilyName"] +'</td>';
-        		tabel += '<td>'+ data['family_detail'][index]["relasi"] +'</td>';
-        		tabel += '<td>'+ moment(data['family_detail'][index]["BirthOfDate"]).format('DD MMM YYYY') +'</td>';
-        		tabel += '<td>'+ data['family_detail'][index]["Age"] +'</td>';
-        		tabel += '<td>'+ data['family_detail'][index]["gender"] +'</td>';
-        		tabel += '<tr>';			    
-			}
-        	
-        	$(tabel).appendTo($("#tabel-family").children('tbody'));
+            // Family Detail
+            $("#tabel-family>tbody").html('');
+            var tabel='';
+            for (index = 0, len = data['family_detail'].length; index < len; ++index) {
+                tabel += '<tr>';
+                tabel += '<td>'+ (index+1) +'</td>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalFamily(\''+ data['family_detail'][index]["Recnum"] +'\')">'+ data['family_detail'][index]["KTPNo"] +'</a></td>';
+                tabel += '<td>'+ data['family_detail'][index]["FamilyName"] +'</td>';
+                tabel += '<td>'+ data['family_detail'][index]["relasi"] +'</td>';
+                tabel += '<td>'+ moment(data['family_detail'][index]["BirthOfDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<td>'+ data['family_detail'][index]["Age"] +'</td>';
+                tabel += '<td>'+ data['family_detail'][index]["gender"] +'</td>';
+                tabel += '<tr>';                
+            }
+            
+            $(tabel).appendTo($("#tabel-family").children('tbody'));
 
-        	// Family Status
-        	tabel='';
-        	for (index = 0, len = data['family_status'].length; index < len; ++index) {
-        		tabel += '<tr>';
-        		tabel += '<td><a href="javascript:void(0)" onclick="EditModalFamilyStatus(\''+ data['family_status'][index]["Recnum"] +'\')">'+ data['family_status'][index]["family_status"] +'</a></td>';
-        		tabel += '<td>'+ moment(data['family_status'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
-        		tabel += '<td>'+ moment(data['family_status'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
-        		tabel += '<tr>';			    
-			}
-        	
-        	$(tabel).appendTo($("#tabel-status").children('tbody'));
+            // Family Status
+            tabel='';
+            $("#tabel-status>tbody").html('');
+            for (index = 0, len = data['family_status'].length; index < len; ++index) {
+                tabel += '<tr>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalFamilyStatus(\''+ data['family_status'][index]["Recnum"] +'\')">'+ data['family_status'][index]["family_status"] +'</a></td>';
+                tabel += '<td>'+ moment(data['family_status'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<td>'+ moment(data['family_status'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<tr>';                
+            }
+            
+            $(tabel).appendTo($("#tabel-status").children('tbody'));
 
-        	// Family Marital
-        	tabel='';
-        	for (index = 0, len = data['family_marital'].length; index < len; ++index) {
-        		tabel += '<tr>';
-        		tabel += '<td><a href="javascript:void(0)" onclick="EditModalFamilyMarital(\''+ data['family_marital'][index]["Recnum"] +'\')">'+ data['family_marital'][index]["marital"] +'</a></td>';
-        		tabel += '<td>'+ moment(data['family_marital'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
-        		tabel += '<td>'+ moment(data['family_marital'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
-        		tabel += '<tr>';			    
-			}
-        	
-        	$(tabel).appendTo($("#tabel-marital").children('tbody'));
+            // Family Marital
+            tabel='';
+            $("#tabel-marital>tbody").html('');
+            for (index = 0, len = data['family_marital'].length; index < len; ++index) {
+                tabel += '<tr>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalFamilyMarital(\''+ data['family_marital'][index]["Recnum"] +'\')">'+ data['family_marital'][index]["marital"] +'</a></td>';
+                tabel += '<td>'+ moment(data['family_marital'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<td>'+ moment(data['family_marital'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<tr>';                
+            }
+            
+            $(tabel).appendTo($("#tabel-marital").children('tbody'));
 
-        	// Family Tax
-        	tabel='';
-        	for (index = 0, len = data['family_tax'].length; index < len; ++index) {
-        		tabel += '<tr>';
-        		tabel += '<td><a href="javascript:void(0)" onclick="EditModalFamilyTax(\''+ data['family_tax'][index]["Recnum"] +'\')">'+ data['family_tax'][index]["tax"] +'</a></td>';
-        		tabel += '<td>'+ moment(data['family_tax'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
-        		tabel += '<tr>';			    
-			}
-        	
-        	$(tabel).appendTo($("#tabel-tax").children('tbody'));
+            // Family Tax
+            tabel='';
+            $("#tabel-tax>tbody").html('');
+            for (index = 0, len = data['family_tax'].length; index < len; ++index) {
+                tabel += '<tr>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalFamilyTax(\''+ data['family_tax'][index]["Recnum"] +'\')">'+ data['family_tax'][index]["tax"] +'</a></td>';
+                tabel += '<td>'+ moment(data['family_tax'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<tr>';                
+            }
+            
+            $(tabel).appendTo($("#tabel-tax").children('tbody'));
 
-        	// Education
-        	tabel='';
-        	for (index = 0, len = data['education'].length; index < len; ++index) {
-        		tabel += '<tr>';
-        		tabel += '<td>'+ (index+1) +'</td>';
-        		tabel += '<td><a href="javascript:void(0)" onclick="EditModalEdu(\''+ data['education'][index]["Recnum"] +'\')">'+ data['education'][index]["NameSchool"] +'</a></td>';
-        		tabel += '<td>'+ (data['education'][index]["Majoring"]== null ? '': data['education'][index]["Majoring"])  +'</td>';
-        		tabel += '<td>'+ moment(data['education'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
-        		tabel += '<td>'+ moment(data['education'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
-        		
-        		tabel += '<td>'+ data['education'][index]["level_school"] +'</td>';
-        		tabel += '<tr>';			    
-			}
+            // Education
+            tabel='';
+            $("#tabel-education>tbody").html('');
+            for (index = 0, len = data['education'].length; index < len; ++index) {
+                tabel += '<tr>';
+                tabel += '<td>'+ (index+1) +'</td>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalEdu(\''+ data['education'][index]["Recnum"] +'\')">'+ data['education'][index]["NameSchool"] +'</a></td>';
+                tabel += '<td>'+ (data['education'][index]["Majoring"]== null ? '': data['education'][index]["Majoring"])  +'</td>';
+                tabel += '<td>'+ moment(data['education'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
+                tabel += '<td>'+ moment(data['education'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
+                
+                tabel += '<td>'+ data['education'][index]["level_school"] +'</td>';
+                tabel += '<tr>';                
+            }
 
-			$(tabel).appendTo($("#tabel-education").children('tbody'));
+            $(tabel).appendTo($("#tabel-education").children('tbody'));
 
-			// Training
-        	tabel='';
-        	for (index = 0, len = data['training'].length; index < len; ++index) {
-        		tabel += '<tr>';
-        		tabel += '<td>'+ (index+1) +'</td>';
-        		tabel += '<td><a href="javascript:void(0)" onclick="EditModalTraining(\''+ data['training'][index]["Recnum"] +'\')">'+ data['training'][index]["materi"] +'</a></td>';
-        		tabel += '<td>'+ data['training'][index]["CertificateNo"] +'</td>';
+            // Training
+            tabel='';
+            $("#tabel-training>tbody").html('');
+            for (index = 0, len = data['training'].length; index < len; ++index) {
+                tabel += '<tr>';
+                tabel += '<td>'+ (index+1) +'</td>';
+                tabel += '<td><a href="javascript:void(0)" onclick="EditModalTraining(\''+ data['training'][index]["Recnum"] +'\')">'+ data['training'][index]["materi"] +'</a></td>';
+                tabel += '<td>'+ data['training'][index]["CertificateNo"] +'</td>';
 
-        		tabel += '<td>'+ moment(data['training'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
-        		
-        		tabel += '<td>'+ data['training'][index]["Score"] +'</td>';
-        		tabel += '<tr>';			    
-			}
+                tabel += '<td>'+ moment(data['training'][index]["StartDate"]).format('DD MMM YYYY') +'</td>';
+                
+                tabel += '<td>'+ data['training'][index]["Score"] +'</td>';
+                tabel += '<tr>';                
+            }
 
-			$(tabel).appendTo($("#tabel-training").children('tbody'));
+            $(tabel).appendTo($("#tabel-training").children('tbody'));
 
 
         });
@@ -291,9 +295,13 @@
         $("#liFamily").removeClass("hidden");
         $("#liAddress").removeClass("hidden");
         $("#liEducation").removeClass("hidden");
+    }
+
+	function showModal(empid){
+		generateDataModalEdit(empid);
         $('#modal-personal').modal({backdrop: 'static', keyboard: false}) ;
 	}
-    function showModal2(empid){
+    function generateDataModalEmployee(empid){
         $.get("<?php echo base_url(); ?>PersonalAdministration/get_employee_data",{id: empid}, function(data){ 
             $("#recnumid").val(data['basic'][0]['Recnum']);
             $("#empid").val(data['basic'][0]['EmployeeId']);
@@ -412,14 +420,17 @@
 
 
 
-            $('#modal-employee-data').modal({backdrop: 'static', keyboard: false}) ;
+            
         });
     }
-    function showModal3(empid){
+    function showModal2(empid){
+        generateDataModalEmployee(empid);
+        $('#modal-employee-data').modal({backdrop: 'static', keyboard: false}) ;
+    }
+    function generateDataModalAdditional(empid){
         $.get("<?php echo base_url(); ?>PersonalAdministration/get_additional",{id: empid}, function(data){ 
             $("#recnumid").val(data['basic'][0]['Recnum']);
             $("#empid").val(data['basic'][0]['EmployeeId']);
-
             // Reward
             var tabel='';
             // for (index = 0, len = data['reward'].length; index < len; ++index) {
@@ -447,7 +458,7 @@
                 tabel += '<td>'+ data['vehicle'][index]["Remark"] +'</td>';
                 tabel += '<tr>';                
             }
-
+            $("#tabel-vehicle > tbody").html('');
             $(tabel).appendTo($("#tabel-vehicle").children('tbody'));
 
             // SIM
@@ -462,10 +473,14 @@
                 tabel += '<td>'+ moment(data['sim'][index]["EndDate"]).format('DD MMM YYYY') +'</td>';
                 tabel += '<tr>';                
             }
-
+            $("#tabel-sim > tbody").html('');
             $(tabel).appendTo($("#tabel-sim").children('tbody'));
 
         });
+    }
+    function showModal3(empid){
+
+        generateDataModalAdditional(empid);
         $('#modal-additional').modal({backdrop: 'static', keyboard: false}) ;
     }
 
@@ -557,9 +572,10 @@
 		 	}
 	 		$.get(link,sParam, function(data){
 				if(data.error==false){									
-					alert('Berhasil disimpan..');
-					window.location.reload();
+					alertok('Berhasil disimpan..');
+					//window.location.reload();
 				}else{	
+                    alerterror(data.msg);
 					$("#lblMessage").remove();
 					$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
 											  					  	
@@ -579,10 +595,11 @@
 	 		var link = 'PersonalAdministration/SaveAddrs';
 	 		$.get(link,sParam, function(data){
 				if(data.error==false){									
-					alert('Berhasil disimpan..');
-					window.location.reload();
+					generateDataModalEdit($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
 				}else{	
 					$("#lblMessage").remove();
+                    alerterror(data.msg);
 					$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
 											  					  	
 				}
@@ -603,7 +620,7 @@
             if(data[0]['BirthOfDate'] != null){
             	$("#fa_birth_date").val(moment(data[0]['BirthOfDate']).format('DD-MM-YYYY'));
             }
-            $("#fa_blood").val(data[0]['RecnumBlood']).trigger('chosen:updated');
+            $("#fa_blood").val(data[0]['RecnumBlood']==null ? 0 : data[0]['RecnumBlood']).trigger('chosen:updated');
             $("#fa_job").val(data[0]['Job']);
 			var checked = data[0]["MarriedStatus"] == 1 ? true: false;
             if(checked){ $("#isMarried").attr('checked','checked')}else{ $("#isMarried").removeAttr('checked')}
@@ -717,9 +734,9 @@
     function EditModalInventory(id){
         $.get("<?php echo base_url(); ?>PersonalAdministration/get_tabel_inv",{recnum: id}, function(data){    
             $("#RecnumInventaris").val(data[0]['Recnum']);
-            $("#item").val(data[0]['RecnumInventaris']).trigger('chosen:updated');
-            $("#item_status").val(data[0]['RecnumStatusInventaris']).trigger('chosen:updated');
-            $("#qty").val(data[0]['Jumlah']);
+            $("#item").val(data[0]['RecnumInventory']).trigger('chosen:updated');
+            $("#item_status").val(data[0]['RecnumStatusInventory']).trigger('chosen:updated');
+            $("#qty").val(data[0]['Total']);
             if(data[0]['ExpiredDate'] != null){
                 $("#expired_date").val(moment(data[0]['ExpiredDate']).format('DD-MM-YYYY'));
             }
@@ -815,7 +832,7 @@
             $("#component").val(data[0]['RecnumComponentSalary']).trigger('chosen:updated');
             $("#SKNo4").val(data[0]['SkNo']);
             $("#salary_remark").val(data[0]['Remark']);
-            $("#salary_value").val(data[0]['Jumlah']);
+            $("#salary_value").val(data[0]['Total']);
 
 
             if(data[0]['StartDate'] != null){
@@ -963,10 +980,67 @@
 
         $('#modal-salary').modal({backdrop: 'static', keyboard: false});
     });
+    $('#btnAddExperience').on('click', function () {
+        $("#RecnumExperience").val('');
+        $("#dateRangeStart_experience").val('');
+        $("#dateRangeEnd_experience").val('');
+        $("#company").val('');
+        $("#netto").val(0);
+        $("#pph").val(0);
+        $("#experience_position").val('');
+        $("#experience_remark").text('');
+
+        $('#modal-experience').modal({backdrop: 'static', keyboard: false});
+    });
+    $('#btnAddVehicle').on('click', function () {
+        $("#RecnumVehicle").val('');
+        $("#dateRangeStart_vehicle").val('');
+        $("#dateRangeEnd_vehicle").val('');
+        $("#police_no").val('');
+        $("#frame_no").val('');
+        $("#machine_no").val('');
+        $("#vehicle_remark").text('');
+        $("#vehicle_code").val(0).trigger('chosen:updated');
+
+        $('#modal-vehicle').modal({backdrop: 'static', keyboard: false});
+    });
+
+    $('#btnAddSIM').on('click', function () {
+        $("#RecnumSIM").val('');
+        $("#dateRangeStart_sim").val('');
+        $("#dateRangeEnd_sim").val('');
+        $("#sim_no").val('');
+        $("#sim_remark").text('');
+        $("#sim_code").val(0).trigger('chosen:updated');
+
+        $('#modal-sim').modal({backdrop: 'static', keyboard: false});
+    });
+
+    $('#btnAddMembership').on('click', function () {
+        $("#RecnumMembership").val('');
+        $("#membership_no").val('');
+        $("#dateRangeStart_membership").val('');
+        $("#dateRangeEnd_membership").val('');
+        $("#percent_from_company").val(0);
+        $("#value_from_company").val(0);
+        $("#percent_from_employee").val(0);
+        $("#value_from_employee").val(0);
+        $("#membership_remark").text('');
+        $("#membership_type").val(0).trigger('chosen:updated');
+
+        $('#modal-membership').modal({backdrop: 'static', keyboard: false});
+    });
 
 	$('#btnSaveFamily').on('click', function () {
     	var valid = false;
     	var sParam = $('#form-input-family').serialize()+ "&recnumid="+ $("#recnumid").val();
+
+        $.validator.addMethod("valueNotEquals", 
+            function(value, element, arg){
+                              return arg !== value;
+        }, "Value must not equal arg.");
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
     	var validator = $('#form-input-family').validate({
 							rules: {
 									fa_name: {
@@ -977,7 +1051,10 @@
 									},
 									fa_birth_date: {
 							  			required: true
-									}   
+									},
+                                    fa_blood: {
+                                        valueNotEquals: "0"
+                                    },   
 								}
 							});
 	 	validator.valid();
@@ -985,11 +1062,13 @@
 	 	if($status) {
 	 		var link = 'PersonalAdministration/SaveFamily';
 	 		$.get(link,sParam, function(data){
-				if(data.error==false){									
-					alert('Berhasil disimpan..');
-					window.location.reload();
+				if(data.error==false){	
+                    generateDataModalEdit($("#empid").val());								
+					alertok('Berhasil disimpan..');
+					//window.location.reload();
 				}else{	
 					$("#lblMessage").remove();
+                    alerterror(data.msg);
 					$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
 											  					  	
 				}
@@ -1015,11 +1094,12 @@
 	 	if($status) {
 	 		var link = 'PersonalAdministration/SaveStatus';
 	 		$.get(link,sParam, function(data){
-				if(data.error==false){									
-					alert('Berhasil disimpan..');
-					window.location.reload();
+				if(data.error==false){		
+                    generateDataModalEdit($("#empid").val());							
+					alertok('Berhasil disimpan..');
 				}else{	
 					$("#lblMessage").remove();
+                    alerterror(data.msg);
 					$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
 											  					  	
 				}
@@ -1041,11 +1121,12 @@
 	 	if($status) {
 	 		var link = 'PersonalAdministration/SaveMarital';
 	 		$.get(link,sParam, function(data){
-				if(data.error==false){									
-					alert('Berhasil disimpan..');
-					window.location.reload();
+				if(data.error==false){		
+                    generateDataModalEdit($("#empid").val());							
+					alertok('Berhasil disimpan..');
 				}else{	
 					$("#lblMessage").remove();
+                    alerterror(data.msg);
 					$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
 											  					  	
 				}
@@ -1069,10 +1150,11 @@
 	 		var link = 'PersonalAdministration/SaveTax';
 	 		$.get(link,sParam, function(data){
 				if(data.error==false){									
-					alert('Berhasil disimpan..');
-					window.location.reload();
+					generateDataModalEdit($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
 				}else{	
 					$("#lblMessage").remove();
+                    alerterror(data.msg);
 					$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
 											  					  	
 				}
@@ -1096,9 +1178,10 @@
             var link = 'PersonalAdministration/SaveEdu';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
+                    generateDataModalEdit($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
                 }else{  
+                    alerterror(data.msg);
                     $("#lblMessage").remove();
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
@@ -1123,10 +1206,11 @@
             var link = 'PersonalAdministration/SaveTraining';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
+                    generateDataModalEdit($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
                 }else{  
                     $("#lblMessage").remove();
+                    alerterror(data.msg);
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
                 }
@@ -1153,9 +1237,10 @@
             var link = 'PersonalAdministration/SaveReward';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
-                }else{  
+                    generateDataModalEmployee($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
+                }else{ 
+                    alerterror(data.msg); 
                     $("#lblMessage").remove();
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
@@ -1180,10 +1265,11 @@
             var link = 'PersonalAdministration/SavePunish';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
+                    generateDataModalEmployee($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
                 }else{  
                     $("#lblMessage").remove();
+                    alerterror(data.msg); 
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
                 }
@@ -1216,10 +1302,11 @@
             var link = 'PersonalAdministration/SaveInventaris';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
+                    generateDataModalEmployee($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
                 }else{  
                     $("#lblMessage").remove();
+                    alerterror(data.msg); 
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
                 }
@@ -1252,10 +1339,11 @@
             var link = 'PersonalAdministration/SaveGrade';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
+                    generateDataModalEmployee($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
                 }else{  
                     $("#lblMessage").remove();
+                    alerterror(data.msg); 
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
                 }
@@ -1288,10 +1376,11 @@
             var link = 'PersonalAdministration/SaveWorkingStatus';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
+                    generateDataModalEmployee($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
                 }else{  
                     $("#lblMessage").remove();
+                    alerterror(data.msg); 
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
                 }
@@ -1333,10 +1422,11 @@
             var link = 'PersonalAdministration/SaveEmpOrg';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
+                    generateDataModalEmployee($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
                 }else{  
                     $("#lblMessage").remove();
+                    alerterror(data.msg); 
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
                 }
@@ -1369,10 +1459,11 @@
             var link = 'PersonalAdministration/SaveSalary';
             $.get(link,sParam, function(data){
                 if(data.error==false){                                  
-                    alert('Berhasil disimpan..');
-                    window.location.reload();
+                    generateDataModalEmployee($("#empid").val());                          
+                    alertok('Berhasil disimpan..');
                 }else{  
                     $("#lblMessage").remove();
+                    alerterror(data.msg); 
                     $("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
                                                                     
                 }
