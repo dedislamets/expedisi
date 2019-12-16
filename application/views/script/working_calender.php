@@ -114,7 +114,9 @@
 
 	            $('#event_id').val('');
 	            $('#addModal').modal({backdrop: 'static', keyboard: false});
-				$("#tblPartisipant").toggle();
+	            $('#IsPublic').prop('checked','checked');
+				$("#tblPartisipant").css('display','none');
+				$('#btnAddParticipant').attr('disabled','disabled');
 
 				//calendar.fullCalendar('unselect');
 			}
@@ -140,10 +142,11 @@
 	            }
 	            if(event.public != 1) { 
 	            	$("#IsPublic").removeAttr('checked');
+	            	$("#tblPartisipant").css('display','block');
 	            	
 	            } else {
 	            	$('#IsPublic').prop('checked','checked');
-	            	$("#tblPartisipant").toggle();
+	            	$("#tblPartisipant").css('display','none');
 
 	        	}
 	            
@@ -249,4 +252,25 @@
            }   
         });                
     }
+    $('#IsPublic').on('click', function () {
+	    if(!$('#IsPublic').prop('checked')){
+	    	$("#tblPartisipant").css('display','block');
+	    }else{
+	    	$("#tblPartisipant").css('display','none');
+	    }
+	});
+	$('#btnSchedule').on('click', function () {
+	    $.post('WorkingCalender/add_event', $("#form1").serialize(), function(data){ 
+           if(data.error==false){
+           		$('#event_id').val(data.insert_id);
+           		$('#btnAddParticipant').removeAttr('disabled');
+           		alertok('Berhasil disimpan..');
+           }else{	
+				$("#lblMessage").remove();
+	            alerterror(data.msg);
+				$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
+										  					  	
+			}
+        });    
+	});
 </script>

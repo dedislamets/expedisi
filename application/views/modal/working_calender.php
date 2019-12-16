@@ -5,7 +5,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Add Event</h4>
       </div>
-      <?php echo form_open(site_url("WorkingCalender/add_event"), array("class" => "form-horizontal", "id" => "form1", "method" => "POST")) ?>
+
+      <form id="form1" class="form-horizontal" role="form">
         <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" > 
         <div class="modal-body">
             <div class="form-group">
@@ -82,9 +83,9 @@
             <input type="hidden" name="eventid" id="event_id" value="" />
         </div>
         <div class="modal-footer">        
-          <input type="submit" class="btn btn-primary" id="btnSchedule" value="Submit">
+          <input type="button" class="btn btn-primary" id="btnSchedule" value="Submit">
         </div>
-      <?php echo form_close() ?>
+      </form>
     </div>
   </div>
 </div>

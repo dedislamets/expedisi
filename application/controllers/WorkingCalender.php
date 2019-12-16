@@ -68,6 +68,10 @@ class WorkingCalender extends CI_Controller {
 
    	public function add_event() 
     {
+        $response = [];
+        $response['error'] = TRUE; 
+        $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+
         $name = $this->input->post("day_tipe", TRUE);
         $desc = $this->input->post("name", TRUE);
         $start_date = $this->input->post("start_date", TRUE);
@@ -90,7 +94,7 @@ class WorkingCalender extends CI_Controller {
 
 
         //print("<pre>".print_r($this->input->post("IsPublic"),true)."</pre>");
-        if ($this->input->post("IsPublic") != 'on'){
+        if (!empty($this->input->post("IsPublic")) && $this->input->post('eventid') != ""){
           $this->db->from('CalenderParticipant');
           $this->db->where('RecnumCalenderEvent', $this->input->post('eventid'))->delete();
         }
@@ -102,15 +106,21 @@ class WorkingCalender extends CI_Controller {
         	$this->db->set($data);
 		   	  $this->db->where('Recnum', $this->input->post('eventid'));
 		   	  $result  =  $this->db->update('CalenderEvent');	
+          $response['insert_id']=$this->input->post('eventid');
 
         }else{
         	$data['CreateBy'] = $recLogin;
         	$data['CreateDate'] = date('Y-m-d');
 
         	$result  = $this->db->insert('CalenderEvent', $data);
+          $response['insert_id'] = $this->db->insert_id();
+        }
+
+        if($result){
+          $response['error']= FALSE;
         }
            
-       	redirect(site_url("WorkingCalender"));
+       	$this->output->set_content_type('application/json')->set_output(json_encode($response));  
     }
 
     public function getdata()
