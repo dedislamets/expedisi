@@ -1,20 +1,11 @@
 <?php
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+
+    header("Access-Control-Allow-Origin: *");
     header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Allow-Headers: Content-Type, x-xsrf-token');
     header('Access-Control-Max-Age: 86400');    // cache for 1 day
-}
+    header('Content-Type: application/json');
 
-// Access-Control headers are received during OPTIONS requests
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");         
-
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-    exit(0);
-}
 // Default
 // $users = [
 //     ['id' => 0, 'name' => 'John', 'email' => 'john@example.com'],
@@ -80,9 +71,10 @@ class Api extends RestController  {
                     'user_nik'  => $apps->EmployeeId,
                     'user_name' => $apps->EmployeeName,
                     'user_mail' => $apps->PersonalMail,
+                    'PositionStructural' => $apps->PositionStructural,
                 );
 
-                $this->response( $session_data, 200 );
+                $this->response($session_data, 200 );
 
             }
         }else{
