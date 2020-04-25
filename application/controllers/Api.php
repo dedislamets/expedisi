@@ -86,4 +86,38 @@ class Api extends RestController  {
         }
         
     }
+    public function shift_get()
+    {
+        $id = $this->input->get("id");
+        $shift = $this->admin->api_get_function('fn_schshift',$id );
+
+        if ($shift != FALSE) {
+            $this->response($shift, 200 );
+        }else{
+
+            $this->response( [
+                'status' => false,
+                'message' => 'No users were found'
+            ], 404 );
+        }
+        
+    }
+    public function absen_post()
+    {
+        $data =array(
+            "RecnumEmployee"=>$this->post('id'),
+            "FingerId"=>$this->post('fid'),
+            "FingerDate"=>$this->post('tgl_absen'),
+            "FingerTime"=>$this->post('jam'),
+            "FingerCode"=>$this->post('fc'),
+            "Type"=> 2,
+            "Latitude"=>$this->post('lat'),
+            "Longitude"=>$this->post('lng'),
+            "Photo"=>$this->post('foto'),
+            "LocationDistance"=>$this->post('jarak')
+        );
+
+        $response = $this->admin->api_post("DataSlide", $data);
+        $this->response($response);
+    }
 }

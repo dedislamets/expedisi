@@ -25,6 +25,31 @@ class Admin extends CI_Model
             return $query->result();
         }
     }
+    function api_get_function($name,$id)
+    {        
+        $query = $this->db->from($name.' ('.$id.')')->get();
+        if ($query->num_rows() == 0) {
+            return FALSE;
+        } else {
+            return $query->result();
+        }
+    }
+
+    function api_post($table,$array_data)
+    {        
+        $insert = $this->db->insert($table, $data);
+        if($insert){
+            $response['status']=200;
+            $response['error']=false;
+            $response['message']='Data berhasil ditambahkan.';
+            return $response;
+        }else{
+            $response['status']=502;
+            $response['error']=true;
+            $response['message']='Data gagal ditambahkan.';
+            return $response;
+        }
+    }
 
     function getParentOrg()
     {        
