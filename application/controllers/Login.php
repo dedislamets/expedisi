@@ -35,7 +35,7 @@ class Login extends CI_Controller {
 
                     //get data dari FORM
                     $username = $this->input->post("username", TRUE);
-                    $password = $this->TidakAcak($this->input->post('password', TRUE));
+                    $password = $this->TidakAcak('F=GF@CNI', "goldenginger");
 
                     echo $password; exit();
 
@@ -78,7 +78,7 @@ class Login extends CI_Controller {
         redirect('login');
     }
 
-    function TidakAcak($strKey) {
+    function TidakAcak($varMsg,$strKey) {
         // $Msg='';
         // $intLength=0;
         // $intKeyLength =0;
@@ -88,34 +88,42 @@ class Login extends CI_Controller {
         // $intSkip = 0;
         // $n = 0;
         try {
-            $Msg = "";
+            $char_replace="";
+            $Msg = $varMsg;
             $intLength = strlen($Msg);
             $intKeyLength = strlen($strKey);
             $intKeyOffset = $intKeyLength;
             $intLastChar = ord(substr($strKey, -1));
+            
 
-            echo $intLastChar;
-
-            for ($i=1; $i < $intLength ; $i++) { 
+            for ($n=0; $n < $intLength ; $n++) { 
                 $intKeyOffset = $intKeyOffset + 1;
                 if($intKeyOffset > $intKeyLength) {
                     $intKeyOffset = 1;
                 }
                 $intAsc = ord(substr($Msg,$n, 1));
-                if($intAsc > 32 And $intAsc < 127){
+
+                if($intAsc > 32 && $intAsc < 127){
                     $intAsc = $intAsc - 32;
-                    $intSkip = $n % 94;
+                    $intSkip = $n+1 % 94;
                     $intAsc = $intAsc - $intSkip;
+                    // echo $intAsc ."<br>";
                     if($intAsc < 1) {
                         $intAsc = $intAsc + 94;
                     }
                     $intAsc = $intAsc - $intLastChar;
+                     // echo $intLastChar ."<br>";
                     while ( $intAsc < 1) {
                        $intAsc = $intAsc + 94;
                     }
-                    //Mid$($Msg, $n) = Chr$($intAsc + 32);
+                    $char_replace .= chr($intAsc + 32);
+                    
+                    $Msg = $char_replace . substr($varMsg, $n+1) ;
+                    //$Msg = str_replace(substr($Msg, $n,1),chr($intAsc + 32), $Msg);
+                    // echo $Msg . "-". chr($intAsc + 32) ."<br>";
                 }
-                $intLastChar = ord(substr($strKey, $intKeyOffset));
+                $intLastChar = ord(substr($strKey, $intKeyOffset-1));
+               
             }
             return $Msg;
         } catch (Exception $e) {
