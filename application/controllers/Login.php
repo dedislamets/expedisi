@@ -35,7 +35,9 @@ class Login extends CI_Controller {
 
                     //get data dari FORM
                     $username = $this->input->post("username", TRUE);
-                    $password = $this->input->post('password', TRUE);
+                    $password = $this->TidakAcak($this->input->post('password', TRUE));
+
+                    echo $password; exit();
 
                     //checking data via model
                     $checking = $this->admin->check_login('V_SecAccessGroup', array('PersonalMail' => $username), array('IsPassword' => $password));
@@ -75,4 +77,50 @@ class Login extends CI_Controller {
         $this->session->sess_destroy();
         redirect('login');
     }
+
+    function TidakAcak($strKey) {
+        // $Msg='';
+        // $intLength=0;
+        // $intKeyLength =0;
+        // $intKeyOffset =0;
+        // $intAsc = 0;
+        // $intLastChar = 0;
+        // $intSkip = 0;
+        // $n = 0;
+        try {
+            $Msg = "";
+            $intLength = strlen($Msg);
+            $intKeyLength = strlen($strKey);
+            $intKeyOffset = $intKeyLength;
+            $intLastChar = ord(substr($strKey, -1));
+
+            echo $intLastChar;
+
+            for ($i=1; $i < $intLength ; $i++) { 
+                $intKeyOffset = $intKeyOffset + 1;
+                if($intKeyOffset > $intKeyLength) {
+                    $intKeyOffset = 1;
+                }
+                $intAsc = ord(substr($Msg,$n, 1));
+                if($intAsc > 32 And $intAsc < 127){
+                    $intAsc = $intAsc - 32;
+                    $intSkip = $n % 94;
+                    $intAsc = $intAsc - $intSkip;
+                    if($intAsc < 1) {
+                        $intAsc = $intAsc + 94;
+                    }
+                    $intAsc = $intAsc - $intLastChar;
+                    while ( $intAsc < 1) {
+                       $intAsc = $intAsc + 94;
+                    }
+                    //Mid$($Msg, $n) = Chr$($intAsc + 32);
+                }
+                $intLastChar = ord(substr($strKey, $intKeyOffset));
+            }
+            return $Msg;
+        } catch (Exception $e) {
+            echo $e;
+        }
+    }
+  
 }

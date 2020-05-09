@@ -25,9 +25,13 @@ class Admin extends CI_Model
             return $query->result();
         }
     }
-    function api_get_function($name,$id)
+    function api_get_function($name,$id, $order ='')
     {        
-        $query = $this->db->from($name.' ('.$id.')')->get();
+        $this->db->from($name.' ('.$id.')');
+        if($order<>"")   
+            $this->db->order($order, 'DESC');
+
+        $query = $this->db->get();
         if ($query->num_rows() == 0) {
             return FALSE;
         } else {
@@ -35,9 +39,21 @@ class Admin extends CI_Model
         }
     }
 
+    function api_getmaster($tabel,$where='',$noorder=0){
+        $sql = "SELECT * FROM ". $tabel;
+        if($where !=''){
+            $sql.= " WHERE ". $where ;
+        }
+        if($noorder==0){
+            $sql .= " order by Id Desc";
+        }
+        $query = $this->db->query($sql);
+        return $query->result();    
+    }
+
     function api_post($table,$array_data)
     {        
-        $insert = $this->db->insert($table, $data);
+        $insert = $this->db->insert($table, $array_data);
         if($insert){
             $response['status']=200;
             $response['error']=false;

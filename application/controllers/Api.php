@@ -102,6 +102,41 @@ class Api extends RestController  {
         }
         
     }
+
+    public function list_attendance_get()
+    {
+        $id = $this->input->get("id");
+        $periode = $this->input->get("periode");
+        $shift = $this->admin->api_get_function('Fn_appattendancelist',$id."," .$periode );
+
+        if ($shift != FALSE) {
+            $this->response($shift, 200 );
+        }else{
+
+            $this->response( [
+                'status' => false,
+                'message' => 'No users were found'
+            ], 404 );
+        }
+        
+    }
+
+    public function periode_get()
+    {
+        $shift = $this->admin->api_getmaster('vf_periodpayroll');
+
+        if ($shift != FALSE) {
+            $this->response($shift, 200 );
+        }else{
+
+            $this->response( [
+                'status' => false,
+                'message' => 'No users were found'
+            ], 404 );
+        }
+        
+    }
+
     public function absen_post()
     {
         $data =array(
@@ -118,6 +153,9 @@ class Api extends RestController  {
         );
 
         $response = $this->admin->api_post("DataSlide", $data);
+
+        $query = $this->db->query("[Sp_ProcessDailyPerEmployee] ". $this->post('id') .",'" . $this->post('tgl_absen') ."',0," . $this->post('id') )->result();
+
         $this->response($response);
     }
 }

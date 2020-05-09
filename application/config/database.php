@@ -77,12 +77,14 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'database' => 'DBHRPRO',
 	//'hostname' => 'LAPTOP-TQCIJCB4',
-	'username' => 'sa',
-	'password' => '123',
+	//'username' => 'sa',
+	//'password' => '123',
 
-	'hostname' => 'DEDISLAMET\SQLEXPRESS',
+	//'hostname' => 'DEDISLAMET\SQLEXPRESS',
+	'hostname' => 'WIN-SN60FBM1K24',
 	'username' => 'sa',
-	'password' => 'admin123^',
+	//'password' => 'admin123^',
+	'password'	=> 'p@55w0rd',
 	
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',

@@ -2,7 +2,7 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Credentials: true');
 
-$target_path = "C:/xampp/htdocs/hris/upload/". $_GET['target']. "/";
+$target_path = "C:/xampp/htdocs/hris/upload/". $_GET['folder']. "/";
  
 $target_path = $target_path . basename( $_FILES['file']['name']);
  
