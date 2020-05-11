@@ -597,7 +597,7 @@
             <img src="<?= base_url(). "assets/profile/". $this->session->userdata('user_nik') .".jpg" ?>" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block"><?php echo $this->session->userdata('user_name'); ?></a>
+            <a href="profile" class="d-block"><?php echo $this->session->userdata('user_name'); ?></a>
             <a href="logout">Logout</a>
           </div>
         </div>
@@ -663,7 +663,7 @@
         <div class="footer-inner">
           <div class="footer-content">
             <span class="bigger-120">
-              <span class="blue bolder">Ace</span>
+              <span class="blue bolder">HRSmartpro</span>
               Application &copy; 2013-2014
             </span>
 

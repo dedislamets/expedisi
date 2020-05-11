@@ -35,9 +35,7 @@ class Login extends CI_Controller {
 
                     //get data dari FORM
                     $username = $this->input->post("username", TRUE);
-                    $password = $this->TidakAcak('F=GF@CNI', "goldenginger");
-
-                    echo $password; exit();
+                    $password = $this->Acak($this->input->post('password', TRUE), "goldenginger");
 
                     //checking data via model
                     $checking = $this->admin->check_login('V_SecAccessGroup', array('PersonalMail' => $username), array('IsPassword' => $password));
@@ -79,14 +77,6 @@ class Login extends CI_Controller {
     }
 
     function TidakAcak($varMsg,$strKey) {
-        // $Msg='';
-        // $intLength=0;
-        // $intKeyLength =0;
-        // $intKeyOffset =0;
-        // $intAsc = 0;
-        // $intLastChar = 0;
-        // $intSkip = 0;
-        // $n = 0;
         try {
             $char_replace="";
             $Msg = $varMsg;
@@ -107,12 +97,11 @@ class Login extends CI_Controller {
                     $intAsc = $intAsc - 32;
                     $intSkip = $n+1 % 94;
                     $intAsc = $intAsc - $intSkip;
-                    // echo $intAsc ."<br>";
+
                     if($intAsc < 1) {
                         $intAsc = $intAsc + 94;
                     }
                     $intAsc = $intAsc - $intLastChar;
-                     // echo $intLastChar ."<br>";
                     while ( $intAsc < 1) {
                        $intAsc = $intAsc + 94;
                     }
@@ -130,5 +119,47 @@ class Login extends CI_Controller {
             echo $e;
         }
     }
-  
+    
+     function Acak($varMsg,$strKey) {
+        try {
+            $Msg = $varMsg;
+            $char_replace="";
+            $intLength = strlen($Msg);
+            $intKeyLength = strlen($strKey);
+            $intKeyOffset = $intKeyLength;
+            $intKeyChar = ord(substr($strKey, -1));
+            for ($n=0; $n < $intLength ; $n++) { 
+                $intKeyOffset = $intKeyOffset + 1;
+
+                if($intKeyOffset > $intKeyLength) {
+                    $intKeyOffset = 1;
+                }
+                $intAsc = ord(substr($Msg,$n, 1));
+
+                if($intAsc > 32 && $intAsc < 127){
+                    $intAsc = $intAsc - 32;
+                    $intAsc = $intAsc + $intKeyChar;
+
+                    while ( $intAsc > 94) {
+                       $intAsc = $intAsc - 94;
+                    }
+
+                    $intSkip = $n+1 % 94;
+                    $intAsc = $intAsc + $intSkip;
+                    if($intAsc > 94){
+                        $intAsc = $intAsc - 94;
+                    }
+
+                    $char_replace .= chr($intAsc + 32);
+                    
+                    $Msg = $char_replace . substr($varMsg, $n+1) ;
+                }
+
+                $intKeyChar = ord(substr($strKey, $intKeyOffset-1));
+            }
+            return $Msg;
+        } catch (Exception $e) {
+            
+        }
+    }
 }

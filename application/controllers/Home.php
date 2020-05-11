@@ -25,43 +25,43 @@ class Home extends CI_Controller {
 			$data['payroll_period'] = $this->admin->getmaster('Vf_PeriodPayroll','',1);
 			$data['policy'] = $this->admin->getHRPolicies();
 			
-    	$data_new_emp = array();
-    	$data_leave = array();
+            $data_new_emp = array();
+            $data_leave = array();
 
-    	$i=0;
-			foreach($this->admin->getNewEmployee() as $r) {
-    		$url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
-    		if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
-    			$url = base_url() .'assets/profile/no-profile-copy.png' ; 
-    		}
+            $i=0;
+            foreach($this->admin->getNewEmployee() as $r) {
+                $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
+                if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
+    			     $url = base_url() .'assets/profile/no-profile-copy.png' ; 
+                }
 
-    		$data_new_emp[$i]['EmployeeId'] = $r->EmployeeId;
-    		$data_new_emp[$i]['url'] = $url;
-    		$data_new_emp[$i]['EmployeeName'] = $r->EmployeeName;
-    		$data_new_emp[$i]['LocationName'] = $r->LocationName;
-    		$data_new_emp[$i]['PositionStructural'] = $r->PositionStructural;
-    		$data_new_emp[$i]['JoinDate'] = date("d M Y", strtotime($r->JoinDate));
-    		$data_new_emp[$i] = (object) $data_new_emp[$i];
-    		$i++;
-      }
+        		$data_new_emp[$i]['EmployeeId'] = $r->EmployeeId;
+        		$data_new_emp[$i]['url'] = $url;
+        		$data_new_emp[$i]['EmployeeName'] = $r->EmployeeName;
+        		$data_new_emp[$i]['LocationName'] = $r->LocationName;
+        		$data_new_emp[$i]['PositionStructural'] = $r->PositionStructural;
+        		$data_new_emp[$i]['JoinDate'] = date("d M Y", strtotime($r->JoinDate));
+        		$data_new_emp[$i] = (object) $data_new_emp[$i];
+        		$i++;
+            }
 
-      $i=0;
+            $i=0;
 			foreach($this->admin->getLeaveEmployee() as $r) {
-    		$url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
-    		if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
-    			$url = base_url() .'assets/profile/no-profile-copy.png' ; 
-    		}
+    		      $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
+    		      if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
+    			     $url = base_url() .'assets/profile/no-profile-copy.png' ; 
+    		      }
 
-    		$data_leave[$i]['EmployeeId'] = $r->EmployeeId;
-    		$data_leave[$i]['url'] = $url;
-    		$data_leave[$i]['EmployeeName'] = $r->EmployeeName;
-    		$data_leave[$i]['LocationName'] = $r->LocationName;
-    		$data_leave[$i]['PositionStructural'] = $r->PositionStructural;
-    		$data_leave[$i] = (object) $data_leave[$i];
-    		$i++;
-      }
-      $data['new_employee'] = $data_new_emp;
-      $data['leave'] = $data_leave;
+        		$data_leave[$i]['EmployeeId'] = $r->EmployeeId;
+        		$data_leave[$i]['url'] = $url;
+        		$data_leave[$i]['EmployeeName'] = $r->EmployeeName;
+        		$data_leave[$i]['LocationName'] = $r->LocationName;
+        		$data_leave[$i]['PositionStructural'] = $r->PositionStructural;
+        		$data_leave[$i] = (object) $data_leave[$i];
+        		$i++;
+            }
+            $data['new_employee'] = $data_new_emp;
+            $data['leave'] = $data_leave;
 
 			$data['js'] = 'home/js';
 			$this->load->view('home',$data,FALSE); 
