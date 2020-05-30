@@ -176,6 +176,11 @@ class Admin extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();    
     }
+    function get_Function_id($func,$id)
+    {
+        $query = $this->db->query("SELECT * from [$func] (". $id.")");
+        return $query->result();
+    }
     function getHRPolicies(){
         $query = $this->db->query("select * from [Fn_DashboardHRPolicies] ('','2019-07-08')");
         return $query->result(); 
@@ -196,8 +201,8 @@ class Admin extends CI_Model
         $query = $this->db->query("select * from [Fn_DashboardLeaveEmployees] ('','2019-07-08')");
         return $query->result(); 
     }
-    function getDetailPersonPerformance($EmployeeId){
-        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $EmployeeId.",GETDATE(),GETDATE())");
+    function getDetailPersonPerformance($EmployeeId, $start, $end){
+        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $EmployeeId.",'". $start ."','". $end ."')");
         return $query->result(); 
     }
     function getSubOrdinat($EmployeeId){

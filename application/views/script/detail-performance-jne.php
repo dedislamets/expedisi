@@ -1,0 +1,236 @@
+<script type="text/javascript">
+	$(document).ready(function(){ 
+		$('.number').priceFormat({
+	        prefix: '',
+	        centsSeparator: '',
+	        centsLimit: 0,
+	        thousandsSeparator: ''
+	    });
+
+	    $('.dec').priceFormat({
+	        prefix: '',
+	        centsSeparator: '.',
+	        centsLimit: 2,
+	        thousandsSeparator: ','
+	    });
+
+		$('#myCarousel').find('.item').first().addClass('active');
+		$('#myCarousel').carousel({
+		  interval: 4000
+		})
+
+		$('.carousel .item').each(function(){
+		  var next = $(this).next();
+		  if (!next.length) {
+		    next = $(this).siblings(':first');
+		  }
+		  next.children(':first-child').clone().appendTo($(this));
+		  
+		  for (var i=0;i<2;i++) {
+		    next=next.next();
+		    if (!next.length) {
+		    	next = $(this).siblings(':first');
+		  	}
+		    
+		    next.children(':first-child').clone().appendTo($(this));
+		  }
+		});    
+
+		// $('#ViewTable').DataTable({
+		// 	ajax: {		            
+	 //            "url": "ListPerformanceKPM",
+	 //            "type": "GET",
+	 //            "data":{'id': $("#txtID").val()},
+	 //        },			
+		// 	"bPaginate": true,	
+		// 	"ordering": false,
+		// 	"destroy": true,
+	 //    });
+	  //   $('#ViewTable-Competency').DataTable({
+			// ajax: {		            
+	  //           "url": "ListCompetency",
+	  //           "type": "GET",
+	  //           "data":{'id': $("#txtID").val()},
+	  //       },			
+			// "bPaginate": true,	
+			// "ordering": false,
+			// "destroy": true,
+	  //   });
+	    $('#ViewTable_summary_1').DataTable({
+			ajax: {		            
+	            "url": "ListSummaryPerformance",
+	            "type": "GET",
+	            "data":{'id': $("#txtID").val()},
+	        },			
+			"bPaginate": true,	
+			"ordering": false,
+			"destroy": true,
+	    });
+	    $('#ViewTable_summary_2').DataTable({
+			ajax: {		            
+	            "url": "ListSummaryCompetency",
+	            "type": "GET",
+	            "data":{'id': $("#txtID").val()},
+	        },			
+			"bPaginate": true,	
+			"ordering": false,
+			"destroy": true,
+	    });
+	    $('#ViewTable_summary_3').DataTable({
+			ajax: {		            
+	            "url": "ListSummary",
+	            "type": "GET",
+	            "data":{'id': $("#txtID").val()},
+	        },			
+			"bPaginate": true,	
+			"ordering": false,
+			"destroy": true,
+	    });
+
+		$('#btnRefresh_2').on('click', function (event) {
+	    	showloader('body');
+			$('#ViewTable-Competency').DataTable({
+				ajax: {		            
+		            "url": "ListCompetency",
+		            "type": "GET",
+		            "data":{'id': $("#txtID").val()},
+		        },			
+				"bPaginate": true,	
+				"ordering": false,
+				"destroy": true,
+				"initComplete": function(settings, json) {
+                    hideloader();
+                },
+		    });
+		});
+
+		$('#btnAdd').on('click', function (event) {
+			$("#lbl-title").text('Add');
+			$("#calc").val('1');
+			$("#IsDesc").val('');
+			$("#txtRecnum").val('');
+			$("#WeightPercentage").val('0');
+			$("#IsTarget").val('0');
+			$("#IsActual").val('0');
+			$("#DataSource").val('');
+			$("#submit_remove").remove();
+			$("#btnSubmit").css("display","block");
+			$('#Form').find(':input:disabled').removeAttr('disabled');
+			$('#ModalAdd').modal({backdrop: 'static', keyboard: false}) ;
+		});
+
+		$('#btnSubmit').on('click', function () {
+	    	var valid = false;
+	    	var sParam = $('#Form').serialize()+ "&id="+ $("#txtID").val();
+	    	var validator = $('#Form').validate({
+								rules: {
+										IsDesc: {
+								  			required: true
+										},
+										WeightPercentage: {
+								  			required: true
+										},
+										IsTarget: {
+								  			required: true
+										},
+										IsActual: {
+								  			required: true
+										}   
+									}
+								});
+		 	validator.valid();
+		 	$status = validator.form();
+		 	if($status) {
+		 		var link = 'SaveKPR';
+		 		$.get(link,sParam, function(data){
+					if(data.error==false){									
+						alert('Berhasil disimpan..');
+						window.location.reload();
+					}else{	
+						$("#lblMessage").remove();
+						$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
+												  					  	
+					}
+				},'json');
+		 	}
+		});
+
+	});
+
+	function editmodal(val){
+		showloader('body');
+		$.get('edit', { id: $(val).data('id') }, function(data){ 
+         		$("#lbl-title").text('Edit');
+
+         		$('#Form').find(':input:disabled').removeAttr('disabled');
+         		$("#calc").val(data[0]['RecnumCalculationMethod']);
+         		$("#area_kinerja").val(data[0]['RecnumAreaPerformance']);
+				$("#IsDesc").val(data[0]['IsDesc']);
+				$("#txtRecnum").val(data[0]['Recnum']);
+				$("#WeightPercentage").val(data[0]['WeightPercentage']);
+				$("#IsTarget").val(data[0]['IsTarget']);
+				$("#IsActual").val(data[0]['IsActual']);
+           		$("#DataSource").text(data[0]['DataSource']);
+           		$("#submit_remove").remove();
+           		$("#warning-del").remove();
+           		$("#btnSubmit").css("display","block");
+           		$('#ModalAdd').modal({backdrop: 'static', keyboard: false}) ;
+           
+        });
+		
+		hideloader();
+	}
+
+	function editmodal_2(val){
+		showloader('body');
+		$.get('edit', { id: $(val).data('id') }, function(data){ 
+         		$("#lbl-title").text('Edit');
+         		$("#calc").val(data[0]['RecnumCalculationMethod']);
+				$("#IsDesc").val(data[0]['IsDesc']);
+				$("#txtRecnum").val(data[0]['Recnum']);
+				$("#WeightPercentage").val(data[0]['WeightPercentage']);
+				$("#IsTarget").val(data[0]['IsTarget']);
+				$("#IsActual").val(data[0]['IsActual']);
+           		$("#remark").text(data[0]['Remark']);
+           		$('#ModalCompetency').modal({backdrop: 'static', keyboard: false}) ;
+           
+        });
+		
+		hideloader();
+	}
+
+	function removeList(val){
+    	
+    	$("#lbl-title").text('Remove Form ' + $("#judul").text());
+    	showloader('body');
+    	$.get("edit",{ id: val }, function(data){ 
+    		
+    		// $("#lbl-title").text('Hapus Data');
+     		$("#calc").val(data[0]['RecnumCalculationMethod']);
+     		$("#area_kinerja").val(data[0]['RecnumAreaPerformance']);
+			$("#IsDesc").val(data[0]['IsDesc']);
+			$("#txtRecnum").val(data[0]['Recnum']);
+			$("#WeightPercentage").val(data[0]['WeightPercentage']);
+			$("#IsTarget").val(data[0]['IsTarget']);
+			$("#IsActual").val(data[0]['IsActual']);
+       		$("#DataSource").text(data[0]['DataSource']);
+       		
+
+    		$.each($('#Form').serializeArray(), function(index, value){
+			    $('[name="' + value.name + '"]').attr('disabled', 'disabled');
+			});
+			$('#ModalAdd').modal({backdrop: 'static', keyboard: false}) ;
+
+			$("#btnSubmit").css("display","none");
+			$("#btnSubmit").before(' <button type="button" id="submit_remove" onclick="deleteData()" class="btn btn-danger btn-block">Ya</button>');
+
+			
+			$(".modal-body").before('<h3 id="warning-del" style="text-align:center;color: red">Yakin untuk menghapus data ini?</h3>');
+    		
+    		hideloader();
+    	});
+		$('#ModalGenerate').modal({backdrop: 'static', keyboard: false});
+		
+	}
+
+</script>

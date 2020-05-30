@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){  
 
-		$('#ViewTable').DataTable({
+		var table = $('#ViewTable').DataTable({
 			ajax: {		            
 	            "url": "EmployeePerformance/dataTable",
 	            "type": "GET"
@@ -17,6 +17,23 @@
 			]
 
 	    });
+	    var d = new Date();
+		$('.date-picker').datepicker({
+			autoclose: true,
+			todayHighlight: true
+		});
+		$("#periode_start").datepicker("setDate", d);
+        $("#periode_end").datepicker("setDate", d);
 
+        $('#btnFind').on('click', function()
+		{
+			showloader('body');
+			var start = $("#periode_start").val();
+	        var end = $("#periode_end").val();
+			table.ajax.url('EmployeePerformanceJNE/dataTable?start=' + start + '&end=' + end).load();
+			hideloader();
+		})
 	});
+
+	
 </script>

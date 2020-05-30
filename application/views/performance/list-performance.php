@@ -32,7 +32,34 @@
     </div><!-- /.page-header -->
 
     <div class="row">
-
+      <div class="row" style="background-color: #dee1e5;padding: 10px;margin-left: 0;margin-right: 0;">
+        <div class="col-sm-5 no-padding">
+          <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right" for="Sort">Periode</label>
+            <div class="col-sm-4 no-padding-right">
+              <div class="input-group">
+                <input class="form-control date-picker" id="periode_start" name="dateRangeStart_stat" type="text" data-date-format="dd-mm-yyyy" />
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar bigger-110"></i>
+                </span>
+              </div>
+            </div>
+            <label class="col-sm-1 control-label ">To</label>
+            <div class="col-sm-5">
+              <div class="input-group">
+                <input class="form-control date-picker" id="periode_end" name="dateRangeEnd_stat" type="text" data-date-format="dd-mm-yyyy" />
+                <span class="input-group-addon">
+                  <i class="fa fa-calendar bigger-110"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-sm-2 no-padding">
+          <button type="button" id="btnFind" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Refresh</button>
+        </div>
+      </div>
       <div>
           <table id="ViewTable" class="table table-striped table-bordered table-hover">
             <thead>

@@ -229,6 +229,11 @@
             Summary
           </a>
         </li>
+        <li class="dropdown">
+          <a data-toggle="tab" href="#education">
+            Coaching & Conseling
+          </a>
+        </li>
     	</ul>
     	<div class="tab-content">
         <div id="home" class="tab-pane fade in active">
@@ -238,8 +243,6 @@
               </h4>
               
               <div style="float: right;padding-top: 5px;padding-right: 5px">
-                <button class='btn btn-sm btn-white btn-success' id="btnRefresh"><i class='ace-icon fa fa-refresh'></i>
-                Refresh</button>
                 <button class='btn btn-sm btn-white btn-success' id="btnAdd"><i class='ace-icon fa fa-plus'></i>
                 Create</button>
               </div>
@@ -251,34 +254,53 @@
                   <table id="ViewTable" class="table table-striped table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Key Performance Measurment</th>
-                        <th>Bobot</th>
-                        <th>Calculation Method</th>
+                        <th colspan="7" style="font-weight: bold;text-align: center;">Rencana Kerja Karyawan (RKK)</th>
+                        <th colspan="2" style="font-weight: bold;text-align: center;">Pencapaian Aspek Kinerja</th>
+                        <th rowspan="2" style="text-align: center;">Action</th>
+                      </tr>
+                      <tr>
+                        <th>No</th>
+                        <th>Area Kerja</th>
+                        <th>Key Performance Indicator (KPI)</th>
                         <th>Target</th> 
+                        <th>Metode Perhitungan</th>
+                        <th>Bobot %</th>
+                        <th>Sumber Data</th>                
                         <th>Actual</th>
-                        <th>Score</th>
-                        <th>Total Score</th>                
-                        <th>Remark</th>
-                        <th>Action</th>
+                        <th>Persentase Pencapaian</th>
+                        
                       </tr>
                     </thead>
-                    <tbody>                                    
+                    <tbody>    
+                      <?php 
+                        $i=0;
+                        foreach($data_key as $row)
+                        { 
+                          ?>
+                          <tr>
+                            <td><?php echo $i+1 ?></td>
+                            <td><?php echo $row->AreaPerformance ?></td>
+                            <td><?php echo $row->IsDesc ?></td>
+                            <td><?php echo $row->IsTarget ?></td>
+                            <td><?php echo $row->CalculationMethod ?></td>
+                            <td style="text-align: right;"><?php echo $row->WeightPercentage ?></td>
+                            <td><?php echo $row->DataSource ?></td>
+                            <td style="text-align: right;"><?php echo $row->IsActual ?></td>
+                            <td style="text-align: right;"><?php echo $row->Score ?></td>
+                            <td width="150"><?php echo $row->Action ?></td>
+                          </tr>
+                        <?php  
+                        $i++;
+                        }
+                      ?>     
+                      <tr style="background-color: green;color: #fff">
+                        <td colspan="8" style="text-align: right;"><b>Pencapaian Aspek Kinerja</b></td>
+                        <td style="text-align: right;"><?php echo $penc_aspek_kinerja[0]->TotalScoreKPM ?></td>
+                        <td></td>
+                      </tr>                                
                     </tbody>
                   </table>
-                  <h3>Scoring For Key Performance</h3>
-                  <div class="col-md-6 no-padding">
-                    <table class="table table-striped table-bordered table-hover">
-                      <?php 
-                      foreach($keyperformancescore as $row)
-                      { ?>
-                      <tr>
-                        <td><?php echo $row->IsDesc ?></td>
-                        <td><?php echo $row->ScoreFrom . " - " . $row->ScoreTo ?></td>
-                        <td><?php echo $row->Remark ?></td>
-                      </tr>
-                      <?php } ?>
-                    </table>
-                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -302,32 +324,49 @@
                   <table style="width: 100%" id="ViewTable-Competency" class="table table-striped table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Competency</th>
-                        <th>Grup Competency</th>
-                        <th>Target</th>
-                        <th>Actual</th> 
+                        <th rowspan="2">Kompetensi</th>
+                        <th rowspan="2">Bobot</th>
+                        <th colspan="2">Penilai 1</th>
+                        <th colspan="2">Penilai 2</th>
+                        <th rowspan="2">Bobot x Nilai (Bobot dikali rata-rata dari penilai 1 & 2)</th> 
                         <!-- <th>Gap</th> -->
-                        <th>Action</th>
+                        <th rowspan="2">Action</th>
+                      </tr>
+                      <tr>
+                        <th>Nilai</th>
+                        <th>Bukti Perilaku</th>
+                        <th>Nilai</th>
+                        <th>Bukti Perilaku</th>
                       </tr>
                     </thead>
-                    <tbody>                                    
+                    <tbody>  
+                      <?php 
+                        $i=0;
+                        foreach($competency as $row)
+                        { 
+                          ?>
+                          <tr>
+                            <td><?php echo $row->Competency ?></td>
+                            <td><?php echo $row->IsWeight ?></td>
+                            <td><?php echo $row->ScoreHead1 ?></td>
+                            <td><?php echo $row->ProofOfBehaviorHead1 ?></td>
+                            <td><?php echo $row->ScoreHead2 ?></td>
+                            <td><?php echo $row->ProofOfBehaviorHead2 ?></td>
+                            <td style="text-align: right;"><?php echo $row->AverageScore ?></td>
+                            <td><?php echo $row->Action ?></td>
+                          </tr>
+                        <?php  
+                        $i++;
+                        }
+                      ?>   
+                      <tr>
+                        <td colspan="6" style="text-align: right;"><b>Pencapaian Aspek Kompetensi</b></td>
+                        <td style="text-align: right;"><?php echo $penc_aspek_komp[0]->TotalScoreCompetency ?></td>
+                        <td></td>
+                      </tr>                               
                     </tbody>
                   </table>
-                  <h3>Scoring For Competency</h3>
-                  <div class="col-md-6 no-padding">
-                    <table class="table table-striped table-bordered table-hover">
-                      <?php 
-                      foreach($keypercompetency as $row)
-                      { ?>
-                      <tr>
-                        <td><?php echo $row->IsDesc ?></td>
-                        <td><?php echo $row->ScoreFrom . " - " . $row->ScoreTo ?></td>
-                        <td><?php echo $row->Scale1_5 ?></td>
-                        <td><?php echo $row->Remark ?></td>
-                      </tr>
-                      <?php } ?>
-                    </table>
-                  </div>
+                  
                 </div>     
               </div>
             </div>

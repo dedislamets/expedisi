@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class EmployeePerformance extends CI_Controller {
+class EmployeePerformanceJNE extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
@@ -13,8 +13,7 @@ class EmployeePerformance extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
     {
-      redirect("EmployeePerformanceJNE");
-      $data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
+        	$data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
 			$data['title'] = 'Performance Management';
 			$data['main'] = 'performance/list-performance';
 			$data['js'] = 'script/performance';
@@ -71,7 +70,7 @@ class EmployeePerformance extends CI_Controller {
 
           foreach($books->result() as $r) {
                $data[] = array(
-                    '<a class="btn btn-block btn-sm" href="EmployeePerformance/detail?id='.$r->RecnumEmployee.'&start='. $start .'&end='. $end.'">
+                    '<a class="btn btn-block btn-sm" href="EmployeePerformanceJNE/detail?id='.$r->Recnum.'&start='. $start .'&end='. $end.'">
                         Detail
                       </a>',
                     $r->PerformanceStatus,
@@ -101,9 +100,9 @@ class EmployeePerformance extends CI_Controller {
         {
             $data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
             $data['title'] = 'Performance Management';
-            $data['main'] = 'performance/performance';
-            $data['js'] = 'script/detail-performance';
-            $data['modal'] = 'modal/performance';
+            $data['main'] = 'performance/performance-jne';
+            $data['js'] = 'script/detail-performance-jne';
+            $data['modal'] = 'modal/performance-jne';
 
             $id = $this->input->get('id');
             $start = $this->input->get('start');
@@ -112,7 +111,7 @@ class EmployeePerformance extends CI_Controller {
 
             $data_new_emp = array();
             $i=0;
-            foreach($this->admin->getDetailPersonPerformance($id, $start, $end) as $r) {
+            foreach($this->admin->getDetailPersonPerformance($this->session->userdata('user_id'), $start, $end) as $r) {
                 $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
                 if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
                     $url = base_url() .'assets/profile/nophoto.jpg' ; 
@@ -156,6 +155,51 @@ class EmployeePerformance extends CI_Controller {
             $data['keyperformancescore'] = $this->admin->getmaster('ScoreKeyPerformance');
             $data['keypercompetency'] = $this->admin->getmaster('ScoreCompetency');
             $data['calc'] = $this->admin->getmaster('CalculationMethod');
+            $data['area'] = $this->admin->getmaster('Vf_FindAreaPerformance','',1);
+
+            $row_data = $this->Datatabel->get_Function_id('Fn_ListPerformanceCompetencyJNE', $id);
+
+            $data_competency = array();
+            $i=0;
+            foreach($row_data->result() as $r) {
+                   $data_competency[$i]['Competency'] = $r->Competency;
+                    $data_competency[$i]['IsWeight'] =  $r->IsWeight;
+                    $data_competency[$i]['ScoreHead1'] =  $r->ScoreHead1;
+                    $data_competency[$i]['ProofOfBehaviorHead1'] =  $r->ProofOfBehaviorHead1;
+                    $data_competency[$i]['ScoreHead2'] =  $r->ScoreHead2;
+                    $data_competency[$i]['ProofOfBehaviorHead2'] =  $r->ProofOfBehaviorHead2;
+                    $data_competency[$i]['AverageScore'] =  $r->AverageScore;
+                    $data_competency[$i]['Action'] =  '<button type="button" class="btnEdit btn btn-block btn-sm" onclick="editmodal_2(this)"  data-id="'.$r->RecnumCompetency.'">
+                          Edit
+                        </button> ';
+                    $data_competency[$i] = (object) $data_competency[$i];
+                    $i++;
+              }
+            $data['competency'] = $data_competency;
+
+            $row_data = $this->Datatabel->get_Function_id('Fn_ListPerformanceKPM', $id);
+            $data_key = array();
+            $i=0;
+            foreach($row_data->result() as $r) {
+                   $data_key[$i]['AreaPerformance'] = $r->AreaPerformance;
+                    $data_key[$i]['IsDesc'] =  $r->IsDesc;
+                    $data_key[$i]['IsTarget'] =  $r->IsTarget;
+                    $data_key[$i]['WeightPercentage'] =  $r->WeightPercentage;
+                    $data_key[$i]['DataSource'] =  $r->DataSource;
+                    $data_key[$i]['CalculationMethod'] =  $r->CalculationMethod;
+                    $data_key[$i]['IsActual'] =  $r->IsActual;
+                    $data_key[$i]['Score'] =  $r->Score;
+                    $data_key[$i]['Action'] =  '<button type="button" class="btnEdit btn btn-sm" onclick="editmodal(this)"  data-id="'.$r->Recnum.'">
+                          Edit
+                        </button> | <button type="button" class="btnHapus btn btn-sm btn-danger" onclick="removeList('.$r->Recnum.');" >
+                          Hapus
+                        </button>';
+                    $data_key[$i] = (object) $data_key[$i];
+                    $i++;
+              }
+              $data['data_key'] = $data_key;
+              $data['penc_aspek_kinerja'] = $this->admin->get_Function_id('Fn_ListPerformanceKPMTotalScore', $id);
+              $data['penc_aspek_komp'] = $this->admin->get_Function_id('Fn_ListPerformanceCompetencyJNETotalScore', $id);
             // print("<pre>".print_r($data,true)."</pre>");exit();
             $this->load->view('home',$data,FALSE); 
 
@@ -227,18 +271,20 @@ class EmployeePerformance extends CI_Controller {
         $start = intval($this->input->get("start"));
         $length = intval($this->input->get("length"));
 
-        $row_data = $this->Datatabel->get_Competency($this->input->get("id"));
+        $row_data = $this->Datatabel->get_Function_id('Fn_ListPerformanceCompetencyJNE', 1);
 
         $data = array();
 
         foreach($row_data->result() as $r) {
                $data[] = array(
                     $r->Competency,
-                    $r->CompetencyGroup,
-                    $r->IsTarget,
-                    $r->IsActual,
-                    // $r->Gap,
-                    '<button type="button" class="btnEdit btn btn-block btn-sm" onclick="editmodal_2(this)"  data-id="'.$r->Recnum.'">
+                    $r->IsWeight,
+                    $r->ScoreHead1,
+                    $r->ProofOfBehaviorHead1,
+                    $r->ScoreHead2,
+                    $r->ProofOfBehaviorHead2,
+                    $r->AverageScore,
+                    '<button type="button" class="btnEdit btn btn-block btn-sm" onclick="editmodal_2(this)"  data-id="'.$r->RecnumCompetency.'">
                         Edit
                       </button>',
                );
@@ -362,9 +408,10 @@ class EmployeePerformance extends CI_Controller {
             'IsDesc'                => $this->input->get('IsDesc'),
             'WeightPercentage'      => $this->input->get('WeightPercentage'),
             'RecnumCalculationMethod' => $this->input->get('calc'),
+            'RecnumAreaPerformance' => $this->input->get('area_kinerja'),
             'IsTarget'          => format_data($this->input->get("IsTarget"), 'number'),
             'IsActual'          => format_data($this->input->get("IsActual"), 'number'),
-            'Remark'            => $this->input->get('remark'),              
+            'DataSource'            => $this->input->get('DataSource'),              
         );
 
         //print("<pre>".print_r($data,true)."</pre>");exit();
