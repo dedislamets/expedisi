@@ -3,7 +3,7 @@
 
 		var table = $('#ViewTable').DataTable({
 			ajax: {		            
-	            "url": "EmployeePerformance/dataTable",
+	            "url": "EmployeePerformanceJNE/dataTable",
 	            "type": "GET"
 	        },			
 			"bPaginate": true,	
@@ -14,16 +14,22 @@
 			      			return moment(data).format('DD MMM YYYY'); 
 			    		}
 			    	},
-			]
+			],
+			"createdRow": function( row, data, dataIndex){
+                $(row).css('background-color',data[7]);
+
+            }
 
 	    });
 	    var d = new Date();
+	    var foYear = new Date(new Date().getFullYear(), 0, 1);
+		var eoYear = new Date(d.getFullYear(),12,0)
 		$('.date-picker').datepicker({
 			autoclose: true,
 			todayHighlight: true
 		});
-		$("#periode_start").datepicker("setDate", d);
-        $("#periode_end").datepicker("setDate", d);
+		$("#periode_start").datepicker("setDate", foYear);
+        $("#periode_end").datepicker("setDate", eoYear);
 
         $('#btnFind').on('click', function()
 		{

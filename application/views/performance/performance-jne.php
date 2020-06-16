@@ -143,7 +143,7 @@
 <div class="page-content">
 	<div class="page-header">
 		<h1>
-			<?php echo $title ?>
+			<?php echo $title ?> <?php echo $detail[0]->IsPeriod ?>
 		</h1>
      <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
      <input type="hidden" name="txtID" id="txtID" value="<?php echo $id ?>">
@@ -164,12 +164,14 @@
             <tr>
               <td>Emp Name</td><td>:</td><td><?php echo $detail[0]->EmployeeName ?></td>
             </tr>
-
             <tr>
-              <td>Function</td><td>:</td><td><?php echo $detail[0]->PositionFunctional ?></td>
+              <td>Join Date</td><td>:</td><td><?php echo $detail[0]->JoinDate ?></td>
             </tr>
             <tr>
-              <td>Section</td><td>:</td><td><?php echo $detail[0]->PositionStructural ?></td>
+              <td>Position</td><td>:</td><td><?php echo $detail[0]->PositionStructural ?></td>
+            </tr>
+            <tr>
+              <td>Section</td><td>:</td><td><?php echo $detail[0]->Organization ?></td>
             </tr>
             <tr>
               <td>Class</td><td>:</td><td><?php echo $detail[0]->Class ?></td>
@@ -230,8 +232,18 @@
           </a>
         </li>
         <li class="dropdown">
-          <a data-toggle="tab" href="#education">
+          <a data-toggle="tab" href="#coaching">
             Coaching & Conseling
+          </a>
+        </li>
+        <li class="dropdown">
+          <a data-toggle="tab" href="#scheduler">
+            Task Scheduler
+          </a>
+        </li>
+        <li class="dropdown">
+          <a data-toggle="tab" href="#documen">
+            Status Dokumen
           </a>
         </li>
     	</ul>
@@ -240,6 +252,7 @@
           <div class="widget-box widget-color-blue2">
             <div class="widget-header">
               <h4 class="widget-title lighter smaller"> 
+                Key Performance
               </h4>
               
               <div style="float: right;padding-top: 5px;padding-right: 5px">
@@ -254,13 +267,14 @@
                   <table id="ViewTable" class="table table-striped table-bordered table-hover">
                     <thead>
                       <tr>
+                        <th rowspan="2" style="text-align: center;">Action</th>
                         <th colspan="7" style="font-weight: bold;text-align: center;">Rencana Kerja Karyawan (RKK)</th>
                         <th colspan="2" style="font-weight: bold;text-align: center;">Pencapaian Aspek Kinerja</th>
-                        <th rowspan="2" style="text-align: center;">Action</th>
+                        
                       </tr>
                       <tr>
                         <th>No</th>
-                        <th>Area Kerja</th>
+                        <th>Objective</th>
                         <th>Key Performance Indicator (KPI)</th>
                         <th>Target</th> 
                         <th>Metode Perhitungan</th>
@@ -274,12 +288,20 @@
                     <tbody>    
                       <?php 
                         $i=0;
+                        $IsNo = "";
                         foreach($data_key as $row)
                         { 
                           ?>
                           <tr>
+                             <td width="150"><?php echo $row->Action ?></td>
                             <td><?php echo $i+1 ?></td>
-                            <td><?php echo $row->AreaPerformance ?></td>
+                            <?php 
+                              if ($row->AreaPerformance != $IsNo) { ?>
+                                   <td rowspan="<?php echo $row->IsCount ?>" style="text-align: center;vertical-align: middle;"><?php echo $row->AreaPerformance ?></td>
+                              <?php } 
+                               $IsNo= $row->AreaPerformance; 
+                            ?>
+                            <!-- <td><?php echo $row->AreaPerformance ?></td> -->
                             <td><?php echo $row->IsDesc ?></td>
                             <td><?php echo $row->IsTarget ?></td>
                             <td><?php echo $row->CalculationMethod ?></td>
@@ -287,16 +309,16 @@
                             <td><?php echo $row->DataSource ?></td>
                             <td style="text-align: right;"><?php echo $row->IsActual ?></td>
                             <td style="text-align: right;"><?php echo $row->Score ?></td>
-                            <td width="150"><?php echo $row->Action ?></td>
+                           
                           </tr>
                         <?php  
                         $i++;
                         }
                       ?>     
                       <tr style="background-color: green;color: #fff">
-                        <td colspan="8" style="text-align: right;"><b>Pencapaian Aspek Kinerja</b></td>
+                        <td colspan="9" style="text-align: right;"><b>Pencapaian Aspek Kinerja</b></td>
                         <td style="text-align: right;"><?php echo $penc_aspek_kinerja[0]->TotalScoreKPM ?></td>
-                        <td></td>
+                        
                       </tr>                                
                     </tbody>
                   </table>
@@ -309,13 +331,8 @@
         <div id="messages" class="tab-pane fade">
           <div class="widget-box widget-color-blue2">
             <div class="widget-header">
-              <h4 class="widget-title lighter smaller"> 
+              <h4 class="widget-title lighter smaller"> Competency
               </h4>
-              
-              <div style="float: right;padding-top: 5px;padding-right: 5px">
-                <button class='btn btn-sm btn-white btn-success' id="btnRefresh_2"><i class='ace-icon fa fa-refresh'></i>
-                Refresh</button>
-              </div>
             </div>
 
             <div class="widget-body">
@@ -324,13 +341,14 @@
                   <table style="width: 100%" id="ViewTable-Competency" class="table table-striped table-bordered table-hover">
                     <thead>
                       <tr>
+                        <th rowspan="2">Action</th>
                         <th rowspan="2">Kompetensi</th>
                         <th rowspan="2">Bobot</th>
                         <th colspan="2">Penilai 1</th>
                         <th colspan="2">Penilai 2</th>
                         <th rowspan="2">Bobot x Nilai (Bobot dikali rata-rata dari penilai 1 & 2)</th> 
                         <!-- <th>Gap</th> -->
-                        <th rowspan="2">Action</th>
+                        
                       </tr>
                       <tr>
                         <th>Nilai</th>
@@ -346,6 +364,7 @@
                         { 
                           ?>
                           <tr>
+                            <td><?php echo $row->Action ?></td>
                             <td><?php echo $row->Competency ?></td>
                             <td><?php echo $row->IsWeight ?></td>
                             <td><?php echo $row->ScoreHead1 ?></td>
@@ -353,16 +372,15 @@
                             <td><?php echo $row->ScoreHead2 ?></td>
                             <td><?php echo $row->ProofOfBehaviorHead2 ?></td>
                             <td style="text-align: right;"><?php echo $row->AverageScore ?></td>
-                            <td><?php echo $row->Action ?></td>
+                            
                           </tr>
                         <?php  
                         $i++;
                         }
                       ?>   
                       <tr>
-                        <td colspan="6" style="text-align: right;"><b>Pencapaian Aspek Kompetensi</b></td>
+                        <td colspan="7" style="text-align: right;"><b>Pencapaian Aspek Kompetensi</b></td>
                         <td style="text-align: right;"><?php echo $penc_aspek_komp[0]->TotalScoreCompetency ?></td>
-                        <td></td>
                       </tr>                               
                     </tbody>
                   </table>
@@ -380,10 +398,6 @@
                 <h4 class="widget-title lighter smaller"> 
                 </h4>
                   Summary Performance
-                <div style="float: right;padding-top: 5px;padding-right: 5px">
-                  <button class='btn btn-sm btn-white btn-success' id="btnRefresh_2"><i class='ace-icon fa fa-refresh'></i>
-                  Refresh</button>
-                </div>
               </div>
 
               <div class="widget-body">
@@ -391,83 +405,173 @@
                   <table  style="width: 100%"  id="ViewTable_summary_1" class="table table-striped table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Performance</th>
-                        <th>Score</th>
-                        <th>Bobot</th>
-                        <th>Total Score</th>
+                        <th>No</th>
+                        <th>Aspek</th>
+                        <th style="text-align: right;">Total Bulan</th>
+                        <th style="text-align: center;">Bobot</th>
+                        <th style="text-align: right;">Nilai</th>
+                        <th style="text-align: right;">Total Nilai</th>
                       </tr>
                     </thead>
-                    <tbody>                                    
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <div class="widget-box widget-color-blue2">
-              <div class="widget-header">
-                <h4 class="widget-title lighter smaller"> 
-                </h4>
-                  Summary Competency
-                <div style="float: right;padding-top: 5px;padding-right: 5px">
-                  <button class='btn btn-sm btn-white btn-success' id="btnRefresh_2"><i class='ace-icon fa fa-refresh'></i>
-                  Refresh</button>
-                </div>
-              </div>
-
-              <div class="widget-body">
-                <div class="widget-main padding-8">      
-                  <table  style="width: 100%"  id="ViewTable_summary_2" class="table table-striped table-bordered table-hover">
-                    <thead>
+                    <tbody>     
+                      <?php 
+                        $i=0;
+                        $IsNo = $IsBobot ="";
+                        foreach($summary as $row)
+                        { 
+                         
+                          ?>
+                          <tr>
+                            <?php 
+                              if ($row->IsNo != $IsNo) { ?>
+                                   <td rowspan="<?php echo $row->IsCount ?>"><?php echo $row->IsNo ?></td>
+                              <?php } 
+                               $IsNo= $row->IsNo; 
+                            ?>
+                           
+                            <td><?php echo $row->Aspek ?></td>
+                            <td style="text-align: right;"><?php echo $row->TotalBulan ?></td>
+                             <?php 
+                              if ($row->IsNo != $IsBobot) { ?>
+                                   <td rowspan="<?php echo $row->IsCount ?>" style="text-align: center;vertical-align: middle;"><?php echo $row->Bobot ?></td>
+                              <?php } 
+                               $IsBobot= $row->IsNo; 
+                            ?>
+                              
+                            <td style="text-align: right;"><?php echo $row->Nilai ?></td>
+                            <td style="text-align: right;"><?php echo $row->TotalNilai ?></td>
+                          </tr>
+                        <?php  
+                        $i++;
+                        }
+                      ?>     
                       <tr>
-                        <th>Competency</th>
-                        <th>Score</th>
-                        <th>Bobot</th>
-                        <th>Total Score</th>
-                      </tr>
-                    </thead>
-                    <tbody>                                    
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <div class="widget-box widget-color-blue2">
-              <div class="widget-header">
-                <h4 class="widget-title lighter smaller"> 
-                </h4>
-                  Summary
-                <div style="float: right;padding-top: 5px;padding-right: 5px">
-                  <button class='btn btn-sm btn-white btn-success' id="btnRefresh_2"><i class='ace-icon fa fa-refresh'></i>
-                  Refresh</button>
-                </div>
-              </div>
-
-              <div class="widget-body">
-                <div class="widget-main padding-8">      
-                  <table  style="width: 100%"  id="ViewTable_summary_3" class="table table-striped table-bordered table-hover">
-                    <thead>
+                        <td colspan="5" style="text-align: right;"><b>Rekapitulasi Nilai Akhir sebelum SP</b></td>
+                        <td style="text-align: right;"><?php echo $penc_summary[0]->RekapitulasiSblmSP ?></td>
+                      </tr> 
                       <tr>
-                        <th>Summary</th>
-                        <th>Score</th>
-                        <th>Bobot</th>
-                        <th>Total Score</th>
-                      </tr>
-                    </thead>
-                    <tbody>                                    
+                        <td colspan="5" style="text-align: right;"><b>Rekapitulasi Nilai Akhir setelah SP</b></td>
+                        <td style="text-align: right;"><?php echo $penc_summary[0]->RekapitulasiSesudahSP ?></td>
+                      </tr>                              
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
-            
-            
+
             
           </div>
-
         </div>
-       </div>
+        <div id="coaching" class="tab-pane fade">
+          <div class="table-responsive">
+            <div class="widget-box widget-color-blue2">
+              <div class="widget-header">
+                <h4 class="widget-title lighter smaller"> 
+                </h4>
+                  Coaching & Conseling
+              </div>
+              <div class="widget-body">
+                <div class="widget-main padding-8">
+                  <table  style="width: 100%"  class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Action</th>
+                        <th>No</th>
+                        <th>Periode</th>
+                        <th>Tanggal</th>
+                        <th>Topik Pembahasan</th>
+                        <th>Faktor yang perlu dipertahankan</th>
+                        <th>Faktor yang perlu dikembangkan</th>
+                        <th>Penyebab Utama</th>
+                        <th>Rencana Aksi / Evaluasi</th>
+                      </tr>
+                    </thead>
+                    <tbody>     
+                      <?php 
+                        $i=0;
+                        foreach($conseling as $row)
+                        { 
+                          ?>
+                          <tr>
+                            <td><?php echo $row->Action ?></td>
+                            <td><?php echo $i+1 ?></td>
+                            <td><?php echo $row->IsPeriod ?></td>
+                            <td><?php echo date("d M Y", strtotime($row->DateOfCoaching)) ?></td>
+                            <td><?php echo $row->TopikPembahasan ?></td>
+                            <td><?php echo $row->FaktorDipertahankan ?></td>
+                            <td><?php echo $row->FaktorDikembangkan ?></td>
+                            <td><?php echo $row->PenyebabUtama ?></td>
+                            <td><?php echo $row->RencanaAksiEvaluasi ?></td>
+                            
+                          </tr>
+                        <?php  
+                        $i++;
+                        }
+                      ?>                       
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="scheduler" class="tab-pane fade">
+          <div class="table-responsive">
+            <div class="widget-box widget-color-blue2">
+              <div class="widget-header">
+                <h4 class="widget-title lighter smaller"> 
+                  Task Scheduler
+                </h4>
+                  
+                  <div style="float: right;padding-top: 5px;padding-right: 5px">
+                    <button class='btn btn-sm btn-white btn-success' id="btnAddTask"><i class='ace-icon fa fa-plus'></i>
+                    Create</button>
+                  </div>
+              </div>
+              <div class="widget-body">
+                <div class="widget-main padding-8">
+                  <table  style="width: 100%"  class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Action</th>
+                        <th>No</th>
+                        <th>Task</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Priority</th>
+                        <th>Completation Date</th>
+                        <th>Task Status</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>     
+                      <?php 
+                        $i=0;
+                        foreach($scheduler as $row)
+                        { 
+                          ?>
+                          <tr>
+                            <td><?php echo $row->Action ?></td>
+                            <td><?php echo $i+1 ?></td>
+                            <td><?php echo $row->Task ?></td>
+                            <td><?php echo date("d M Y", strtotime($row->StartDate)) ?></td>
+                            <td><?php echo date("d M Y", strtotime($row->EndDate)) ?></td>
+                            <td><?php echo $row->Priority ?></td>
+                            <td><?php echo date("d M Y", strtotime($row->CompletationDate)) ?></td>
+                            <td><?php echo $row->TaskStatus ?></td>
+                            
+                          </tr>
+                        <?php  
+                        $i++;
+                        }
+                      ?>                   
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
       </div>
 	</div>
 </div>

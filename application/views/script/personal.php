@@ -32,8 +32,8 @@
 		todayHighlight: true
 	});
 	myTabel  = $('#ViewTable').DataTable({
-		     	//processing	: true,
-				//serverSide	: true,
+		     	processing	: true,
+				serverSide	: true,
 				ajax: {		            
 		            "url": "datatabel",
 		            "type": "GET"

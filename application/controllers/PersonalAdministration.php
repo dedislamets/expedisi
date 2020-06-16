@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class PersonalAdministration extends CI_Controller {
+  var $column_search = array('user_nama','user_email','user_alamat');
 	public function __construct()
 	{
 		parent::__construct();
@@ -15,8 +16,8 @@ class PersonalAdministration extends CI_Controller {
 	public function index()
 	{		
 		if($this->admin->logged_id())
-        {
-        	$data['menu'] = $this->M_menu->getMenu(147,0,"","Class");
+    {
+      $data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Class");
 			$data['title'] = 'Personal Administration';
 			$data['main'] = 'personal/index';
 			$data['js'] = 'script/personal';
@@ -61,8 +62,117 @@ class PersonalAdministration extends CI_Controller {
         }				  
 						
 	}
-	
-	public function getdata()
+
+  public function getdata()
+  {
+    $draw = intval($this->input->get("draw"));
+    $start = intval($this->input->get("start"));
+    $length = intval($this->input->get("length"));
+    $order = $this->input->get("order");
+    $search= $this->input->get("search");
+    $search = $search['value'];
+    $col = 10;
+    $dir = "";
+    if(!empty($order))
+    {
+        foreach($order as $o)
+        {
+            $col = $o['column'];
+            $dir= $o['dir'];
+        }
+    }
+
+    if($dir != "asc" && $dir != "desc")
+    {
+        $dir = "desc";
+    }
+
+    $valid_columns = array(
+        0=>'Recnum',
+        1=>'EmployeeId',
+        2=>'EmployeeName',
+        3=>'NameLocation',
+        4=>'NameWorkingStatus',
+        5=>'NameClass',
+        6=>'NamePositionStructural',
+        7=>'JoinDate',
+    );
+    if(!isset($valid_columns[$col]))
+    {
+        $order = null;
+    }
+    else
+    {
+        $order = $valid_columns[$col];
+    }
+    if($order !=null)
+    {
+        $this->db->order_by($order, $dir);
+    }
+    
+    if(!empty($search))
+    {
+        $x=0;
+        foreach($valid_columns as $sterm)
+        {
+            if($x==0)
+            {
+                $this->db->like($sterm,$search);
+            }
+            else
+            {
+                $this->db->or_like($sterm,$search);
+            }
+            $x++;
+        }                 
+    }
+    $this->db->limit($length,$start);
+
+
+    $employees = $this->db->get("[Fn_EmpBrowse] ('',GETDATE(),'1')");
+    $data = array();
+    foreach($employees->result() as $r)
+    {
+
+        $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
+        if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
+          $url = base_url() .'assets/profile/noprofile.jpg' ; 
+        }
+         $data[] = array(
+              $r->Recnum,
+              "<a href='javascript:void(0)' class='js_popover' 
+                data-img='". $url ."' data-id='". $r->EmployeeId ."' data-name='". $r->EmployeeName ."' data-org='". $r->NameOrganization ."' data-location='". $r->NamePositionStructural ."' data-class='". $r->NameClass ."' data-join='". $r->JoinDate ."' data-status='". $r->NameWorkingStatus ."'>".$r->EmployeeId.' </a>',
+              $r->EmployeeName,
+              $r->NameOrganization,
+              $r->NameLocation,
+              $r->NameWorkingStatus,
+              $r->NameClass,
+              $r->NamePositionStructural,
+              $r->JoinDate
+         ); 
+    }
+    
+    $total_employees = $this->totalEmployees();
+
+    $output = array(
+        "draw" => $draw,
+        "recordsTotal" => $total_employees,
+        "recordsFiltered" =>$total_employees,
+        "data" => $data
+    );
+    echo json_encode($output);
+    exit();
+  }
+
+  public function totalEmployees()
+  {
+      $query = $this->db->select("COUNT(*) as num")->get("[Fn_EmpBrowse] ('',GETDATE(),'1')");
+      $result = $query->row();
+      if(isset($result)) return $result->num;
+      return 0;
+  }
+ 
+	public function getdata_old()
 	{
 
           $draw = intval($this->input->get("draw"));
@@ -78,7 +188,7 @@ class PersonalAdministration extends CI_Controller {
           
           //$books = $this->Datatabel->get_payroll_list($periode, $advance);
 
-          $books = $this->Datatabel->get_personal($advance);
+          $books = $this->admin->get_personal($advance);
 
           $data = array();
 
