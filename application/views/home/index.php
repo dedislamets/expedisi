@@ -345,7 +345,7 @@
 
                           <div class="card">
                               <div class="card-header">
-                                <h3 class="card-title">New Employee</h3>                
+                                <h3 class="card-title" style="font-size: 16px;">New Employee</h3>                
                               </div>
                               
                               <div class="card-body p-0">
@@ -364,6 +364,7 @@
 
                                           <p style="font-weight: bold;margin-bottom: 0"><?php echo $row->LocationName ?></p>
                                           <span class="users-list-date"><?php echo $row->JoinDate ?></span>
+                                           <span class="users-list-date"><?php echo $row->Mail ?></span>
                                         </div>
                                       </div>
                                       
@@ -385,7 +386,7 @@
                           </div>
                           <div class="card">
                               <div class="card-header">
-                                <h3 class="card-title">On Leave</h3>                
+                                <h3 class="card-title" style="font-size: 16px;">On Leave</h3>                
                               </div>
                               <!-- /.card-header -->
                               <div class="card-body p-0">
@@ -423,7 +424,7 @@
                           </div>
                           <div class="card">
                             <div class="card-header">
-                              <h3 class="card-title">HR Policies</h3>                
+                              <h3 class="card-title" style="font-size: 16px;">HR Policies</h3>                
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body p-0">

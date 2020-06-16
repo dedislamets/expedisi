@@ -40,6 +40,7 @@ class Home extends CI_Controller {
         		$data_new_emp[$i]['EmployeeName'] = $r->EmployeeName;
         		$data_new_emp[$i]['LocationName'] = $r->LocationName;
         		$data_new_emp[$i]['PositionStructural'] = $r->PositionStructural;
+                $data_new_emp[$i]['Mail'] = $r->Mail;
         		$data_new_emp[$i]['JoinDate'] = date("d M Y", strtotime($r->JoinDate));
         		$data_new_emp[$i] = (object) $data_new_emp[$i];
         		$i++;

@@ -19,7 +19,7 @@ class DailyAttendance extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
     {
-        	$data['menu'] = $this->M_menu->getMenu(147,0,"","Class");
+        	$data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Class");
     			$data['title'] = 'Daily Attendance';
     			$data['main'] = 'tms/dailyattendance';
     			$data['js'] = 'script/dailyattendance';

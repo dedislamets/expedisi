@@ -14,7 +14,7 @@ class EmployeePerformance extends CI_Controller {
 		if($this->admin->logged_id())
     {
       redirect("EmployeePerformanceJNE");
-      $data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
+      $data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Position");
 			$data['title'] = 'Performance Management';
 			$data['main'] = 'performance/list-performance';
 			$data['js'] = 'script/performance';
@@ -99,7 +99,7 @@ class EmployeePerformance extends CI_Controller {
     {       
         if($this->admin->logged_id())
         {
-            $data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
+            $data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Position");
             $data['title'] = 'Performance Management';
             $data['main'] = 'performance/performance';
             $data['js'] = 'script/detail-performance';

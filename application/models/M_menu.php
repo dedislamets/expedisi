@@ -19,7 +19,7 @@ class M_menu extends CI_Model
                      $hasil .= '<li class="">';
                 }
                 $hasil .= '<a href="'.base_url().''. ($h->IsRequest==1 ? 'ListRequest?f='.$h->Web : $h->Web).'" class="dropdown-toggle" >
-                                <i class="menu-icon fa fa-desktop" style="float: left;"></i>
+                                <i class="menu-icon fa '. $h->Icon .'" style="float: left;"></i>
                                 <div class="menu-text">'.$h->IsName.' &nbsp;</div>
                                 <b class="arrow fa fa-angle-down"></b>
                             </a>
@@ -32,7 +32,7 @@ class M_menu extends CI_Model
                      $hasil .= '<li class="">';
                 }
                 $hasil.='<a href="'.base_url().''.($h->IsRequest==1 ? 'ListRequest?f='.$h->Web : $h->Web).'">
-                                <i class="menu-icon fa  fa-list-alt" style="font-size: 18px;float: left;"></i>
+                                <i class="menu-icon fa  '. $h->Icon .'" style="font-size: 18px;float: left;"></i>
                                 <div class="menu-text" >'.$h->IsName.' &nbsp;</div>
                             </a>
 

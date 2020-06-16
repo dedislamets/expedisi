@@ -18,12 +18,21 @@ class Admin extends CI_Model
         $this->db->where($field2);
         $this->db->limit(1);
         $query = $this->db->get();
-        //echo $this->db->last_query();
+        // echo $this->db->last_query();
+        // exit();
         if ($query->num_rows() == 0) {
             return FALSE;
         } else {
             return $query->result();
         }
+    }
+
+    function masterSetup()
+    {
+        $this->db->select('*');
+        $this->db->from('Administrator');
+        $query = $this->db->get();
+        return $query->result();
     }
     function api_get_function($name,$id, $order ='')
     {        
@@ -194,15 +203,15 @@ class Admin extends CI_Model
         return $query->result();
     }
     function getNewEmployee(){
-        $query = $this->db->query("select * from [Fn_DashboardNewEmployee] ('','2019-07-08')");
+        $query = $this->db->query("select * from [Fn_DashboardNewEmployee] ('',GETDATE())");
         return $query->result(); 
     }
     function getLeaveEmployee(){
         $query = $this->db->query("select * from [Fn_DashboardLeaveEmployees] ('','2019-07-08')");
         return $query->result(); 
     }
-    function getDetailPersonPerformance($EmployeeId, $start, $end){
-        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $EmployeeId.",'". $start ."','". $end ."')");
+    function getDetailPersonPerformance($EmployeeId, $start, $end, $id){
+        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $EmployeeId.",'". $start ."','". $end ."') where Recnum = ". $id);
         return $query->result(); 
     }
     function getSubOrdinat($EmployeeId){

@@ -12,7 +12,7 @@ class Organization extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
         {
-        	$data['menu'] = $this->M_menu->getMenu(147,0,"","Organization");
+        	$data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Organization");
 			$data['title'] = 'Organization Structure';
 			$data['main'] = 'organization/index';
 			$data['js'] = 'script/organization';
@@ -36,8 +36,9 @@ class Organization extends CI_Controller {
       	$sub = $this->input->get('sub')=='false' ? '0':'1'; 
       	$row = $this->db->query("SELECT Recnum,OrgId,OrgName,ParentId,total from Organization org
       		cross apply (
-				select count(*) as total from [Fn_EmpOrganizationTree] ('1','2019-01-01',Recnum,".$sub.") 
-			)x")->result_array();
+				select count(*) as total from [Fn_EmpOrganizationTree] ('1',getdate(),Recnum,".$sub.") 
+			)x
+			")->result_array();
         foreach($row as $key => $item)
 		{										
 			$data[]= [ 		'id' => $item['Recnum'],

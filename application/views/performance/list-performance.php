@@ -17,7 +17,7 @@
       <i class="ace-icon fa fa-home home-icon"></i>
       <a href="#">Home</a>
     </li>
-    <li class="active">Dashboard</li>
+    <li class="active"><?php echo $title ?></li>
   </ul><!-- /.breadcrumb -->
   <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
   <div class="nav-search" id="nav-search">

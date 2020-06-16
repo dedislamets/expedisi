@@ -40,6 +40,23 @@ class Datatabel extends CI_Model
         $query = $this->db->query("SELECT * from [$func] (". $id.")");
         return $query;
     }
+    public function get_KPM_Performance_JNE($id)
+    {
+        $query = $this->db->query("
+        select * from Fn_ListPerformanceKPM (". $id.") B cross apply ( 
+            select count(AreaPerformance) IsCount from Fn_ListPerformanceKPM (". $id.") A 
+        where A.AreaPerformance=B.AreaPerformance group by A.AreaPerformance )tes order by AreaPerformance");
+        return $query;
+    }
+    public function get_Summary_Performance_JNE($id)
+    {
+        $query = $this->db->query("select * from Fn_SummaryEmpPerformanceJNE (". $id.") B
+                cross apply (
+                        select count(IsNo) IsCount from Fn_SummaryEmpPerformanceJNE (". $id.") A where A.IsNo=B.IsNo and A.IsStatus = 1  group by A.IsNo
+                )tes  
+                Where IsStatus = 1 order by Sort");
+        return $query;
+    }
     public function get_Summary_Performance($id)
     {
         $query = $this->db->query("SELECT * from Fn_SummaryPerformanceCompetency (". $id.")");

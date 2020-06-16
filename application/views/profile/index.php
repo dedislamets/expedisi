@@ -36,7 +36,13 @@
 						<div class="row">
 							<div class="col-xs-12 col-sm-3 center">
 								<span class="profile-picture">
-									<img class="editable img-responsive" src="<?= base_url(). "assets/profile/". $this->session->userdata('user_nik') .".jpg" ?>" />
+									<?php
+						              $image_profile= base_url(). "assets/profile/". $this->session->userdata('user_nik') .".jpg";
+						              if(!is_file($image_profile)){
+						                  $image_profile= "http://hrsmartpro.com/assets/profile/no-profile-copy.png";
+						              }
+						            ?>
+									<img class="editable img-responsive" src="<?= $image_profile ?>" />
 								</span>
 
 								<div class="space space-4"></div>
@@ -103,7 +109,7 @@
 						</div>
 						<div class="space-20"></div>
 						<div id="user-profile-2" class="user-profile">
-						<div class="tabbable">
+						<!-- <div class="tabbable">
 							<ul class="nav nav-tabs padding-18">
 								<li class="active">
 									<a data-toggle="tab" href="#home">
@@ -129,28 +135,15 @@
 									</a>
 								</li>
 
-								<li>
-									<a data-toggle="tab" href="#friends">
-										<i class="blue ace-icon fa fa-users bigger-120"></i>
-										Friends
-									</a>
-								</li>
-
-								<li>
-									<a data-toggle="tab" href="#pictures">
-										<i class="pink ace-icon fa fa-picture-o bigger-120"></i>
-										Pictures
-									</a>
-								</li>
 							</ul>
 
 							<div class="tab-content no-border padding-24">
 								<div id="home" class="tab-pane in active">
 	
 									<div class="row">
-										<?php $this->load->view("view/personal") ?>
+										
 									</div>
-								</div><!-- /#home -->
+								</div>
 
 								<div id="feed" class="tab-pane">
 									<div class="profile-feed row">
@@ -273,7 +266,7 @@
 													</a>
 												</div>
 											</div>
-										</div><!-- /.col -->
+										</div>
 
 										<div class="col-sm-6">
 											<div class="profile-activity clearfix">
@@ -391,8 +384,8 @@
 													</a>
 												</div>
 											</div>
-										</div><!-- /.col -->
-									</div><!-- /.row -->
+										</div>
+									</div>
 
 									<div class="space-12"></div>
 
@@ -404,7 +397,7 @@
 											<i class="icon-on-right ace-icon fa fa-arrow-right"></i>
 										</button>
 									</div>
-								</div><!-- /#feed -->
+								</div>
 
 								<div id="friends" class="tab-pane">
 									<div class="profile-users clearfix">
@@ -804,7 +797,7 @@
 											<a href="#">Next &rarr;</a>
 										</li>
 									</ul>
-								</div><!-- /#friends -->
+								</div>
 
 								<div id="pictures" class="tab-pane">
 									<ul class="ace-thumbnails">
@@ -1024,9 +1017,9 @@
 											</div>
 										</li>
 									</ul>
-								</div><!-- /#pictures -->
+								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					</div>
 				</div>

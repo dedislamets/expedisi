@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>Dashboard - Ace Admin</title>
+    <title>Dashboard - HRPro System</title>
 
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -53,8 +53,28 @@
 
     <![endif]-->
     <style type="text/css">
-      
-
+      .text-profile{
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+         font-size: 15px;
+        white-space: normal;
+        line-height: 12px;
+      }
+      .navbar {
+        background: #173242;
+      }
+      .breadcrumbs{
+        background: #101067;
+      }
+      .breadcrumb>li, .breadcrumb>li.active {
+          color: #fff;
+      }
+      .breadcrumb>li>a {
+          color: #fff;
+      }
 
       .clearfix{
         clear: both;
@@ -164,7 +184,7 @@
       }
       .users-list-name {
         color: #495057;
-        font-size: 2.4rem;
+        font-size: 16px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -292,9 +312,9 @@
       }
       .d-block {
         display: block!important;
-        font-size: 17px;
+        font-size: 15px;
         white-space: normal;
-        line-height: 17px;
+        line-height: 12px;
       }
     </style>
   </head>
@@ -315,15 +335,15 @@
         <div class="navbar-header pull-left`">
           <a href="index.html" class="navbar-brand">
             <small>
-              <i class="fa fa-leaf"></i>
-              HRPro System
+              <img src="<?= base_url(); ?>assets/images/<?php echo $this->session->userdata('logo') ?>" class="" alt="logo" width="30" />
+              <?php echo $this->session->userdata('app_name') ?>
             </small>
           </a>
         </div>
 
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
           <ul class="nav ace-nav">
-            <li class="grey dropdown-modal">
+            <!-- <li class="grey dropdown-modal">
               <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                 <i class="ace-icon fa fa-tasks"></i>
                 <span class="badge badge-grey">4</span>
@@ -399,8 +419,8 @@
                 </li>
               </ul>
             </li>
-
-            <li class="purple dropdown-modal">
+ -->
+            <!-- <li class="purple dropdown-modal">
               <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                 <i class="ace-icon fa fa-bell icon-animated-bell"></i>
                 <span class="badge badge-important">8</span>
@@ -466,9 +486,9 @@
                   </a>
                 </li>
               </ul>
-            </li>
+            </li> -->
 
-            <li class="green dropdown-modal">
+            <!-- <li class="green dropdown-modal">
               <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                 <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
                 <span class="badge badge-success">5</span>
@@ -576,7 +596,8 @@
                   </a>
                 </li>
               </ul>
-            </li>          
+            </li>     -->      
+            <li><a href="logout" style="color: #fff;background-color: transparent;">Logout</a></li>
           </ul>
         </div>
       </div><!-- /.navbar-container -->
@@ -592,13 +613,21 @@
           try{ace.settings.loadState('sidebar')}catch(e){}
         </script>
 
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="user-panel pb-3 mb-3 d-flex" style="background-color: #101067;padding-top: 10px">
           <div class="image">
-            <img src="<?= base_url(). "assets/profile/". $this->session->userdata('user_nik') .".jpg" ?>" class="img-circle elevation-2" alt="User Image">
+            <?php
+              $image_profile= base_url(). "assets/profile/". $this->session->userdata('user_nik') .".jpg";
+              // if(!is_file($image_profile)){
+              //     $image_profile= "http://hrsmartpro.com/assets/profile/no-profile-copy.png";
+              // }
+            ?>
+            
+            <img src="<?= $image_profile ?>" class="img-circle elevation-2" alt="User Image" style="margin-top: 15px">
           </div>
           <div class="info">
-            <a href="profile" class="d-block"><?php echo $this->session->userdata('user_name'); ?></a>
-            <a href="logout">Logout</a>
+            <a href="profile" class="d-block" style="color: #fff"><?php echo $this->session->userdata('user_name'); ?></a>
+            <span style="color: #fff"><?php echo $this->session->userdata('user_nik'); ?></span><br>
+            <span class="text-profile" style="color: #fff;font-size: 9px;"><?php echo $this->session->userdata('posisi'); ?></span>
           </div>
         </div>
 

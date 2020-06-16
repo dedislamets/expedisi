@@ -13,7 +13,7 @@ class EmployeePerformanceJNE extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
     {
-        	$data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
+        	$data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Position");
 			$data['title'] = 'Performance Management';
 			$data['main'] = 'performance/list-performance';
 			$data['js'] = 'script/performance';
@@ -79,6 +79,7 @@ class EmployeePerformanceJNE extends CI_Controller {
                     $r->StartDate,
                     $r->EndDate,
                     $r->Remark,
+                    $r->IsColour,
                );
           }
 
@@ -98,7 +99,7 @@ class EmployeePerformanceJNE extends CI_Controller {
     {       
         if($this->admin->logged_id())
         {
-            $data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
+            $data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Position");
             $data['title'] = 'Performance Management';
             $data['main'] = 'performance/performance-jne';
             $data['js'] = 'script/detail-performance-jne';
@@ -111,14 +112,15 @@ class EmployeePerformanceJNE extends CI_Controller {
 
             $data_new_emp = array();
             $i=0;
-            foreach($this->admin->getDetailPersonPerformance($this->session->userdata('user_id'), $start, $end) as $r) {
+            foreach($this->admin->getDetailPersonPerformance($this->session->userdata('user_id'), $start, $end, $id) as $r) {
+              
                 $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
                 if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
                     $url = base_url() .'assets/profile/nophoto.jpg' ; 
                 }
 
                 $IdHead = $this->db->get_where('Employee', array('Recnum' => $r->RecnumHead1))->result();
-            
+                // print("<pre>".print_r($r,true)."</pre>");exit();
                 $url_head = base_url() .'assets/profile/'. $IdHead[0]->EmployeeId .'.jpg' ; 
                 if(!$this->admin->checkRemoteFile($IdHead[0]->EmployeeId .'.jpg')){
                     $url_head = base_url() .'assets/profile/nophoto.jpg' ; 
@@ -126,12 +128,15 @@ class EmployeePerformanceJNE extends CI_Controller {
 
                 $data_new_emp[$i]['EmployeeId'] = $r->EmployeeId;
                 $data_new_emp[$i]['url'] = $url;
+                $data_new_emp[$i]['IsPeriod'] = $r->IsPeriod ;
                 $data_new_emp[$i]['url_head'] = $url_head;
+                $data_new_emp[$i]['JoinDate'] = date("d M Y", strtotime($r->joindate));
                 $data_new_emp[$i]['EmployeeName'] = $r->EmployeeName;
                 $data_new_emp[$i]['WorkingStatus'] = $r->WorkingStatus;
                 $data_new_emp[$i]['Class'] = $r->Class;
                 $data_new_emp[$i]['PositionStructural'] = $r->PositionStructural;
                 $data_new_emp[$i]['PositionFunctional'] = $r->PositionFunctional;
+                $data_new_emp[$i]['Organization'] = $r->Organization;
                 $data_new_emp[$i] = (object) $data_new_emp[$i];
                 $i++;
             }
@@ -155,7 +160,11 @@ class EmployeePerformanceJNE extends CI_Controller {
             $data['keyperformancescore'] = $this->admin->getmaster('ScoreKeyPerformance');
             $data['keypercompetency'] = $this->admin->getmaster('ScoreCompetency');
             $data['calc'] = $this->admin->getmaster('CalculationMethod');
+            $data['nilai'] = $this->admin->getmaster('NilaiKompetensiJNE');
+            $data['evaluator'] = $this->admin->getmaster('Evaluator');
             $data['area'] = $this->admin->getmaster('Vf_FindAreaPerformance','',1);
+            $data['priority'] = $this->admin->getmaster('Vf_FindPriority','',1);
+            $data['task_status'] = $this->admin->getmaster('Vf_FindTaskStatus','',1);
 
             $row_data = $this->Datatabel->get_Function_id('Fn_ListPerformanceCompetencyJNE', $id);
 
@@ -177,7 +186,7 @@ class EmployeePerformanceJNE extends CI_Controller {
               }
             $data['competency'] = $data_competency;
 
-            $row_data = $this->Datatabel->get_Function_id('Fn_ListPerformanceKPM', $id);
+            $row_data = $this->Datatabel->get_KPM_Performance_JNE($id);
             $data_key = array();
             $i=0;
             foreach($row_data->result() as $r) {
@@ -189,17 +198,76 @@ class EmployeePerformanceJNE extends CI_Controller {
                     $data_key[$i]['CalculationMethod'] =  $r->CalculationMethod;
                     $data_key[$i]['IsActual'] =  $r->IsActual;
                     $data_key[$i]['Score'] =  $r->Score;
+                    $data_key[$i]['IsCount'] =  $r->IsCount;
                     $data_key[$i]['Action'] =  '<button type="button" class="btnEdit btn btn-sm" onclick="editmodal(this)"  data-id="'.$r->Recnum.'">
                           Edit
                         </button> | <button type="button" class="btnHapus btn btn-sm btn-danger" onclick="removeList('.$r->Recnum.');" >
-                          Hapus
+                          Delete
                         </button>';
                     $data_key[$i] = (object) $data_key[$i];
                     $i++;
               }
               $data['data_key'] = $data_key;
+
+              $row_data = $this->Datatabel->get_Summary_Performance_JNE($id);
+              $data_summary = array();
+              $i=0;
+              foreach($row_data->result() as $r) {
+                    $data_summary[$i]['Aspek'] = $r->Aspek;
+                    $data_summary[$i]['TotalBulan'] =  $r->TotalBulan;
+                    $data_summary[$i]['Bobot'] =  $r->Bobot;
+                    $data_summary[$i]['Nilai'] =  $r->Nilai;
+                    $data_summary[$i]['TotalNilai'] =  $r->TotalNilai;
+                    $data_summary[$i]['IsNo'] =  $r->IsNo;
+                    $data_summary[$i]['IsCount'] =  $r->IsCount;
+                
+                    $data_summary[$i] = (object) $data_summary[$i];
+                    $i++;
+                }
+              $data['summary'] = $data_summary;
+
+              $row_data = $this->Datatabel->get_Function_id('Fn_ListCoaching', $id);
+              $data_conseling = array();
+              $i=0;
+              foreach($row_data->result() as $r) {
+                    $data_conseling[$i]['IsPeriod'] = $r->IsPeriod;
+                    $data_conseling[$i]['DateOfCoaching'] =  $r->DateOfCoaching;
+                    $data_conseling[$i]['TopikPembahasan'] =  $r->TopikPembahasan;
+                    $data_conseling[$i]['FaktorDipertahankan'] =  $r->FaktorDipertahankan;
+                    $data_conseling[$i]['FaktorDikembangkan'] =  $r->FaktorDikembangkan;
+                    $data_conseling[$i]['PenyebabUtama'] =  $r->PenyebabUtama;
+                    $data_conseling[$i]['RencanaAksiEvaluasi'] =  $r->RencanaAksiEvaluasi;
+                    $data_conseling[$i]['Action'] =  '<button type="button" class="btnEdit btn btn-sm" onclick="editmodalconseling(this)"  data-id="'.$r->Recnum.'">
+                          Edit
+                        </button>';
+                    $data_conseling[$i] = (object) $data_conseling[$i];
+                    $i++;
+                }
+              $data['conseling'] = $data_conseling;
+
+              $row_data = $this->Datatabel->get_Function_id('Fn_ListPerformanceTaskEmp', $id);
+              $data_scheduler = array();
+              $i=0;
+              foreach($row_data->result() as $r) {
+                    $data_scheduler[$i]['Task'] = $r->Task;
+                    $data_scheduler[$i]['StartDate'] =  $r->StartDate;
+                    $data_scheduler[$i]['EndDate'] =  $r->EndDate;
+                    $data_scheduler[$i]['Priority'] =  $r->Priority;
+                    $data_scheduler[$i]['CompletationDate'] =  $r->CompletationDate;
+                    $data_scheduler[$i]['TaskStatus'] =  $r->TaskStatus;
+                    $data_scheduler[$i]['Action'] =  '<button type="button" class="btnEdit btn btn-sm" onclick="editmodaltask(this)"  data-id="'.$r->Recnum.'">
+                          Edit
+                        </button> | <button type="button" class="btnHapus btn btn-sm btn-danger" onclick="removeListTask('.$r->Recnum.');" >
+                          Delete
+                        </button>';
+                    $data_scheduler[$i] = (object) $data_scheduler[$i];
+                    $i++;
+                }
+              $data['scheduler'] = $data_scheduler;
+
               $data['penc_aspek_kinerja'] = $this->admin->get_Function_id('Fn_ListPerformanceKPMTotalScore', $id);
               $data['penc_aspek_komp'] = $this->admin->get_Function_id('Fn_ListPerformanceCompetencyJNETotalScore', $id);
+              $data['penc_summary'] = $this->admin->get_Function_id('Fn_TotalSummaryEmpPerformanceJNE', $id);
             // print("<pre>".print_r($data,true)."</pre>");exit();
             $this->load->view('home',$data,FALSE); 
 
@@ -411,7 +479,8 @@ class EmployeePerformanceJNE extends CI_Controller {
             'RecnumAreaPerformance' => $this->input->get('area_kinerja'),
             'IsTarget'          => format_data($this->input->get("IsTarget"), 'number'),
             'IsActual'          => format_data($this->input->get("IsActual"), 'number'),
-            'DataSource'            => $this->input->get('DataSource'),              
+            'DataSource'            => $this->input->get('DataSource'), 
+            'Remark'            => $this->input->get('remark_kpm'),              
         );
 
         //print("<pre>".print_r($data,true)."</pre>");exit();
@@ -448,11 +517,214 @@ class EmployeePerformanceJNE extends CI_Controller {
                             
       $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
+    public function SaveCoaching()
+    {       
+        
+        $response = [];
+        $response['error'] = TRUE; 
+        $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+        $recLogin = $this->session->userdata('user_id');
+        $data = array(
+            'RecnumPeriod'            => $this->input->get('RecnumPeriod'),
+            'DateOfCoaching'      => $this->input->get('DateOfCoaching'),
+            'TopikPembahasan'     => $this->input->get('TopikPembahasan'),
+            'FaktorDipertahankan' => $this->input->get('FaktorDipertahankan'),
+            'FaktorDikembangkan'  => $this->input->get('FaktorDikembangkan'),
+            'RencanaAksiEvaluasi' => $this->input->get('RencanaAksiEvaluasi'),
+            'PenyebabUtama'       => $this->input->get('PenyebabUtama'),              
+        );
+
+        //print("<pre>".print_r($data,true)."</pre>");exit();
+
+        $this->db->trans_begin();
+
+        if($this->input->get('txtRecnumCoaching') != "") {
+            $data['EditBy'] = $recLogin;
+            $data['EditDate'] = date('Y-m-d');
+
+            $this->db->set($data);
+            $this->db->where('Recnum', $this->input->get('txtRecnumCoaching'));
+            $result  =  $this->db->update('CoachingJNE');  
+
+            if(!$result){
+                print("<pre>".print_r($this->db->error(),true)."</pre>");
+            }else{
+                $response['error']= FALSE;
+            }
+        }else{
+            $data['CreateBy'] = $recLogin;
+            $data['CreateDate'] = date('Y-m-d');
+
+            $result  = $this->db->insert('CoachingJNE', $data);
+            
+            if(!$result){
+                print("<pre>".print_r($this->db->error(),true)."</pre>");
+            }else{
+                $response['error']= FALSE;
+            }
+        }
+
+        $this->db->trans_complete();
+                            
+      $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+    public function SaveCompetency()
+    {       
+        
+        $response = [];
+        $response['error'] = TRUE; 
+        $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+        $recLogin = $this->session->userdata('user_id');
+        $data = array(
+            'RecnumEvaluator' => $this->input->get('evaluator'),
+            'IsActual'        => $this->input->get('nilai'), 
+            'Remark'        => $this->input->get('bukti_perilaku'),              
+        );
+
+        $this->db->trans_begin();
+
+        if($this->input->get('txtRecnumCompetency') != "") {
+            $data['EditBy'] = $recLogin;
+            $data['EditDate'] = date('Y-m-d');
+
+            $this->db->set($data);
+            $this->db->where('Recnum', $this->input->get('txtRecnumCompetency'));
+            $result  =  $this->db->update('PerformanceCompetency');  
+
+            if(!$result){
+                print("<pre>".print_r($this->db->error(),true)."</pre>");
+            }else{
+                $response['error']= FALSE;
+            }
+        }else{
+            $data['CreateBy'] = $recLogin;
+            $data['CreateDate'] = date('Y-m-d');
+
+            $result  = $this->db->insert('PerformanceCompetency', $data);
+            
+            if(!$result){
+                print("<pre>".print_r($this->db->error(),true)."</pre>");
+            }else{
+                $response['error']= FALSE;
+            }
+        }
+
+        $this->db->trans_complete();
+                            
+      $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+    public function SaveTask()
+    {       
+        $config['upload_path']="./assets/attach"; //path folder file upload
+        $config['allowed_types']='pdf|doc|docx|jpg'; //type file yang boleh di upload
+        $config['encrypt_name'] = FALSE; //enkripsi file name upload
+        $config['overwrite'] = true;
+        $image = '';
+        $this->load->library('upload',$config); //call library upload 
+        if($this->upload->do_upload("attach_file")){ //upload file
+            $data = array('upload_data' => $this->upload->data()); //ambil file name yang diupload
+            $image= $data['upload_data']['file_name']; //set file name ke variable image
+
+        }
+        $response = [];
+        $response['error'] = TRUE; 
+        $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+        $recLogin = $this->session->userdata('user_id');
+        $data = array(
+            'RecnumEmpPerformance' => $this->input->post('txtIdGet'),
+            'Task'        => $this->input->post('task'), 
+            'StartDate'   => format_data($this->input->post('start_date'), 'date'), 
+            'EndDate'     => format_data($this->input->post('end_date'), 'date'), 
+            'RecnumPriority'   => $this->input->post('priority'), 
+            'RecnumTaskStatus'   => $this->input->post('task_status'),
+            'ReportType'   => $this->input->post('report_type'),
+            'SubmissionMethod'   => $this->input->post('sub_method'),
+            'CompletationDate'   => format_data($this->input->post('com_date'), 'date'),           
+        );
+        if(!empty($image))
+          $data['AttachFile'] = $image;
+        // $response['data']= $data;
+
+        $this->db->trans_begin();
+
+        if($this->input->post('txtRecnumTask') != "") {
+            $data['EditBy'] = $recLogin;
+            $data['EditDate'] = date('Y-m-d');
+
+            $this->db->set($data);
+            $this->db->where('Recnum', $this->input->post('txtRecnumTask'));
+            $result  =  $this->db->update('PerformanceTaskEmp');  
+
+            if(!$result){
+                print("<pre>".print_r($this->db->error(),true)."</pre>");
+            }else{
+                $response['error']= FALSE;
+            }
+        }else{
+            $data['CreateBy'] = $recLogin;
+            $data['CreateDate'] = date('Y-m-d');
+
+            $result  = $this->db->insert('PerformanceTaskEmp', $data);
+            
+            if(!$result){
+                print("<pre>".print_r($this->db->error(),true)."</pre>");
+            }else{
+                $response['error']= FALSE;
+            }
+        }
+
+        $this->db->trans_complete();
+                            
+      $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
 
     public function edit(){
         $id = $this->input->get('id'); 
         $data = $this->admin->getmaster('PerformanceKPM',"Recnum=" . $id);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+    public function editConseling(){
+        $id = $this->input->get('id'); 
+        $data = $this->admin->getmaster('CoachingJNE',"Recnum=" . $id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+    public function editCompetency(){
+        $id = $this->input->get('id'); 
+        $data = $this->admin->getmaster('PerformanceCompetency',"Recnum=" . $id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
+    public function editTask(){
+        $id = $this->input->get('id'); 
+        $data = $this->admin->getmaster('PerformanceTaskEmp',"Recnum=" . $id);
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    }
 
+    public function delete()
+    {
+        $response = [];
+        $response['error'] = TRUE; 
+        if($this->admin->deleteTable($this->input->post('txtRecnum'), 'PerformanceKPM' )){
+          $response['error'] = FALSE;
+        } 
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($response)); 
+    }
+    public function deleteTask()
+    {
+        $response = [];
+        $response['error'] = TRUE; 
+
+        $data = $this->admin->getmaster('PerformanceTaskEmp',"Recnum=" . $this->input->post('txtRecnumTask'));
+        // print("<pre>".print_r($data,true)."</pre>");exit();
+        if($data){
+          if(!empty($data[0]->AttachFile))
+            unlink($_SERVER['DOCUMENT_ROOT'].'/assets/attach/'. $data[0]->AttachFile);
+        }
+
+        if($this->admin->deleteTable($this->input->post('txtRecnumTask'), 'PerformanceTaskEmp' )){
+          $response['error'] = FALSE;
+        } 
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($response)); 
+    }
 }

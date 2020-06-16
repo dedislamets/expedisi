@@ -12,7 +12,7 @@ class Position extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
         {
-        	$data['menu'] = $this->M_menu->getMenu(147,0,"","Position");
+        	$data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Position");
 			$data['title'] = 'Position Structure';
 			$data['main'] = 'organization/position';
 			$data['js'] = 'script/position';
@@ -36,7 +36,7 @@ class Position extends CI_Controller {
       	$sub = $this->input->get('sub')=='false' ? '0':'1'; 
       	$row = $this->db->query("select Recnum,PositionId,PositionName,ParentId,Positiontype,total from V_Position org
       		cross apply (
-				select count(*) as total from [Fn_EmpPositionTree] ('1','2019-01-01',recnum,".$sub.") 
+				select count(*) as total from [Fn_EmpPositionTree] ('1',cast(getdate()as date),recnum,".$sub.") 
 			)x where Positiontype='".$this->input->get('jenis')."' or Recnum=23")->result_array();
         foreach($row as $key => $item)
 		{										

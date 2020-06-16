@@ -40,6 +40,8 @@ class Login extends CI_Controller {
                     //checking data via model
                     $checking = $this->admin->check_login('V_SecAccessGroup', array('PersonalMail' => $username), array('IsPassword' => $password));
 
+                    $setup = $this->admin->masterSetup();
+
                     //jika ditemukan, maka create session
                     if ($checking != FALSE) {
                         foreach ($checking as $apps) {
@@ -48,6 +50,9 @@ class Login extends CI_Controller {
                                 'user_nik'  => $apps->EmployeeId,
                                 'user_name' => $apps->EmployeeName,
                                 'user_mail' => $apps->PersonalMail,
+                                'posisi'    => $apps->PositionStructural,
+                                'logo'      => $setup[0]->Icon,
+                                'app_name'  => $setup[0]->AplicationName,
                             );
                             //set session userdata
                             $this->session->set_userdata($session_data);
@@ -63,7 +68,8 @@ class Login extends CI_Controller {
                     }
 
                 }else{
-                    $this->load->view('login');
+                    $data['setup'] = $this->admin->masterSetup();
+                    $this->load->view('login', $data);
                 }
 
             }
