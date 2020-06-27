@@ -38,12 +38,12 @@ class Login extends CI_Controller {
                     $password = $this->Acak($this->input->post('password', TRUE), "goldenginger");
 
                     //checking data via model
-                    $checking = $this->admin->check_login('V_SecAccessGroup', array('PersonalMail' => $username), array('IsPassword' => $password));
+                    $checking = $this->admin->check_login('V_SecAccessGroup', array('PersonalMail' => $username), array('IsPassword' => $password), array('EmployeeId' => $username));
 
-                    $setup = $this->admin->masterSetup();
-
+                    $data['setup'] = $this->admin->masterSetup();
+                    // echo $checking; exit();
                     //jika ditemukan, maka create session
-                    if ($checking != FALSE) {
+                    if (!empty($checking)) {
                         foreach ($checking as $apps) {
                             $session_data = array(
                                 'user_id'   => $apps->RecnumEmployee,
@@ -51,12 +51,12 @@ class Login extends CI_Controller {
                                 'user_name' => $apps->EmployeeName,
                                 'user_mail' => $apps->PersonalMail,
                                 'posisi'    => $apps->PositionStructural,
-                                'logo'      => $setup[0]->Icon,
-                                'app_name'  => $setup[0]->AplicationName,
+                                'logo'      => $data['setup'][0]->Icon,
+                                'app_name'  => $data['setup'][0]->AplicationName,
                             );
                             //set session userdata
                             $this->session->set_userdata($session_data);
-
+                            // print("<pre>".print_r($session_data,true)."</pre>");exit();
                             redirect('home/');
 
                         }

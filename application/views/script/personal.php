@@ -92,9 +92,6 @@
                 } );
     myTabel .buttons().container().appendTo( $('.tableTools-container') );
     
-    
-    ////
-
     setTimeout(function() {
         $($('.tableTools-container')).find('a.dt-button').each(function() {
             var div = $(this).find(' > div').first();

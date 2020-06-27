@@ -13,6 +13,9 @@
 			//onchange:''
 			//
 		});
+
+		
+
 		$('.date-picker').datepicker({
 			autoclose: true,
 			todayHighlight: true
@@ -23,6 +26,10 @@
 	        centsLimit: 0,
 	        thousandsSeparator: ''
 	    });
+
+		$(".number").focus(function(){
+            $(this).setCursorPosition(0);
+        });
 
 	    $('.dec').priceFormat({
 	        prefix: '',
@@ -92,20 +99,56 @@
 		    });
 		});
 
+		$('#IsActual').on('change', function (event) {
+			if( parseInt($(this).val()) > 0){
+				$("#f-alasan-score").addClass('hidden');
+				$("#alasan-score").val('0');
+			}else{
+				$("#f-alasan-score").removeClass('hidden');
+				if($("#lbl-title").text() == 'Add'){
+					$("#alasan-score").val('1');
+				}
+			}
+		});
+
+		$('#WeightPercentage').on('change', function (event) {
+			if($("#lbl-title").text() == 'Add'){
+				if( parseInt($("#total_bobot").val())+ parseInt($(this).val()) > 100){
+					$("#msg_kpm").text('Total bobot anda saat ini melebihi 100. Anda tidak diperkenankan untuk submit !!');
+					$("#btnSubmit").attr('disabled','disabled');
+					$("#msg_kpm").css('display','block');
+				}else{
+					$("#btnSubmit").removeAttr('disabled');
+					$("#msg_kpm").css('display','none');
+				}
+			}else{
+				var new_total = parseInt($("#total_bobot").val()) - ( parseInt($('#WeightPercentage_old').val()) - parseInt($(this).val()) )
+				if(  new_total > 100){
+					$("#msg_kpm").text('Total bobot anda saat ini melebihi 100. Anda tidak diperkenankan untuk submit !!');
+					$("#btnSubmit").attr('disabled','disabled');
+					$("#msg_kpm").css('display','block');
+				}else{
+					$("#btnSubmit").removeAttr('disabled');
+					$("#msg_kpm").css('display','none');
+				}
+			}
+		});
 		$('#btnAdd').on('click', function (event) {
 			$("#lbl-title").text('Add');
 			$("#calc").val('1');
 			$("#IsDesc").val('');
 			$("#txtRecnum").val('');
 			$("#WeightPercentage").val('0');
+			$("#WeightPercentage_old").val('0');
 			$("#IsTarget").val('0');
-			$("#IsActual").val('0');
+			$("#IsActual").val('0').change();
 			$("#DataSource").val('');
 			$("#remark_kpm").val('');
 			$("#submit_remove").remove();
 			$("#btnSubmit").css("display","block");
 			$("#warning-del").remove();
 			$('#Form').find(':input:disabled').removeAttr('disabled');
+			
 			$('#ModalAdd').modal({backdrop: 'static', keyboard: false}) ;
 		});
 
@@ -126,6 +169,37 @@
 			$('#FormTask').find(':input:disabled').removeAttr('disabled');
 			$('#ModalTaskScheduler').modal({backdrop: 'static', keyboard: false}) ;
 		});
+
+		$('#btnAddDoc').on('click', function (event) {
+			$("#lbl-title-task").text('Add');
+			$("#status_performance").change();
+			$("#txtRecnumDoc").val('');
+			$("#rencana_pengembangan").val('');
+			$("#alasan_status").val('');
+			$("#btnSubmitDoc").css("display","block");
+			$('#FormDoc').find(':input:disabled').removeAttr('disabled');
+
+			if($("#total_bobot").val() < 100){
+				$("#msg_doc").text('Total bobot anda saat ini belum mencapai 100. Anda tidak diperkenankan untuk update status dokumen !!');
+				$("#btnSubmitDoc").attr('disabled','disabled');
+			}
+			
+			$("#submit_remove_doc").remove();
+			$("#warning-del-doc").remove();
+			
+			
+			$('#ModalDoc').modal({backdrop: 'static', keyboard: false}) ;
+		});
+
+		$('#status_performance').on('change', function (event) {
+			$("#f-rencana").css('display','none');
+			$("#f-alasan").css('display','none');
+			if($(this).val() < $("#RecnumPerformanceStatus").val()){
+				$("#f-alasan").css('display','block');
+			}else if ($(this).val() == 7) {
+				$("#f-rencana").css('display','block');
+			}
+		})
 
 		$('#btnSubmit').on('click', function () {
 	    	var valid = false;
@@ -165,7 +239,7 @@
 
 		$('#btnSubmitCompetency').on('click', function () {
 	    	var valid = false;
-	    	var sParam = $('#Form1').serialize();
+	    	
 	    	var validator = $('#Form1').validate({
 								rules: {
 										Remark: {
@@ -176,9 +250,12 @@
 		 	validator.valid();
 		 	$status = validator.form();
 		 	if($status) {
+		 		$('#Form1').find(':input:disabled').removeAttr('disabled');
+		 		var sParam = $('#Form1').serialize();
 		 		var link = 'SaveCompetency';
 		 		$.get(link,sParam, function(data){
-					if(data.error==false){									
+					if(data.error==false){		
+													
 						alert('Berhasil disimpan..');
 						window.location.reload();
 					}else{	
@@ -289,21 +366,56 @@
                  });
 		 	}
 		});
+
+		$('#btnSubmitDoc').on('click', function (e) {
+            e.preventDefault(); 
+	    	var valid = false;
+	    	var sParam = $('#FormDoc').serialize() + "&id="+ $("#txtID").val();
+	    	var validator = $('#FormDoc').validate({
+								rules: {
+										// rencana_pengembangan: {
+								  // 			required: true
+										// },
+										// alasan_status: {
+								  // 			required: true
+										// },
+									}
+								});
+		 	validator.valid();
+		 	$status = validator.form();
+		 	if($status) {
+		 		var link = 'SaveDoc';
+		 		$.get(link,sParam, function(data){
+					if(data.error==false){									
+						alert('Berhasil disimpan..');
+						window.location.reload();
+					}else{	
+						$("#lblMessage").remove();
+						$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
+												  					  	
+					}
+				},'json');
+		 	}
+		});
 	});
+	
 
 	function editmodal(val){
 		showloader('body');
 		$.get('edit', { id: $(val).data('id') }, function(data){ 
          		$("#lbl-title").text('Edit');
 
-         		$('#Form').find(':input:disabled').removeAttr('disabled');
+         		// $('#Form').find(':input:disabled').removeAttr('disabled');
          		$("#calc").val(data[0]['RecnumCalculationMethod']);
          		$("#area_kinerja").val(data[0]['RecnumAreaPerformance']);
 				$("#IsDesc").val(data[0]['IsDesc']);
 				$("#txtRecnum").val(data[0]['Recnum']);
-				$("#WeightPercentage").val(data[0]['WeightPercentage']);
-				$("#IsTarget").val(data[0]['IsTarget']);
-				$("#IsActual").val(data[0]['IsActual']);
+				$("#WeightPercentage").val(parseFloat(data[0]['WeightPercentage']));
+				$("#WeightPercentage_old").val(parseFloat(data[0]['WeightPercentage']));
+				$("#IsTarget").val(parseFloat(data[0]['IsTarget']));
+				$("#IsActual").val(parseFloat(data[0]['IsActual']));
+				$("#IsActual").change();
+				$("#alasan_score").val(data[0]['RecnumPerformanceScore0']);
            		$("#DataSource").val(data[0]['DataSource']);
            		$("#remark_kpm").val(data[0]['Remark']);
            		$("#submit_remove").remove();
@@ -318,11 +430,12 @@
 
 	function editmodal_2(val){
 		showloader('body');
-		$.get('editCompetency', { id: $(val).data('id') }, function(data){ 
+		$.get('editCompetency', { id: $(val).data('id'), com: $(val).data('com') }, function(data){ 
          		$("#lbl-title-competency").text('Edit');
-         		$("#evaluator").val(data[0]['RecnumEvaluator']);
+         		// $("#evaluator").val(data[0]['RecnumEvaluator']);
          		$("#IsDescCompetency").val($(val).parent().parent().children()[1].textContent);
-				$("#txtRecnumCompetency").val(data[0]['Recnum']);
+				$("#txtEmpPerformance").val(data[0]['RecnumEmpPerformance']);
+				$("#txtRecnumCompetency").val(data[0]['RecnumCompetency']);
 				$("#RecnumCompetency").val(data[0]['RecnumCompetency']);
 				$("#nilai").val(data[0]['IsActual']);
            		$("#bukti_perilaku").text(data[0]['Remark']);
@@ -375,10 +488,13 @@
 			$("#sub_method").val(data[0]['SubmissionMethod']);
 			$("#task_status").val(data[0]['RecnumTaskStatus']);
 			$("#task").val(data[0]['Task']);
-			$('#attach_file').ace_file_input('show_file_list', [
+			if(data[0]['AttachFile'] != undefined){
+				$('#attach_file').ace_file_input('show_file_list', [
 					// {type: 'image', name: data[0]['AttachFile'], path: 'http://hrsmartpro.com/assets/attach'},
 					{type: 'file', name: data[0]['AttachFile']}
 				]);
+			}
+			
 
 			
        		$("#btnSubmitTask").css("display","block");
@@ -404,6 +520,7 @@
 			$("#IsTarget").val(data[0]['IsTarget']);
 			$("#IsActual").val(data[0]['IsActual']);
        		$("#DataSource").text(data[0]['DataSource']);
+			$("#msg_kpm").css('display','none');
        		
 
     		$.each($('#Form').serializeArray(), function(index, value){
@@ -519,5 +636,18 @@
 		}
 	}
 
+	$(function() { 
+	    // for bootstrap 3 use 'shown.bs.tab', for bootstrap 2 use 'shown' in the next line
+	    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	        // save the latest tab; use cookies if you like 'em better:
+	        localStorage.setItem('lastTab', $(this).attr('href'));
+	    });
+
+	    // go to the latest tab, if it exists:
+	    var lastTab = localStorage.getItem('lastTab');
+	    if (lastTab) {
+	        $('[href="' + lastTab + '"]').tab('show');
+	    }
+	});
 
 </script>

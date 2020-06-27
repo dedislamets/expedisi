@@ -29,6 +29,7 @@
     padding-left: 10px;
     margin-left: 0;
     color: #fff;
+    font-size: 18px;
   }
 
   .align-items-stretch {
@@ -147,37 +148,40 @@
 		</h1>
      <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
      <input type="hidden" name="txtID" id="txtID" value="<?php echo $id ?>">
+     <input type="hidden" name="txtRole" id="txtRole" value="<?php echo $role[0]->LoginType ?>">
+     <input type="hidden" name="RecnumPerformanceStatus" id="RecnumPerformanceStatus" value="<?php echo $last_ps[0]->RecnumPerformanceStatus ?>">
+      
 	</div>
   <div class="row">
     <div class="well">
       <div class="col-md-6 no-padding">
         <div class="col-md-4">
           <div class="image">
-            <img src="<?php echo $detail[0]->url ?>" style="height: 219px"  alt="User Image">
+            <img src="<?php echo $detail[0]->url ?>" style="height: 190px"  alt="User Image">
           </div>
         </div>
         <div class="col-md-8" >
           <table class="table">
             <tr>
-              <td>Emp ID</td><td>:</td><td><?php echo $detail[0]->EmployeeId ?></td>
+              <td width="100">Emp ID</td><td>:</td><td><?php echo $detail[0]->EmployeeId ?></td>
             </tr>
             <tr>
-              <td>Emp Name</td><td>:</td><td><?php echo $detail[0]->EmployeeName ?></td>
+              <td width="100">Emp Name</td><td>:</td><td><?php echo $detail[0]->EmployeeName ?></td>
             </tr>
             <tr>
-              <td>Join Date</td><td>:</td><td><?php echo $detail[0]->JoinDate ?></td>
+              <td width="100">Join Date</td><td>:</td><td><?php echo $detail[0]->JoinDate ?></td>
             </tr>
             <tr>
-              <td>Position</td><td>:</td><td><?php echo $detail[0]->PositionStructural ?></td>
+              <td width="100">Position</td><td>:</td><td><?php echo $detail[0]->PositionStructural ?></td>
             </tr>
             <tr>
-              <td>Section</td><td>:</td><td><?php echo $detail[0]->Organization ?></td>
+              <td width="100">Section</td><td>:</td><td><?php echo $detail[0]->Organization ?></td>
             </tr>
             <tr>
-              <td>Class</td><td>:</td><td><?php echo $detail[0]->Class ?></td>
+              <td width="100">Class</td><td>:</td><td><?php echo $detail[0]->Class ?></td>
             </tr>
             <tr>
-              <td>Working Status</td><td>:</td><td><?php echo $detail[0]->WorkingStatus ?></td>
+              <td width="100">Working Status</td><td>:</td><td><?php echo $detail[0]->WorkingStatus ?></td>
             </tr>
           </table>
         </div>
@@ -256,7 +260,19 @@
               </h4>
               
               <div style="float: right;padding-top: 5px;padding-right: 5px">
-                <button class='btn btn-sm btn-white btn-success' id="btnAdd"><i class='ace-icon fa fa-plus'></i>
+                <?php 
+                  $disabled = 'disabled';
+                  
+                  if ($last_ps[0]->RecnumPerformanceStatus == 1) {
+                    $disabled = '';
+                  }
+
+                  if ($role[0]->LoginType == 3) {
+                    $disabled = 'disabled';
+                  }
+                  
+                ?>
+                <button class='btn btn-sm btn-white btn-success' id="btnAdd" <?php echo $disabled; ?> ><i class='ace-icon fa fa-plus'></i>
                 Create</button>
               </div>
             </div>
@@ -274,7 +290,7 @@
                       </tr>
                       <tr>
                         <th>No</th>
-                        <th>Objective</th>
+                        <th>Perspektif</th>
                         <th>Key Performance Indicator (KPI)</th>
                         <th>Target</th> 
                         <th>Metode Perhitungan</th>
@@ -289,34 +305,48 @@
                       <?php 
                         $i=0;
                         $IsNo = "";
+                        $total_bobot = 0;
                         foreach($data_key as $row)
                         { 
+                          $generic = ($row->IsGeneric ==1) ? "style='background-color: gold;'" : "";
+                          $generic_no_style = ($row->IsGeneric ==1) ? "background-color: gold;" : "";
+
                           ?>
                           <tr>
                              <td width="150"><?php echo $row->Action ?></td>
                             <td><?php echo $i+1 ?></td>
                             <?php 
+
                               if ($row->AreaPerformance != $IsNo) { ?>
                                    <td rowspan="<?php echo $row->IsCount ?>" style="text-align: center;vertical-align: middle;"><?php echo $row->AreaPerformance ?></td>
                               <?php } 
                                $IsNo= $row->AreaPerformance; 
                             ?>
                             <!-- <td><?php echo $row->AreaPerformance ?></td> -->
-                            <td><?php echo $row->IsDesc ?></td>
-                            <td><?php echo $row->IsTarget ?></td>
-                            <td><?php echo $row->CalculationMethod ?></td>
-                            <td style="text-align: right;"><?php echo $row->WeightPercentage ?></td>
-                            <td><?php echo $row->DataSource ?></td>
-                            <td style="text-align: right;"><?php echo $row->IsActual ?></td>
-                            <td style="text-align: right;"><?php echo $row->Score ?></td>
+                            <td <?php echo $generic ?> ><?php echo $row->IsDesc ?></td>
+                            <td <?php echo $generic ?> ><?php echo number_format($row->IsTarget,2) ?></td>
+                            <td <?php echo $generic ?> ><?php echo $row->CalculationMethod ?></td>
+                            <td style="text-align: right;<?php echo $generic_no_style ?>"><?php echo number_format($row->WeightPercentage,2) ?></td>
+                            <td <?php echo $generic ?> ><?php echo $row->DataSource ?></td>
+                            <td style="text-align: right;<?php echo $generic_no_style ?>"><?php echo number_format($row->IsActual,2) ?></td>
+                            <td style="text-align: right;<?php echo $generic_no_style ?>"><?php echo number_format($row->Score,2) ?></td>
                            
                           </tr>
                         <?php  
+
+                        $total_bobot = $total_bobot + floatval($row->WeightPercentage);
                         $i++;
+
                         }
                       ?>     
                       <tr style="background-color: green;color: #fff">
-                        <td colspan="9" style="text-align: right;"><b>Pencapaian Aspek Kinerja</b></td>
+                        <td colspan="6" style="text-align: left;"><b>Total Bobot</b></td>
+                        <td style="text-align: right;">
+                          <input type="hidden" name="total_bobot" id="total_bobot" value="<?php echo $total_bobot ?>">
+                          <?php echo number_format($total_bobot,2) ?>
+                            
+                        </td>
+                        <td colspan="2" style="text-align: right;"><b>Pencapaian Aspek Kinerja</b></td>
                         <td style="text-align: right;"><?php echo $penc_aspek_kinerja[0]->TotalScoreKPM ?></td>
                         
                       </tr>                                
@@ -360,27 +390,35 @@
                     <tbody>  
                       <?php 
                         $i=0;
+                        $total_bobot_com = 0;
                         foreach($competency as $row)
                         { 
                           ?>
                           <tr>
-                            <td><?php echo $row->Action ?></td>
+                            <td><?php echo $row->Action ?></td> 
                             <td><?php echo $row->Competency ?></td>
-                            <td><?php echo $row->IsWeight ?></td>
-                            <td><?php echo $row->ScoreHead1 ?></td>
+                            <td><?php echo number_format($row->IsWeight,3) ?></td>
+                            <td><?php echo number_format($row->ScoreHead1,3) ?></td>
                             <td><?php echo $row->ProofOfBehaviorHead1 ?></td>
-                            <td><?php echo $row->ScoreHead2 ?></td>
+                            <td><?php echo number_format($row->ScoreHead2,3) ?></td>
                             <td><?php echo $row->ProofOfBehaviorHead2 ?></td>
-                            <td style="text-align: right;"><?php echo $row->AverageScore ?></td>
+                            <td style="text-align: right;"><?php echo number_format($row->AverageScore,3) ?></td>
                             
                           </tr>
                         <?php  
+                        $total_bobot_com = $total_bobot_com + floatval($row->IsWeight);
                         $i++;
                         }
                       ?>   
                       <tr>
-                        <td colspan="7" style="text-align: right;"><b>Pencapaian Aspek Kompetensi</b></td>
-                        <td style="text-align: right;"><?php echo $penc_aspek_komp[0]->TotalScoreCompetency ?></td>
+                        <td colspan="2" style="text-align: left;"><b>Total Bobot</b></td>
+                        <td >
+                          <input type="hidden" name="total_bobot_com" id="total_bobot_com" value="<?php echo $total_bobot_com ?>">
+                          <?php echo number_format($total_bobot_com,3) ?>
+                            
+                        </td>
+                        <td colspan="4" style="text-align: right;"><b>Pencapaian Aspek Kompetensi</b></td>
+                        <td style="text-align: right;"><?php echo number_format($penc_aspek_komp[0]->TotalScoreCompetency,3) ?></td>
                       </tr>                               
                     </tbody>
                   </table>
@@ -438,8 +476,8 @@
                                $IsBobot= $row->IsNo; 
                             ?>
                               
-                            <td style="text-align: right;"><?php echo $row->Nilai ?></td>
-                            <td style="text-align: right;"><?php echo $row->TotalNilai ?></td>
+                            <td style="text-align: right;"><?php echo number_format($row->Nilai,3) ?></td>
+                            <td style="text-align: right;"><?php echo number_format($row->TotalNilai,3) ?></td>
                           </tr>
                         <?php  
                         $i++;
@@ -447,11 +485,11 @@
                       ?>     
                       <tr>
                         <td colspan="5" style="text-align: right;"><b>Rekapitulasi Nilai Akhir sebelum SP</b></td>
-                        <td style="text-align: right;"><?php echo $penc_summary[0]->RekapitulasiSblmSP ?></td>
+                        <td style="text-align: right;"><?php echo number_format($penc_summary[0]->RekapitulasiSblmSP,3) ?></td>
                       </tr> 
                       <tr>
                         <td colspan="5" style="text-align: right;"><b>Rekapitulasi Nilai Akhir setelah SP</b></td>
-                        <td style="text-align: right;"><?php echo $penc_summary[0]->RekapitulasiSesudahSP ?></td>
+                        <td style="text-align: right;"><?php echo number_format($penc_summary[0]->RekapitulasiSesudahSP,3) ?></td>
                       </tr>                              
                     </tbody>
                   </table>
@@ -553,12 +591,61 @@
                           <tr>
                             <td><?php echo $row->Action ?></td>
                             <td><?php echo $i+1 ?></td>
-                            <td><?php echo $row->Task ?></td>
+                            <td><?php echo cetak($row->Task) ?></td>
                             <td><?php echo date("d M Y", strtotime($row->StartDate)) ?></td>
                             <td><?php echo date("d M Y", strtotime($row->EndDate)) ?></td>
-                            <td><?php echo $row->Priority ?></td>
+                            <td><?php echo cetak($row->Priority) ?></td>
                             <td><?php echo date("d M Y", strtotime($row->CompletationDate)) ?></td>
                             <td><?php echo $row->TaskStatus ?></td>
+                            
+                          </tr>
+                        <?php  
+                        $i++;
+                        }
+                      ?>                   
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div id="documen" class="tab-pane fade">
+          <div class="table-responsive">
+            <div class="widget-box widget-color-blue2">
+              <div class="widget-header">
+                <h4 class="widget-title lighter smaller"> 
+                  Status Dokumen
+                </h4>
+                  
+                  <div style="float: right;padding-top: 5px;padding-right: 5px">
+                    <button class='btn btn-sm btn-white btn-success' id="btnAddDoc"><i class='ace-icon fa fa-plus'></i>
+                    Ubah Status</button>
+                  </div>
+              </div>
+              <div class="widget-body">
+                <div class="widget-main padding-8">
+                  <table  style="width: 100%"  class="table table-striped table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Edit By</th>
+                        <th>Remark</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody>     
+                      <?php 
+                        $i=0;
+                        foreach($dokumen as $row)
+                        { 
+                          ?>
+                          <tr>
+                            <td><?php echo date("d M Y", strtotime($row->Date)) ?></td>
+                            <td><?php echo $row->Status ?></td>
+                            <td><?php echo $row->EditBy ?></td>
+                            <td><?php echo $row->Remark ?></td>
                             
                           </tr>
                         <?php  

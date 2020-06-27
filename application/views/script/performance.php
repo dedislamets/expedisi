@@ -2,21 +2,31 @@
 	$(document).ready(function(){  
 
 		var table = $('#ViewTable').DataTable({
+			processing	: true,
+			serverSide	: true,
 			ajax: {		            
 	            "url": "EmployeePerformanceJNE/dataTable",
 	            "type": "GET"
 	        },			
 			"bPaginate": true,	
-			"ordering": false,
+			"ordering": true,
+			"order": [[ 1, "desc" ]],
 			columnDefs:[
+					{ orderable: false,  targets: 0 },
 					{
-						targets:[4,5], render:function(data){
+						targets:[5,6], render:function(data){
 			      			return moment(data).format('DD MMM YYYY'); 
-			    		}
+			    		},
 			    	},
+			    	{
+						targets:[3],
+			    		orderData: [ 3 ]
+			    	},
+
+			    	
 			],
 			"createdRow": function( row, data, dataIndex){
-                $(row).css('background-color',data[7]);
+                $(row).css('background-color',data[8]);
 
             }
 
@@ -36,7 +46,7 @@
 			showloader('body');
 			var start = $("#periode_start").val();
 	        var end = $("#periode_end").val();
-			table.ajax.url('EmployeePerformanceJNE/dataTable?start=' + start + '&end=' + end).load();
+			table.ajax.url('EmployeePerformanceJNE/dataTable?startDate=' + start + '&endDate=' + end + '&op=' + $("#chkAdmin").prop('checked')).load();
 			hideloader();
 		})
 	});

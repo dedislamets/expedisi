@@ -20,9 +20,9 @@ class Datatabel extends CI_Model
     	$query = $this->db->query($sql);
         return $query;
     }
-    public function get_Performance($id, $start, $end )
+    public function get_Performance($id, $start, $end, $opsi )
     {
-        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $id.",'". $start."', '". $end."')");
+        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $id.",'". $start."', '". $end."',". $opsi .")");
         return $query;
     }
     public function get_KPM($id)
@@ -35,9 +35,13 @@ class Datatabel extends CI_Model
         $query = $this->db->query("SELECT * from Fn_ListPerformanceCompetency (". $id.")");
         return $query;
     }
-    public function get_Function_id($func,$id)
+    public function get_Function_id($func,$id,$order='')
     {
-        $query = $this->db->query("SELECT * from [$func] (". $id.")");
+        $sql = "SELECT * from [$func] (". $id.")";
+        if($order != ""){
+            $sql .= " order by ". $order;
+        }
+        $query = $this->db->query($sql);
         return $query;
     }
     public function get_KPM_Performance_JNE($id)

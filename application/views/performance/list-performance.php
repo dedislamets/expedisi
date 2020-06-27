@@ -55,8 +55,17 @@
             </div>
           </div>
         </div>
-        
-        <div class="col-sm-2 no-padding">
+        <div class="col-sm-2">
+          <?php if(!empty($admin)) { ?>
+         <div class="checkbox">
+            <label>
+              <input id="chkAdmin" name="form-field-checkbox" type="checkbox" class="ace">
+              <span class="lbl"> Admin</span>
+            </label>
+          </div>
+        <?php } ?>
+        </div>
+        <div class="col-sm-2 pull-right no-padding">
           <button type="button" id="btnFind" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Refresh</button>
         </div>
       </div>
@@ -69,6 +78,7 @@
                 <th>Status</th>
                 <th>Employee ID</th>
                 <th>Employee Name</th>
+                <th>Position</th>
                 <th>Start Date</th> 
                 <th>End Date</th>
                 <th>Remark</th>
@@ -77,6 +87,9 @@
             <tbody>                                    
             </tbody>
           </table>
+          <div>
+            <img src="<?= base_url(); ?>assets/images/Legend.png" class="" alt="logo" width="200" />
+          </div>
       </div>
     </div>
 </div>

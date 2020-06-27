@@ -76,15 +76,9 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'database' => 'DBHRPRO',
-	//'hostname' => 'LAPTOP-TQCIJCB4',
-	//'username' => 'sa',
-	//'password' => '123',
-
-	//'hostname' => 'DEDISLAMET\SQLEXPRESS',
 	'hostname' => 'WIN-SN60FBM1K24',
 	'username' => 'sa',
-	//'password' => 'admin123^',
-	'password'	=> 'p@55w0rd',
+	'password'	=> 'p@55w0rd123',
 	
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',

@@ -10,11 +10,14 @@ class Admin extends CI_Model
     }
 
     //fungsi check login
-    function check_login($table, $field1, $field2)
+    function check_login($table, $field1, $field2, $field3)
     {
         $this->db->select('*');
         $this->db->from($table);
+        $this->db->group_start();
         $this->db->where($field1);
+        $this->db->or_where($field3);
+        $this->db->group_end();
         $this->db->where($field2);
         $this->db->limit(1);
         $query = $this->db->get();
@@ -173,6 +176,10 @@ class Admin extends CI_Model
         $query = $this->db->query('SELECT Id,Name FROM Vf_FindEmployeeActiveNow order by Id ASC');
         return $query->result();    
     }
+    function getLastStatusPerformance($id){
+        $query = $this->db->query('select * from empperformance where RecnumEmployee='. $id );
+        return $query->result();    
+    }
 
     function getmaster($tabel,$where='',$noorder=0){
         $sql = "SELECT * FROM ". $tabel;
@@ -185,9 +192,13 @@ class Admin extends CI_Model
         $query = $this->db->query($sql);
         return $query->result();    
     }
-    function get_Function_id($func,$id)
+    function get_Function_id($func,$id, $order='')
     {
-        $query = $this->db->query("SELECT * from [$func] (". $id.")");
+        $sql = "SELECT * from [$func] (". $id.")";
+        if($order != ""){
+            $sql .= " order by ". $order;
+        }
+        $query = $this->db->query($sql);
         return $query->result();
     }
     function getHRPolicies(){
@@ -210,8 +221,8 @@ class Admin extends CI_Model
         $query = $this->db->query("select * from [Fn_DashboardLeaveEmployees] ('','2019-07-08')");
         return $query->result(); 
     }
-    function getDetailPersonPerformance($EmployeeId, $start, $end, $id){
-        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $EmployeeId.",'". $start ."','". $end ."') where Recnum = ". $id);
+    function getDetailPersonPerformance($EmployeeId, $start, $end, $id, $op=0){
+        $query = $this->db->query("select * from Fn_ListEmpPerformance (". $EmployeeId.",'". $start ."','". $end ."', ". $op.") where Recnum = ". $id);
         return $query->result(); 
     }
     function getSubOrdinat($EmployeeId){

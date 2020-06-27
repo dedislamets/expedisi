@@ -63,6 +63,9 @@
         white-space: normal;
         line-height: 12px;
       }
+      .page-header h1 {
+        font-size: 21px;
+      }
       .navbar {
         background: #173242;
       }
@@ -597,7 +600,7 @@
                 </li>
               </ul>
             </li>     -->      
-            <li><a href="logout" style="color: #fff;background-color: transparent;">Logout</a></li>
+            <li><a href="<?php echo base_url() ?>login/keluar" style="color: #fff;background-color: transparent;">Logout</a></li>
           </ul>
         </div>
       </div><!-- /.navbar-container -->

@@ -50,7 +50,7 @@
 						<div class="login-container">
 							<div class="center">
 								<h1>
-									<img src="assets/images/<?php echo $setup[0]->Icon ?>" class="" alt="logo" width="30" />
+									<img src="<?= base_url(); ?>assets/images/<?php echo $setup[0]->Icon ?>" class="" alt="logo" width="30" />
 									<span class="white" id="id-text2"><?php echo $setup[0]->AplicationName ?></span>
 								</h1>
 								<!-- <h4 class="blue" id="id-company-text">&copy; HRSmartPro</h4> -->
@@ -73,7 +73,7 @@
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" name="username" class="form-control" placeholder="Username" />
+															<input type="text" name="username" class="form-control" placeholder="Username Or EmployeeId" />
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 														<?php echo form_error('username'); ?>

@@ -131,6 +131,7 @@ class PersonalAdministration extends CI_Controller {
 
     $employees = $this->db->get("[Fn_EmpBrowse] ('',GETDATE(),'1')");
     $data = array();
+    $num = 0;
     foreach($employees->result() as $r)
     {
 
