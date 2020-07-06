@@ -49,6 +49,16 @@
 			table.ajax.url('EmployeePerformanceJNE/dataTable?startDate=' + start + '&endDate=' + end + '&op=' + $("#chkAdmin").prop('checked')).load();
 			hideloader();
 		})
+
+		$('#btnExport').on('click', function()
+		{
+			// showloader('body');
+			var start = $("#periode_start").val();
+	        var end = $("#periode_end").val();
+	        var opsi = $("#chkAdmin").prop('checked');
+	        window.open('EmployeePerformanceJNE/export?startDate=' + start + '&endDate=' + end + '&op=' + opsi,'_self');
+			// hideloader();
+		})
 	});
 
 	

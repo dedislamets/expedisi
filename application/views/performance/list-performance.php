@@ -66,6 +66,9 @@
         <?php } ?>
         </div>
         <div class="col-sm-2 pull-right no-padding">
+          <button type="button" id="btnExport" class="btn btn-primary btn-block"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Export</button>
+        </div>
+        <div class="col-sm-2 pull-right ">
           <button type="button" id="btnFind" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Refresh</button>
         </div>
       </div>
