@@ -226,8 +226,14 @@
 		 		var link = 'SaveKPR';
 		 		$.get(link,sParam, function(data){
 					if(data.error==false){									
-						alert('Berhasil disimpan..');
-						window.location.reload();
+						Swal.fire({ title: "Berhasil disimpan..!",
+                           text: "",
+                           timer: 2000,
+                           showConfirmButton: false,
+                           onClose: () => {
+                            window.location.reload();
+                          }
+                        });
 					}else{	
 						$("#lblMessage").remove();
 						$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
@@ -242,7 +248,10 @@
 	    	
 	    	var validator = $('#Form1').validate({
 								rules: {
-										Remark: {
+										bukti_perilaku: {
+								  			required: true
+										} ,
+										nilai: {
 								  			required: true
 										}   
 									}
@@ -255,9 +264,14 @@
 		 		var link = 'SaveCompetency';
 		 		$.get(link,sParam, function(data){
 					if(data.error==false){		
-													
-						alert('Berhasil disimpan..');
-						window.location.reload();
+						Swal.fire({ title: "Berhasil disimpan..!",
+                           text: "",
+                           timer: 2000,
+                           showConfirmButton: false,
+                           onClose: () => {
+                            window.location.reload();
+                          }
+                        });
 					}else{	
 						$("#lblMessage").remove();
 						$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
@@ -295,8 +309,14 @@
 		 		var link = 'SaveCoaching';
 		 		$.get(link,sParam, function(data){
 					if(data.error==false){									
-						alert('Berhasil disimpan..');
-						window.location.reload();
+						Swal.fire({ title: "Berhasil disimpan..!",
+                           text: "",
+                           timer: 2000,
+                           showConfirmButton: false,
+                           onClose: () => {
+                            window.location.reload();
+                          }
+                        });
 					}else{	
 						$("#lblMessage").remove();
 						$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
@@ -355,8 +375,14 @@
                     success: function(data){
                     	hideloader();	
                       	if(data.error==false){
-							alert('Berhasil disimpan..');
-							window.location.reload();
+							Swal.fire({ title: "Berhasil disimpan..!",
+	                           text: "",
+	                           timer: 2000,
+	                           showConfirmButton: false,
+	                           onClose: () => {
+	                            window.location.reload();
+	                          }
+	                        });
 						}else{	
 							$("#lblMessage").remove();
 							$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
@@ -387,8 +413,14 @@
 		 		var link = 'SaveDoc';
 		 		$.get(link,sParam, function(data){
 					if(data.error==false){									
-						alert('Berhasil disimpan..');
-						window.location.reload();
+						Swal.fire({ title: "Berhasil disimpan..!",
+                           text: "",
+                           timer: 2000,
+                           showConfirmButton: false,
+                           onClose: () => {
+                            window.location.reload();
+                          }
+                        });
 					}else{	
 						$("#lblMessage").remove();
 						$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
@@ -598,8 +630,14 @@
 				},
 			    success: function (data) {
 			    	if(!data['error']){
-			    		alert('Sukses terhapus..');
-			    		window.location.reload();
+			    		Swal.fire({ title: "Berhasil dihapus..!",
+                           text: "",
+                           timer: 2000,
+                           showConfirmButton: false,
+                           onClose: () => {
+                            window.location.reload();
+                          }
+                        });
 			    	}
 		            
 		        },

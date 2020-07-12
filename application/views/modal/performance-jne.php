@@ -240,6 +240,8 @@
 	        	<div class="pull-right">
 		            <input type="hidden" id="txtEmpPerformance" name="txtEmpPerformance" />
 		            <input type="hidden" id="txtRecnumCompetency" name="txtRecnumCompetency" />
+		            <input type="hidden" id="txtRecnumHead1" name="txtRecnumHead1" value="<?php echo $detail[0]->RecnumHead1 ?>" />
+		            <input type="hidden" id="txtRecnumHead2" name="txtRecnumHead2" value="<?php echo $detail[0]->RecnumHead2 ?>" />
 		            <button type="button" id="btnSubmitCompetency" class="btn btn-primary btn-block">Submit</button>
 		        </div>
 	        </div>

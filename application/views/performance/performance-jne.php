@@ -188,10 +188,14 @@
       </div>
       <div class="col-md-6">
         <div class="col-md-3">
-          <h3 class="sub-ordinat">Head</h3>
+          <h3 class="sub-ordinat">Head 1</h3>
           <img src="<?php echo $detail[0]->url_head ?>" class="" style="height: 130px;width: 100%">
         </div>
-        <div class="col-md-9">
+        <div class="col-md-3">
+          <h3 class="sub-ordinat">Head 2</h3>
+          <img src="<?php echo $detail[0]->url_head_2 ?>" class="" style="height: 130px;width: 100%">
+        </div>
+        <div class="col-md-6">
           <h3 class="sub-ordinat">Sub Ordinate</h3>
           <div class="multi">
             <div class="row">
@@ -271,9 +275,12 @@
                     $disabled = 'disabled';
                   }
                   
+                  if( $detail[0]->IsLock == 0 ) {  
                 ?>
+
                 <button class='btn btn-sm btn-white btn-success' id="btnAdd" <?php echo $disabled; ?> ><i class='ace-icon fa fa-plus'></i>
                 Create</button>
+              <?php } ?>
               </div>
             </div>
 

@@ -50,6 +50,8 @@ class Login extends CI_Controller {
                                 'user_nik'  => $apps->EmployeeId,
                                 'user_name' => $apps->EmployeeName,
                                 'user_mail' => $apps->PersonalMail,
+                                'office_mail' => $apps->OfficeMail,
+                                'hp'        => $apps->Handphone,
                                 'posisi'    => $apps->PositionStructural,
                                 'logo'      => $data['setup'][0]->Icon,
                                 'app_name'  => $data['setup'][0]->AplicationName,
@@ -64,16 +66,25 @@ class Login extends CI_Controller {
 
                         $data['error'] = '<div class="alert alert-danger">
                             <div class="header"><b><i class="fa fa-exclamation-circle"></i></b> Username atau Password salah!</div></div>';
+                        $data['main'] = 'login/index';
                         $this->load->view('login', $data);
                     }
 
                 }else{
+                    $data['main'] = 'login/index';
                     $data['setup'] = $this->admin->masterSetup();
                     $this->load->view('login', $data);
                 }
 
             }
 
+    }
+
+    public function forgot()
+    {
+        $data['setup'] = $this->admin->masterSetup();
+        $data['main'] = 'login/forgot';
+        $this->load->view('login', $data,false);
     }
 
     public function keluar()
@@ -126,7 +137,7 @@ class Login extends CI_Controller {
         }
     }
     
-     function Acak($varMsg,$strKey) {
+    function Acak($varMsg,$strKey) {
         try {
             $Msg = $varMsg;
             $char_replace="";

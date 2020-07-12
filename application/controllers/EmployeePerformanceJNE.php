@@ -194,7 +194,7 @@ class EmployeePerformanceJNE extends CI_Controller {
     foreach($employees->result() as $r)
     {
       $data[] = array(
-                    '<a class="btn btn-block btn-sm" href="EmployeePerformanceJNE/detail?id='.$r->Recnum.'&start='. $start_date .'&end='. $end_date.'&op='. $opsi .'">
+                    '<a class="btn btn-block btn-sm" style="background-color:'. $r->IsColourButton.' !important" href="EmployeePerformanceJNE/detail?id='.$r->Recnum.'&start='. $start_date .'&end='. $end_date.'&op='. $opsi .'">
                         Detail
                       </a>',
                     $r->PerformanceStatus,
@@ -248,23 +248,37 @@ class EmployeePerformanceJNE extends CI_Controller {
           $data_new_emp = array();
           $i=0;
           foreach($this->admin->getDetailPersonPerformance($this->session->userdata('user_id'), $start, $end, $id,$op) as $r) {
-              // print("<pre>".print_r($r,true)."</pre>");exit();
+              
               $url = base_url() .'assets/profile/'. $r->EmployeeId .'.jpg' ; 
               if(!$this->admin->checkRemoteFile($r->EmployeeId .'.jpg')){
                   $url = base_url() .'assets/profile/nophoto.jpg' ; 
               }
 
               $IdHead = $this->db->get_where('Employee', array('Recnum' => $r->RecnumHead1))->result();
-              
-              $url_head = base_url() .'assets/profile/'. $IdHead[0]->EmployeeId .'.jpg' ; 
-              if(!$this->admin->checkRemoteFile($IdHead[0]->EmployeeId .'.jpg')){
-                  $url_head = base_url() .'assets/profile/nophoto.jpg' ; 
+              $IdHead_2 = $this->db->get_where('Employee', array('Recnum' => $r->RecnumHead2))->result();
+              // print("<pre>".print_r($r,true)."</pre>");exit();
+              $url_head = base_url() .'assets/profile/nophoto.jpg' ; 
+              if(!empty($IdHead)){
+                $url_head = base_url() .'assets/profile/'. $IdHead[0]->EmployeeId .'.jpg' ;
+                if(!$this->admin->checkRemoteFile($IdHead[0]->EmployeeId .'.jpg')){
+                    $url_head = base_url() .'assets/profile/nophoto.jpg' ; 
+                }
               }
 
+              $url_head_2 = base_url() .'assets/profile/nophoto.jpg' ; 
+              if(!empty($IdHead_2)){
+                $url_head_2 = base_url() .'assets/profile/'. $IdHead_2[0]->EmployeeId .'.jpg' ; 
+                if(!$this->admin->checkRemoteFile($IdHead_2[0]->EmployeeId .'.jpg')){
+                    $url_head_2 = base_url() .'assets/profile/nophoto.jpg' ; 
+                }
+              }
               $data_new_emp[$i]['EmployeeId'] = $r->EmployeeId;
               $data_new_emp[$i]['url'] = $url;
               $data_new_emp[$i]['IsPeriod'] = $r->IsPeriod ;
+              $data_new_emp[$i]['RecnumHead1'] = $r->RecnumHead1;
+              $data_new_emp[$i]['RecnumHead2'] = $r->RecnumHead2;
               $data_new_emp[$i]['url_head'] = $url_head;
+              $data_new_emp[$i]['url_head_2'] = $url_head_2;
               $data_new_emp[$i]['JoinDate'] = date("d M Y", strtotime($r->joindate));
               $data_new_emp[$i]['EmployeeName'] = $r->EmployeeName;
               $data_new_emp[$i]['WorkingStatus'] = $r->WorkingStatus;
@@ -272,6 +286,7 @@ class EmployeePerformanceJNE extends CI_Controller {
               $data_new_emp[$i]['PositionStructural'] = $r->PositionStructural;
               $data_new_emp[$i]['PositionFunctional'] = $r->PositionFunctional;
               $data_new_emp[$i]['Organization'] = $r->Organization;
+              $data_new_emp[$i]['IsLock'] = $r->IsLockCreateDeletePerformance;
               $data_new_emp[$i] = (object) $data_new_emp[$i];
               $i++;
           }
@@ -684,7 +699,7 @@ class EmployeePerformanceJNE extends CI_Controller {
           }else{
               $response['error']= FALSE;
           }
-      }else{
+      }else{  
           $data['CreateBy'] = $recLogin;
           $data['CreateDate'] = date('Y-m-d');
 
@@ -773,7 +788,8 @@ class EmployeePerformanceJNE extends CI_Controller {
           $this->db->set($data);
           $this->db->where('RecnumCompetency', $this->input->get('txtRecnumCompetency'));
           $this->db->where('RecnumEmpPerformance', $this->input->get('txtEmpPerformance'));
-          $this->db->where('RecnumEvaluator', $this->input->get('evaluator'));
+          if($this->input->get('txtRecnumHead1') != $this->input->get('txtRecnumHead2'))
+            $this->db->where('RecnumEvaluator', $this->input->get('evaluator'));
           $result  =  $this->db->update('PerformanceCompetency');  
           // echo $this->db->last_query();
           // exit();
@@ -1005,7 +1021,7 @@ class EmployeePerformanceJNE extends CI_Controller {
         $writer = new Xlsx($spreadsheet);
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Latihan.xlsx"');
+        header('Content-Disposition: attachment;filename="ListPerformanceManagement.xlsx"');
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');

@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-timepicker.min.css" />
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/jquery.gritter.min.css" />
-
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/sweetalert2.min.css" />
     <!-- text fonts -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/fonts.googleapis.com.css" />
 
@@ -319,6 +319,22 @@
         white-space: normal;
         line-height: 12px;
       }
+      .control-sidebar-heading {
+        font-weight: 400 !important;
+        font-size: 16px !important;
+        /*padding: 20px 0 !important;*/
+        margin-bottom: 10px;
+      }
+      .line-bar{
+        font-size: 13px;
+      }
+      .border-line {
+        border-top: 1px solid;
+        border-top-color: #E4ECF3;clear: both;
+      }
+      .scroll-content {
+        max-height: 400px !important;
+      }
     </style>
   </head>
 
@@ -346,83 +362,7 @@
 
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
           <ul class="nav ace-nav">
-            <!-- <li class="grey dropdown-modal">
-              <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <i class="ace-icon fa fa-tasks"></i>
-                <span class="badge badge-grey">4</span>
-              </a>
-
-              <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-                <li class="dropdown-header">
-                  <i class="ace-icon fa fa-check"></i>
-                  4 Tasks to complete
-                </li>
-
-                <li class="dropdown-content">
-                  <ul class="dropdown-menu dropdown-navbar">
-                    <li>
-                      <a href="#">
-                        <div class="clearfix">
-                          <span class="pull-left">Software Update</span>
-                          <span class="pull-right">65%</span>
-                        </div>
-
-                        <div class="progress progress-mini">
-                          <div style="width:65%" class="progress-bar"></div>
-                        </div>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#">
-                        <div class="clearfix">
-                          <span class="pull-left">Hardware Upgrade</span>
-                          <span class="pull-right">35%</span>
-                        </div>
-
-                        <div class="progress progress-mini">
-                          <div style="width:35%" class="progress-bar progress-bar-danger"></div>
-                        </div>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#">
-                        <div class="clearfix">
-                          <span class="pull-left">Unit Testing</span>
-                          <span class="pull-right">15%</span>
-                        </div>
-
-                        <div class="progress progress-mini">
-                          <div style="width:15%" class="progress-bar progress-bar-warning"></div>
-                        </div>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#">
-                        <div class="clearfix">
-                          <span class="pull-left">Bug Fixes</span>
-                          <span class="pull-right">90%</span>
-                        </div>
-
-                        <div class="progress progress-mini progress-striped active">
-                          <div style="width:90%" class="progress-bar progress-bar-success"></div>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-
-                <li class="dropdown-footer">
-                  <a href="#">
-                    See tasks with details
-                    <i class="ace-icon fa fa-arrow-right"></i>
-                  </a>
-                </li>
-              </ul>
-            </li>
- -->
+            
             <!-- <li class="purple dropdown-modal">
               <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                 <i class="ace-icon fa fa-bell icon-animated-bell"></i>
@@ -599,8 +539,107 @@
                   </a>
                 </li>
               </ul>
-            </li>     -->      
-            <li><a href="<?php echo base_url() ?>login/keluar" style="color: #fff;background-color: transparent;">Logout</a></li>
+            </li>     -->  
+        
+            <li style="border-left:none;"><a href="<?php echo base_url() ?>login/keluar" style="color: #fff;background-color: transparent;"><span class="fa fa-sign-out"></span> Logout</a></li>
+            <li class="grey dropdown-modal" style="border-left:none;">
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="color: #fff;background-color: transparent;">
+                <i class="ace-icon fa fa-tasks"></i>
+                <!-- <span class="badge badge-grey">4</span> -->
+              </a>
+
+              <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+
+                <li class="dropdown-content">
+                  <ul class="dropdown-menu dropdown-navbar">
+                    <li>
+                      <a href="<?php echo base_url() ?>profile" class="control-sidebar-heading">
+                        <span class="fa fa-cog"></span>  Setting</a>
+                      <p style="line-height: 15px;font-size: 11px;">Manage notification or change password</p>
+                    </li>
+                    <li class="border-line">
+                      <div class="col-md-8 line-bar">
+                        <p style="line-height: 1px;font-size: 13px;padding-top: 21px;font-weight: 600;">Phone Number</p>
+                        <p style="line-height: 15px;font-size: 11px;"><?= $this->session->userdata('hp') ?></p>
+                      </div>
+                      <div class="col-md-4 line-bar"> 
+                        <div style="padding-top: 10px"></div>
+                        <label>
+                            <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
+                            <span class="lbl"></span>
+                        </label>
+                      </div>
+                    </li>
+                    <li >
+                      <div class="border-line">
+                        <div class="col-md-8 line-bar">
+                          <p style="line-height: 1px;font-size: 13px;padding-top: 21px;font-weight: 600;">Personal Email</p>
+                          <p style="line-height: 15px;font-size: 11px;"><?= $this->session->userdata('user_mail') ?></p>
+                        </div>
+                        <div class="col-md-4 line-bar"> 
+                          <div style="padding-top: 10px"></div>
+                          <label>
+                              <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
+                              <span class="lbl"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+                    <li >
+                      <div class="border-line">
+                        <div class="col-md-8 line-bar">
+                          <p style="line-height: 1px;font-size: 13px;padding-top: 21px;font-weight: 600;">Official Email</p>
+                          <p style="line-height: 15px;font-size: 11px;"><?= $this->session->userdata('office_mail') ?></p>
+                        </div>
+                        <div class="col-md-4 line-bar"> 
+                          <div style="padding-top: 10px"></div>
+                          <label>
+                              <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
+                              <span class="lbl"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+                    <li >
+                      <div class="border-line">
+                        <div class="col-md-8 line-bar">
+                          <p style="line-height: 1px;font-size: 13px;padding-top: 21px;font-weight: 600;">Push Notification</p>
+                        </div>
+                        <div class="col-md-4 line-bar"> 
+                          <div style="padding-top: 10px"></div>
+                          <label>
+                              <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
+                              <span class="lbl"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+                    <li >
+                      <div class="border-line">
+                        <div class="col-md-8 line-bar">
+                          <p style="line-height: 14px;font-size: 13px;padding-top: 15px;font-weight: 600;">Change Password Slip</p>
+                        </div>
+                        <div class="col-md-4 line-bar"> 
+                          <div style="padding-top: 10px"></div>
+                          <label>
+                              <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
+                              <span class="lbl"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+
+                <li class="dropdown-footer">
+                  <a href="#">
+                    See All
+                    <i class="ace-icon fa fa-arrow-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
           </ul>
         </div>
       </div><!-- /.navbar-container -->
@@ -628,7 +667,7 @@
             <img src="<?= $image_profile ?>" class="img-circle elevation-2" alt="User Image" style="margin-top: 15px">
           </div>
           <div class="info">
-            <a href="profile" class="d-block" style="color: #fff"><?php echo $this->session->userdata('user_name'); ?></a>
+            <a href="<?php echo base_url() ?>profile" class="d-block" style="color: #fff"><?php echo $this->session->userdata('user_name'); ?></a>
             <span style="color: #fff"><?php echo $this->session->userdata('user_nik'); ?></span><br>
             <span class="text-profile" style="color: #fff;font-size: 9px;"><?php echo $this->session->userdata('posisi'); ?></span>
           </div>
@@ -766,6 +805,7 @@
     <script src="<?= base_url(); ?>assets/js/jquery.dataTables.min.js"></script>
     <script src="<?= base_url(); ?>assets/js/jquery.dataTables.bootstrap.min.js"></script>
     <script src="<?= base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
+    <script src="<?= base_url(); ?>assets/js/sweetalert2.min.js"></script>
 
     <!-- <script src="<?= base_url(); ?>assets/js/buttons.flash.min.js"></script> -->
     <!-- <script src="<?= base_url(); ?>assets/js/buttons.html5.min.js"></script> -->
@@ -818,6 +858,10 @@
             csrf_token: <?php echo "'". $this->security->get_csrf_hash()."'" ?>
         }
     });
+      $('.dropdown-menu').on("click.bs.dropdown", function (e) {
+        e.stopPropagation();                 
+        // e.preventDefault();                             
+      });
       function showloader(val){
         $(val).append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
       }

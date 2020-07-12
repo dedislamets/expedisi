@@ -50,6 +50,17 @@ class Admin extends CI_Model
             return $query->result();
         }
     }
+    function get($tabel,$where='',$order=''){
+        $this->db->from($tabel);
+        if($where !=""){
+            $this->db->where($where);
+        }
+        if($order !=""){
+            $this->db->order_by($order);
+        }
+        $query = $this->db->get();
+        return $query->result();    
+    }
 
     function api_getmaster($tabel,$where='',$noorder=0){
         $sql = "SELECT * FROM ". $tabel;
