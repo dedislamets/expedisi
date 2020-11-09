@@ -14,9 +14,9 @@
 
                     <div class="wizard-navigation">
                         <ul>
-                            <li><a href="#about" data-toggle="tab">About</a></li>
-                            <li><a href="#account" data-toggle="tab">Account</a></li>
-                            <li><a href="#address" data-toggle="tab">Address</a></li>
+                            <li><a href="#about" data-toggle="tab">Penerima</a></li>
+                            <li><a href="#account" data-toggle="tab">Barang</a></li>
+                            <li><a href="#address" data-toggle="tab">Layanan</a></li>
                         </ul>
 
                     </div>
@@ -24,8 +24,8 @@
                   <div class="tab-content">
                       <div class="tab-pane" id="about">
                         <div class="row">
-                            <h4 class="info-text"> Let's start with the basic information (with validation)</h4>
-                            <div class="col-sm-4 col-sm-offset-1">
+                            <h4 class="info-text"> Informasi Penerima</h4>
+                            <!-- <div class="col-sm-4 col-sm-offset-1">
                                <div class="picture-container">
                                     <div class="picture">
                                         <img src="assets/img/default-avatar.png" class="picture-src" id="wizardPicturePreview" title=""/>
@@ -33,23 +33,38 @@
                                     </div>
                                     <h6>Choose Picture</h6>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                  <label>First Name <small>(required)</small></label>
-                                  <input name="firstname" type="text" class="form-control" placeholder="Andrew...">
-                                </div>
-                                <div class="form-group">
-                                  <label>Last Name <small>(required)</small></label>
-                                  <input name="lastname" type="text" class="form-control" placeholder="Smith...">
-                                </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-10 col-sm-offset-1">
                                 <div class="form-group">
-                                    <label>Email <small>(required)</small></label>
-                                    <input name="email" type="email" class="form-control" placeholder="andrew@creative-tim.com">
+                                  <label>Nama Penerima <small>(required)</small></label>
+                                  <input name="nama_penerima" type="text" class="form-control" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                  <label>Alamat Penerima <small>(required)</small></label>
+                                  <textarea name="alamat" rows="4" class="form-control" placeholder=""> </textarea>
+                                </div>
+                                <div class="form-group">
+                                  <label>Destinasi <small>(required)</small></label>
+                                  <select class="js-example-basic-single col-sm-12">
+                                      <option value="WY">Peter</option>
+                                      <option value="WY">Hanry Die</option>
+                                      <option value="WY">John Doe</option>
+                                      <option value="AL">Alabama</option>
+                                      <option value="WY">Wyoming</option>
+                                      
+                                  </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Zip Code <small>(required)</small></label>
+                                    <input name="zip" type="text" class="form-control" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                  <label>No Handphone <small>(required)</small></label>
+                                  <input name="phone" type="text" class="form-control" placeholder="">
                                 </div>
                             </div>
+                            
+                            
                         </div>
                       </div>
                       <div class="tab-pane" id="account">

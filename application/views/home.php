@@ -23,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\pages\data-table\css\buttons.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\datatables.net-responsive-bs4\css\responsive.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\pages\data-table\extensions\buttons\css\buttons.dataTables.min.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>assets\bower_components\select2\css\select2.min.css">
 
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\css\style.css">
@@ -367,7 +368,7 @@
     <!-- data-table js -->
     <script src="<?= base_url(); ?>assets\bower_components\datatables.net\js\jquery.dataTables.min.js"></script>
     <script src="<?= base_url(); ?>assets\bower_components\datatables.net-buttons\js\dataTables.buttons.min.js"></script>
-    <script src=<?= base_url(); ?>assets\pages\data-table\extensions\buttons\js\buttons.flash.min.js"></script>
+    <script src="<?= base_url(); ?>assets\pages\data-table\extensions\buttons\js\buttons.flash.min.js"></script>
     <script src="<?= base_url(); ?>assets\pages\data-table\js\jszip.min.js"></script>
     <script src="<?= base_url(); ?>assets\pages\data-table\js\pdfmake.min.js"></script>
     <script src="<?= base_url(); ?>assets\pages\data-table\js\vfs_fonts.js"></script>
@@ -377,9 +378,10 @@
     <script src="<?= base_url(); ?>assets\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js"></script>
     <script src="<?= base_url(); ?>assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
     <script src="<?= base_url(); ?>assets\pages\data-table\extensions\buttons\js\extension-btns-custom.js"></script>
-
+    <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\select2\js\select2.full.min.js"></script>
     <!--  More information about jquery.validate here: http://jqueryvalidation.org/  -->
     <script src="<?= base_url(); ?>assets/js/jquery.validate.min.js"></script>
+    <!-- <script type="text/javascript" src="<?= base_url(); ?>assets\pages\advance-elements\select2-custom.js"></script> -->
     <? $this->load->view($js); ?> 
 </body>
 

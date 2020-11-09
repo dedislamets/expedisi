@@ -26,18 +26,22 @@ $(document).ready(function(){
     // Code for the Validator
     var $validator = $('.wizard-card form').validate({
 		  rules: {
-		    firstname: {
+		    nama_penerima: {
 		      required: true,
 		      minlength: 3
 		    },
-		    lastname: {
+		    alamat: {
 		      required: true,
 		      minlength: 3
 		    },
-		    email: {
+		    zip: {
 		      required: true,
-		      minlength: 3,
-		    }
+		      minlength: 5,
+		    },
+            phone: {
+              required: true,
+              minlength: 12,
+            }
         }
 	});
 

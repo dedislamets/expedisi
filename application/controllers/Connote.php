@@ -15,7 +15,7 @@ class Connote extends CI_Controller {
         	// $data['menu'] = $this->M_menu->getMenu($this->session->userdata('user_id'),0,"","Class");
 			$data['title'] = 'Entry Connote';
 			$data['main'] = 'connote/index';
-			$data['js'] = 'script/class';
+			$data['js'] = 'script/connote';
 			// $data['modal'] = 'modal/class';	
 			$this->load->view('home',$data,FALSE); 
 
