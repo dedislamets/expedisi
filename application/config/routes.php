@@ -77,3 +77,5 @@ $route['datatabel_schedule'] = "ScheduleGroup/getdata_schedule";
 $route['getTableTree'] = "GenerateTable/getItem";
 
 $route['logout'] = "Login/keluar";
+
+// $route['^(rbac)/(.+)$'] = $route['default_controller']."/index/$1/$2";

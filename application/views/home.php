@@ -2,928 +2,385 @@
 <html lang="en">
   
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
-    <title>Dashboard - HRPro System</title>
+    <title>Adminty - Premium Admin Template by Colorlib </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="#">
+    <meta name="keywords" content="Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="#">
+    <!-- Favicon icon -->
+    <link rel="icon" href="<?= base_url(); ?>assets\images\favicon.png" type="image/x-icon">
+    <!-- Google font-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\icon\icofont\css\icofont.css">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\bootstrap\css\bootstrap.min.css">
+    <!-- feather Awesome -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\icon\feather\css\feather.css">
 
-    <meta name="description" content="overview &amp; stats" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\datatables.net-bs4\css\dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\pages\data-table\css\buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\datatables.net-responsive-bs4\css\responsive.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\pages\data-table\extensions\buttons\css\buttons.dataTables.min.css">
 
-    <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/font-awesome/4.5.0/css/font-awesome.min.css" />
-
-    <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/jquery-ui.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-datepicker3.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/ui.jqgrid.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/chosen.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/fullcalendar.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-datetimepicker.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-timepicker.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/jquery.gritter.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/sweetalert2.min.css" />
-    <!-- text fonts -->
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/fonts.googleapis.com.css" />
-
-    <!-- ace styles -->
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
-
-    <!--[if lte IE 9]>
-      <link rel="stylesheet" href="assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
-    <![endif]-->
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/ace-skins.min.css" />
-    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/ace-rtl.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-
-    <!--[if lte IE 9]>
-      <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
-    <![endif]-->
-
-    <!-- inline styles related to this page -->
-
-    <!-- ace settings handler -->
-    <script src="<?= base_url(); ?>assets/js/ace-extra.min.js"></script>
-
-    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-
-    <!--[if lte IE 8]>
-    <script src="assets/js/html5shiv.min.js"></script>
-    <script src="assets/js/respond.min.js"></script>
-
-    <![endif]-->
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\css\style.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\css\jquery.mCustomScrollbar.css">
+    <link href="assets/css/gsdk-bootstrap-wizard.css" rel="stylesheet" />
     <style type="text/css">
-      .text-profile{
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-         font-size: 15px;
-        white-space: normal;
-        line-height: 12px;
-      }
-      .page-header h1 {
-        font-size: 21px;
-      }
-      .navbar {
-        background: #173242;
-      }
-      .breadcrumbs{
-        background: #101067;
-      }
-      .breadcrumb>li, .breadcrumb>li.active {
+      .pcoded .pcoded-header[header-theme="theme1"] {
+          /*background: #d62b2b;*/
+          background:#243452;
           color: #fff;
       }
-      .breadcrumb>li>a {
-          color: #fff;
+      .pcoded .pcoded-navbar[navbar-theme="theme1"] .main-menu {
+          opacity: 0.8;
+          height: 100% !important;
+      }
+      .pcoded .pcoded-header .navbar-logo[logo-theme="theme1"] {
+          /*background-color: #d10a0a;*/
+      }
+      .bg-c-lite-green {
+        background: linear-gradient(to right, #E40405, #FA3B3B);
+      }
+      .bg-simple-c-pink {
+          background: #eb3422 !important;
       }
 
-      .clearfix{
-        clear: both;
-        display: block;
-      }
-      .nav-list>li>a {
-        height: 50px;
-      }
-      .error {
-        color: red;
-      }
-      .popover {
-        z-index: 500;
-      }
-
-      .modal.fade {
-        background: rgba(0,0,0,0.5);
-      }
-
-      .loader {
-        font-size: 10px;
-        margin: 17% auto;
-        text-indent: -9999em;
-        width: 11em;
-        height: 11em;
-        border-radius: 50%;
-        background: #400000;
-        background: -moz-linear-gradient(left, #400000 10%, rgba(64,0,0, 0) 42%);
-        background: -webkit-linear-gradient(left, #400000 10%, rgba(64,0,0, 0) 42%);
-        background: -o-linear-gradient(left, #400000 10%, rgba(64,0,0, 0) 42%);
-        background: -ms-linear-gradient(left, #400000 10%, rgba(64,0,0, 0) 42%);
-        background: linear-gradient(to right, #400000 10%, rgba(64,0,0, 0) 42%);
-        position: relative;
-        -webkit-animation: load3 1.4s infinite linear;
-        animation: load3 1.4s infinite linear;
-        -webkit-transform: translateZ(0);
-        -ms-transform: translateZ(0);
-        transform: translateZ(0);
-      }
-      .loader:before {
-        width: 50%;
-        height: 50%;
-        background: #400000;
-        border-radius: 100% 0 0 0;
+      .sidebar-background {
         position: absolute;
-        top: 0;
-        left: 0;
-        content: '';
-      }
-      .loader:after {
-        background: #f8f8f8;
-        width: 75%;
-        height: 75%;
-        border-radius: 50%;
-        content: '';
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-      }
-      #loadingDiv {
-              position:absolute;;
-              top:0;
-              left:0;
-              width:100%;
-              height:100%;
-              background-color:#f8f8f8;
-              opacity: 0.8;
-          }
-      @-webkit-keyframes load3 {
-        0% {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        100% {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-      @keyframes load3 {
-        0% {
-          -webkit-transform: rotate(0deg);
-          transform: rotate(0deg);
-        }
-        100% {
-          -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-        }
-      }
-
-      .users-list {
-        padding-left: 0;
-        list-style: none;
-      }
-      .users-list>li {
-        float: left;
-        padding: 10px;
-        text-align: center;
+        z-index: 1;
+        height: 100%;
         width: 100%;
-      }
-      .users-list>li img {
-        border-radius: 50%;
-        height: auto;
-        max-width: 100%;
-      }
-      .users-list-name {
-        color: #495057;
-        font-size: 16px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .users-list-date, .users-list-name {
-          display: block;
-      }
-      .users-list-date {
-        color: #748290;
-        font-size: 12px;
-      }
-      .card {
-        box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
-        margin-bottom: 1rem!important;
-        position: relative;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        min-width: 0;
-        word-wrap: break-word;
-        background-color: #fff;
-        background-clip: border-box;
-        border: 0 solid rgba(0,0,0,.125);
-        border-radius: .25rem;
-      }
-
-      .card-header {
-        background-color: transparent;
-        border-bottom: 1px solid rgba(0,0,0,.125);
-        position: relative;
-        padding: .75rem 1.25rem;
-        border-top-left-radius: .25rem;
-        border-top-right-radius: .25rem;
-        margin-bottom: 0;
-      }
-      .border-0 {
-        border: 0!important;
-      }
-      .card-body {
-        -ms-flex: 1 1 auto;
-        flex: 1 1 auto;
-        padding: 1.25rem;
-      }
-      .justify-content-between {
-        -ms-flex-pack: justify!important;
-        justify-content: space-between!important;
-      }
-      .d-flex {
-          display: -ms-flexbox!important;
-          display: flex!important;
-      }
-      .card-body::after, .card-footer::after, .card-header::after {
         display: block;
-        clear: both;
-        content: "";
+        top: 0;
+        left: 0;
+        background-size: cover;
+        background-position: 50%;
       }
-      .card-title {
-        float: left;
-        font-size: 2.1rem;
-        font-weight: 400;
-        margin: 0;
+      .sidebar-background:after {
+          background: #f44336;
+          opacity: .8;
       }
-      .position-relative {
-        position: relative!important;
-      }
-      .justify-content-end {
-        -ms-flex-pack: end!important;
-        justify-content: flex-end!important;
-      }
-      .justify-content-between {
-        -ms-flex-pack: justify!important;
-        justify-content: space-between!important;
-      }
-
-      .flex-row {
-          -ms-flex-direction: row!important;
-          flex-direction: row!important;
-      }
-
-     /* .user-panel {
-        border-bottom: 1px solid #4f5962;
-      }*/
-      .user-panel, .user-panel .info {
-          overflow: hidden;
-          white-space: nowrap;
-      }
-      .user-panel {
+      .nav>li>a {
           position: relative;
+          display: block;
+          padding: 10px 15px;
       }
-      .pb-3, .py-3 {
-          padding-bottom: 1rem!important;
+      .wizard-card .info-text {
+          text-align: center;
+          font-weight: 300;
+          margin: 10px 0 30px;
+          width: 100%;
       }
-      .callout, .card, .info-box, .mb-3, .my-3, .small-box {
-          margin-bottom: 1rem!important;
+      .pull-right {
+          float: right;
       }
-      .mt-3, .my-3 {
-          margin-top: 1.5rem!important;
+      .pull-left {
+          float: left;
       }
-      .user-panel .image {
-        display: inline-block;
-        padding-left: .8rem;
+      @media (min-width: 768px){
+        .col-sm-offset-1 {
+            margin-left: 8.33333333%;
+        }
       }
-
-      .user-panel img {
-        height: auto;
-        width: 4.5rem;
+      .col-sm-offset-2 {
+        margin-left: 16.66666667%;
       }
-      .elevation-2 {
-          box-shadow: 0 3px 6px rgba(0,0,0,.16),0 3px 6px rgba(0,0,0,.23)!important;
-      }
-      .img-circle {
-          border-radius: 50%;
-      }
-      .user-panel .info {
-        transition: margin-left .3s linear,opacity .3s ease,visibility .3s ease;
-      }
-      .user-panel .info {
-          display: inline-block;
-          padding: 5px 5px 5px 10px;
-      }
-      .user-panel, .user-panel .info {
-          overflow: hidden;
-          white-space: nowrap;
-      }
-      .d-block {
-        display: block!important;
-        font-size: 15px;
-        white-space: normal;
-        line-height: 12px;
-      }
-      .control-sidebar-heading {
-        font-weight: 400 !important;
-        font-size: 16px !important;
-        /*padding: 20px 0 !important;*/
-        margin-bottom: 10px;
-      }
-      .line-bar{
-        font-size: 13px;
-      }
-      .border-line {
-        border-top: 1px solid;
-        border-top-color: #E4ECF3;clear: both;
-      }
-      .scroll-content {
-        max-height: 400px !important;
+      .nav-pills > li > a {
+        background-color: #404E67;
       }
     </style>
   </head>
-
-  <body class="no-skin">
-    <div id="navbar" class="navbar navbar-default ace-save-state">
-      <div class="navbar-container ace-save-state" id="navbar-container">
-        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
-          <span class="sr-only">Toggle sidebar</span>
-
-          <span class="icon-bar"></span>
-
-          <span class="icon-bar"></span>
-
-          <span class="icon-bar"></span>
-        </button>
-
-        <div class="navbar-header pull-left`">
-          <a href="index.html" class="navbar-brand">
-            <small>
-              <img src="<?= base_url(); ?>assets/images/<?php echo $this->session->userdata('logo') ?>" class="" alt="logo" width="30" />
-              <?php echo $this->session->userdata('app_name') ?>
-            </small>
-          </a>
+<body>
+    <!-- Pre-loader start -->
+    <div class="theme-loader">
+        <div class="ball-scale">
+            <div class='contain'>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+                <div class="ring">
+                    <div class="frame"></div>
+                </div>
+            </div>
         </div>
+    </div>
+    <!-- Pre-loader end -->
+    <div id="pcoded" class="pcoded">
+        <div class="pcoded-overlay-box"></div>
+        <div class="pcoded-container navbar-wrapper">
 
-        <div class="navbar-buttons navbar-header pull-right" role="navigation">
-          <ul class="nav ace-nav">
-            
-            <!-- <li class="purple dropdown-modal">
-              <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <i class="ace-icon fa fa-bell icon-animated-bell"></i>
-                <span class="badge badge-important">8</span>
-              </a>
+            <nav class="navbar header-navbar pcoded-header">
+                <div class="navbar-wrapper">
 
-              <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
-                <li class="dropdown-header">
-                  <i class="ace-icon fa fa-exclamation-triangle"></i>
-                  8 Notifications
-                </li>
+                    <div class="navbar-logo">
+                        <a class="mobile-menu" id="mobile-collapse" href="#!">
+                            <i class="feather icon-menu"></i>
+                        </a>
+                        <a href="index-1.htm">
+                            <img class="img-fluid" src="<?= base_url(); ?>assets\images\logo.png" alt="Theme-Logo">
+                        </a>
+                        <a class="mobile-options">
+                            <i class="feather icon-more-horizontal"></i>
+                        </a>
+                    </div>
 
-                <li class="dropdown-content">
-                  <ul class="dropdown-menu dropdown-navbar navbar-pink">
-                    <li>
-                      <a href="#">
-                        <div class="clearfix">
-                          <span class="pull-left">
-                            <i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>
-                            New Comments
-                          </span>
-                          <span class="pull-right badge badge-info">+12</span>
+                    <div class="navbar-container container-fluid">
+                        <ul class="nav-left">
+                            <!-- <li class="header-search">
+                                <div class="main-search morphsearch-search">
+                                    <div class="input-group">
+                                        <span class="input-group-addon search-close"><i class="feather icon-x"></i></span>
+                                        <input type="text" class="form-control">
+                                        <span class="input-group-addon search-btn"><i class="feather icon-search"></i></span>
+                                    </div>
+                                </div>
+                            </li> -->
+                            <!-- <li>
+                                <a href="#!" onclick="javascript:toggleFullScreen()">
+                                    <i class="feather icon-maximize full-screen"></i>
+                                </a>
+                            </li> -->
+                            <li><h3 style="padding-top: 10px;padding-left: 10px;">Sistem Pengiriman Barang - Wilayah Pusat</h3></li>
+                        </ul>
+                        <ul class="nav-right">
+                            <li class="header-notification">
+                                <div class="dropdown-primary dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="feather icon-bell"></i>
+                                        <span class="badge bg-c-pink">5</span>
+                                    </div>
+                                    <ul class="show-notification notification-view dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                        <li>
+                                            <h6>Notifications</h6>
+                                            <label class="label label-danger">New</label>
+                                        </li>
+                                        <li>
+                                            <div class="media">
+                                                <img class="d-flex align-self-center img-radius" src="<?= base_url(); ?>assets\images\avatar-4.jpg" alt="Generic placeholder image">
+                                                <div class="media-body">
+                                                    <h5 class="notification-user">John Doe</h5>
+                                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                    <span class="notification-time">30 minutes ago</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="media">
+                                                <img class="d-flex align-self-center img-radius" src="<?= base_url(); ?>assets\images\avatar-3.jpg" alt="Generic placeholder image">
+                                                <div class="media-body">
+                                                    <h5 class="notification-user">Joseph William</h5>
+                                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                    <span class="notification-time">30 minutes ago</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="media">
+                                                <img class="d-flex align-self-center img-radius" src="<?= base_url(); ?>assets\images\avatar-4.jpg" alt="Generic placeholder image">
+                                                <div class="media-body">
+                                                    <h5 class="notification-user">Sara Soudein</h5>
+                                                    <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                    <span class="notification-time">30 minutes ago</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="header-notification">
+                                <div class="dropdown-primary dropdown">
+                                    <div class="displayChatbox dropdown-toggle" data-toggle="dropdown">
+                                        <i class="feather icon-message-square"></i>
+                                        <span class="badge bg-c-green">3</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="user-profile header-notification">
+                                <div class="dropdown-primary dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown">
+                                        <img src="<?= base_url(); ?>assets\images\avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
+                                        <span>John Doe</span>
+                                        <i class="feather icon-chevron-down"></i>
+                                    </div>
+                                    <ul class="show-notification profile-notification dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                        <li>
+                                            <a href="#!">
+                                                <i class="feather icon-settings"></i> Settings
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="user-profile.htm">
+                                                <i class="feather icon-user"></i> Profile
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="email-inbox.htm">
+                                                <i class="feather icon-mail"></i> My Messages
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="auth-lock-screen.htm">
+                                                <i class="feather icon-lock"></i> Lock Screen
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="auth-normal-sign-in.htm">
+                                                <i class="feather icon-log-out"></i> Logout
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Sidebar inner chat start-->
+            <div class="showChat_inner">
+                <div class="media chat-inner-header">
+                    <a class="back_chatBox">
+                        <i class="feather icon-chevron-left"></i> Josephin Doe
+                    </a>
+                </div>
+                <div class="media chat-messages">
+                    <a class="media-left photo-table" href="#!">
+                        <img class="media-object img-radius img-radius m-t-5" src="<?= base_url(); ?>assets\images\avatar-3.jpg" alt="Generic placeholder image">
+                    </a>
+                    <div class="media-body chat-menu-content">
+                        <div class="">
+                            <p class="chat-cont">I'm just looking around. Will you tell me something about yourself?</p>
+                            <p class="chat-time">8:20 a.m.</p>
                         </div>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#">
-                        <i class="btn btn-xs btn-primary fa fa-user"></i>
-                        Bob just signed up as an editor ...
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#">
-                        <div class="clearfix">
-                          <span class="pull-left">
-                            <i class="btn btn-xs no-hover btn-success fa fa-shopping-cart"></i>
-                            New Orders
-                          </span>
-                          <span class="pull-right badge badge-success">+8</span>
+                    </div>
+                </div>
+                <div class="media chat-messages">
+                    <div class="media-body chat-menu-reply">
+                        <div class="">
+                            <p class="chat-cont">I'm just looking around. Will you tell me something about yourself?</p>
+                            <p class="chat-time">8:20 a.m.</p>
                         </div>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#">
-                        <div class="clearfix">
-                          <span class="pull-left">
-                            <i class="btn btn-xs no-hover btn-info fa fa-twitter"></i>
-                            Followers
-                          </span>
-                          <span class="pull-right badge badge-info">+11</span>
+                    </div>
+                    <div class="media-right photo-table">
+                        <a href="#!">
+                            <img class="media-object img-radius img-radius m-t-5" src="<?= base_url(); ?>assets\images\avatar-4.jpg" alt="Generic placeholder image">
+                        </a>
+                    </div>
+                </div>
+                <div class="chat-reply-box p-b-20">
+                    <div class="right-icon-control">
+                        <input type="text" class="form-control search-text" placeholder="Share Your Thoughts">
+                        <div class="form-icon">
+                            <i class="feather icon-navigation"></i>
                         </div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
+                    </div>
+                </div>
+            </div>
+            <!-- Sidebar inner chat end-->
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <? $this->load->view('nav'); ?>
+                    
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
 
-                <li class="dropdown-footer">
-                  <a href="#">
-                    See all notifications
-                    <i class="ace-icon fa fa-arrow-right"></i>
-                  </a>
-                </li>
-              </ul>
-            </li> -->
+                                    <div class="page-body breadcrumb-page">
+                                        
+                                            <?php 
+                                            if ($this->router->fetch_class() != 'home'){            
+                                                $this->load->view($main); 
+                                            }
+                                            else {                  
+                                                $this->load->view('home/index'); 
+                                            } 
+                                            ?> 
+                                      
+                                    </div>
+                                </div>
 
-            <!-- <li class="green dropdown-modal">
-              <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
-                <span class="badge badge-success">5</span>
-              </a>
-
-              <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-                <li class="dropdown-header">
-                  <i class="ace-icon fa fa-envelope-o"></i>
-                  5 Messages
-                </li>
-
-                <li class="dropdown-content">
-                  <ul class="dropdown-menu dropdown-navbar">
-                    <li>
-                      <a href="#" class="clearfix">
-                        <img src="assets/images/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
-                        <span class="msg-body">
-                          <span class="msg-title">
-                            <span class="blue">Alex:</span>
-                            Ciao sociis natoque penatibus et auctor ...
-                          </span>
-
-                          <span class="msg-time">
-                            <i class="ace-icon fa fa-clock-o"></i>
-                            <span>a moment ago</span>
-                          </span>
-                        </span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#" class="clearfix">
-                        <img src="assets/images/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
-                        <span class="msg-body">
-                          <span class="msg-title">
-                            <span class="blue">Susan:</span>
-                            Vestibulum id ligula porta felis euismod ...
-                          </span>
-
-                          <span class="msg-time">
-                            <i class="ace-icon fa fa-clock-o"></i>
-                            <span>20 minutes ago</span>
-                          </span>
-                        </span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#" class="clearfix">
-                        <img src="assets/images/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
-                        <span class="msg-body">
-                          <span class="msg-title">
-                            <span class="blue">Bob:</span>
-                            Nullam quis risus eget urna mollis ornare ...
-                          </span>
-
-                          <span class="msg-time">
-                            <i class="ace-icon fa fa-clock-o"></i>
-                            <span>3:15 pm</span>
-                          </span>
-                        </span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#" class="clearfix">
-                        <img src="assets/images/avatars/avatar2.png" class="msg-photo" alt="Kate's Avatar" />
-                        <span class="msg-body">
-                          <span class="msg-title">
-                            <span class="blue">Kate:</span>
-                            Ciao sociis natoque eget urna mollis ornare ...
-                          </span>
-
-                          <span class="msg-time">
-                            <i class="ace-icon fa fa-clock-o"></i>
-                            <span>1:33 pm</span>
-                          </span>
-                        </span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#" class="clearfix">
-                        <img src="assets/images/avatars/avatar5.png" class="msg-photo" alt="Fred's Avatar" />
-                        <span class="msg-body">
-                          <span class="msg-title">
-                            <span class="blue">Fred:</span>
-                            Vestibulum id penatibus et auctor  ...
-                          </span>
-
-                          <span class="msg-time">
-                            <i class="ace-icon fa fa-clock-o"></i>
-                            <span>10:09 am</span>
-                          </span>
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-
-                <li class="dropdown-footer">
-                  <a href="inbox.html">
-                    See all messages
-                    <i class="ace-icon fa fa-arrow-right"></i>
-                  </a>
-                </li>
-              </ul>
-            </li>     -->  
-        
-            <li style="border-left:none;"><a href="<?php echo base_url() ?>login/keluar" style="color: #fff;background-color: transparent;"><span class="fa fa-sign-out"></span> Logout</a></li>
-            <li class="grey dropdown-modal" style="border-left:none;">
-              <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="color: #fff;background-color: transparent;">
-                <i class="ace-icon fa fa-tasks"></i>
-                <!-- <span class="badge badge-grey">4</span> -->
-              </a>
-
-              <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-
-                <li class="dropdown-content">
-                  <ul class="dropdown-menu dropdown-navbar">
-                    <li>
-                      <a href="<?php echo base_url() ?>profile" class="control-sidebar-heading">
-                        <span class="fa fa-cog"></span>  Setting</a>
-                      <p style="line-height: 15px;font-size: 11px;">Manage notification or change password</p>
-                    </li>
-                    <li class="border-line">
-                      <div class="col-md-8 line-bar">
-                        <p style="line-height: 1px;font-size: 13px;padding-top: 21px;font-weight: 600;">Phone Number</p>
-                        <p style="line-height: 15px;font-size: 11px;"><?= $this->session->userdata('hp') ?></p>
-                      </div>
-                      <div class="col-md-4 line-bar"> 
-                        <div style="padding-top: 10px"></div>
-                        <label>
-                            <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
-                            <span class="lbl"></span>
-                        </label>
-                      </div>
-                    </li>
-                    <li >
-                      <div class="border-line">
-                        <div class="col-md-8 line-bar">
-                          <p style="line-height: 1px;font-size: 13px;padding-top: 21px;font-weight: 600;">Personal Email</p>
-                          <p style="line-height: 15px;font-size: 11px;"><?= $this->session->userdata('user_mail') ?></p>
+                            </div>
                         </div>
-                        <div class="col-md-4 line-bar"> 
-                          <div style="padding-top: 10px"></div>
-                          <label>
-                              <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
-                              <span class="lbl"></span>
-                          </label>
-                        </div>
-                      </div>
-                    </li>
-                    <li >
-                      <div class="border-line">
-                        <div class="col-md-8 line-bar">
-                          <p style="line-height: 1px;font-size: 13px;padding-top: 21px;font-weight: 600;">Official Email</p>
-                          <p style="line-height: 15px;font-size: 11px;"><?= $this->session->userdata('office_mail') ?></p>
-                        </div>
-                        <div class="col-md-4 line-bar"> 
-                          <div style="padding-top: 10px"></div>
-                          <label>
-                              <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
-                              <span class="lbl"></span>
-                          </label>
-                        </div>
-                      </div>
-                    </li>
-                    <li >
-                      <div class="border-line">
-                        <div class="col-md-8 line-bar">
-                          <p style="line-height: 1px;font-size: 13px;padding-top: 21px;font-weight: 600;">Push Notification</p>
-                        </div>
-                        <div class="col-md-4 line-bar"> 
-                          <div style="padding-top: 10px"></div>
-                          <label>
-                              <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
-                              <span class="lbl"></span>
-                          </label>
-                        </div>
-                      </div>
-                    </li>
-                    <li >
-                      <div class="border-line">
-                        <div class="col-md-8 line-bar">
-                          <p style="line-height: 14px;font-size: 13px;padding-top: 15px;font-weight: 600;">Change Password Slip</p>
-                        </div>
-                        <div class="col-md-4 line-bar"> 
-                          <div style="padding-top: 10px"></div>
-                          <label>
-                              <input name="switch-field-1" class="ace ace-switch ace-switch-4 btn-flat" type="checkbox">
-                              <span class="lbl"></span>
-                          </label>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-
-                <li class="dropdown-footer">
-                  <a href="#">
-                    See All
-                    <i class="ace-icon fa fa-arrow-right"></i>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-          </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div><!-- /.navbar-container -->
     </div>
 
-    <div class="main-container ace-save-state" id="main-container">
-      <script type="text/javascript">
-        try{ace.settings.loadState('main-container')}catch(e){}
-      </script>
+    <!-- Warning Section Ends -->
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\jquery\js\jquery.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\jquery-ui\js\jquery-ui.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\popper.js\js\popper.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\bootstrap\js\bootstrap.min.js"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\jquery-slimscroll\js\jquery.slimscroll.js"></script>
+    <!-- modernizr js -->
+    <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\modernizr\js\modernizr.js"></script>
+    <!-- Chart js -->
+    <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\chart.js\js\Chart.js"></script>
+    <!-- amchart js -->
+    <script src="<?= base_url(); ?>assets\pages\widget\amchart\amcharts.js"></script>
+    <script src="<?= base_url(); ?>assets\pages\widget\amchart\serial.js"></script>
+    <script src="<?= base_url(); ?>assets\pages\widget\amchart\light.js"></script>
+    <script src="<?= base_url(); ?>assets\js\jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets\js\SmoothScroll.js"></script>
+    <script src="<?= base_url(); ?>assets\js\pcoded.min.js"></script>
+    <!-- custom js -->
+    <script src="<?= base_url(); ?>assets\js\vartical-layout.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets\pages\dashboard\custom-dashboard.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets\js\script.min.js"></script>
+    <script src="<?= base_url(); ?>assets/js/jquery.bootstrap.wizard.js" type="text/javascript"></script>
 
-      <div id="sidebar" class="sidebar responsive ace-save-state">
-        <script type="text/javascript">
-          try{ace.settings.loadState('sidebar')}catch(e){}
-        </script>
+    <!--  Plugin for the Wizard -->
+    <script src="<?= base_url(); ?>assets/js/gsdk-bootstrap-wizard.js"></script>
 
-        <div class="user-panel pb-3 mb-3 d-flex" style="background-color: #101067;padding-top: 10px">
-          <div class="image">
-            <?php
-              $image_profile= base_url(). "assets/profile/". $this->session->userdata('user_nik') .".jpg";
-              // if(!is_file($image_profile)){
-              //     $image_profile= "http://hrsmartpro.com/assets/profile/no-profile-copy.png";
-              // }
-            ?>
-            
-            <img src="<?= $image_profile ?>" class="img-circle elevation-2" alt="User Image" style="margin-top: 15px">
-          </div>
-          <div class="info">
-            <a href="<?php echo base_url() ?>profile" class="d-block" style="color: #fff"><?php echo $this->session->userdata('user_name'); ?></a>
-            <span style="color: #fff"><?php echo $this->session->userdata('user_nik'); ?></span><br>
-            <span class="text-profile" style="color: #fff;font-size: 9px;"><?php echo $this->session->userdata('posisi'); ?></span>
-          </div>
-        </div>
+    <!-- data-table js -->
+    <script src="<?= base_url(); ?>assets\bower_components\datatables.net\js\jquery.dataTables.min.js"></script>
+    <script src="<?= base_url(); ?>assets\bower_components\datatables.net-buttons\js\dataTables.buttons.min.js"></script>
+    <script src=<?= base_url(); ?>assets\pages\data-table\extensions\buttons\js\buttons.flash.min.js"></script>
+    <script src="<?= base_url(); ?>assets\pages\data-table\js\jszip.min.js"></script>
+    <script src="<?= base_url(); ?>assets\pages\data-table\js\pdfmake.min.js"></script>
+    <script src="<?= base_url(); ?>assets\pages\data-table\js\vfs_fonts.js"></script>
+    <script src="<?= base_url(); ?>assets\bower_components\datatables.net-buttons\js\buttons.print.min.js"></script>
+    <script src="<?= base_url(); ?>assets\bower_components\datatables.net-buttons\js\buttons.html5.min.js"></script>
+    <script src="<?= base_url(); ?>assets\bower_components\datatables.net-bs4\js\dataTables.bootstrap4.min.js"></script>
+    <script src="<?= base_url(); ?>assets\bower_components\datatables.net-responsive\js\dataTables.responsive.min.js"></script>
+    <script src="<?= base_url(); ?>assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
+    <script src="<?= base_url(); ?>assets\pages\data-table\extensions\buttons\js\extension-btns-custom.js"></script>
 
-        <ul class="nav nav-list">
-          <!-- <li class="active">
-            <a href="index.html">
-              <i class="menu-icon fa fa-tachometer"></i>
-              <span class="menu-text"> Dashboard </span>
-            </a>
-
-            <b class="arrow"></b>
-          </li>
-
-          <li class="">
-            <a href="#" class="dropdown-toggle">
-              <i class="menu-icon fa fa-desktop"></i>
-              <span class="menu-text">
-                Organization
-              </span>
-
-              <b class="arrow fa fa-angle-down"></b>
-            </a>
-
-            <b class="arrow"></b>
-
-            <ul class="submenu">
-              <li class="">
-                <a href="typography.html">
-                  <i class="menu-icon fa fa-caret-right"></i>
-                  Organization
-                </a>
-
-                <b class="arrow"></b>
-              </li>
-            </ul>
-          </li> -->
-          <?php
-              print_r($menu);
-          ?>
-        </ul><!-- /.nav-list -->
-
-        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-          <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
-        </div>
-      </div>
-
-      <div class="main-content">
-        <div class="main-content-inner">
-          
-            <?php 
-            if ($this->router->fetch_class() != 'home'){            
-                $this->load->view($main); 
-            }
-            else {                  
-                $this->load->view('home/index'); 
-            } 
-            ?>  
-        </div>
-      </div><!-- /.main-content -->
-
-      <div class="footer">
-        <div class="footer-inner">
-          <div class="footer-content">
-            <span class="bigger-120">
-              <span class="blue bolder">HRSmartpro</span>
-              Application &copy; 2013-2014
-            </span>
-
-            &nbsp; &nbsp;
-            <span class="action-buttons">
-              <a href="#">
-                <i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
-              </a>
-
-              <a href="#">
-                <i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
-              </a>
-
-              <a href="#">
-                <i class="ace-icon fa fa-rss-square orange bigger-150"></i>
-              </a>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
-      </a>
-    </div><!-- /.main-container -->
-
-    <!-- basic scripts -->
-
-    <!--[if !IE]> -->
-    <script src="<?= base_url(); ?>assets/js/jquery-2.1.4.min.js"></script>
-
-    <!-- <![endif]-->
-
-    <!--[if IE]>
-<script src="assets/js/jquery-1.11.3.min.js"></script>
-<![endif]-->
-    <script type="text/javascript">
-      if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
-    </script>
-    <script src="<?= base_url(); ?>assets/js/bootstrap.min.js"></script>
-
-    <!-- page specific plugin scripts -->
-
-    <!--[if lte IE 8]>
-      <script src="assets/js/excanvas.min.js"></script>
-    <![endif]-->
-    <script src="<?= base_url(); ?>assets/js/jquery-ui.custom.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.ui.touch-punch.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.easypiechart.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.sparkline.index.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.flot.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.flot.pie.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.flot.resize.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.jqGrid.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/bootbox.js"></script>
-    <script src="<?= base_url(); ?>assets/js/moment.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/bootstrap-datepicker.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/bootstrap-timepicker.min.js"></script>
-    
-    <script src="<?= base_url(); ?>assets/js/daterangepicker.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/chosen.jquery.min.js"></script>
-    
-    <script src="<?= base_url(); ?>assets/js/grid.locale-en.js"></script>
-    <!-- <script src="<?= base_url(); ?>assets/js/tree.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-
-    <script src="<?= base_url(); ?>assets/js/jquery.dataTables.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.dataTables.bootstrap.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/sweetalert2.min.js"></script>
-
-    <!-- <script src="<?= base_url(); ?>assets/js/buttons.flash.min.js"></script> -->
-    <!-- <script src="<?= base_url(); ?>assets/js/buttons.html5.min.js"></script> -->
-
-
-    
-    <!-- <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script> -->
-    <script src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.flash.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/buttons.colVis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.html5.min.js"></script>
-     <script src="<?= base_url(); ?>assets/js/buttons.print.min.js"></script>
-
-    <script src="<?= base_url(); ?>assets/js/dataTables.select.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/bootstrap-timepicker.min.js"></script>
-
-
-    <!-- <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.html5.min.js"></script>"></script>
-    <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.print.min.js"></script> -->
-    
-    <!-- ace scripts -->
-    <script src="<?= base_url(); ?>assets/js/ace-elements.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/ace.min.js"></script>
+    <!--  More information about jquery.validate here: http://jqueryvalidation.org/  -->
     <script src="<?= base_url(); ?>assets/js/jquery.validate.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.price_format.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/fullcalendar.min.js"></script>
-    <script src="<?= base_url(); ?>assets/js/jquery.gritter.min.js"></script>
-    <!-- inline scripts related to this page -->
-
-
-    <?php if($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1' || $_SERVER['SERVER_NAME'] == '::1') : ?>
-        <script type="text/javascript" src="<?= base_url(); ?>assets/js/vue.js"></script>
-    <?php else : ?>
-        <script type="text/javascript" src="<?= base_url(); ?>assets/js/vue.min.js"></script>
-    <?php endif; ?>
-    <script type="text/javascript" src="<?= base_url(); ?>assets/js/vuedraggable.min.js"></script>
-
-    <script type="text/javascript">
-      $.ajaxSetup({
-        data: {
-            csrf_token: <?php echo "'". $this->security->get_csrf_hash()."'" ?>
-        }
-    });
-      $('.dropdown-menu').on("click.bs.dropdown", function (e) {
-        e.stopPropagation();                 
-        // e.preventDefault();                             
-      });
-      function showloader(val){
-        $(val).append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
-      }
-      function hideloader(){
-        $( "#loadingDiv" ).fadeOut(500, function() {
-            $( "#loadingDiv" ).remove(); 
-          }); 
-      }
-
-      function bootboxmodal(title, html){
-        var dialog = bootbox.dialog({
-          title: title,
-          message: html,
-          buttons: {}
-        });
-      }
-
-      function alertok(judul){
-          $.gritter.add({
-            title: judul,
-            text: '',
-            class_name: 'gritter-info gritter-center',
-            time : 3000,
-          });
-      
-          return false;
-      }
-      function alerterror(judul){
-          $.gritter.add({
-            title: 'Error',
-            text: judul,
-            class_name: 'gritter-error gritter-center'
-          });
-      
-          return false;
-      }
-
-      function chosen(){
-        $('.chosen-select').chosen({allow_single_deselect:true}); 
-        //resize the chosen on window resize
-
-        $(window).off('resize.chosen')
-        .on('resize.chosen', function() {
-          $('.chosen-select').each(function() {
-             var $this = $(this);
-             $this.next().css({'width': '100%'});
-          })
-        }).trigger('resize.chosen');
-        //resize chosen on sidebar collapse/expand
-        $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
-          if(event_name != 'sidebar_collapsed') return;
-          $('.chosen-select').each(function() {
-             var $this = $(this);
-             $this.next().css({'width': $this.parent().width()});
-          })
-        });
-      }
-      chosen();
-    </script>
-    <?php
-      $this->load->view($js); 
-    ?>
+    <? $this->load->view($js); ?> 
 </body>
 
 </html>

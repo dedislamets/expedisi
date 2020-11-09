@@ -2,133 +2,78 @@
 <html lang="en">
 	
 <head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta charset="utf-8" />
-		<title>Login Page - HRPro System</title>
+	<title>Adminty - Premium Admin Template by Colorlib </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="#">
+    <meta name="keywords" content="Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
+    <meta name="author" content="#">
+    <!-- Favicon icon -->
+    <link rel="icon" href="<?= base_url(); ?>assets\images\favicon.png" type="image/x-icon">
+    <!-- Google font--><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800" rel="stylesheet">
+    <!-- Required Fremwork -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/bower_components/bootstrap/css/bootstrap.min.css">
+    <!-- themify-icons line icon -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/icon/themify-icons/themify-icons.css">
+    <!-- ico font -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/icon/icofont/css/icofont.css">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/css/style.css">
+</head>
 
-		<meta name="description" content="User login page" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<body class="fix-menu">
+    <!-- Pre-loader start -->
+    <div class="theme-loader">
+        <div class="ball-scale">
+            <div class='contain'>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+                <div class="ring"><div class="frame"></div></div>
+            </div>
+        </div>
+    </div>
+    <!-- Pre-loader end -->
 
-		<!-- bootstrap & fontawesome -->
-		<link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="<?= base_url(); ?>assets/font-awesome/4.5.0/css/font-awesome.min.css" />
-
-		<!-- text fonts -->
-		<link rel="stylesheet" href="<?= base_url(); ?>assets/css/fonts.googleapis.com.css" />
-
-		<!-- ace styles -->
-		<link rel="stylesheet" href="<?= base_url(); ?>assets/css/ace.min.css" />
-
-		<!--[if lte IE 9]>
-			<link rel="stylesheet" href="assets/css/ace-part2.min.css" />
-		<![endif]-->
-		<link rel="stylesheet" href="<?= base_url(); ?>assets/css/ace-rtl.min.css" />
-
-		<!--[if lte IE 9]>
-		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
-		<![endif]-->
-
-		<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-
-		<!--[if lte IE 8]>
-		<script src="assets/js/html5shiv.min.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
-		<style type="text/css">
-			.header {
-			    margin-bottom: 0px;
-			    margin-top: 0px;
-			}
-		</style>
-	</head>
-
-	<body class="login-layout">
-		<div class="main-container">
-			<div class="main-content">
-				<div class="row">
-					<div class="col-sm-10 col-sm-offset-1">
-						<div class="login-container">
-							<div class="center">
-								<h1>
-									<img src="<?= base_url(); ?>assets/images/<?php echo $setup[0]->Icon ?>" class="" alt="logo" width="30" />
-									<span class="white" id="id-text2"><?php echo $setup[0]->AplicationName ?></span>
-								</h1>
-								<!-- <h4 class="blue" id="id-company-text">&copy; HRSmartPro</h4> -->
-							</div>
-
-							<div class="space-6"></div>
-
-							<div class="position-relative">
-								<?php 
-						        $this->load->view($main);  
-						        ?> 
-            				</div><!-- /.position-relative -->
-						</div>
-					</div><!-- /.col -->
-				</div><!-- /.row -->
-			</div><!-- /.main-content -->
-			
-		</div><!-- /.main-container -->
-
-		<!-- basic scripts -->
-
-		<!--[if !IE]> -->
-		<script src="<?= base_url(); ?>assets/js/jquery-2.1.4.min.js"></script>
-
-		<!-- <![endif]-->
-
-		<!--[if IE]>
-<script src="assets/js/jquery-1.11.3.min.js"></script>
-<![endif]-->
-		<script type="text/javascript">
-			if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
-		</script>
-
-		<!-- inline scripts related to this page -->
-		<script type="text/javascript">
-			$.ajaxSetup({
-                data: {
-                    csrf_token: <?php echo "'". $this->security->get_csrf_hash()."'" ?>
-                }
-            });     
-			jQuery(function($) {
-			 $(document).on('click', '.toolbar a[data-target]', function(e) {
-				e.preventDefault();
-				var target = $(this).data('target');
-				$('.widget-box.visible').removeClass('visible');//hide others
-				$(target).addClass('visible');//show target
-			 });
-			});
-			
-			
-			
-			//you don't need this, just used for changing background
-			jQuery(function($) {
-			 $('#btn-login-dark').on('click', function(e) {
-				$('body').attr('class', 'login-layout');
-				$('#id-text2').attr('class', 'white');
-				$('#id-company-text').attr('class', 'blue');
-				
-				e.preventDefault();
-			 });
-			 $('#btn-login-light').on('click', function(e) {
-				$('body').attr('class', 'login-layout light-login');
-				$('#id-text2').attr('class', 'grey');
-				$('#id-company-text').attr('class', 'blue');
-				
-				e.preventDefault();
-			 });
-			 $('#btn-login-blur').on('click', function(e) {
-				$('body').attr('class', 'login-layout blur-login');
-				$('#id-text2').attr('class', 'white');
-				$('#id-company-text').attr('class', 'light-blue');
-				
-				e.preventDefault();
-			 });
-			 
-			});
-		</script>
-
-
+    <section class="login-block">
+        <!-- Container-fluid starts -->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                	<?php 
+			        $this->load->view($main);  
+			        ?> 
+                    
+                </div>
+                <!-- end of col-sm-12 -->
+            </div>
+            <!-- end of row -->
+        </div>
+    </section>
+    
+    <!-- Warning Section Ends -->
+    <!-- Required Jquery -->
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\jquery\js\jquery.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\jquery-ui\js\jquery-ui.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\popper.js\js\popper.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\bootstrap\js\bootstrap.min.js"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\jquery-slimscroll\js\jquery.slimscroll.js"></script>
+    <!-- modernizr js -->
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\modernizr\js\modernizr.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\modernizr\js\css-scrollbars.js"></script>
+    <!-- i18next.min.js -->
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\i18next\js\i18next.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\i18next-xhr-backend\js\i18nextXHRBackend.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\i18next-browser-languagedetector\js\i18nextBrowserLanguageDetector.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/bower_components\jquery-i18next\js\jquery-i18next.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets\js\common-pages.js"></script>
 </body>
 </html>

@@ -10,13 +10,13 @@ class Admin extends CI_Model
     }
 
     //fungsi check login
-    function check_login($table, $field1, $field2, $field3)
+    function check_login($table, $field1, $field2)
     {
         $this->db->select('*');
         $this->db->from($table);
         $this->db->group_start();
         $this->db->where($field1);
-        $this->db->or_where($field3);
+        // $this->db->or_where($field3);
         $this->db->group_end();
         $this->db->where($field2);
         $this->db->limit(1);

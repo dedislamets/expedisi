@@ -75,12 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'database' => 'DBHRPRO',
-	'hostname' => 'WIN-SN60FBM1K24',
-	'username' => 'sa',
-	'password'	=> 'p@55w0rd123',
+	'database' => 'expedisi',
+	'hostname' => 'localhost',
+	'username' => 'root',
+	'password'	=> '123',
 	
-	'dbdriver' => 'sqlsrv',
+	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => TRUE,
 	'db_debug' => TRUE,

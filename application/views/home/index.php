@@ -1,464 +1,187 @@
-<style type="text/css">
-  .carousel-fade .carousel-inner .item {
-        opacity: 0;
-        transition-property: opacity;
-      }
 
-      .carousel-fade .carousel-inner .active {
-        opacity: 1;
-      }
-
-      .carousel-fade .carousel-inner .active.left,
-      .carousel-fade .carousel-inner .active.right {
-        left: 0;
-        opacity: 0;
-        z-index: 1;
-      }
-
-      .carousel-fade .carousel-inner .next.left,
-      .carousel-fade .carousel-inner .prev.right {
-        opacity: 1;
-      }
-
-      .carousel-fade .carousel-control {
-        z-index: 2;
-      }
-
-      /*
-      WHAT IS NEW IN 3.3: "Added transforms to improve carousel performance in modern browsers."
-      now override the 3.3 new styles for modern browsers & apply opacity
-      */
-      @media all and (transform-3d), (-webkit-transform-3d) {
-          .carousel-fade .carousel-inner > .item.next,
-          .carousel-fade .carousel-inner > .item.active.right {
-            opacity: 0;
-            -webkit-transform: translate3d(0, 0, 0);
-                    transform: translate3d(0, 0, 0);
-          }
-          .carousel-fade .carousel-inner > .item.prev,
-          .carousel-fade .carousel-inner > .item.active.left {
-            opacity: 0;
-            -webkit-transform: translate3d(0, 0, 0);
-                    transform: translate3d(0, 0, 0);
-          }
-          .carousel-fade .carousel-inner > .item.next.left,
-          .carousel-fade .carousel-inner > .item.prev.right,
-          .carousel-fade .carousel-inner > .item.active {
-            opacity: 1;
-            -webkit-transform: translate3d(0, 0, 0);
-                    transform: translate3d(0, 0, 0);
-          }
-      }
-
-      .slide-list {
-        float: left;
-        padding: 10px;
-        text-align: center;
-        width: 100%;
-      }
-      .slide-list img {
-        border-radius: 50%;
-        height: auto;
-        max-width: 100%;
-      }
-  .products-list {
-    list-style: none;
-      margin: 0;
-      padding: 0;
-  }
-  .pl-2, .px-2 {
-      padding-left: .5rem!important;
-  }
-  .pr-2, .px-2 {
-      padding-right: .5rem!important;
-  }
-
-    .widget-toolbar {
-    float: left;
-  }
-  .text-primary {
-    color: #007bff!important;
-  }
-  .text-gray {
-    color: #6c757d;
-  }
-
-  .slide-list img {
-    height: 130px;
-  }
-  #tabel-detail{
-    width: 100% !important;
-  }
-    
-</style>
-<div class="breadcrumbs ace-save-state" id="breadcrumbs">
-  <ul class="breadcrumb">
-    <li>
-      <i class="ace-icon fa fa-home home-icon"></i>
-      <a href="#">Home</a>
-    </li>
-    <li class="active">Dashboard</li>
-  </ul><!-- /.breadcrumb -->
-</div>
-<div class="page-content">
-  <!-- <div class="page-header">
-    <h1>
-      Dashboard
-      <small>
-        <i class="ace-icon fa fa-angle-double-right"></i>
-        overview &amp; stats
-      </small>
-    </h1>
-  </div> -->
-  <div class="row">
-      <div class="col-sm-12">
-        <div class="widget-box transparent" id="recent-box">
-          <div class="widget-header">
-            <div class="widget-toolbar no-border">
-              <ul class="nav nav-tabs" id="recent-tab">
-                <li class="active">
-                  <a data-toggle="tab" href="#task-tab">Dashboard</a>
-                </li>
-
-                <li>
-                  <a data-toggle="tab" href="#member-tab"><i class="fa fa-plus 2x"></i></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="widget-body">
-            <div class="widget-main padding-4">
-              <div class="tab-content padding-8">
-                <div id="task-tab" class="tab-pane active">
-                  <div class="row">
-                    <div class="col-xs-9">
-                      <div class="row">
-                        <div class="search-area well col-xs-12">
-                          
-                          <div class="col-sm-3 no-padding">
-                            <div class="col-md-12" style="padding-left: 16px">
-                              <select class="chosen-select form-control" id="dashboard_category" name="dashboard_category">
-                                <option value="0"> - </option>
-                                <?php 
-                                foreach($dashboard_category as $row)
-                                { 
-                                  echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
-                                }?>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-2 no-padding">
-                            <div class="col-md-12 no-padding">
-                              <select class="chosen-select form-control" id="category_period" name="category_period">
-                                <option value="0"> - </option>
-                                <?php 
-                                foreach($category_period as $row)
-                                { 
-                                  echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
-                                }?>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-5 no-padding">
-                            <div class="form-group">
-                              <label class="col-sm-2 control-label no-padding-right" for="Sort">From</label>
-                              <div class="col-sm-5 no-padding-right">
-                                <div class="input-group">
-                                  <input class="form-control date-picker" id="periode_start" name="periode_start" type="text" data-date-format="dd-mm-yyyy" />
-                                  <span class="input-group-addon">
-                                    <i class="fa fa-calendar bigger-110"></i>
-                                  </span>
-                                </div>
-                              </div>
-                              <div class="col-sm-5 periode-end">
-                                <div class="input-group">
-                                  <input class="form-control date-picker" id="periode_end" name="periode_end" type="text" data-date-format="dd-mm-yyyy" />
-                                  <span class="input-group-addon">
-                                    <i class="fa fa-calendar bigger-110"></i>
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-2 no-padding">
-                            <button type="button" id="btnFind" class="btn btn-primary btn-block"><i class="fa fa-search"></i>&nbsp;&nbsp;Refresh</button>
-                          </div>
-                          <div class="col-sm-3 no-padding"></div>
-                          <div class="col-sm-5 no-padding payroll-period hidden">
-                            <div class="col-md-12 no-padding">
-                              <select class="chosen-select form-control" id="payroll_period" name="payroll_period">
-                                <option value="0"> - </option>
-                                <?php 
-                                foreach($payroll_period as $row)
-                                { 
-                                  echo '<option value="'.$row->Id.'">'.$row->Name.'</option>';
-                                }?>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-3 no-padding"></div>
-                          <div class="col-sm-2 no-padding"></div>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                          <div class="col-lg-6">
-                            <div class="card card-1">
-                              <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                  <h3 class="card-title" id="judul-chart-one" data-id="8"></h3>
-                                  <div class="btn-group" style="position: absolute;right: 40px;">
-                                    <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right">
-                                      <span class="ace-icon fa fa-bar-chart-o icon-on-right"></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu dropdown-inverse">
-                                      <?php 
-                                      foreach($jenis as $row)
-                                      { 
-                                        echo '<li><a href="javascript:void(0)" class="create-chart" data-chart="1" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
-                                      }?>
-                                    
-                                    </ul>
-                                  </div>
-                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right btn-detail"><span class="ace-icon fa fa-external-link icon-on-right"></span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div class="card-body">
-                                <div class="d-flex">
-                                  
-                                </div>
-                                <!-- /.d-flex -->
-
-                                <div class="position-relative mb-4">
-                                  <canvas id="chart-one" height="200"></canvas>
-                                </div>
-
-                               
-                              </div>
-                            </div>            
-                          </div>          
-                          <div class="col-lg-6">
-                            <div class="card card-2">
-                              <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                  <h3 class="card-title" id="judul-chart-two" data-id="11"></h3>
-                                  <div class="btn-group" style="position: absolute;right: 40px;">
-                                    <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right">
-                                      <span class="ace-icon fa fa-bar-chart-o icon-on-right"></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu dropdown-inverse">
-                                      <?php 
-                                      foreach($jenis as $row)
-                                      { 
-                                        echo '<li><a href="javascript:void(0)" class="create-chart" data-chart="2" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
-                                      }?>
-                                    
-                                    </ul>
-                                  </div>
-                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right btn-detail"><span class="ace-icon fa fa-external-link icon-on-right"></span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div class="card-body">
-                              
-                                <div class="position-relative mb-4">
-                                  <canvas id="chart-two" height="200"></canvas>
-                                </div>
-
-                                
-                              </div>
-                            </div>
-                            <!-- /.card -->
-                          </div> 
-                          <div class="col-lg-6">
-                            <div class="card card-4">
-                              <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                  <h3 class="card-title" id="judul-donat" data-id="1"></h3>
-                                  <div class="btn-group" style="position: absolute;right: 40px;">
-                                    <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right">
-                                      <span class="ace-icon fa fa-bar-chart-o icon-on-right"></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu dropdown-inverse">
-                                      <?php 
-                                      foreach($jenis as $row)
-                                      { 
-                                        echo '<li><a href="javascript:void(0)" class="create-chart" data-chart="4" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
-                                      }?>
-                                    
-                                    </ul>
-                                  </div>
-                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right btn-detail"><span class="ace-icon fa fa-external-link icon-on-right"></span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div class="card-body">
-                                <div id="donut-chart" style="height: 300px;"></div>
-                              </div>
-                            </div>            
-                          </div>          
-                          <div class="col-lg-6">
-                            <div class="card card-3">
-                              <div class="card-header border-0">
-                                <div class="d-flex justify-content-between">
-                                  <h3 class="card-title" id="judul-chart-three" data-id="10"></h3>
-                                  <div class="btn-group" style="position: absolute;right: 40px;">
-                                    <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right">
-                                      <span class="ace-icon fa fa-bar-chart-o icon-on-right"></span>
-                                    </button>
-
-                                    <ul class="dropdown-menu dropdown-inverse">
-                                      <?php 
-                                      foreach($jenis as $row)
-                                      { 
-                                        echo '<li><a href="javascript:void(0)" class="create-chart" data-chart="3" data-id="'.$row->Recnum.'">'.$row->IsDesc.'</a></li>';
-                                      }?>
-                                    
-                                    </ul>
-                                  </div>
-                                  <button data-toggle="dropdown" class="btn btn-inverse btn-xs dropdown-toggle pull-right btn-detail"><span class="ace-icon fa fa-external-link icon-on-right"></span>
-                                  </button>
-                                
-                                </div>
-                              </div>
-                              <div class="card-body">
-                                <div class="chart">
-                                  <canvas id="chart-three" style="height:250px; min-height:250px"></canvas>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- /.card -->
-                          </div>  
-                      </div>
-                    </div> 
-                    <div class="col-xs-3">
-                      <div id="sidebar" class="sidebar responsive ace-save-state" style="width: 100%">
-                        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-                          <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-right ace-save-state" data-icon1="ace-icon fa fa-angle-double-right" data-icon2="ace-icon fa fa-angle-double-left"></i>
-                        </div>
-                        <ul class="nav nav-list">
-
-                          <div class="card">
-                              <div class="card-header">
-                                <h3 class="card-title" style="font-size: 16px;">New Employee</h3>                
-                              </div>
-                              
-                              <div class="card-body p-0">
-                                <div id="carouselHacked" class="carousel slide carousel-fade" data-ride="carousel">
-                                  <div class="carousel-inner" role="listbox">
-
-                                    <?php 
-                                    foreach($new_employee as $row)
-                                    { 
-                                      ?>
-                                      <div class="item">
-                                        <div class="slide-list">
-                                          <img src="<?php echo $row->url ?>" alt="User Image">
-                                          <a class="users-list-name" href="#"><?php echo $row->EmployeeName ?></a>
-                                          <p style="font-weight: bold;line-height: 1"><?php echo $row->PositionStructural ?></p>
-
-                                          <p style="font-weight: bold;margin-bottom: 0"><?php echo $row->LocationName ?></p>
-                                          <span class="users-list-date"><?php echo $row->JoinDate ?></span>
-                                           <span class="users-list-date"><?php echo $row->Mail ?></span>
-                                        </div>
-                                      </div>
-                                      
-                                      <?php
-                                    }?>  
-                                  </div>
-
-                                  <!-- Controls -->
-                                  <a class="left carousel-control" href="#carouselHacked" role="button" data-slide="prev">
-                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                      <span class="sr-only">Previous</span>
-                                  </a>
-                                  <a class="right carousel-control" href="#carouselHacked" role="button" data-slide="next">
-                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                      <span class="sr-only">Next</span>
-                                  </a>
-                                </div>
-                              </div>                                
-                          </div>
-                          <div class="card">
-                              <div class="card-header">
-                                <h3 class="card-title" style="font-size: 16px;">On Leave</h3>                
-                              </div>
-                              <!-- /.card-header -->
-                              <div class="card-body p-0">
-                                <div id="onleave" class="carousel slide carousel-fade" data-ride="carousel">
-                                  <div class="carousel-inner" role="listbox">
-                                      <?php 
-                                      foreach($leave as $row)
-                                      { 
-                                        ?>
-                                        <div class="item">
-                                          <div class="slide-list">
-                                            <img src="<?php echo $row->url ?>" alt="User Image">
-                                            <a class="users-list-name" href="#"><?php echo $row->EmployeeName ?></a>
-                                            <p style="font-weight: bold;line-height: 1"><?php echo $row->PositionStructural ?></p>
-
-                                            <p style="font-weight: bold;margin-bottom: 0"><?php echo $row->LocationName ?></p>
-                                          </div>
-                                        </div>
-                                        
-                                        <?php
-                                      }?>  
-                                  </div>
-
-                                  <!-- Controls -->
-                                  <a class="left carousel-control" href="#carouselHacked" role="button" data-slide="prev">
-                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                      <span class="sr-only">Previous</span>
-                                  </a>
-                                  <a class="right carousel-control" href="#carouselHacked" role="button" data-slide="next">
-                                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                      <span class="sr-only">Next</span>
-                                  </a>
-                                </div>
-                              </div>                                
-                          </div>
-                          <div class="card">
-                            <div class="card-header">
-                              <h3 class="card-title" style="font-size: 16px;">HR Policies</h3>                
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body p-0">
-                              <ul class="products-list product-list-in-card pl-2 pr-2">
-                                <?php 
-                                foreach($policy as $row)
-                                { 
-                                  ?>
-                                  <li class="item">
-                                    <div class="product-info">
-                                      <a href="javascript:void(0)" data-id="<?php echo $row->Recnum ?>" class="product-title">
-                                        <i class="ace-icon fa fa-folder fa-1x blue"></i>&nbsp;&nbsp;<?php echo $row->IsDesc ?></a>
-                                    </div>
-                                  </li>
-                                  <?php
-                                }?>    
-                                </ul>
-                            </div>                                
-                          </div>
-                        </ul>
-                        
-                      </div>
-                    </div> 
-                  </div>
-                </div>
-                <div id="member-tab" class="tab-pane">
-                    tab 2
-                </div>
-                
-              </div>
-            </div>
-          </div>
+<div class="card borderless-card">
+    <div class="card-block inverse-breadcrumb">
+        <div class="breadcrumb-header">
+            <h5>Dashboard</h5>
+            <span>Halaman Utama ini memuat sekilas rangkuman informasi</span>
         </div>
-      </div>
+        <div class="page-header-breadcrumb">
+            <ul class="breadcrumb-title">
+                <li class="breadcrumb-item">
+                    <a href="#!">
+                        <i class="icofont icofont-home"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item"><a href="#!">Dashboard</a>
+                </li>
+
+            </ul>
+        </div>
     </div>
-  
 </div>
+
+<div class="row">
+    <div class="col-xl-6 col-md-12">
+        <div class="card user-card-full">
+            <div class="row m-l-0 m-r-0">
+                <div class="col-sm-4 bg-c-lite-green user-profile">
+                    <div class="card-block text-center text-white">
+                        <div class="m-b-25">
+                            <img src="<?= base_url(); ?>assets\images\avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
+                        </div>
+                        <h6 class="f-w-600">Jeny William</h6>
+                        <p>Web Designer</p>
+                        <i class="feather icon-edit m-t-10 f-16"></i>
+                    </div>
+                </div>
+                <div class="col-sm-8" style="background: linear-gradient(to right, #546D77, #3F5159);;color: #fff;">
+                    <div class="card-block">
+                        <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Information</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p class="m-b-10 f-w-600">Email</p>
+                                <h6 class="text-muted f-w-400"><a href="..\..\..\cdn-cgi\l\email-protection.htm" class="__cf_email__" data-cfemail="3a505f54437a5d575b535614595557">[email&#160;protected]</a></h6>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="m-b-10 f-w-600">Phone</p>
+                                <h6 class="text-muted f-w-400">0023-333-526136</h6>
+                            </div>
+                        </div>
+                        <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Projects</h6>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p class="m-b-10 f-w-600">Recent</p>
+                                <h6 class="text-muted f-w-400">Guruable Admin</h6>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="m-b-10 f-w-600">Most Viewed</p>
+                                <h6 class="text-muted f-w-400">Able Pro Admin</h6>
+                            </div>
+                        </div>
+                        <ul class="social-link list-unstyled m-t-40 m-b-10">
+                            <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="facebook"><i class="feather icon-facebook facebook" aria-hidden="true"></i></a></li>
+                            <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="twitter"><i class="feather icon-twitter twitter" aria-hidden="true"></i></a></li>
+                            <li><a href="#!" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="instagram"><i class="feather icon-instagram instagram" aria-hidden="true"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6 col-md-12">
+        <div class="row">
+            <div class="col-xl-6 col-md-6">
+                <div class="card social-card bg-simple-c-blue" style="background-color: #3F5159;">
+                    <div class="card-block">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <i class="feather icon-mail f-34 text-c-blue social-icon"></i>
+                            </div>
+                            <div class="col">
+                                <h6 class="m-b-0">Mail</h6>
+                                <p>231.2w downloads</p>
+                                <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-6">
+                <div class="card social-card bg-simple-c-pink">
+                    <div class="card-block">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <i class="feather icon-twitter f-34 text-c-pink social-icon"></i>
+                            </div>
+                            <div class="col">
+                                <h6 class="m-b-0">twitter</h6>
+                                <p>231.2w downloads</p>
+                                <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-6">
+                <div class="card social-card bg-simple-c-pink">
+                    <div class="card-block">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <i class="feather icon-twitter f-34 text-c-pink social-icon"></i>
+                            </div>
+                            <div class="col">
+                                <h6 class="m-b-0">twitter</h6>
+                                <p>231.2w downloads</p>
+                                <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-6">
+                <div class="card social-card bg-simple-c-blue" style="background-color: #3F5159;">
+                    <div class="card-block">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <i class="feather icon-mail f-34 text-c-blue social-icon"></i>
+                            </div>
+                            <div class="col">
+                                <h6 class="m-b-0">Mail</h6>
+                                <p>231.2w downloads</p>
+                                <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  sale analytics start -->
+    <div class="col-xl-9 col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Sales Analytics</h5>
+                <span class="text-muted">For more details about usage, please refer <a href="https://www.amcharts.com/online-store/" target="_blank">amCharts</a> licences.</span>
+                <div class="card-header-right">
+                    <ul class="list-unstyled card-option">
+                        <li><i class="feather icon-maximize full-card"></i></li>
+                        <li><i class="feather icon-minus minimize-card"></i></li>
+                        <li><i class="feather icon-trash-2 close-card"></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-block">
+                <div id="sales-analytics" style="height: 265px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-12">
+        <div class="card user-card2">
+            <div class="card-block text-center">
+                <h6 class="m-b-15">Project Risk</h6>
+                <div class="risk-rate">
+                    <span><b>5</b></span>
+                </div>
+                <h6 class="m-b-10 m-t-10">Balanced</h6>
+                <a href="#!" class="text-c-yellow b-b-warning">Change Your Risk</a>
+                <div class="row justify-content-center m-t-10 b-t-default m-l-0 m-r-0">
+                    <div class="col m-t-15 b-r-default">
+                        <h6 class="text-muted">Nr</h6>
+                        <h6>AWS 2455</h6>
+                    </div>
+                    <div class="col m-t-15">
+                        <h6 class="text-muted">Created</h6>
+                        <h6>30th Sep</h6>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-warning btn-block p-t-15 p-b-15">Download Overall Report</button>
+        </div>
+    </div>
+</div>
+

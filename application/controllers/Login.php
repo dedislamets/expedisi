@@ -11,8 +11,9 @@ class Login extends CI_Controller {
     }
 
     public function index()
-    {
-
+    {       
+            // $password = $this->Acak('12345', "goldenginger");
+            // print("<pre>".print_r($password,true)."</pre>");exit();
             if($this->admin->logged_id())
             {
                 //jika memang session sudah terdaftar, maka redirect ke halaman dahsboard
@@ -38,23 +39,18 @@ class Login extends CI_Controller {
                     $password = $this->Acak($this->input->post('password', TRUE), "goldenginger");
 
                     //checking data via model
-                    $checking = $this->admin->check_login('V_SecAccessGroup', array('PersonalMail' => $username), array('IsPassword' => $password), array('EmployeeId' => $username));
+                    $checking = $this->admin->check_login('system_users', array('email' => $username), array('password' => $password));
 
-                    $data['setup'] = $this->admin->masterSetup();
+                    // $data['setup'] = $this->admin->masterSetup();
                     // echo $checking; exit();
                     //jika ditemukan, maka create session
                     if (!empty($checking)) {
                         foreach ($checking as $apps) {
                             $session_data = array(
-                                'user_id'   => $apps->RecnumEmployee,
-                                'user_nik'  => $apps->EmployeeId,
-                                'user_name' => $apps->EmployeeName,
-                                'user_mail' => $apps->PersonalMail,
-                                'office_mail' => $apps->OfficeMail,
-                                'hp'        => $apps->Handphone,
-                                'posisi'    => $apps->PositionStructural,
-                                'logo'      => $data['setup'][0]->Icon,
-                                'app_name'  => $data['setup'][0]->AplicationName,
+                                'user_id'   => $apps->id,
+                                'role'  => $apps->use_role_id,
+                                'email' => $apps->email,
+                               
                             );
                             //set session userdata
                             $this->session->set_userdata($session_data);
@@ -72,7 +68,7 @@ class Login extends CI_Controller {
 
                 }else{
                     $data['main'] = 'login/index';
-                    $data['setup'] = $this->admin->masterSetup();
+                    // $data['setup'] = $this->admin->masterSetup();
                     $this->load->view('login', $data);
                 }
 
