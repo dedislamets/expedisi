@@ -65,8 +65,8 @@
                         </a>
                     </li>
                     <li class=" ">
-                        <a href="form-validation.htm">
-                            <span class="pcoded-mtext">Wilayah</span>
+                        <a href="cabang">
+                            <span class="pcoded-mtext">Cabang</span>
                         </a>
                     </li>
                     <li class=" ">
@@ -89,7 +89,7 @@
                 <ul class="pcoded-submenu">
 
                     <li class=" ">
-                        <a href="form-elements-add-on.htm">
+                        <a href="Import">
                             <span class="pcoded-mtext">Kota & Kecamatan</span>
                         </a>
                     </li>

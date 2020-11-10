@@ -15,7 +15,7 @@
 			"autoWidth": true,
 			// "order": [[ 4, "desc" ]],
 			columnDefs:[
-				{ "width": "100px", "targets": [2,3] },
+				{ "width": "100px", "targets": [4,3,2] },
 				
 			]
 
