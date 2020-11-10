@@ -7,7 +7,7 @@
                     <span>Halaman Utama ini menampilkan informasi barang</span>
                 </div>
                 <div class="col-xl-2">
-                    <button class="btn btn-grd-success"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                    <button class="btn btn-grd-success" id="btnAdd"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
                 </div>
             </div>
         </div>
@@ -25,7 +25,9 @@
                             <th class="text-center">
                               Berat
                             </th>
-                            
+                             <th class="text-center">
+                              Satuan
+                            </th>
                             <th class="text-left">
                               Aksi
                             </th>
@@ -40,4 +42,6 @@
     </div>
     
 </div>
-
+<?php
+  $this->load->view($modal); 
+?>

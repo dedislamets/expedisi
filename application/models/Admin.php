@@ -192,16 +192,16 @@ class Admin extends CI_Model
         return $query->result();    
     }
 
-    function getmaster($tabel,$where='',$noorder=0){
-        $sql = "SELECT * FROM ". $tabel;
-        if($where !=''){
-            $sql.= " WHERE ". $where ;
+    function getmaster($tabel,$where='',$order=''){
+        $this->db->from($tabel);
+        if($where !=""){
+            $this->db->where($where);
         }
-        if($noorder==0){
-            $sql .= " order by Recnum ASC";
+        if($order !=""){
+            $this->db->order_by($order);
         }
-        $query = $this->db->query($sql);
-        return $query->result();    
+        $query = $this->db->get();
+        return $query->result();   
     }
     function get_Function_id($func,$id, $order='')
     {
@@ -340,10 +340,10 @@ class Admin extends CI_Model
           
         }
     }
-    function deleteTable($id, $table)
+    function deleteTable($recnum, $id, $table)
     {        
         $this->db->from($table);
-        $this->db->where('Recnum', $id)->delete();
+        $this->db->where($recnum, $id)->delete();
         if ($this->db->affected_rows() > 0){
             return true;      
             
