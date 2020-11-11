@@ -5,7 +5,7 @@
 			dom: 'Bfrtip',
         	buttons: ['excel', 'pdf', 'print'],
 			ajax: {		            
-	            "url": "Cabang/dataTable",
+	            "url": "Moda/dataTable",
 	            "type": "GET"
 	        },
 	        processing	: true,
@@ -15,7 +15,7 @@
 			"autoWidth": true,
 			// "order": [[ 4, "desc" ]],
 			columnDefs:[
-				{ "width": "100px", "targets": [4,3,5] },
+				{ "width": "100px", "targets": [2] },
 				
 			]
 

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Cabang extends CI_Controller {
+class Tarif extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
@@ -12,9 +12,9 @@ class Cabang extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
         {
-			$data['title'] = 'Master Barang';
-			$data['main'] = 'cabang/index';
-			$data['js'] = 'script/cabang';
+			$data['title'] = 'Master Tarif';
+			$data['main'] = 'tarif/index';
+			$data['js'] = 'script/tarif';
 			$data['modal'] = 'modal/cabang';
 
 			$this->load->view('home',$data,FALSE); 
@@ -52,18 +52,14 @@ class Cabang extends CI_Controller {
         }
 
         $valid_columns = array(
-            0=>'kode_cabang',
-            1=>'nama_cabang',
-            2=>'alamat',
-            3=>'telp_cabang',
-            4=>'kota',
+            0=>'kota_asal',
+            1=>'kota_tujuan',
+           
         );
         $valid_sort = array(
-            0=>'kode_cabang',
-            1=>'nama_cabang',
-            2=>'alamat',
-            3=>'telp_cabang',
-            4=>'kota',
+            0=>'kota_asal',
+            1=>'kota_tujuan',
+           
         );
         if(!isset($valid_sort[$col]))
         {
@@ -95,21 +91,18 @@ class Cabang extends CI_Controller {
             }                 
         }
         $this->db->limit($length,$start);
-        $pengguna = $this->db->get("tb_cabang");
+        $pengguna = $this->db->get("tb_origin");
         $data = array();
         foreach($pengguna->result() as $r)
         {
 
             $data[] = array( 
-                        $r->kode_cabang,
-                        $r->nama_cabang,
-                        $r->alamat,
-                        $r->telp_cabang,
-                        $r->kota,
-                        '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->kode_cabang.'"  >
+                        $r->kota_asal,
+                        $r->kota_tujuan,
+                        '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->id_origin.'"  >
                           <i class="icofont icofont-ui-edit"></i>Edit
                         </button>
-                        <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="hapus(this)"  data-id="'.$r->kode_cabang.'" >
+                        <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="hapus(this)"  data-id="'.$r->id_origin.'" >
                           <i class="icofont icofont-trash"></i>Hapus
                         </button> ',
                    );
@@ -145,7 +138,7 @@ class Cabang extends CI_Controller {
                 $x++;
             }                 
         }
-      $query = $this->db->get("tb_cabang");
+      $query = $this->db->get("tb_origin");
       $result = $query->row();
       if(isset($result)) return $result->num;
       return 0;
@@ -154,7 +147,7 @@ class Cabang extends CI_Controller {
     public function edit(){
         $id = $this->input->get('id');
         $arr_par = array('kode_cabang' => $id);
-        $data = $this->admin->getmaster('tb_cabang',$arr_par);
+        $data = $this->admin->getmaster('tb_origin',$arr_par);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 

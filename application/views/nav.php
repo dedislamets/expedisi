@@ -55,7 +55,7 @@
                         </a>
                     </li>
                     <li class=" ">
-                        <a href="form-elements-advance.htm">
+                        <a href="<?= base_url() ?>tarif">
                             <span class="pcoded-mtext">Tarif</span>
                         </a>
                     </li>
@@ -65,12 +65,12 @@
                         </a>
                     </li>
                     <li class=" ">
-                        <a href="cabang">
+                        <a href="<?= base_url() ?>cabang">
                             <span class="pcoded-mtext">Cabang</span>
                         </a>
                     </li>
                     <li class=" ">
-                        <a href="form-validation.htm">
+                        <a href="<?= base_url() ?>moda">
                             <span class="pcoded-mtext">Moda</span>
                         </a>
                     </li>
@@ -89,7 +89,7 @@
                 <ul class="pcoded-submenu">
 
                     <li class=" ">
-                        <a href="Import">
+                        <a href="<?= base_url() ?>Import">
                             <span class="pcoded-mtext">Kota & Kecamatan</span>
                         </a>
                     </li>

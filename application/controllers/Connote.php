@@ -17,6 +17,18 @@ class Connote extends CI_Controller {
 			$data['main'] = 'connote/index';
 			$data['js'] = 'script/connote';
 			// $data['modal'] = 'modal/class';	
+
+			$image_name     = '123467890.jpg';
+	        $image_dir      = './assets/barcode/';
+
+			if(file_exists($image_dir . $image_name)){
+				$this->load->library('zend');
+		        $this->zend->load('Zend/Barcode');
+		        $image_resource = Zend_Barcode::factory('code128', 'image', array('text'=>'123467890'), array())->draw();
+		        imagejpeg($image_resource, $image_dir.$image_name);
+			}
+			
+	        $data['barcode'] = './assets/barcode/'.$image_name ;
 			$this->load->view('home',$data,FALSE); 
 
         }else{

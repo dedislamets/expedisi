@@ -14,9 +14,12 @@
 
                     <div class="wizard-navigation">
                         <ul>
-                            <li><a href="#about" data-toggle="tab">Penerima</a></li>
-                            <li><a href="#account" data-toggle="tab">Barang</a></li>
-                            <li><a href="#address" data-toggle="tab">Layanan</a></li>
+                            <li style="border-right: 1px solid #fff;"><a href="#about" data-toggle="tab">Moda</a></li>
+                            <li style="border-right: 1px solid #fff;"><a href="#pengirim" data-toggle="tab">Pengirim</a></li>
+                            <li style="border-right: 1px solid #fff;"><a href="#penerima" data-toggle="tab">Penerima</a></li>
+                            <li style="border-right: 1px solid #fff;"><a href="#account" data-toggle="tab">Barang</a></li>
+                            <li style="border-right: 1px solid #fff;"><a href="#address" data-toggle="tab">Layanan</a></li>
+                            <li><a href="#preview" data-toggle="tab">Preview</a></li>
                         </ul>
 
                     </div>
@@ -24,48 +27,166 @@
                   <div class="tab-content">
                       <div class="tab-pane" id="about">
                         <div class="row">
-                            <h4 class="info-text"> Informasi Penerima</h4>
-                            <!-- <div class="col-sm-4 col-sm-offset-1">
-                               <div class="picture-container">
-                                    <div class="picture">
-                                        <img src="assets/img/default-avatar.png" class="picture-src" id="wizardPicturePreview" title=""/>
-                                        <input type="file" id="wizard-picture">
-                                    </div>
-                                    <h6>Choose Picture</h6>
-                                </div>
-                            </div> -->
+                            <h4 class="info-text">Pilih Moda & Tujuan</h4>
                             <div class="col-sm-10 col-sm-offset-1">
-                                <div class="form-group">
-                                  <label>Nama Penerima <small>(required)</small></label>
-                                  <input name="nama_penerima" type="text" class="form-control" placeholder="">
+                              <div style="padding: 10px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Destinasi </label>
+                                      <select class="js-example-basic-single col-sm-12">
+                                          <option value="WY">Peter</option>
+                                          <option value="WY">Hanry Die</option>
+                                          <option value="WY">John Doe</option>
+                                          <option value="AL">Alabama</option>
+                                          <option value="WY">Wyoming</option>
+                                          
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label>Tujuan </label>
+                                      <select class="js-example-basic-single col-sm-12">
+                                          <option value="WY">Peter</option>
+                                          <option value="WY">Hanry Die</option>
+                                          <option value="WY">John Doe</option>
+                                          <option value="AL">Alabama</option>
+                                          <option value="WY">Wyoming</option>
+                                          
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-12">
+                                    <div class="form-group">
+                                      <label>Moda </label>
+                                      <select class="js-example-basic-single col-sm-12">
+                                          <option value="WY">Peter</option>
+                                          <option value="WY">Hanry Die</option>
+                                          <option value="WY">John Doe</option>
+                                          <option value="AL">Alabama</option>
+                                          <option value="WY">Wyoming</option>
+                                          
+                                      </select>
+                                    </div>
+                                  </div>
                                 </div>
-                                <div class="form-group">
-                                  <label>Alamat Penerima <small>(required)</small></label>
-                                  <textarea name="alamat" rows="4" class="form-control" placeholder=""> </textarea>
-                                </div>
-                                <div class="form-group">
-                                  <label>Destinasi <small>(required)</small></label>
-                                  <select class="js-example-basic-single col-sm-12">
-                                      <option value="WY">Peter</option>
-                                      <option value="WY">Hanry Die</option>
-                                      <option value="WY">John Doe</option>
-                                      <option value="AL">Alabama</option>
-                                      <option value="WY">Wyoming</option>
-                                      
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Zip Code <small>(required)</small></label>
-                                    <input name="zip" type="text" class="form-control" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                  <label>No Handphone <small>(required)</small></label>
-                                  <input name="phone" type="text" class="form-control" placeholder="">
-                                </div>
+                              </div>
                             </div>
-                            
-                            
+                          
                         </div>
+                      </div>
+                      <div class="tab-pane" id="pengirim">
+                          <div class="col-sm-10 col-sm-offset-1">
+                              <div style="padding: 10px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Asal</label>
+                                    <div class="col-sm-10">
+                                        <input name="origin1" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Tujuan</label>
+                                    <div class="col-sm-10">
+                                        <input name="destinasi1" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Moda</label>
+                                    <div class="col-sm-10">
+                                        <input name="moda1" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                              
+                              </div>
+                          </div>
+                          <hr style="width: 81%;border-top: 2px dotted rgba(0,0,0,.3);">
+                          <h4 class="info-text"> Informasi Pengirim</h4>
+                          <div class="col-sm-10 col-sm-offset-1">
+                              <div class="form-group">
+                                <label>Nama Pengirim <small>(required)</small></label>
+                                <input name="nama_pengirim" type="text" class="form-control" placeholder="">
+                              </div>
+                              <div class="form-group">
+                                <label>Alamat Pengirim <small>(required)</small></label>
+                                <textarea name="alamat_pengirim" rows="4" class="form-control" placeholder="" style="height: 100px;"> </textarea>
+                              </div>
+                              <div class="form-group">
+                                <label>Origin </label>
+                                <select class="js-example-basic-single col-sm-12" disabled="">
+                                    <option value="WY">Peter</option>
+                                    <option value="WY">Hanry Die</option>
+                                    <option value="WY">John Doe</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="WY">Wyoming</option>
+                                    
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                  <label>Zip Code <small>(required)</small></label>
+                                  <input name="zip_pengirim" type="text" class="form-control" placeholder="">
+                              </div>
+                              <div class="form-group">
+                                <label>No Handphone <small>(required)</small></label>
+                                <input name="phone_pengirim" type="text" class="form-control" placeholder="">
+                              </div>
+                          </div>
+                      </div>
+                      <div class="tab-pane" id="penerima">
+                          <div class="col-sm-10 col-sm-offset-1">
+                              <div style="padding: 10px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Asal</label>
+                                    <div class="col-sm-10">
+                                        <input name="origin2" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Tujuan</label>
+                                    <div class="col-sm-10">
+                                        <input name="destinasi2" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Moda</label>
+                                    <div class="col-sm-10">
+                                        <input name="moda2" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                              
+                              </div>
+                          </div>
+                          <hr style="width: 81%;border-top: 2px dotted rgba(0,0,0,.3);">
+                          <h4 class="info-text"> Informasi Penerima</h4>
+                          <div class="col-sm-10 col-sm-offset-1">
+                              <div class="form-group">
+                                <label>Nama Penerima <small>(required)</small></label>
+                                <input name="nama_penerima" type="text" class="form-control" placeholder="">
+                              </div>
+                              <div class="form-group">
+                                <label>Alamat Penerima <small>(required)</small></label>
+                                <textarea name="alamat_penerima" rows="4" class="form-control" placeholder="" style="height: 100px;"> </textarea>
+                              </div>
+                              <div class="form-group">
+                                <label>Destinasi </label>
+                                <select class="js-example-basic-single col-sm-12" disabled="">
+                                    <option value="WY">Peter</option>
+                                    <option value="WY">Hanry Die</option>
+                                    <option value="WY">John Doe</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="WY">Wyoming</option>
+                                    
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                  <label>Zip Code <small>(required)</small></label>
+                                  <input name="zip_penerima" type="text" class="form-control" placeholder="">
+                              </div>
+                              <div class="form-group">
+                                <label>No Handphone <small>(required)</small></label>
+                                <input name="phone_penerima" type="text" class="form-control" placeholder="">
+                              </div>
+                          </div>
                       </div>
                       <div class="tab-pane" id="account">
                           <h4 class="info-text"> What are you doing? (checkboxes) </h4>
@@ -109,44 +230,115 @@
                       </div>
                       <div class="tab-pane" id="address">
                           <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                              <div style="padding: 10px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Asal</label>
+                                    <div class="col-sm-10">
+                                        <input name="origin3" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Tujuan</label>
+                                    <div class="col-sm-10">
+                                        <input name="destinasi3" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">Moda</label>
+                                    <div class="col-sm-10">
+                                        <input name="moda3" type="text" class="form-control" disabled="">
+                                    </div>
+                                </div>
+                              
+                              </div>
+                          </div>
+                          <hr style="width: 81%;border-top: 2px dotted rgba(0,0,0,.3);">
                               <div class="col-sm-12">
-                                  <h4 class="info-text"> Are you living in a nice area? </h4>
+                                  <h4 class="info-text"> Pilih layanan yang diinginkan </h4>
                               </div>
-                              <div class="col-sm-7 col-sm-offset-1">
-                                   <div class="form-group">
-                                      <label>Street Name</label>
-                                      <input type="text" class="form-control" placeholder="5h Avenue">
+                            
+                              <div class="col-sm-10 col-sm-offset-1">
+                                   <div class="form-group row">
+                                      <label class="col-sm-2 col-form-label">Paket</label>
+                                      <div class="col-sm-10">
+                                        <select name="country" class="form-control">
+                                            <option value="Afghanistan"> Afghanistan </option>
+                                            <option value="Albania"> Albania </option>
+                                            <option value="Algeria"> Algeria </option>
+                                            <option value="American Samoa"> American Samoa </option>
+                                            <option value="Andorra"> Andorra </option>
+                                            <option value="Angola"> Angola </option>
+                                            <option value="Anguilla"> Anguilla </option>
+                                            <option value="Antarctica"> Antarctica </option>
+                                            <option value="...">...</option>
+                                        </select>
+                                      </div>
                                     </div>
-                              </div>
-                              <div class="col-sm-3">
-                                   <div class="form-group">
-                                      <label>Street Number</label>
-                                      <input type="text" class="form-control" placeholder="242">
+                                    <div class="form-group row">
+                                      <label class="col-sm-2 col-form-label">Estimasi</label>
+                                      <div class="col-sm-10">
+                                          <input name="estimasi" type="text" class="form-control" disabled="">
+                                      </div>
                                     </div>
-                              </div>
-                              <div class="col-sm-5 col-sm-offset-1">
-                                   <div class="form-group">
-                                      <label>City</label>
-                                      <input type="text" class="form-control" placeholder="New York...">
-                                    </div>
-                              </div>
-                              <div class="col-sm-5">
-                                   <div class="form-group">
-                                      <label>Country</label><br>
-                                       <select name="country" class="form-control">
-                                          <option value="Afghanistan"> Afghanistan </option>
-                                          <option value="Albania"> Albania </option>
-                                          <option value="Algeria"> Algeria </option>
-                                          <option value="American Samoa"> American Samoa </option>
-                                          <option value="Andorra"> Andorra </option>
-                                          <option value="Angola"> Angola </option>
-                                          <option value="Anguilla"> Anguilla </option>
-                                          <option value="Antarctica"> Antarctica </option>
-                                          <option value="...">...</option>
-                                      </select>
+                                    <div class="form-group row">
+                                      <label class="col-sm-2 col-form-label">Biaya</label>
+                                      <div class="col-sm-10">
+                                          <input name="biaya" type="text" class="form-control" disabled="">
+                                      </div>
                                     </div>
                               </div>
                           </div>
+                      </div>
+                      <div class="tab-pane" id="preview">
+                        <div class="row">
+                          <div class="col-sm-10 col-sm-offset-1" style="border: 1px dotted;border-radius: 10px;padding: 10px;">
+                            <div class="row">
+                              <div class="col-sm-6" style="border-right: 2px dotted;">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                          <div class="col-sm-4">
+                                            <img style="height: 38px;margin-top: 10px;" src="assets\images\logo.png" >
+                                          </div>
+                                          <div class="col-sm-8">
+                                            <div>Wilayah Pusat</div>
+                                            <div>Jl. Raya Kalimalang KM 108, Bekasi</div>
+                                            <div>Telp. 08656787878</div>
+                                          </div>
+                                        </div>
+                                        <hr style="width: 100%;border-top: 2px dotted rgba(0,0,0,.3);">
+                                        <div class="row" style="margin-bottom: 10px;">
+                                          <div class="col-sm-3">
+                                            <div>Pengirim:</div>
+                                          </div>
+                                          <div class="col-sm-9">
+                                            <div>Dedi Slamet</div>
+                                            <div>Perum Graha Prima Blok ID NO 111. Bekasi</div>
+                                            <div>Telp. 08656787878</div>
+                                          </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col-sm-3">
+                                            <div>Penerima:</div>
+                                          </div>
+                                          <div class="col-sm-9">
+                                            <div>Dedi Slamet</div>
+                                            <div>Perum Graha Prima Blok ID NO 111. Bekasi</div>
+                                            <div>Telp. 08656787878</div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="col-sm-6">
+                                <div class="row">
+                                  <div class="col-sm-12"><img src="<? echo $barcode; ?>" class="img-fluid" style="width: 100%"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                   </div>
                   <div class="wizard-footer height-wizard">
