@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Barang extends CI_Controller {
+class PackingList extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
@@ -12,9 +12,9 @@ class Barang extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
         {
-			$data['title'] = 'Master Barang';
-			$data['main'] = 'barang/index';
-			$data['js'] = 'script/barang';
+			$data['title'] = 'Master Packing List';
+			$data['main'] = 'packing/index';
+			$data['js'] = 'script/packing';
 			$data['modal'] = 'modal/barang';
 
 			$this->load->view('home',$data,FALSE); 
@@ -52,16 +52,20 @@ class Barang extends CI_Controller {
         }
 
         $valid_columns = array(
-            0=>'nama_barang',
-            1=>'jenis_barang',
-            2=>'berat_barang',
-            3=>'satuan',
+            0=>'conn_date',
+            1=>'conn_code',
+            2=>'city_from',
+            3=>'city_to',
+            4=>'conn_from',
+            5=>'conn_to',
         );
         $valid_sort = array(
-            0=>'nama_barang',
-            1=>'jenis_barang',
-            2=>'berat_barang',
-            3=>'satuan',
+            0=>'conn_date',
+            1=>'conn_code',
+            2=>'city_from',
+            3=>'city_to',
+            4=>'conn_from',
+            5=>'conn_to',
         );
         if(!isset($valid_sort[$col]))
         {
@@ -93,22 +97,25 @@ class Barang extends CI_Controller {
             }                 
         }
         $this->db->limit($length,$start);
-        $pengguna = $this->db->get("barang");
+        $pengguna = $this->db->get("connote");
         $data = array();
         foreach($pengguna->result() as $r)
         {
 
             $data[] = array( 
-                        $r->nama_barang,
-                        $r->jenis_barang,
-                        $r->berat_barang,
-                        $r->satuan,
-                        '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->id_barang.'"  >
-                          <i class="icofont icofont-ui-edit"></i>Edit
+                        $r->conn_date,
+                        $r->conn_code,
+                        $r->city_from,
+                        $r->city_to,
+                        $r->conn_from,
+                        $r->conn_to,
+                        '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->conn_code.'"  >
+                          <i class="icofont icofont-ui-edit"></i>Lihat
                         </button>
-                        <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="hapus(this)"  data-id="'.$r->id_barang.'" >
-                          <i class="icofont icofont-trash"></i>Hapus
-                        </button> ',
+                        <button type="button" rel="tooltip" class="btn btn-primary btn-sm " onclick="editmodal(this)"  data-id="'.$r->conn_code.'"  >
+                          <i class="icofont icofont-ui-edit"></i>Status
+                        </button>
+                        ',
                    );
         }
         $total_pengguna = $this->totalPengguna($search, $valid_columns);
@@ -142,7 +149,7 @@ class Barang extends CI_Controller {
                 $x++;
             }                 
         }
-      $query = $this->db->get("barang");
+      $query = $this->db->get("connote");
       $result = $query->row();
       if(isset($result)) return $result->num;
       return 0;

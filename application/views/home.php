@@ -2,7 +2,7 @@
 <html lang="en">
   
 <head>
-    <title>Sistem Tracking</title>
+    <title>E-Tracking</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -172,7 +172,7 @@
                                     <i class="feather icon-maximize full-screen"></i>
                                 </a>
                             </li> -->
-                            <li><h3 style="padding-top: 10px;padding-left: 10px;">GDPST - Wilayah Pusat</h3></li>
+                            <li><h3 style="padding-top: 10px;padding-left: 10px;">GDGJKT - Wilayah HO JKT</h3></li>
                         </ul>
                         <ul class="nav-right">
                             <li class="header-notification">

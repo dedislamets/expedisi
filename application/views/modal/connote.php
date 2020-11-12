@@ -18,7 +18,7 @@
 					
 					<div class="form-group">
 						<label>Jenis</label>
-						<select id="jenis" name="jenis" class="form-control">
+						<select id="jenis" name="jenis" class="form-control" disabled="">
 		                   <option value="Gadget">Gadget</option>
 		                   <option value="Electronik">Electronik</option>
 		                   <option value="Makanan">Makanan</option>
@@ -27,18 +27,27 @@
 		                   <option value="lain-lain">Lain-lain</option>
 		                </select>
 					</div>	
-					<div class="form-group">
-						<label>Berat Barang</label>
-						<input type="text" id="berat_barang" name="berat_barang" class="form-control" />
-					</div>		
+						
 					<div class="form-group">
 						<label>Satuan</label>
-						<select id="satuan" name="satuan" class="form-control">
+						<select id="satuan" name="satuan" class="form-control" disabled="">
 		                   <option value="Kg">Kg</option>
 		                   <option value="M">Meter</option>
 		                   <option value="Ton">Ton</option>
 		                   
 		                </select>
+					</div>
+					<div class="form-group">
+						<label>Berat Barang</label>
+						<input type="text" id="berat_barang" name="berat_barang" class="form-control" readonly="" />
+					</div>	
+					<div class="form-group">
+						<label>Berat Actual</label>
+						<input type="text" id="berat_actual" name="berat_actual" class="form-control" />
+					</div>	
+					<div class="form-group">
+						<label>Qty</label>
+						<input type="number" id="qty" name="qty" value="1" class="form-control" />
 					</div>						
 					<input type="hidden" name="id_barang" id="id_barang" value="">
 					<input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >

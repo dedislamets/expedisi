@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li class="">
-                <a href="javascript:void(0)">
+                <a href="<?= base_url() ?>packinglist">
                     <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
                     <span class="pcoded-mtext">Packing List</span>
                 </a>  
@@ -29,7 +29,7 @@
                 </a>  
             </li>
             <li class="">
-                <a href="javascript:void(0)">
+                <a href="<?= base_url() ?>trace">
                     <span class="pcoded-micon"><i class="feather icon-navigation-2"></i></span>
                     <span class="pcoded-mtext">Trace & Tracking</span>
                 </a>  

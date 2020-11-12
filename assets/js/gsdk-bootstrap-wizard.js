@@ -64,6 +64,19 @@ $(document).ready(function(){
         'previousSelector': '.btn-previous',
 
         onNext: function(tab, navigation, index) {
+            $("#t_npen").text($('#nama_penerima').val());
+            $("#t_apen").text($('#alamat_penerima').val() + $('#zip_penerima').val());
+            $("#t_telppen").text($('#phone_penerima').val());
+
+            $("#t_npeni").text($('#nama_pengirim').val());
+            $("#t_apeni").text($('#alamat_pengirim').val() + $('#zip_pengirim').val());
+            $("#t_telppeni").text($('#phone_pengirim').val());
+
+            $("#t_moda").text($('#moda_tran option:selected').text());
+            $("#t_services").text($('#paket option:selected').text());
+            $("#t_tarif").text($('#biaya').val());
+            $("#rute").text($('#asal').val().trim() + '-' + $('#tujuan').val().trim() );
+            
         	var $valid = $('.wizard-card form').valid();
         	if(!$valid) {
         		$validator.focusInvalid();
@@ -93,12 +106,24 @@ $(document).ready(function(){
        },
 
         onTabClick : function(tab, navigation, index){
-
+            
             var $valid = $('.wizard-card form').valid();
 
             if(!$valid){
                 return false;
             } else {
+                $("#t_npen").text($('#nama_penerima').val());
+                $("#t_apen").text($('#alamat_penerima').val() + $('#zip_penerima').val());
+                $("#t_telppen").text($('#phone_penerima').val());
+
+                $("#t_npeni").text($('#nama_pengirim').val());
+                $("#t_apeni").text($('#alamat_pengirim').val() + $('#zip_pengirim').val());
+                $("#t_telppeni").text($('#phone_pengirim').val());
+
+                $("#t_moda").text($('#moda_tran option:selected').text());
+                $("#t_services").text($('#paket option:selected').text());
+                $("#t_tarif").text($('#biaya').val());
+                $("#rute").text($('#asal').val().trim() + '-' + $('#tujuan').val().trim() );
                 return true;
             }
         },

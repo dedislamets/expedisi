@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Barang extends CI_Controller {
+class Trace extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
@@ -11,18 +11,18 @@ class Barang extends CI_Controller {
 	public function index()
 	{		
 		if($this->admin->logged_id())
-        {
-			$data['title'] = 'Master Barang';
-			$data['main'] = 'barang/index';
-			$data['js'] = 'script/barang';
-			$data['modal'] = 'modal/barang';
+    {
+
+			$data['main'] = 'trace/index';
+			$data['js'] = 'script/cabang';
+			$data['modal'] = 'modal/cabang';
 
 			$this->load->view('home',$data,FALSE); 
 
-        }else{
-            redirect("login");
+    }else{
+        redirect("login");
 
-        }				  
+    }				  
 						
 	}
 
@@ -52,16 +52,18 @@ class Barang extends CI_Controller {
         }
 
         $valid_columns = array(
-            0=>'nama_barang',
-            1=>'jenis_barang',
-            2=>'berat_barang',
-            3=>'satuan',
+            0=>'kode_cabang',
+            1=>'nama_cabang',
+            2=>'alamat',
+            3=>'telp_cabang',
+            4=>'kota',
         );
         $valid_sort = array(
-            0=>'nama_barang',
-            1=>'jenis_barang',
-            2=>'berat_barang',
-            3=>'satuan',
+            0=>'kode_cabang',
+            1=>'nama_cabang',
+            2=>'alamat',
+            3=>'telp_cabang',
+            4=>'kota',
         );
         if(!isset($valid_sort[$col]))
         {
@@ -93,20 +95,21 @@ class Barang extends CI_Controller {
             }                 
         }
         $this->db->limit($length,$start);
-        $pengguna = $this->db->get("barang");
+        $pengguna = $this->db->get("tb_cabang");
         $data = array();
         foreach($pengguna->result() as $r)
         {
 
             $data[] = array( 
-                        $r->nama_barang,
-                        $r->jenis_barang,
-                        $r->berat_barang,
-                        $r->satuan,
-                        '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->id_barang.'"  >
+                        $r->kode_cabang,
+                        $r->nama_cabang,
+                        $r->alamat,
+                        $r->telp_cabang,
+                        $r->kota,
+                        '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->kode_cabang.'"  >
                           <i class="icofont icofont-ui-edit"></i>Edit
                         </button>
-                        <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="hapus(this)"  data-id="'.$r->id_barang.'" >
+                        <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="hapus(this)"  data-id="'.$r->kode_cabang.'" >
                           <i class="icofont icofont-trash"></i>Hapus
                         </button> ',
                    );
@@ -142,7 +145,7 @@ class Barang extends CI_Controller {
                 $x++;
             }                 
         }
-      $query = $this->db->get("barang");
+      $query = $this->db->get("tb_cabang");
       $result = $query->row();
       if(isset($result)) return $result->num;
       return 0;
@@ -150,12 +153,12 @@ class Barang extends CI_Controller {
 
     public function edit(){
         $id = $this->input->get('id');
-        $arr_par = array('id_barang' => $id);
-        $data = $this->admin->getmaster('barang',$arr_par);
+        $arr_par = array('kode_cabang' => $id);
+        $data = $this->admin->getmaster('tb_cabang',$arr_par);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
-  public function Save()
+    public function Save()
   {       
       
       $response = [];
@@ -163,22 +166,20 @@ class Barang extends CI_Controller {
       $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
       $recLogin = $this->session->userdata('user_id');
       $data = array(
-          'nama_barang'   => $this->input->post('nama_barang'),
-          'jenis_barang'  => $this->input->post('jenis'),
-          'berat_barang'  => $this->input->post('berat_barang'),
-          'satuan'        => $this->input->post('satuan'),
+          'kode_cabang'   => $this->input->post('kode_cabang'),
+          'nama_barang'  => $this->input->post('nama_barang'),
+          'alamat'  => $this->input->post('alamat'),
+          'telp_cabang'        => $this->input->post('telp_cabang'),
                       
       );
 
       $this->db->trans_begin();
 
-      if($this->input->post('id_barang') != "") {
-          $data['EditBy'] = $recLogin;
-          $data['EditDate'] = date('Y-m-d');
+      if($this->input->post('kode_cabang') != "") {
 
           $this->db->set($data);
-          $this->db->where('id_barang', $this->input->post('id_barang'));
-          $result  =  $this->db->update('barang');  
+          $this->db->where('kode_cabang', $this->input->post('kode_cabang'));
+          $result  =  $this->db->update('tb_cabang');  
 
           if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
@@ -186,10 +187,8 @@ class Barang extends CI_Controller {
               $response['error']= FALSE;
           }
       }else{  
-          $data['CreateBy'] = $recLogin;
-          $data['CreateDate'] = date('Y-m-d');
 
-          $result  = $this->db->insert('barang', $data);
+          $result  = $this->db->insert('tb_cabang', $data);
           
           if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
@@ -198,7 +197,8 @@ class Barang extends CI_Controller {
           }
       }
 
-      $this->db->trans_complete();                      
+      $this->db->trans_complete();
+                          
     $this->output->set_content_type('application/json')->set_output(json_encode($response));
   }
 

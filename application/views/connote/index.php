@@ -3,7 +3,7 @@
         <div class="wizard-container">
 
             <div class="card wizard-card" data-color="red" id="wizardProfile">
-                <form action="" method="">
+                <form id="form-wizard" name="form-wizard" action="" method="">
                     <div class="wizard-header">
                         <h3>
                            <b style="font-weight: bold;">Connote</b> Entry <br>
@@ -29,7 +29,7 @@
                             <h4 class="info-text">Pilih Moda & Tujuan</h4>
                             <input type="hidden" name="resi" id="resi" value="<?= $resi ?>">
                             <div class="col-sm-10 col-sm-offset-1">
-                              <div style="padding: 10px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
+                              <div style="padding: 30px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
                                 <div class="row">
                                   <div class="col-sm-6">
                                     <div class="form-group">
@@ -105,7 +105,7 @@
                           <div class="col-sm-10 col-sm-offset-1">
                               <div class="form-group">
                                 <label>Nama Pengirim <small>(required)</small></label>
-                                <input name="nama_pengirim" type="text" class="form-control" placeholder="">
+                                <input name="nama_pengirim" id="nama_pengirim" type="text" class="form-control" placeholder="">
                               </div>
                               <div class="form-group">
                                 <label>Alamat Pengirim <small>(required)</small></label>
@@ -117,11 +117,11 @@
                               </div>
                               <div class="form-group">
                                   <label>Zip Code <small>(required)</small></label>
-                                  <input name="zip_pengirim" type="text" class="form-control" placeholder="">
+                                  <input name="zip_pengirim" id="zip_pengirim" type="text" class="form-control" placeholder="">
                               </div>
                               <div class="form-group">
                                 <label>No Handphone <small>(required)</small></label>
-                                <input name="phone_pengirim" type="text" class="form-control" placeholder="">
+                                <input name="phone_pengirim" id="phone_pengirim" type="text" class="form-control" placeholder="">
                               </div>
                           </div>
                       </div>
@@ -154,11 +154,11 @@
                           <div class="col-sm-10 col-sm-offset-1">
                               <div class="form-group">
                                 <label>Nama Penerima <small>(required)</small></label>
-                                <input name="nama_penerima" type="text" class="form-control" placeholder="">
+                                <input name="nama_penerima" id="nama_penerima" type="text" class="form-control" placeholder="">
                               </div>
                               <div class="form-group">
                                 <label>Alamat Penerima <small>(required)</small></label>
-                                <textarea name="alamat_penerima" rows="4" class="form-control" placeholder="" style="height: 100px;"> </textarea>
+                                <textarea name="alamat_penerima" id="alamat_penerima" rows="4" class="form-control" placeholder="" style="height: 100px;"> </textarea>
                               </div>
                               <div class="form-group">
                                 <label>Destinasi </label>
@@ -166,11 +166,11 @@
                               </div>
                               <div class="form-group">
                                   <label>Zip Code <small>(required)</small></label>
-                                  <input name="zip_penerima" type="text" class="form-control" placeholder="">
+                                  <input name="zip_penerima" id="zip_penerima" type="text" class="form-control" placeholder="">
                               </div>
                               <div class="form-group">
                                 <label>No Handphone <small>(required)</small></label>
-                                <input name="phone_penerima" type="text" class="form-control" placeholder="">
+                                <input name="phone_penerima" id="phone_penerima" type="text" class="form-control" placeholder="">
                               </div>
                           </div>
                       </div>
@@ -183,13 +183,15 @@
                                 </div>
                                 <div class="col-xl-9">
                                   <h3 style="text-align: right;">Input Data Barang</h3>
+                                  <input type="hidden" name="total_qty" name="total_qty" value="10">
+                                  <input type="hidden" name="total_berat_actual" name="total_berat_actual" value="200">
                                 </div>
                               </div>
                            </div>
                           <div class="card-block">
                             <div class="dt-responsive table-responsive">
                               
-                              <table id="ViewTableBrg" class="table table-striped" style="margin-top: 0 !important;">
+                              <table id="ViewTableBrg" class="table table-striped" style="margin-top: 0 !important;width: 100% !important;">
                                   <thead class="text-primary">
                                       <tr>
                                           <th>
@@ -198,13 +200,13 @@
                                           <th>
                                             Qty
                                           </th>
-                                          <th class="text-center">
+                                          <th>
                                             Satuan
                                           </th>
-                                          <th class="text-center">
-                                            Berat
+                                          <th>
+                                            Berat Actual
                                           </th>
-                                          <th class="text-left">
+                                          <th>
                                             Aksi
                                           </th>
                                       </tr>
@@ -223,19 +225,19 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Asal</label>
                                     <div class="col-sm-10">
-                                        <input name="origin3" type="text" class="form-control" disabled="">
+                                        <input name="origin3" type="text" class="form-control asal" readonly="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Tujuan</label>
                                     <div class="col-sm-10">
-                                        <input name="destinasi3" type="text" class="form-control" disabled="">
+                                        <input name="destinasi3" type="text" class="form-control tujuan" readonly="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Moda</label>
                                     <div class="col-sm-10">
-                                        <input name="moda3" type="text" class="form-control" disabled="">
+                                        <input name="moda3" type="text" class="form-control moda" readonly="">
                                     </div>
                                 </div>
                               
@@ -250,29 +252,21 @@
                                    <div class="form-group row">
                                       <label class="col-sm-2 col-form-label">Paket</label>
                                       <div class="col-sm-10">
-                                        <select name="country" class="form-control">
-                                            <option value="Afghanistan"> Afghanistan </option>
-                                            <option value="Albania"> Albania </option>
-                                            <option value="Algeria"> Algeria </option>
-                                            <option value="American Samoa"> American Samoa </option>
-                                            <option value="Andorra"> Andorra </option>
-                                            <option value="Angola"> Angola </option>
-                                            <option value="Anguilla"> Anguilla </option>
-                                            <option value="Antarctica"> Antarctica </option>
-                                            <option value="...">...</option>
+                                        <select name="paket" id="paket" class="form-control">
+                                            
                                         </select>
                                       </div>
                                     </div>
                                     <div class="form-group row">
                                       <label class="col-sm-2 col-form-label">Estimasi</label>
                                       <div class="col-sm-10">
-                                          <input name="estimasi" type="text" class="form-control" disabled="">
+                                          <input name="estimasi" id="estimasi" type="text" class="form-control" disabled="">
                                       </div>
                                     </div>
                                     <div class="form-group row">
                                       <label class="col-sm-2 col-form-label">Biaya</label>
                                       <div class="col-sm-10">
-                                          <input name="biaya" type="text" class="form-control" disabled="">
+                                          <input name="biaya" id="biaya"  type="text" class="form-control" disabled="">
                                       </div>
                                     </div>
                               </div>
@@ -309,9 +303,9 @@
                                             <div>Pengirim:</div>
                                           </div>
                                           <div class="col-sm-9">
-                                            <div>Dedi Slamet</div>
-                                            <div>Perum Graha Prima Blok ID NO 111. Bekasi</div>
-                                            <div>Telp. 08656787878</div>
+                                            <div id="t_npeni">Dedi Slamet</div>
+                                            <div id="t_apeni">Perum Graha Prima Blok ID NO 111. Bekasi</div>
+                                            <div id="t_telppeni">Telp. 08656787878</div>
                                           </div>
                                         </div>
                                         <div class="row" style="margin-bottom: 10px;">
@@ -319,9 +313,9 @@
                                             <div>Penerima:</div>
                                           </div>
                                           <div class="col-sm-9">
-                                            <div>Dedi Slamet</div>
-                                            <div>Perum Graha Prima Blok ID NO 111. Bekasi</div>
-                                            <div>Telp. 08656787878</div>
+                                            <div id="t_npen">Dedi Slamet</div>
+                                            <div id="t_apen">Perum Graha Prima Blok ID NO 111. Bekasi</div>
+                                            <div id="t_telppen">Telp. 08656787878</div>
                                           </div>
                                         </div>
                                         <div class="row">
@@ -329,13 +323,13 @@
                                             <div>Moda :</div>
                                           </div>
                                           <div class="col-sm-3">
-                                            <div>Darat</div>
+                                            <div id="t_moda">Darat</div>
                                           </div>
                                           <div class="col-sm-3">
                                             <div>Service :</div>
                                           </div>
                                           <div class="col-sm-3">
-                                            <div>Reguler</div>
+                                            <div id="t_services">Reguler</div>
                                           </div>
                                         </div>
                             
@@ -343,8 +337,14 @@
                                           <div class="col-sm-3">
                                             <div>Payment :</div>
                                           </div>
-                                          <div class="col-sm-9">
-                                            <div>Tunai</div>
+                                          <div class="col-sm-3">
+                                            <div id="metode">Tunai</div>
+                                          </div>
+                                          <div class="col-sm-3">
+                                            <div>Tarif :</div>
+                                          </div>
+                                          <div class="col-sm-3">
+                                            <div id="t_services">100.000</div>
                                           </div>
                                         </div>
                                         <div class="row">
@@ -360,7 +360,7 @@
                               </div>
                               <div class="col-sm-6">
                                 <div class="row">
-                                  <h2 style="text-align: center;width: 100%;">JAKARTA - LAMPUNG</h2>
+                                  <h2 style="text-align: center;width: 100%;" id="rute">JAKARTA - LAMPUNG</h2>
                                 </div>
                                 <div class="row" style="margin-bottom: 10px;">
                                   <div class="col-sm-10 col-sm-offset-1">
@@ -393,10 +393,10 @@
                                 </div>
                                 <div class="row">
                                   <div class="col-sm-3">
-                                    <div>Tarif</div>
+                                    <div>Total Tarif</div>
                                   </div>
                                   <div class="col-sm-9">
-                                    <div>100.000,-</div>
+                                    <div id="t_tarif">2.000.000,-</div>
                                   </div>
                                 </div>
                               </div>
@@ -407,6 +407,7 @@
                       </div>
                   </div>
                   <div class="wizard-footer height-wizard">
+                              <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
                       <div class="pull-right">
                           <input type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm' name='next' value='Next' />
                           <input type='button' class='btn btn-finish btn-fill btn-warning btn-wd btn-sm' name='finish' value='Finish' />
