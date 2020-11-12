@@ -2,7 +2,7 @@
 <html lang="en">
   
 <head>
-    <title>Adminty - Premium Admin Template by Colorlib </title>
+    <title>Sistem Tracking</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,6 +16,8 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\icon\icofont\css\icofont.css">
     <!-- Required Fremwork -->
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\bootstrap\css\bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\jquery-ui\css\jquery-ui.min.css">
+
     <!-- feather Awesome -->
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\icon\feather\css\feather.css">
 
@@ -29,7 +31,9 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\css\style.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\css\jquery.mCustomScrollbar.css">
     <link href="assets/css/gsdk-bootstrap-wizard.css" rel="stylesheet" />
+
     <style type="text/css">
+      .ui-autocomplete { z-index:2147483647; }
       .pcoded .pcoded-header[header-theme="theme1"] {
           /*background: #d62b2b;*/
           background:#243452;
@@ -168,7 +172,7 @@
                                     <i class="feather icon-maximize full-screen"></i>
                                 </a>
                             </li> -->
-                            <li><h3 style="padding-top: 10px;padding-left: 10px;">Sistem Pengiriman Barang - Wilayah Pusat</h3></li>
+                            <li><h3 style="padding-top: 10px;padding-left: 10px;">GDPST - Wilayah Pusat</h3></li>
                         </ul>
                         <ul class="nav-right">
                             <li class="header-notification">

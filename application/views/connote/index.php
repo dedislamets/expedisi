@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="col-xl-10 col-sm-offset-1">
         <div class="wizard-container">
@@ -14,59 +13,60 @@
 
                     <div class="wizard-navigation">
                         <ul>
-                            <li style="border-right: 1px solid #fff;"><a href="#about" data-toggle="tab">Moda</a></li>
+                            <li style="border-right: 1px solid #fff;"><a href="#moda" data-toggle="tab">Moda</a></li>
                             <li style="border-right: 1px solid #fff;"><a href="#pengirim" data-toggle="tab">Pengirim</a></li>
                             <li style="border-right: 1px solid #fff;"><a href="#penerima" data-toggle="tab">Penerima</a></li>
-                            <li style="border-right: 1px solid #fff;"><a href="#account" data-toggle="tab">Barang</a></li>
-                            <li style="border-right: 1px solid #fff;"><a href="#address" data-toggle="tab">Layanan</a></li>
+                            <li style="border-right: 1px solid #fff;"><a href="#barang" data-toggle="tab">Barang</a></li>
+                            <li style="border-right: 1px solid #fff;"><a href="#layanan" data-toggle="tab">Layanan</a></li>
                             <li><a href="#preview" data-toggle="tab">Preview</a></li>
                         </ul>
 
                     </div>
 
                   <div class="tab-content">
-                      <div class="tab-pane" id="about">
+                      <div class="tab-pane" id="moda">
                         <div class="row">
                             <h4 class="info-text">Pilih Moda & Tujuan</h4>
+                            <input type="hidden" name="resi" id="resi" value="<?= $resi ?>">
                             <div class="col-sm-10 col-sm-offset-1">
                               <div style="padding: 10px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
                                 <div class="row">
                                   <div class="col-sm-6">
                                     <div class="form-group">
-                                      <label>Destinasi </label>
-                                      <select class="js-example-basic-single col-sm-12">
-                                          <option value="WY">Peter</option>
-                                          <option value="WY">Hanry Die</option>
-                                          <option value="WY">John Doe</option>
-                                          <option value="AL">Alabama</option>
-                                          <option value="WY">Wyoming</option>
-                                          
+                                      <label>Asal </label>
+                                      <select name="asal" id="asal" class="js-example-basic-single col-sm-12">
+                                        <?php 
+                                        foreach($kota_asal as $row)
+                                        { 
+                                          echo '<option value="'.$row->kota_asal.'">'.$row->kota_asal.'</option>';
+                                        }
+                                        ?>
                                       </select>
                                     </div>
                                   </div>
                                   <div class="col-sm-6">
                                     <div class="form-group">
                                       <label>Tujuan </label>
-                                      <select class="js-example-basic-single col-sm-12">
-                                          <option value="WY">Peter</option>
-                                          <option value="WY">Hanry Die</option>
-                                          <option value="WY">John Doe</option>
-                                          <option value="AL">Alabama</option>
-                                          <option value="WY">Wyoming</option>
-                                          
+                                      <select name="tujuan" id="tujuan" class="js-example-basic-single col-sm-12">
+                                          <?php 
+                                          foreach($kota_tujuan as $row)
+                                          { 
+                                            echo '<option value="'.$row->kota_tujuan.'">'.$row->kota_tujuan.'</option>';
+                                          }
+                                          ?>
                                       </select>
                                     </div>
                                   </div>
                                   <div class="col-sm-12">
                                     <div class="form-group">
                                       <label>Moda </label>
-                                      <select class="js-example-basic-single col-sm-12">
-                                          <option value="WY">Peter</option>
-                                          <option value="WY">Hanry Die</option>
-                                          <option value="WY">John Doe</option>
-                                          <option value="AL">Alabama</option>
-                                          <option value="WY">Wyoming</option>
-                                          
+                                      <select name="moda_tran" id="moda_tran" class="js-example-basic-single col-sm-12">
+                                        <?php 
+                                          foreach($moda as $row)
+                                          { 
+                                            echo '<option value="'.$row->kode_moda.'">'.$row->nama_moda.'</option>';
+                                          }
+                                          ?>
                                       </select>
                                     </div>
                                   </div>
@@ -82,19 +82,19 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Asal</label>
                                     <div class="col-sm-10">
-                                        <input name="origin1" type="text" class="form-control" disabled="">
+                                        <input name="origin1" type="text" class="form-control asal" readonly="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Tujuan</label>
                                     <div class="col-sm-10">
-                                        <input name="destinasi1" type="text" class="form-control" disabled="">
+                                        <input name="destinasi1" type="text" class="form-control tujuan" readonly="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Moda</label>
                                     <div class="col-sm-10">
-                                        <input name="moda1" type="text" class="form-control" disabled="">
+                                        <input name="moda1" type="text" class="form-control moda" readonly="">
                                     </div>
                                 </div>
                               
@@ -109,18 +109,11 @@
                               </div>
                               <div class="form-group">
                                 <label>Alamat Pengirim <small>(required)</small></label>
-                                <textarea name="alamat_pengirim" rows="4" class="form-control" placeholder="" style="height: 100px;"> </textarea>
+                                <textarea name="alamat_pengirim" id="alamat_pengirim" rows="4" class="form-control required" placeholder="" style="height: 100px;"> </textarea>
                               </div>
                               <div class="form-group">
                                 <label>Origin </label>
-                                <select class="js-example-basic-single col-sm-12" disabled="">
-                                    <option value="WY">Peter</option>
-                                    <option value="WY">Hanry Die</option>
-                                    <option value="WY">John Doe</option>
-                                    <option value="AL">Alabama</option>
-                                    <option value="WY">Wyoming</option>
-                                    
-                                </select>
+                                <input name="origin3" type="text" class="form-control asal" readonly="">
                               </div>
                               <div class="form-group">
                                   <label>Zip Code <small>(required)</small></label>
@@ -138,19 +131,19 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Asal</label>
                                     <div class="col-sm-10">
-                                        <input name="origin2" type="text" class="form-control" disabled="">
+                                        <input name="origin2" type="text" class="form-control asal" readonly="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Tujuan</label>
                                     <div class="col-sm-10">
-                                        <input name="destinasi2" type="text" class="form-control" disabled="">
+                                        <input name="destinasi2" type="text" class="form-control tujuan" readonly="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Moda</label>
                                     <div class="col-sm-10">
-                                        <input name="moda2" type="text" class="form-control" disabled="">
+                                        <input name="moda2" type="text" class="form-control moda" readonly="">
                                     </div>
                                 </div>
                               
@@ -169,14 +162,7 @@
                               </div>
                               <div class="form-group">
                                 <label>Destinasi </label>
-                                <select class="js-example-basic-single col-sm-12" disabled="">
-                                    <option value="WY">Peter</option>
-                                    <option value="WY">Hanry Die</option>
-                                    <option value="WY">John Doe</option>
-                                    <option value="AL">Alabama</option>
-                                    <option value="WY">Wyoming</option>
-                                    
-                                </select>
+                                <input name="origin3" type="text" class="form-control tujuan" readonly="">
                               </div>
                               <div class="form-group">
                                   <label>Zip Code <small>(required)</small></label>
@@ -188,47 +174,49 @@
                               </div>
                           </div>
                       </div>
-                      <div class="tab-pane" id="account">
-                          <h4 class="info-text"> What are you doing? (checkboxes) </h4>
-                          <div class="row">
-
-                              <div class="col-sm-10 col-sm-offset-1">
-                                <div class="row">
-                                      <div class="col-sm-4">
-                                          <div class="choice" data-toggle="wizard-checkbox">
-                                              <input type="checkbox" name="jobb" value="Design">
-                                              <div class="icon">
-                                                  <i class="fa fa-pencil"></i>
-                                              </div>
-                                              <h6>Design</h6>
-                                          </div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                          <div class="choice" data-toggle="wizard-checkbox">
-                                              <input type="checkbox" name="jobb" value="Code">
-                                              <div class="icon">
-                                                  <i class="fa fa-terminal"></i>
-                                              </div>
-                                              <h6>Code</h6>
-                                          </div>
-
-                                      </div>
-                                      <div class="col-sm-4">
-                                          <div class="choice" data-toggle="wizard-checkbox">
-                                              <input type="checkbox" name="jobb" value="Develop">
-                                              <div class="icon">
-                                                  <i class="fa fa-laptop"></i>
-                                              </div>
-                                              <h6>Develop</h6>
-                                          </div>
-
-                                      </div>
+                      <div class="tab-pane" id="barang">
+                          <!-- <h4 class="info-text" style="font-weight: bold"> Input Data Barang yang akan di kirim</h4> -->
+                           <div class="card-header" style="background-color: #404E67;color:#fff">
+                              <div class="row">
+                                <div class="col-xl-3">
+                                  <button class="btn btn-grd-success" id="btnAdd"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                                </div>
+                                <div class="col-xl-9">
+                                  <h3 style="text-align: right;">Input Data Barang</h3>
                                 </div>
                               </div>
-
-                          </div>
+                           </div>
+                          <div class="card-block">
+                            <div class="dt-responsive table-responsive">
+                              
+                              <table id="ViewTableBrg" class="table table-striped" style="margin-top: 0 !important;">
+                                  <thead class="text-primary">
+                                      <tr>
+                                          <th>
+                                            Nama Barang
+                                          </th>
+                                          <th>
+                                            Qty
+                                          </th>
+                                          <th class="text-center">
+                                            Satuan
+                                          </th>
+                                          <th class="text-center">
+                                            Berat
+                                          </th>
+                                          <th class="text-left">
+                                            Aksi
+                                          </th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                    
+                                  </tbody>
+                              </table>
+                            </div>
+                        </div>
                       </div>
-                      <div class="tab-pane" id="address">
+                      <div class="tab-pane" id="layanan">
                           <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">
                               <div style="padding: 10px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
@@ -308,6 +296,14 @@
                                           </div>
                                         </div>
                                         <hr style="width: 100%;border-top: 2px dotted rgba(0,0,0,.3);">
+                                        <div class="row">
+                                          <div class="col-sm-3">
+                                            <div>Tanggal</div>
+                                          </div>
+                                          <div class="col-sm-9">
+                                            <div>11 Desember 2020</div>
+                                          </div>
+                                        </div>
                                         <div class="row" style="margin-bottom: 10px;">
                                           <div class="col-sm-3">
                                             <div>Pengirim:</div>
@@ -318,7 +314,7 @@
                                             <div>Telp. 08656787878</div>
                                           </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" style="margin-bottom: 10px;">
                                           <div class="col-sm-3">
                                             <div>Penerima:</div>
                                           </div>
@@ -328,14 +324,83 @@
                                             <div>Telp. 08656787878</div>
                                           </div>
                                         </div>
+                                        <div class="row">
+                                          <div class="col-sm-3">
+                                            <div>Moda :</div>
+                                          </div>
+                                          <div class="col-sm-3">
+                                            <div>Darat</div>
+                                          </div>
+                                          <div class="col-sm-3">
+                                            <div>Service :</div>
+                                          </div>
+                                          <div class="col-sm-3">
+                                            <div>Reguler</div>
+                                          </div>
+                                        </div>
+                            
+                                        <div class="row">
+                                          <div class="col-sm-3">
+                                            <div>Payment :</div>
+                                          </div>
+                                          <div class="col-sm-9">
+                                            <div>Tunai</div>
+                                          </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col-sm-3">
+                                            <div>Kasir :</div>
+                                          </div>
+                                          <div class="col-sm-9">
+                                            <div>Dedi Slamet</div>
+                                          </div>
+                                        </div>
                                     </div>
                                 </div>
                               </div>
                               <div class="col-sm-6">
                                 <div class="row">
-                                  <div class="col-sm-12"><img src="<? echo $barcode; ?>" class="img-fluid" style="width: 100%"></div>
+                                  <h2 style="text-align: center;width: 100%;">JAKARTA - LAMPUNG</h2>
+                                </div>
+                                <div class="row" style="margin-bottom: 10px;">
+                                  <div class="col-sm-10 col-sm-offset-1">
+                                    <img src="<? echo $barcode; ?>" class="img-fluid" style="width: 100%;"></div>
+                                </div>
+                                <div class="row" style="font-weight: bold;">
+                                  <div class="col-sm-7">Barang</div>
+                                  <div class="col-sm-2">Qty</div>
+                                  <div class="col-sm-3">Satuan</div>
+                                </div>
+                                <hr style="width: 100%;border-top: 2px dotted rgba(0,0,0,.3);">
+                                <div class="row">
+                                  <div class="col-sm-7">Tiang Telp</div>
+                                  <div class="col-sm-2">10</div>
+                                  <div class="col-sm-3">Pcs</div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-7">Kabel Udara</div>
+                                  <div class="col-sm-2">10</div>
+                                  <div class="col-sm-3">Mtr</div>
+                                </div>
+                                <hr style="width: 100%;border-top: 2px dotted rgba(0,0,0,.3);">
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <div>Berat</div>
+                                  </div>
+                                  <div class="col-sm-9">
+                                    <div>300 kg</div>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <div>Tarif</div>
+                                  </div>
+                                  <div class="col-sm-9">
+                                    <div>100.000,-</div>
+                                  </div>
                                 </div>
                               </div>
+                              <p style="width: 100%;padding-top: 15px;text-align: center;font-size: 12px;">Untuk mengetahui status kiriman anda silahkan kunjungin website kami di www.aaaaa.co.id</p>
                             </div>
                           </div>
                         </div>
@@ -359,4 +424,7 @@
         </div> <!-- wizard container -->
     </div>
 </div>
+<?php
+  $this->load->view($modal); 
+?>
 

@@ -26,19 +26,31 @@ $(document).ready(function(){
     // Code for the Validator
     var $validator = $('.wizard-card form').validate({
 		  rules: {
-		    nama_penerima: {
+		    nama_pengirim: {
 		      required: true,
-		      minlength: 3
 		    },
-		    alamat: {
+		    alamat_pengirim: {
 		      required: true,
-		      minlength: 3
 		    },
-		    zip: {
+		    zip_pengirim: {
 		      required: true,
 		      minlength: 5,
 		    },
-            phone: {
+            phone_pengirim: {
+              required: true,
+              minlength: 12,
+            },
+            nama_penerima: {
+              required: true,
+            },
+            alamat_ppenerima: {
+              required: true,
+            },
+            zip_penerima: {
+              required: true,
+              minlength: 5,
+            },
+            phone_penerima: {
               required: true,
               minlength: 12,
             }

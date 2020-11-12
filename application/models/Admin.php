@@ -89,107 +89,11 @@ class Admin extends CI_Model
             return $response;
         }
     }
-
-    function getParentOrg()
-    {        
-        $query = $this->db->query('SELECT Recnum,OrgName,OrgId FROM Organization order by Recnum ASC');
-        return $query->result();        
-    }
-    function getClassParentOrg()
-    {        
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM Class order by Recnum ASC');
-        return $query->result();        
-    }
-    function getLocationParentOrg()
-    {        
-        $query = $this->db->query('SELECT Recnum,LocationName FROM Location order by Recnum ASC');
-        return $query->result();        
-    }
-    function getcity()
-    {        
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM City order by Recnum ASC');
-        return $query->result();        
-    }
-    function getagama()
-    {        
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM Religion order by Recnum ASC');
-        return $query->result();        
-    }
-    function getcountry()
-    {        
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM Country order by Recnum ASC');
-        return $query->result();        
-    }
-    function getprov()
-    {        
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM Province order by Recnum ASC');
-        return $query->result();        
-    }
-    function getrelation(){
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM FamilyRelationship order by Recnum ASC');
-        return $query->result();    
-    }
-    function getfamstatus(){
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM FamilyStatus order by Recnum ASC');
-        return $query->result();    
-    }
-    function getfammarital(){
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM MaritalStatus order by Recnum ASC');
-        return $query->result();    
-    }
-    function getfamtax(){
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM TaxMethod order by Recnum ASC');
-        return $query->result();    
-    }
-    function getmastereducation(){
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM Education order by Recnum ASC');
-        return $query->result();    
-    }
-    function getmastermajoring(){
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM Majoring order by Recnum ASC');
-        return $query->result();    
-    }
-    function getmastertraining(){
-        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM TrnTheme order by Recnum ASC');
-        return $query->result();    
-    }
-    function getmasterkaryawan(){
-        $query = $this->db->query('SELECT Recnum,EmployeeName as IsDesc FROM Employee order by Recnum ASC');
-        return $query->result();    
-    }
-    function getmasterpunishment(){
-        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM PunishmentType order by Recnum ASC');
-        return $query->result();    
-    }
-    function getmasterinventaris(){
-        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM Inventory order by Recnum ASC');
-        return $query->result();    
-    }
-    function getmasterinventarisstatus(){
-        $query = $this->db->query('SELECT Recnum,IsName as IsDesc FROM StatusInventory order by Recnum ASC');
-        return $query->result();    
-    }
-
-    function getmasterclass(){
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM Class order by Recnum ASC');
-        return $query->result();    
-    }
-    function getmasterworking(){
-        $query = $this->db->query('SELECT Recnum,IsName FROM WorkingStatus order by Recnum ASC');
-        return $query->result();    
-    }
-    function getperiode(){
-        $query = $this->db->query('SELECT Recnum,IsDesc FROM Period where RecnumTypePeriod=1');
-        return $query->result();    
-    }
-
-    function getfindemployee(){
-        $query = $this->db->query('SELECT Id,Name FROM Vf_FindEmployeeActiveNow order by Id ASC');
-        return $query->result();    
-    }
-    function getLastStatusPerformance($id){
-        $query = $this->db->query('select * from empperformance where RecnumEmployee='. $id );
-        return $query->result();    
+    function autocomplete($table, $orderby,$field_key,$keyword){
+        $this->db->like($field_key, $keyword , 'both');
+        $this->db->order_by($orderby, 'ASC');
+        $this->db->limit(10);
+        return $this->db->get($table)->result();
     }
 
     function getmaster($tabel,$where='',$order=''){
