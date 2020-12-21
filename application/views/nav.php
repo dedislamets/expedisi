@@ -11,15 +11,15 @@
             </li>
          
             <li class="">
-                <a href="<?= base_url() ?>connote">
+                <a href="<?= base_url() ?>spk">
                     <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
-                    <span class="pcoded-mtext">Input Connote</span>
+                    <span class="pcoded-mtext">DO</span>
                 </a>
             </li>
             <li class="">
-                <a href="<?= base_url() ?>packinglist">
+                <a href="<?= base_url() ?>cargo">
                     <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
-                    <span class="pcoded-mtext">Packing List</span>
+                    <span class="pcoded-mtext">Routing Slip</span>
                 </a>  
             </li>
             <li class="">
@@ -44,6 +44,11 @@
                     <span class="pcoded-mtext">Master</span>
                 </a>
                 <ul class="pcoded-submenu">
+                    <li class=" ">
+                        <a href="<?= base_url() ?>customer">
+                            <span class="pcoded-mtext">Vendor</span>
+                        </a>
+                    </li>
                     <li class=" ">
                         <a href="<?= base_url() ?>barang">
                             <span class="pcoded-mtext">Barang</span>
@@ -101,9 +106,9 @@
         <ul class="pcoded-item pcoded-left-item">
          
             <li class=" ">
-                <a href="foo-table.htm">
+                <a href="<?= base_url() ?>login/keluar">
                     <span class="pcoded-micon"><i class="feather icon-hash"></i></span>
-                    <span class="pcoded-mtext">FooTable</span>
+                    <span class="pcoded-mtext">Logout</span>
                 </a>
             </li>
             <li class="">
@@ -115,5 +120,5 @@
         </ul>
         
     </div>
-    <div class="sidebar-background" style="background-image: url(assets/images/sidebar-1.jpg);"></div>
+    <!-- <div class="sidebar-background" style="background-image: url(assets/images/sidebar-1.jpg);"></div> -->
 </nav>

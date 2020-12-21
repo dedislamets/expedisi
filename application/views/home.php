@@ -172,7 +172,7 @@
                                     <i class="feather icon-maximize full-screen"></i>
                                 </a>
                             </li> -->
-                            <li><h3 style="padding-top: 10px;padding-left: 10px;">GDGJKT - Wilayah HO JKT</h3></li>
+                            <li><h3 style="padding-top: 10px;padding-left: 10px;">E-Tracking Sistem Management - Pusat</h3></li>
                         </ul>
                         <ul class="nav-right">
                             <li class="header-notification">
@@ -383,8 +383,9 @@
     <script src="<?= base_url(); ?>assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
     <script src="<?= base_url(); ?>assets\pages\data-table\extensions\buttons\js\extension-btns-custom.js"></script>
     <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\select2\js\select2.full.min.js"></script>
-    <!--  More information about jquery.validate here: http://jqueryvalidation.org/  -->
+
     <script src="<?= base_url(); ?>assets/js/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <!-- <script type="text/javascript" src="<?= base_url(); ?>assets\pages\advance-elements\select2-custom.js"></script> -->
     <? $this->load->view($js); ?> 
 </body>

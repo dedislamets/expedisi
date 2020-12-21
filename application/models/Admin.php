@@ -96,15 +96,22 @@ class Admin extends CI_Model
         return $this->db->get($table)->result();
     }
 
-    function getmaster($tabel,$where='',$order=''){
+    function getmaster($tabel,$where='',$order='',$groupby='',$select=''){
+        if($select !=""){
+            $this->db->select($select);
+        }
         $this->db->from($tabel);
         if($where !=""){
             $this->db->where($where);
+        }
+        if($groupby !=""){
+            $this->db->group_by($groupby);
         }
         if($order !=""){
             $this->db->order_by($order);
         }
         $query = $this->db->get();
+        // echo $this->db->last_query();exit();
         return $query->result();   
     }
     function get_Function_id($func,$id, $order='')

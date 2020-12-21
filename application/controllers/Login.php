@@ -37,6 +37,7 @@ class Login extends CI_Controller {
                     //get data dari FORM
                     $username = $this->input->post("username", TRUE);
                     $password = $this->Acak($this->input->post('password', TRUE), "goldenginger");
+                    // echo $password;exit();
 
                     //checking data via model
                     $checking = $this->admin->check_login('system_users', array('email' => $username), array('password' => $password));

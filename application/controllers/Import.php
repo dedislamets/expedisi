@@ -40,7 +40,9 @@ class Import extends CI_Controller {
     $config['allowed_types'] = 'xls|xlsx|csv'; //tipe file yang diperbolehkan
     $config['max_size'] = 10000; // maksimal sizze
 
+
     $this->load->library('upload'); //meload librari upload
+    $this->upload->overwrite = true;
     $this->upload->initialize($config);
       
     if(! $this->upload->do_upload('file') ){
@@ -87,17 +89,18 @@ class Import extends CI_Controller {
 
     foreach ($reader->getSheetIterator() as $sheet) {             
         foreach ($sheet->getRowIterator() as $rowData) {
-          $data = array(
-              "province"=> $rowData[0],
-              "kota"=> $rowData[1] . $rowData[2],
-              "kecamatan"=> $rowData[3],
-              "kelurahan"=> $rowData[4],
-              "kodepos"=> $rowData[5],
-          );
+          if($i>0){
+            $data = array(
+                "province"=> $rowData[0],
+                "kota"=> $rowData[1] . " " . $rowData[2],
+                "kecamatan"=> $rowData[3],
+                "kelurahan"=> $rowData[4],
+                "kodepos"=> $rowData[5],
+            );
 
-          $insert = $this->db->insert("master_city",$data);
-          print_r($rowData); 
-       
+            $insert = $this->db->insert("master_city",$data);
+            print_r($rowData); 
+          }
           ++$i;
         }
     }

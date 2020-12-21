@@ -83,6 +83,7 @@ class Connote extends CI_Controller {
 	       	$data = array(
 	          'conn_code'   => $this->input->post('resi'),
 	          'conn_date'   => date('Y-m-d'),
+	          'id_cabang'	=> 'GDGJKT',
 	          'input_by'	=> $recLogin
 	      	);
 	      	$result  = $this->db->insert('connote', $data);

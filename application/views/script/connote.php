@@ -125,6 +125,11 @@
 	});
 	$("#moda_tran").change(function(e, params){              
 		getLayanan();
+		if($("#moda_tran").val()=='CR'){
+			$("#tableTransit").css("display","block");
+		}else{
+			$("#tableTransit").css("display","none");
+		}
 	});
 
 	function getLayanan(){

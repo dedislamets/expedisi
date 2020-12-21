@@ -70,10 +70,88 @@
                                       </select>
                                     </div>
                                   </div>
+                                  <!-- <div class="col-sm-12">
+                                    <table id="tableTransit" class="table table-striped" style="margin-top: 0 !important;width: 100% !important;display: none; ">
+                                        <thead class="text-primary" style="background-color: #2c0707">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>
+                                                  Transit
+                                                </th>
+                                                <th style="width: 15%">
+                                                  Aksi
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td>1</td>
+                                            <td><input name="transit1" type="text" class="form-control"></td>
+                                            <td><button type="button" rel="tooltip" class="btn btn-danger btn-sm ">
+                                                <i class="icofont icofont-trash"></i>Hapus
+                                              </button>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td>2</td>
+                                            <td><input name="transit2" type="text" class="form-control"></td>
+                                            <td>
+                                              <button type="button" rel="tooltip" class="btn btn-danger btn-sm ">
+                                                <i class="icofont icofont-trash"></i>Hapus
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                    </table>
+                                  </div> -->
                                 </div>
                               </div>
                             </div>
                           
+                        </div>
+                        <div class="row" id="tableTransit" style="display: none">
+                            <h4 class="info-text">Transit</h4>
+                            <input type="hidden" name="resi" id="resi" value="<?= $resi ?>">
+                            <div class="col-sm-10 col-sm-offset-1">
+                              <div style="padding: 30px;background-color: #404E67;color:#fff;width: 100%;border-radius: 10px;margin-bottom: 35px;">
+                                <div class="row">
+                                  <div class="col-sm-12">
+                                    <table  class="table table-striped" style="margin-top: 0 !important;width: 100% !important; ">
+                                        <thead class="text-primary" style="background-color: #2c0707">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>
+                                                  Multidrop
+                                                </th>
+                                                <th style="width: 15%">
+                                                  Aksi
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td>1</td>
+                                            <td><input name="transit1" type="text" class="form-control"></td>
+                                            <td><button type="button" rel="tooltip" class="btn btn-danger btn-sm ">
+                                                <i class="icofont icofont-trash"></i>Hapus
+                                              </button>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td>2</td>
+                                            <td><input name="transit2" type="text" class="form-control"></td>
+                                            <td>
+                                              <button type="button" rel="tooltip" class="btn btn-danger btn-sm ">
+                                                <i class="icofont icofont-trash"></i>Hapus
+                                              </button>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                         </div>
                       </div>
                       <div class="tab-pane" id="pengirim">
