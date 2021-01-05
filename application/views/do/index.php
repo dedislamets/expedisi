@@ -75,6 +75,14 @@
     padding: 10px;
     text-align: center;
   }
+  .input-group-addon {
+    background-color: #01a9ac !important;
+  }
+  .second-modal { z-index: 1070 }
+
+  div.modal-backdrop + div.modal-backdrop {
+     z-index: 1060; 
+  }
 </style>
 
 <div class="page-body">
@@ -89,6 +97,7 @@
                   <span>Halaman ini menampilkan data connote yang tersimpan</span>
               </div>
               <div class="col-xl-2">
+                <input type="hidden" name="mode" id="mode" value="<?= $mode ?>">
                 <!-- <div class="status-trans">INPUT</div> -->
                   <!-- <a href="<?= base_url() ?>connote" class="btn btn-grd-success" ><i class="icofont icofont-ui-add"></i> Tambah baru</a> -->
               </div>
@@ -100,19 +109,19 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NAMA PROJECT</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control form-bg-inverse" id="project" name="project" placeholder="Masukkan nama project">
+                <input type="text" class="form-control form-bg-inverse" id="project" name="project" placeholder="Masukkan nama project" value="<?= empty($data) ? "" : $data['nama_project'] ?>">
               </div>
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO SPK/DO/DN</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control form-bg-inverse" id="nomor_spk" name="nomor_spk" placeholder="Masukkan nomor SPK">
+                <input type="text" class="form-control form-bg-inverse" id="nomor_spk" name="nomor_spk" placeholder="Masukkan nomor SPK" value="<?= empty($data) ? "" : $data['spk_no'] ?>">
               </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label" style="font-weight: bold;">TANGGAL DO</label>
+                <label class="col-sm-2 col-form-label" style="font-weight: bold;">TANGGAL DO </label>
                 <div class="col-sm-10">
-                  <input class="form-control" type="date" />
+                  <input class="form-control form-bg-inverse" type="date" id="tgl_do" name="tgl_do" value="<?= empty($data) ? "" : $data['tgl_spk']  ?>" />
                 </div>
               </div>
             
@@ -135,12 +144,12 @@
                                 
                                 <div class="form-group">
                                   <label>Nama Pengirim <small>(required)</small></label>
-                                  <input name="nama_pengirim" readonly id="nama_pengirim" v-model:value="nama_pengirim" type="text" class="form-control" placeholder="">
-                                  <input type="hidden" name="id_pengirim" id="id_pengirim">
+                                  <input name="nama_pengirim" readonly id="nama_pengirim" type="text" class="form-control" placeholder="">
+                                  <input type="hidden" name="id_pengirim" id="id_pengirim" value="<?= empty($data) ? "" : $data['id_pengirim']?>">
                                 </div>
                                 <div class="form-group">
                                   <label>Alamat Pengirim <small>(required)</small></label>
-                                  <textarea name="alamat_pengirim" id="alamat_pengirim" v-model:value="alamat_pengirim" rows="4" class="form-control required" placeholder="" style="height: 100px;" > </textarea>
+                                  <textarea name="alamat_pengirim" id="alamat_pengirim" v-model:value="alamat_pengirim" rows="4" class="form-control required" placeholder="" style="height: 100px;" ><?= empty($data) ? "" : $data['alamat_pengirim']?></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Kota/Kab <small></small></label>
@@ -149,7 +158,11 @@
                                       <?php 
                                       foreach($kota_asal as $row)
                                       { 
-                                        echo '<option value="'.$row->kota.'">'.$row->kota.'</option>';
+                                        if( empty($data) ? "" : $data['kota_pengirim'] === $row->kota){
+                                          echo '<option value="'.$row->kota.'" selected >'.$row->kota.'</option>';
+                                        }else{
+                                          echo '<option value="'.$row->kota.'">'.$row->kota.'</option>';
+                                        }
                                       }
                                       ?>
                                     </select>
@@ -158,21 +171,41 @@
                                   <label>Kecamatan <small>(required)</small></label>
                                   <select name="kecamatan_pengirim" id="kecamatan_pengirim" class="js-example-basic-single col-sm-12">
                                     <option value="">Pilih Kecamatan</option>
+                                    <?php 
+                                      foreach($kec_pengirim as $row)
+                                      { 
+                                        if( empty($data) ? "" : $data['kec_pengirim'] === $row->kecamatan){
+                                          echo '<option value="'.$row->kecamatan.'" selected >'.$row->kecamatan.'</option>';
+                                        }else{
+                                          echo '<option value="'.$row->kecamatan.'">'.$row->kecamatan.'</option>';
+                                        }
+                                      }
+                                      ?>
                                   </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Zip Code <small></small></label>
                                     <select name="zip_pengirim" id="zip_pengirim" class="js-example-basic-single col-sm-12">
                                       <option  value="">Pilih Kodepos</option>
+                                      <?php 
+                                        foreach($zip_pengirim as $row)
+                                        { 
+                                          if( empty($data) ? "" : $data['zip_pengirim'] === $row->kodepos){
+                                            echo '<option value="'.$row->kodepos.'" selected >'.$row->kodepos.'</option>';
+                                          }else{
+                                            echo '<option value="'.$row->kodepos.'">'.$row->kodepos.'</option>';
+                                          }
+                                        }
+                                      ?>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                   <label>No Handphone <small>(required)</small></label>
-                                  <input name="phone_pengirim" id="phone_pengirim" v-model:value="hp_pengirim" type="text" class="form-control" placeholder="">
+                                  <input name="phone_pengirim" id="phone_pengirim" v-model:value="hp_pengirim" type="text" class="form-control" value="<?= empty($data) ? "" : $data['hp_pengirim']?>">
                                 </div>
                                 <div class="form-group">
                                   <label>Attention </label>
-                                  <input name="attn_pengirim" id="attn_pengirim" type="text" class="form-control" placeholder="">
+                                  <input name="attn_pengirim" id="attn_pengirim" type="text" class="form-control" value="<?= empty($data) ? "" : $data['attn_pengirim']?>">
                                 </div>
                               </div>
                             </div>
@@ -191,11 +224,12 @@
                               <div class="col-sm-10 col-sm-offset-1">
                                   <div class="form-group">
                                     <label>Nama Penerima <small>(required)</small></label>
-                                    <input name="nama_penerima" id="nama_penerima" v-model:value="nama_penerima" type="text" class="form-control" placeholder="" readonly>
+                                    <input name="nama_penerima" id="nama_penerima" type="text" class="form-control" placeholder="" readonly>
+                                    <input type="hidden" name="id_penerima" id="id_penerima" value="<?= empty($data) ? "" : $data['id_penerima']?>">
                                   </div>
                                   <div class="form-group">
                                     <label>Alamat Penerima <small>(required)</small></label>
-                                    <textarea name="alamat_penerima" id="alamat_penerima" v-model:value="alamat_penerima" rows="4" class="form-control" placeholder="" style="height: 100px;"> </textarea>
+                                    <textarea name="alamat_penerima" id="alamat_penerima"  rows="4" class="form-control" style="height: 100px;"><?= empty($data) ? "" : $data['alamat_penerima']?></textarea>
                                   </div>
                                   <div class="form-group">
                                     <label>Kota/Kab <small></small></label>
@@ -204,7 +238,11 @@
                                       <?php 
                                       foreach($kota_asal as $row)
                                       { 
-                                        echo '<option value="'.$row->kota.'">'.$row->kota.'</option>';
+                                        if( empty($data) ? "" : $data['kota_penerima'] === $row->kota){
+                                          echo '<option value="'.$row->kota.'" selected >'.$row->kota.'</option>';
+                                        }else{
+                                          echo '<option value="'.$row->kota.'">'.$row->kota.'</option>';
+                                        }
                                       }
                                       ?>
                                     </select>
@@ -213,21 +251,41 @@
                                     <label>Kecamatan <small>(required)</small></label>
                                     <select name="kecamatan_penerima" id="kecamatan_penerima" class="js-example-basic-single col-sm-12">
                                       <option value="">Pilih Kecamatan</option>
+                                      <?php 
+                                      foreach($kec_penerima as $row)
+                                      { 
+                                        if( empty($data) ? "" : $data['kec_penerima'] === $row->kecamatan){
+                                          echo '<option value="'.$row->kecamatan.'" selected >'.$row->kecamatan.'</option>';
+                                        }else{
+                                          echo '<option value="'.$row->kecamatan.'">'.$row->kecamatan.'</option>';
+                                        }
+                                      }
+                                      ?>
                                     </select>
                                   </div>
                                   <div class="form-group">
                                       <label>Zip Code <small></small></label>
                                       <select name="zip_penerima" id="zip_penerima" class="js-example-basic-single col-sm-12">
-                                        <option  value="">Pilih Kodepos</option>
+                                        <option value="">Pilih Kodepos</option>
+                                        <?php 
+                                        foreach($zip_penerima as $row)
+                                        { 
+                                          if( empty($data) ? "" : $data['zip_penerima'] === $row->kodepos){
+                                            echo '<option value="'.$row->kodepos.'" selected >'.$row->kodepos.'</option>';
+                                          }else{
+                                            echo '<option value="'.$row->kodepos.'">'.$row->kodepos.'</option>';
+                                          }
+                                        }
+                                        ?>
                                       </select>
                                   </div>
                                   <div class="form-group">
                                     <label>No Handphone <small>(required)</small></label>
-                                    <input name="phone_penerima" id="phone_penerima" v-model:value="hp_penerima" type="text" class="form-control" placeholder="">
+                                    <input name="phone_penerima" id="phone_penerima" type="text" class="form-control" value="<?= empty($data) ? "" : $data['hp_penerima']?>" >
                                   </div>
                                   <div class="form-group">
                                     <label>Attention </label>
-                                    <input name="attn_penerima" id="attn_penerima" type="text" class="form-control" placeholder="">
+                                    <input name="attn_penerima" id="attn_penerima" type="text" class="form-control" value="<?= empty($data) ? "" : $data['attn_penerima']?>">
                                   </div>
                               </div>
                             </div>
@@ -244,29 +302,58 @@
               </h4>
               <div class="col-sm-12">
                 <div class="dt-responsive table-responsive table-brg">
-                  
+                  <input type="hidden" id="total-row" name="total-row" value="<?= $totalrow ?>">
                   <table id="ViewTableBrg" class="table table-striped" style="margin-top: 0 !important;width: 100% !important;">
                       <thead class="text-primary">
                           <tr>
                               <th>
+                                No
+                              </th>
+                              <th>
+                                Aksi
+                              </th>
+                              <th>
                                 Nama Barang
                               </th>
                               <th>
-                                Qty
+                                Berat
                               </th>
                               <th>
                                 Satuan
                               </th>
                               <th>
-                                Berat Actual
+                                Qty
                               </th>
-                              <th>
-                                Aksi
-                              </th>
+                              
+                              
                           </tr>
                       </thead>
-                      <tbody>
-                        
+                      <tbody id="tbody-table">
+                          <?php 
+                          $urut=1;
+                          foreach($data_detail as $row): ?>
+                            <tr>
+                              <td style="width:1%"><?=$urut?></td>
+                              <td>
+                                <input type="text" id="kode<?=$urut?>" name="kode<?=$urut?>" class="form-control hidden" value="<?=$row['id_barang']?>">
+                                <input type="text" id="id_detail<?=$urut?>" name="id_detail<?=$urut?>" class="form-control hidden" value="<?=$row['id']?>">
+                                <a href="#" class="btn hor-grd btn-grd-success" onclick="cari_dealer(this)">
+                                  <i class="icofont icofont-search"></i> Cari
+                                </a>
+                                <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a>
+                              </td>
+                              <td><?=$row['nama_barang']?></td>
+                              <td><?=$row['berat']?></td>
+                              <td>
+                                <input type="text" name="satuan<?=$urut?>" id="satuan<?=$urut?>" class="form-control" value="<?=$row['satuan']?>"/>
+                              </td>
+                              <td>
+                                <input type="number" id="qty<?=$urut?>" name="qty<?=$urut?>" placeholder="Qty" class="form-control" style="width:100%" value="<?=$row['qty']?>">
+                              </td>
+                            </tr>
+                            <?php $urut++?>
+                          <?php endforeach; ?>
+
                       </tbody>
                   </table>
                 </div>
@@ -275,6 +362,7 @@
 
             <div class="row">
               <div class="col-sm-10 col-sm-offset-1" style="margin-top: 10px;">
+                <input type="hidden" id="csrf_token_sub" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
                 <button class="btn btn-block btn-grd-success" id="btn-finish">Simpan</button>
               </div>
             </div>

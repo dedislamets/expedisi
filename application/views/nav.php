@@ -10,11 +10,25 @@
                 
             </li>
          
-            <li class="">
-                <a href="<?= base_url() ?>spk">
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
                     <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
                     <span class="pcoded-mtext">DO</span>
                 </a>
+                <ul class="pcoded-submenu">
+
+                    <li class="">
+                        <a href="<?= base_url() ?>spk">
+                            <span class="pcoded-mtext">Input SPK/DO</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="<?= base_url() ?>listspk">
+                            <span class="pcoded-mtext">List SPK/DO</span>
+                        </a>
+                    </li>
+                    
+                </ul>
             </li>
             <li class="">
                 <a href="<?= base_url() ?>cargo">

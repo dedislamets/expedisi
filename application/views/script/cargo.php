@@ -34,21 +34,17 @@
 			}
 		);
 	})
-	var datatable = $('#ViewTableBrg').DataTable({
-		
+	$('#ViewTableSPK').DataTable({
 		ajax: {		            
-            "url": "Connote/dataTableDetail",
-            "type": "GET",
-            "data":{'resi': $("#resi").val()}
+            "url": "<?= base_url(); ?>listspk/dataTableSPK",
+            "type": "GET"
         },
-  //       processing	: true,
-		// serverSide	: true,			
-		"bPaginate": false,
-		"bFilter": false,	
+        processing	: true,
+		serverSide	: true,			
+		"bPaginate": true,	
 		"autoWidth": true,
-		"bInfo": false,
 		columnDefs:[
-			{ "width": "60px", "targets": [4] },
+			{ "width": "100px", "targets": [4,3,2] },
 			
 		]
 
@@ -61,7 +57,12 @@
     	$("#moda_tran").val($(this).attr('id'));
     });
 
-
+    $('#btnModa').on('click', function (event) {
+    	$('#modalModa').modal({backdrop: 'static', keyboard: false}) ;
+    });
+    $('#btnBrowse').on('click', function (event) {
+    	$('#modalBrowse').modal({backdrop: 'static', keyboard: false}) ;
+    });
     $('#btnAdd').on('click', function (event) {
     	event.preventDefault();
 		$("#lbl-title").text('Tambah');
@@ -187,6 +188,46 @@
 				datatable.ajax.reload();
 			})
 		}
+	}
+
+	function pilih(val){
+		$.get('<?= base_url()?>spk/get', { id: $(val).data('id') }, function(data){ 
+			// if($("#lbl-title-cust").text() == 'Pengirim'){
+				$("#nomor_spk").val(data['data']['spk_no']);
+				$("#id_spk").val(data['data']['id']);
+				$("#project").val(data['data']['nama_project']);
+				$("#tgl_do").val(data['data']['tgl_spk']);
+
+				$("#attn_pengirim").text(data['data']['attn_pengirim']);
+				$("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
+				$("#alamat_pengirim").text(data['data']['alamat_pengirim']);
+				$("#kota_pengirim").text(data['data']['kota_pengirim']);
+				$("#kec_pengirim").text(data['data']['kec_pengirim']);
+				$("#zip_pengirim").text(data['data']['zip_pengirim']);
+				$("#hp_pengirim").text(data['data']['hp_pengirim']);
+
+				$("#attn_penerima").text(data['data']['attn_penerima']);
+				$("#nama_penerima").text(data['data']['penerima']['cust_name']);
+				$("#alamat_penerima").text(data['data']['alamat_penerima']);
+				$("#kota_penerima").text(data['data']['kota_penerima']);
+				$("#kec_penerima").text(data['data']['kec_penerima']);
+				$("#zip_penerima").text(data['data']['zip_penerima']);
+				$("#hp_penerima").text(data['data']['hp_penerima']);
+
+				$("#ViewTableBrg tbody").empty();
+				const tbody = $("#ViewTableBrg tbody");
+				$.each(data['data_detail'], function(_, obj) {
+				    tr = $("<tr />");
+				    $.each(obj, function(_, text) {
+				      tr.append("<td>" + text + "</td>")
+				    });
+				    tr.appendTo(tbody);
+				});
+
+				$('#modalBrowse').modal('hide');
+			// }
+			
+		})
 	}
 	
 </script>

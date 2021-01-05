@@ -32,7 +32,14 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\css\jquery.mCustomScrollbar.css">
     <link href="assets/css/gsdk-bootstrap-wizard.css" rel="stylesheet" />
 
+
     <style type="text/css">
+        .mb-0{
+            margin-bottom: 0;
+        }
+        .hidden {
+            display: none;
+        }
       .ui-autocomplete { z-index:2147483647; }
       .pcoded .pcoded-header[header-theme="theme1"] {
           /*background: #d62b2b;*/
@@ -383,10 +390,35 @@
     <script src="<?= base_url(); ?>assets\bower_components\datatables.net-responsive-bs4\js\responsive.bootstrap4.min.js"></script>
     <script src="<?= base_url(); ?>assets\pages\data-table\extensions\buttons\js\extension-btns-custom.js"></script>
     <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\select2\js\select2.full.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="<?= base_url(); ?>assets/js/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <!-- <script type="text/javascript" src="<?= base_url(); ?>assets\pages\advance-elements\select2-custom.js"></script> -->
+
+    <script type="text/javascript">
+        function alertOK(href="") {
+           Swal.fire({ title: "Berhasil disimpan..!",
+               text: "",
+               timer: 2000,
+               icon: 'success',
+               showConfirmButton: false,
+               willClose: () => {
+                 if(href != "")
+                    href;
+              }
+            });
+        }
+
+        function alertError(textError = "'Silahkan cek kembali data anda!'") {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: textError,
+              showConfirmButton: false,
+              timer: 2000,
+            })
+        }
+    </script>
     <? $this->load->view($js); ?> 
 </body>
 

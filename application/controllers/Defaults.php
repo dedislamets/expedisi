@@ -38,5 +38,14 @@ class Defaults extends CI_Controller {
 	    }
 	}
 
+	public function getbyid($table,$id)
+  	{
+	    $arr_par = array(
+	      $id => $this->input->get('id')
+	    );
+
+	    $data = $this->admin->get_array($table,$arr_par);
+	    $this->output->set_content_type('application/json')->set_output(json_encode($data));
+  	}
 	
 }

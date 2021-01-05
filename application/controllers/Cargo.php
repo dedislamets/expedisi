@@ -15,7 +15,7 @@ class Cargo extends CI_Controller {
 			$data['title'] = 'Entry Connote';
 			$data['main'] = 'cargo/index';
 			$data['js'] = 'script/cargo';
-			$data['modal'] = 'modal/connote';	
+			$data['modal'] = 'modal/cargo';	
 			$data['kota_asal'] = $this->db->query('select distinct kecamatan from master_city')->result();
 			$data['kota_tujuan'] = $data['kota_asal'];
 			$data['moda'] = $this->admin->getmaster('tb_moda');
