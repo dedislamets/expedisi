@@ -85,7 +85,7 @@
         <div class="card-header" style="background-color: #404E67;color:#fff">
           <div class="row">
               <div class="col-xl-10">
-                  <h4>Routing Slip Transaction</h4>
+                  <h4><?= $title ?></h4>
                   <span>Halaman ini menampilkan data connote yang tersimpan</span>
               </div>
               <div class="col-xl-2">
@@ -95,11 +95,13 @@
           </div>
         </div>
         <div class="card-block">
-          <form id="form-wizard" name="form-wizard" action="" method="" style="padding-top: 20px;">
+          <form id="form-routing" name="form-wizard" action="" method="" style="padding-top: 20px;">
+            <input type="hidden" name="mode" id="mode" value="<?= $mode ?>">
+
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO ROUTING</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control form-bg-inverse" id="nomor_rs" name="nomor_rs" placeholder="" required>
+                <input type="text" class="form-control form-bg-inverse" id="nomor_rs" name="nomor_rs" value="<?= empty($data) ? "" : $data['no_routing'] ?>" required>
               </div>
             </div>
             
@@ -112,7 +114,7 @@
                     <span class="">Browse..</span>
                   </span>
                 </div>
-                <input type="hidden" class="form-control" id="id_spk" name="id_spk">
+                <input type="hidden" class="form-control" id="id_spk" name="id_spk" value="<?= empty($data) ? "" : $data['id_spk'] ?>">
               </div>
             </div>
             <div class="form-group row">
@@ -152,7 +154,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-6" style="background: linear-gradient(to right, #546D77, #3F5159);;color: #fff;">
+                        <div class="col-sm-6" style="background: linear-gradient(to right, #546D77, #3F5159);color: #fff;">
                           <div class="card-block">
                               <div class="row b-b-default m-b-20 p-b-5">
                                 <div class="col-sm-6  f-w-600">Penerima</div>
@@ -204,7 +206,9 @@
                               </tr>
                           </thead>
                           <tbody>
-                            
+                              <tr>
+                                <td colspan="4" class="text-center">Tidak ada data tersedia</td>
+                              </tr>
                           </tbody>
                       </table>
                     </div>
@@ -214,23 +218,28 @@
             </div>
 
             <div class="m-t-20" id="moda">
-              <input type="hidden" name="resi" id="resi" value="<?= $resi ?>">
+              <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Moda Transportasi
+              </h4>
               <div class="card z-depth-0">
                 <div class="card-header" style="padding: 10px 20px;">
                   <h4 style="font-size: 2.2rem;font-weight: bold;"><button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse ">Pilih Moda Transportasi</button></h4>
+                  <input type="hidden" name="moda_tran" id="moda_tran" value="<?= empty($data) ? "" : $data['id_moda'] ?>">
+                  <input type="hidden" name="jenis_moda" id="jenis_moda">
+
                 </div>
-                <div class="card-block panels-wells">
+                <div class="card-block panels-wells hidden" id="p-moda">
                   <div class="row">
                     <div class="col">
                       <div class="well well-lg">
-                        <div class="row" id="darat-kg" >
+                        <div class="row" >
                           <div class="col-sm-2">
-                            <img src="<?= base_url(); ?>assets/images/kg.png" class="img-fluid" style="background-color: #fff;height: 110px;width: 130px;">
+                            <img src="<?= base_url(); ?>assets/images/kg.png" id="img-moda" class="img-fluid" style="background-color: #fff;height: 110px;width: 130px;">
                           </div>
                           <div class="col-sm-10">
                             <div class="row">
                               <div class="col-sm-7">
-                              <div style="font-size: 26px;font-weight: bold;">KG</div>
+                                <input type="hidden" name="text-moda" id="text-moda" >
+                              <div style="font-size: 26px;font-weight: bold;" id="t_moda">KG</div>
                                 <p style="margin-bottom: 0px;">Rp 5.000</p>
                                 <p style="margin-bottom: 0px;">Min 20Kg</p>
                               </div>
@@ -251,151 +260,127 @@
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Detail Pengiriman
               </h4>
               <div class="card z-depth-0">
-                <div class="card-header" style="padding: 10px 20px;">
-                  
-                </div>
                 <div class="card-block panels-wells">
                   <div class="row">
                     <div class="col">
                       <div class="well well-lg">
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">AWB NO</label>
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" id="awb" name="awb" placeholder="">
+                        <div class="card dp hidden" id="dp-laut">
+                          <div class="card-block">
+
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR PELAYARAN</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="pelayaran_no" name="pelayaran_no" placeholder="">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">TGL PELAYARAN</label>
+                              <div class="col-sm-10">
+                                <input class="form-control" type="date" id="tgl_pelayaran" name="tgl_pelayaran" />
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETA</label>
+                              <div class="col-sm-4">
+                                <input type="time" class="form-control" id="eta_laut" name="eta_laut" placeholder="">
+                              </div>
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETD</label>
+                              <div class="col-sm-4">
+                                <input type="time" class="form-control" id="etd_laut" name="etd_laut" placeholder="">
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">ORIGIN</label>
-                          <div class="col-sm-4">
-                            <input type="text" class="form-control" id="origin" name="origin" placeholder="">
-                          </div>
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">DESTINATION</label>
-                          <div class="col-sm-4">
-                            <input type="text" class="form-control" id="dest" name="dest" placeholder="">
+                        
+
+                        <div class="card dp hidden" id="dp-udara">
+                          <div class="card-block">
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">AWB NO</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="awb" name="awb" value="<?= empty($data) ? "" : $data['awb'] ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ORIGIN</label>
+                              <div class="col-sm-4">
+                                <input type="text" class="form-control" id="origin" name="origin" value="<?= empty($data) ? "" : $data['origin'] ?>">
+                              </div>
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">DESTINATION</label>
+                              <div class="col-sm-4">
+                                <input type="text" class="form-control" id="dest" name="dest" value="<?= empty($data) ? "" : $data['destination'] ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">FLIGHT NO</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="flight_no" name="flight_no" value="<?= empty($data) ? "" : $data['flight_no'] ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">FLIGHT DATE</label>
+                              <div class="col-sm-10">
+                                <input class="form-control" type="date" id="flight_date" name="flight_date" value="<?= empty($data) ? "" : $data['flight_date'] ?>" />
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETA</label>
+                              <div class="col-sm-4">
+                                <input type="time" class="form-control" id="eta" name="eta" value="<?= empty($data) ? "" : $data['eta'] ?>">
+                              </div>
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETD</label>
+                              <div class="col-sm-4">
+                                <input type="time" class="form-control" id="etd" name="etd" value="<?= empty($data) ? "" : $data['etd'] ?>">
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR PELAYARAN</label>
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" id="pelayaran_no" name="pelayaran_no" placeholder="">
+                        <div class="card">
+                          <div class="card-block">
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">AGENT/VENDOR</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="agent" name="agent" value="<?= empty($data) ? "" : $data['agent'] ?>">
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">FLIGHT NO</label>
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" id="flight_no" name="flight_no" placeholder="">
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">FLIGHT DATE</label>
-                          <div class="col-sm-10">
-                            <input class="form-control" type="date" />
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">AGENT/VENDOR</label>
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" id="agent" name="agent" placeholder="">
+                        <div class="card">
+                          <div class="card-block">
+                            
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP DATE</label>
+                              <div class="col-sm-10">
+                                <input class="form-control" type="date" id="pickup_date" name="pickup_date" value="<?= empty($data) ? "" : $data['pickup_date'] ?>" />
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP ADDRESS</label>
+                              <div class="col-sm-10">
+                                <textarea rows="5" cols="5" class="form-control" id="pickup_address" name="pickup_address" placeholder="Masukkan alamat pickup" style="height: auto;"><?= empty($data) ? "" : $data['pickup_address'] ?></textarea>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR KENDARAAN</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="nomor_plat" name="nomor_plat" value="<?= empty($data) ? "" : $data['no_kendaraan'] ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">DRIVER / SUPIR</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="driver" name="driver" value="<?= empty($data) ? "" : $data['driver'] ?>">
+                              </div>
+                            </div>
                           </div>
                         </div>
 
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP DATE</label>
-                          <div class="col-sm-10">
-                            <input class="form-control" type="date" />
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP ADDRESS</label>
-                          <div class="col-sm-10">
-                            <textarea rows="5" cols="5" class="form-control" placeholder="Masukkan alamat pickup" style="height: auto;"></textarea>
-                          </div>
-                        </div>
-                        <hr>
-                        <h4>Riwayat Pengiriman
-                          <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse" style="float: right;">Update Status</button>
+                        <div class="row">
+                          <div class="col-sm-10 col-sm-offset-1" style="margin-top: 10px;">
+                            <input type="hidden" name="id_rs" id="id_rs" value="<?= empty($data) ? "" : $data['id'] ?>">
+                            <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
 
-                        </h4>
-                        <div class="card card-border-danger">
-                          <div class="card-block">
-                            <div class="row">
-                              <div class="col-sm-12">
-                                <div class="well m-b-0 p-10">
-                                  <div class="row">
-                                    <div class="col-sm-6">
-                                      <p style="font-style: italic">Barang sudah dipickup</p>
-                                      <p class="m-b-0">Updated by: Noname</p>
-                                    </div>
-                                    <div class="col-sm-4">
-                                      <div class="lokasi">Lokasi terakhir update yang diambil dari kordinat google maps</div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                      <div style="font-size: 1.5rem;padding: 10px;text-align: right;font-weight: bold;">PICKUP</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              
-                            </div>
-                          </div>
-                          <div class="card-footer" style="background-color: #ed3535;">
-                            <div class="task-list-table" style="color: #fff">
-                              <p class="task-due"><strong> Time Updated : </strong><strong class="label label-primary">23 hours</strong></p>
-                            </div>
-                            <div class="task-board m-0">
-                              <a href="invoice.html" class="btn btn-info btn-mini b-none"><i class="icofont icofont-eye-alt m-0"></i></a>
-                              <div class="dropdown-secondary dropdown">
-                                <button class="btn btn-info btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
-                                <div class="dropdown-menu" aria-labelledby="dropdown14" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                                  <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Print Invoice</a>
-                                  <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Download invoice</a>
-                                  <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Edit Invoice</a>
-                                  <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Remove Invoice</a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card card-border-danger">
-                          <div class="card-block">
-                            <div class="row">
-                              <div class="col-sm-12">
-                                <div class="well m-b-0 p-10">
-                                  <div class="row">
-                                    <div class="col-sm-6">
-                                      <p style="font-style: italic">Tiket Pesawat sudah di booking</p>
-                                      <p class="m-b-0">Updated by: Noname</p>
-                                    </div>
-                                    <div class="col-sm-4">
-                                      <div class="lokasi">Lokasi terakhir update yang diambil dari kordinat google maps</div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                      <div style="font-size: 1.5rem;padding: 10px;text-align: right;font-weight: bold;">BOOKING</div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              
-                            </div>
-                          </div>
-                          <div class="card-footer" style="background-color: #ed3535;">
-                            <div class="task-list-table" style="color: #fff">
-                              <p class="task-due"><strong> Time Updated : </strong><strong class="label label-primary">23 hours</strong></p>
-                            </div>
-                            <div class="task-board m-0">
-                              <a href="invoice.html" class="btn btn-info btn-mini b-none"><i class="icofont icofont-eye-alt m-0"></i></a>
-                              <div class="dropdown-secondary dropdown">
-                                <button class="btn btn-info btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
-                                <div class="dropdown-menu" aria-labelledby="dropdown14" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                                  <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Print Invoice</a>
-                                  <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Download invoice</a>
-                                  <div class="dropdown-divider"></div>
-                                  <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Edit Invoice</a>
-                                  <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Remove Invoice</a>
-                                </div>
-                              </div>
-                            </div>
+                            <button class="btn btn-block btn-grd-success" id="btn-finish">Simpan</button>
                           </div>
                         </div>
                       </div>
@@ -404,6 +389,95 @@
                 </div>
               </div> 
               
+            </div>
+            <div>
+              <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Riwayat Pengiriman
+                <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse" style="float: right;">Update Status</button>
+              </h4>
+              <div class="card z-depth-0">
+                <div class="card card-border-danger">
+                  <div class="card-block">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="well m-b-0 p-10">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <p style="font-style: italic">Barang sudah dipickup</p>
+                              <p class="m-b-0">Updated by: Noname</p>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="lokasi">Lokasi terakhir update yang diambil dari kordinat google maps</div>
+                            </div>
+                            <div class="col-sm-2">
+                              <div style="font-size: 1.5rem;padding: 10px;text-align: right;font-weight: bold;">PICKUP</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="card-footer" style="background-color: #ed3535;">
+                    <div class="task-list-table" style="color: #fff">
+                      <p class="task-due"><strong> Time Updated : </strong><strong class="label label-primary">23 hours</strong></p>
+                    </div>
+                    <div class="task-board m-0">
+                      <a href="invoice.html" class="btn btn-info btn-mini b-none"><i class="icofont icofont-eye-alt m-0"></i></a>
+                      <div class="dropdown-secondary dropdown">
+                        <button class="btn btn-info btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
+                        <div class="dropdown-menu" aria-labelledby="dropdown14" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                          <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Print Invoice</a>
+                          <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Download invoice</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Edit Invoice</a>
+                          <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Remove Invoice</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card card-border-danger">
+                  <div class="card-block">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="well m-b-0 p-10">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <p style="font-style: italic">Tiket Pesawat sudah di booking</p>
+                              <p class="m-b-0">Updated by: Noname</p>
+                            </div>
+                            <div class="col-sm-4">
+                              <div class="lokasi">Lokasi terakhir update yang diambil dari kordinat google maps</div>
+                            </div>
+                            <div class="col-sm-2">
+                              <div style="font-size: 1.5rem;padding: 10px;text-align: right;font-weight: bold;">BOOKING</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  <div class="card-footer" style="background-color: #ed3535;">
+                    <div class="task-list-table" style="color: #fff">
+                      <p class="task-due"><strong> Time Updated : </strong><strong class="label label-primary">23 hours</strong></p>
+                    </div>
+                    <div class="task-board m-0">
+                      <a href="invoice.html" class="btn btn-info btn-mini b-none"><i class="icofont icofont-eye-alt m-0"></i></a>
+                      <div class="dropdown-secondary dropdown">
+                        <button class="btn btn-info btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown14" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
+                        <div class="dropdown-menu" aria-labelledby="dropdown14" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                          <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-alarm"></i> Print Invoice</a>
+                          <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-attachment"></i> Download invoice</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-spinner-alt-5"></i> Edit Invoice</a>
+                          <a class="dropdown-item waves-light waves-effect" href="#!"><i class="icofont icofont-ui-edit"></i> Remove Invoice</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </form>
 
@@ -554,12 +628,7 @@
         </div>
       </div>
     </div> -->
-    <div class="row">
-      <div class="col-sm-10 col-sm-offset-1" style="margin-top: 10px;">
-        <button class="btn btn-block btn-grd-success" id="btn-finish">Proses & Cetak</button>
-      </div>
-    </div>
-    <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
+    
   </form>
 </div>
 <?php

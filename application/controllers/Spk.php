@@ -253,7 +253,10 @@ class Spk extends CI_Controller {
       $data['kota_asal'] = $this->db->query('select distinct kota from master_city')->result();
       $data['kota_tujuan'] = $data['kota_asal'];
       $data['data'] = $this->admin->get_array('tb_spk',array( 'id' => $id));
-      $data['data_detail'] = $this->admin->get_result_array('tb_spk_detail',array( 'spk_no' => $data['data']['spk_no']));
+      $data['data_detail'] = $this->admin->get_result_array('tb_spk_detail',
+                                                    array( 'spk_no' => $data['data']['spk_no'],
+                                                          'id_spk' => $id
+                                                        ));
       $data['kec_pengirim'] = $this->db->query("select distinct kecamatan from master_city where kota='". $data['data']['kota_pengirim'] ."'")->result();
       $data['zip_pengirim'] = $this->db->query("select distinct kodepos from master_city where kota='". $data['data']['kota_pengirim'] ."' and kecamatan='". $data['data']['kec_pengirim'] ."'")->result();
       $data['kec_penerima'] = $this->db->query("select distinct kecamatan from master_city where kota='". $data['data']['kota_penerima'] ."'")->result();

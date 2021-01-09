@@ -26,6 +26,7 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\datatables.net-responsive-bs4\css\responsive.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\pages\data-table\extensions\buttons\css\buttons.dataTables.min.css">
     <link rel="stylesheet" href="<?= base_url(); ?>assets\bower_components\select2\css\select2.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/pages/social-timeline/timeline.css">
 
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\css\style.css">
@@ -392,6 +393,7 @@
     <script type="text/javascript" src="<?= base_url(); ?>assets\bower_components\select2\js\select2.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="<?= base_url(); ?>assets/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/pages/social-timeline/social.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <!-- <script type="text/javascript" src="<?= base_url(); ?>assets\pages\advance-elements\select2-custom.js"></script> -->
 

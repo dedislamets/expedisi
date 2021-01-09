@@ -30,18 +30,32 @@
                     
                 </ul>
             </li>
-            <li class="">
-                <a href="<?= base_url() ?>cargo">
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
                     <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
                     <span class="pcoded-mtext">Routing Slip</span>
-                </a>  
+                </a>
+                <ul class="pcoded-submenu">
+
+                    <li class="">
+                        <a href="<?= base_url() ?>cargo">
+                            <span class="pcoded-mtext">Input Routing</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="<?= base_url() ?>listrs">
+                            <span class="pcoded-mtext">List Routing</span>
+                        </a>
+                    </li>
+                    
+                </ul>
             </li>
-            <li class="">
+            <!-- <li class="">
                 <a href="javascript:void(0)">
                     <span class="pcoded-micon"><i class="feather icon-credit-card"></i></span>
                     <span class="pcoded-mtext">Tarif</span>
                 </a>  
-            </li>
+            </li> -->
             <li class="">
                 <a href="<?= base_url() ?>trace">
                     <span class="pcoded-micon"><i class="feather icon-navigation-2"></i></span>
@@ -116,21 +130,21 @@
                 </ul>
             </li>
         </ul>
-        <div class="pcoded-navigatio-lavel">Report</div>
+        <div class="pcoded-navigatio-lavel">Others</div>
         <ul class="pcoded-item pcoded-left-item">
          
             <li class=" ">
                 <a href="<?= base_url() ?>login/keluar">
-                    <span class="pcoded-micon"><i class="feather icon-hash"></i></span>
+                    <span class="pcoded-micon"><i class="icofont icofont-logout"></i></span>
                     <span class="pcoded-mtext">Logout</span>
                 </a>
             </li>
-            <li class="">
+            <!-- <li class="">
                 <a href="editable-table.htm">
                     <span class="pcoded-micon"><i class="feather icon-edit"></i></span>
                     <span class="pcoded-mtext">Editable Table</span>
                 </a>
-            </li>
+            </li> -->
         </ul>
         
     </div>

@@ -217,7 +217,10 @@ class Listspk extends CI_Controller {
       $this->db->from("tb_spk");
       $this->db->join('master_customer A', 'tb_spk.id_penerima = A.id');
       $this->db->join('master_customer B', 'tb_spk.id_pengirim = B.id');
+      $this->db->join('tb_routingslip R', 'R.id_spk = tb_spk.id','left');
+      $this->db->where('R.id_spk', NULL);
       $pengguna = $this->db->get();
+
       $data = array();
       foreach($pengguna->result() as $r)
       {
@@ -230,12 +233,12 @@ class Listspk extends CI_Controller {
                       $r->kota_pengirim,
                       $r->penerima,
                       $r->kota_penerima,
-                      '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="pilih(this)"  data-id="'.$r->id.'"  >
+                      '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="pilih('.$r->id.')"  data-id="'.$r->id.'"  >
                         <i class="icofont icofont-ui-edit"></i>Pilih
                       </button>'
                  );
       }
-      $total_pengguna = $this->totalPengguna($search, $valid_columns);
+      $total_pengguna = $this->totalPenggunaSpk($search, $valid_columns);
 
       $output = array(
           "draw" => $draw,
@@ -245,6 +248,35 @@ class Listspk extends CI_Controller {
       );
       echo json_encode($output);
       exit();
+  }
+
+  public function totalPenggunaSpk($search, $valid_columns)
+  {
+    $query = $this->db->select("COUNT(*) as num");
+    if(!empty($search))
+      {
+          $x=0;
+          foreach($valid_columns as $sterm)
+          {
+              if($x==0)
+              {
+                  $this->db->like($sterm,$search);
+              }
+              else
+              {
+                  $this->db->or_like($sterm,$search);
+              }
+              $x++;
+          }                 
+      }
+    $this->db->from("tb_spk");
+    $this->db->join('master_customer A', 'tb_spk.id_penerima = A.id');
+    $this->db->join('master_customer B', 'tb_spk.id_pengirim = B.id');
+    $this->db->join('tb_routingslip R', 'R.id_spk = tb_spk.id','left');
+    $query = $this->db->where('R.id_spk', NULL)->get();
+    $result = $query->row();
+    if(isset($result)) return $result->num;
+    return 0;
   }
 
   public function totalPengguna($search, $valid_columns)

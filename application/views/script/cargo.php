@@ -16,14 +16,8 @@
 
 
 	$(document).ready(function(){  
-
-		document.getElementsByClassName('nav-link')[0].click();
 		$(".js-example-basic-single").select2();
-		$(".tujuan").val($('#tujuan').val());
-		$(".asal").val($('#asal').val());
 		$(".moda").val($('#moda_tran option:selected').text());
-		// $("#rute").text($('#asal').val().trim() + '-' + $('#tujuan').val().trim() );
-		// getLayanan();
 
 		$('.list-moda').hover(
 			function(){
@@ -33,28 +27,50 @@
 				$(this).css('background-image','none');
 			}
 		);
-	})
-	$('#ViewTableSPK').DataTable({
-		ajax: {		            
-            "url": "<?= base_url(); ?>listspk/dataTableSPK",
-            "type": "GET"
-        },
-        processing	: true,
-		serverSide	: true,			
-		"bPaginate": true,	
-		"autoWidth": true,
-		columnDefs:[
-			{ "width": "100px", "targets": [4,3,2] },
-			
-		]
 
-    });
+		$('#ViewTableSPK').DataTable({
+			ajax: {		            
+	            "url": "<?= base_url(); ?>listspk/dataTableSPK",
+	            "type": "GET"
+	        },
+	        processing	: true,
+			serverSide	: true,			
+			"bPaginate": true,	
+			"autoWidth": true,
+			columnDefs:[
+				{ "width": "100px", "targets": [4,3,2] },
+				
+			]
+
+	    });
+
+		if($("#mode").val() == 'edit') {
+			pilih($("#id_spk").val());
+			$("#p-moda").removeClass('hidden');
+			$("#t_moda").text('<?= empty($data) ? "" : $data['moda_name'] ?>');
+			$("#moda_tran").change();
+		}
+	})
 
     $(".list-moda").on('click', function (event) {
-    	$(".list-moda").removeClass('list-selected');
-    	$(this).addClass('list-selected');
-    	$("#t_moda").text($(this).attr('id'));
+    	var tipe = $(this).data('moda');
+    	var moda = $(this).data('moda') + ' - ' + $(this).data('kat') + ' - ' + $(this).data('sub');
+    	$("#t_moda").text(moda);
+    	$("#text-moda").val(moda);
+    	$("#img-moda").attr('src',$(this).find('img').attr('src'));
     	$("#moda_tran").val($(this).attr('id'));
+    	$("#jenis_moda").val(tipe);
+
+    	$("#p-moda").removeClass('hidden');
+    	$(".dp").addClass('hidden');
+    	if(tipe == 'Darat') {
+    		$("#dp-darat").removeClass('hidden');
+    	}else if(tipe == 'LAUT'){
+    		$("#dp-laut").removeClass('hidden');
+    	}else if(tipe == 'UDARA'){
+    		$("#dp-udara").removeClass('hidden');
+    	}
+    	$('#modalModa').modal('hide');
     });
 
     $('#btnModa').on('click', function (event) {
@@ -100,15 +116,22 @@
         }
     })
 
-    $('#btnSubmit').on('click', function (e) {
+    $('#btn-finish').on('click', function (event) {
+    	event.preventDefault();
 		var valid = false;
-    	var sParam = $('#Form').serialize() + "&resi=" + $("#resi").val();
-    	var validator = $('#Form').validate({
+    	var sParam = $('#form-routing').serialize();
+    	var validator = $('#form-routing').validate({
 							rules: {
-									nama_barang: {
+									nomor_rs: {
 							  			required: true
 									},
-									qty: {
+									nomor_spk: {
+							  			required: true
+									},
+									moda_tran: {
+							  			required: true
+									},
+									agent: {
 							  			required: true
 									},
 								}
@@ -116,24 +139,38 @@
 	 	validator.valid();
 	 	$status = validator.form();
 	 	if($status) {
-	 		var link = 'Connote/Save';
+	 		var link = '<?= base_url(); ?>Cargo/Header';
 	 		$.post(link,sParam, function(data){
 				if(data.error==false){	
-					$('#ModalAdd').modal('hide');
-					datatable.ajax.reload();								
-					// window.location.reload();
+					alertOK();
 				}else{	
-					$("#lblMessage").remove();
-					$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
-											  					  	
+					alertError(data.message);				  	
 				}
 			},'json');
 	 	}
         
     });
 
-    $("#asal").change(function(e, params){              
-    	// getLayanan();
+    $("#moda_tran").change(function(e, params){              
+    	$.get('<?= base_url()?>Cargo/getInfoModa', { id: $(this).val() }, function(data){ 
+    		var tipe = data['moda_name'];
+	    	var moda = data['moda_name'] + ' - ' + data['moda_kategori'] + ' - ' + data['moda_subkategori'];
+	    	$("#t_moda").text(moda);
+	    	$("#text-moda").val(moda);
+
+	    	$("#img-moda").attr('src','<?= base_url(); ?>assets/images/' + data['moda_subimage']);
+	    	$("#jenis_moda").val(tipe);
+
+	    	$("#p-moda").removeClass('hidden');
+	    	$(".dp").addClass('hidden');
+	    	if(tipe == 'Darat') {
+	    		$("#dp-darat").removeClass('hidden');
+	    	}else if(tipe == 'LAUT'){
+	    		$("#dp-laut").removeClass('hidden');
+	    	}else if(tipe == 'UDARA'){
+	    		$("#dp-udara").removeClass('hidden');
+	    	}
+    	});
 	});
 	$("#tujuan").change(function(e, params){              
     	// getLayanan();
@@ -147,39 +184,6 @@
 		}
 	});
 
-	$("#btn-finish").on('click', function (event) {
-		event.preventDefault();
-    	var sParam = $('#form-wizard').serialize();
-    	var link = 'Cargo/Header';
- 		$.post(link,sParam, function(data){
-			if(data.error==false){	
-				window.location.href="packinglist";
-			}else{	
-				alert('gagal menyimpan....');  					  	
-			}
-		},'json');
-    })
-
-	function getLayanan(){
-		$(".tujuan").val($('#tujuan').val());
-		$(".asal").val($('#asal').val());
-		$(".moda").val($('#moda_tran option:selected').text());
-		$.get('Connote/getServices', { asal: $('#asal').val(), tujuan: $('#tujuan').val(), moda: $('#moda_tran').val() }, function(data){ 
-    			if(data.length>0){
-	    			$('#paket').empty();
-		    		$.each(data,function(i,value){
-	                	$('#paket').append('<option value='+value.id_services+'>'+value.nama_services+'</option>');
-	            	})
-	            	$("#estimasi").val(data[0]['estimasi_day']);
-	            	$("#biaya").val(data[0]['tarif']);
-	    		}else{
-	    			alert('layanan tidak ditemukan');
-	    			$('#paket').empty();
-	    			$("#estimasi").val('');
-	            	$("#biaya").val(0);
-	    		}			
-	    });
-	}
 	function hapus(val) {
 		var r = confirm("Yakin dihapus?");
 		if (r == true) {
@@ -191,7 +195,7 @@
 	}
 
 	function pilih(val){
-		$.get('<?= base_url()?>spk/get', { id: $(val).data('id') }, function(data){ 
+		$.get('<?= base_url()?>spk/get', { id: val }, function(data){ 
 			// if($("#lbl-title-cust").text() == 'Pengirim'){
 				$("#nomor_spk").val(data['data']['spk_no']);
 				$("#id_spk").val(data['data']['id']);
