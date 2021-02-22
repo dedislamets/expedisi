@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class InvoiceVendor extends CI_Controller {
+class Invoicevendor extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
