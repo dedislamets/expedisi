@@ -73,13 +73,16 @@ class Admin extends CI_Model
         return $query->row_array();    
     }
 
-    function get_result_array($tabel,$where='',$order=''){
+    function get_result_array($tabel,$where='',$order='', $desc='desc', $limit=''){
         $this->db->from($tabel);
         if($where !=""){
             $this->db->where($where);
         }
         if($order !=""){
-            $this->db->order_by($order);
+            $this->db->order_by($order, $desc);
+        }
+        if($limit !=""){
+            $this->db->limit($limit);
         }
         $query = $this->db->get();
         return $query->result_array();    
@@ -136,6 +139,24 @@ class Admin extends CI_Model
         $query = $this->db->get();
         // echo $this->db->last_query();exit();
         return $query->result();   
+    }
+
+    function get_num_rows($tabel,$where='',$order='',$groupby='',$select=''){
+        if($select !=""){
+            $this->db->select($select);
+        }
+        $this->db->from($tabel);
+        if($where !=""){
+            $this->db->where($where);
+        }
+        if($groupby !=""){
+            $this->db->group_by($groupby);
+        }
+        if($order !=""){
+            $this->db->order_by($order);
+        }
+        $query = $this->db->get();
+        return $query->num_rows();   
     }
 
     function get_row($tabel,$where='',$select=''){

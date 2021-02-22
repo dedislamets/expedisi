@@ -6,17 +6,21 @@ class Trace extends CI_Controller {
 		parent::__construct();
 	    $this->load->model('admin');
 	   	$this->load->model('M_menu','',TRUE);
+      date_default_timezone_set('Asia/Jakarta');
+      $this->load->helper(array('url','file'));
 	   	
 	}
 	public function index()
 	{		
 		if($this->admin->logged_id())
     {
-
+      if(CheckMenuRole('trace')){
+        redirect("errors");
+      }
 			$data['main'] = 'trace/index';
 			$data['js'] = 'script/trace';
-			$data['modal'] = 'modal/cabang';
-
+			$data['modal'] = 'modal/trace';
+      $data['mode'] = 'new';
 			$this->load->view('home',$data,FALSE); 
 
     }else{
@@ -25,6 +29,26 @@ class Trace extends CI_Controller {
     }				  
 						
 	}
+
+  public function view($id)
+  {   
+    if($this->admin->logged_id())
+    {
+      $data['main'] = 'trace/index';
+      $data['js'] = 'script/trace';
+      $data['modal'] = 'modal/trace';
+      $data['mode'] = 'view';
+      $data['routing'] = $this->admin->get_row('tb_routingslip',array( 'id' => $id));
+      // print("<pre>".print_r($data,true)."</pre>"); exit();
+
+      $this->load->view('home',$data,FALSE); 
+
+    }else{
+        redirect("login");
+
+    }         
+            
+  }
 
   public function dataTable()
   {
@@ -154,10 +178,10 @@ class Trace extends CI_Controller {
   public function get_autocomplete(){
       $no = $this->input->get('term');
       if (!empty($no)) {
-        $this->db->select("R.*, tb_spk.spk_no,nama_project");
-        $this->db->from("tb_routingslip R");
-        $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
-        $this->db->like('R.no_routing', $no , 'both');
+        $this->db->select("*");
+        $this->db->from("tb_routingslip");
+        // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
+        $this->db->like('no_routing', $no , 'both');
         $this->db->limit(10);
         $data = $this->db->get()->result();
         if (count($data) > 0) {
@@ -173,7 +197,7 @@ class Trace extends CI_Controller {
       }
   }
 
-  public function Save()
+  public function Pickup()
   {       
       
       $response = [];
@@ -181,60 +205,93 @@ class Trace extends CI_Controller {
       $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
       $recLogin = $this->session->userdata('user_id');
       $data = array(
-          'kode_cabang'   => $this->input->post('kode_cabang'),
-          'nama_barang'  => $this->input->post('nama_barang'),
-          'alamat'  => $this->input->post('alamat'),
-          'telp_cabang'        => $this->input->post('telp_cabang'),
+          'driver'   => $this->input->post('driver'),
+          'no_kendaraan'  => $this->input->post('nomor_plat'),
+          'pickup_address' => $this->input->post('pickup_address'),
+          'status'        => 'PICKUP',
+          'pickup_date' => date('Y-m-d'),
+          'pickup_time' => date('H:i:s'),
                       
       );
 
-      $this->db->trans_begin();
+      $this->db->set($data);
+      $this->db->where('id', $this->input->post('id_rs'));
+      $result  =  $this->db->update('tb_routingslip');  
 
-      if($this->input->post('kode_cabang') != "") {
+      if(!$result){
+          print("<pre>".print_r($this->db->error(),true)."</pre>");
+      }else{
+          $response['error']= FALSE;
+          unset($data);
+          $data['remark'] = 'Barang sudah dipickup';
+          $data['id_routing'] = $this->input->post('id_rs');
+          $data['latitude'] = $this->input->post('lat');
+          $data['longitude'] = $this->input->post('long');
+          $data['created_by'] = $this->input->post('driver');
+          $data['status'] = 'PICKUP';
 
-          $this->db->set($data);
-          $this->db->where('kode_cabang', $this->input->post('kode_cabang'));
-          $result  =  $this->db->update('tb_cabang');  
-
-          if(!$result){
-              print("<pre>".print_r($this->db->error(),true)."</pre>");
-          }else{
-              $response['error']= FALSE;
-          }
-      }else{  
-
-          $result  = $this->db->insert('tb_cabang', $data);
-          
-          if(!$result){
-              print("<pre>".print_r($this->db->error(),true)."</pre>");
-          }else{
-              $response['error']= FALSE;
-          }
+          $this->db->insert('tb_routingslip_history', $data);
       }
-
-      $this->db->trans_complete();
                           
     $this->output->set_content_type('application/json')->set_output(json_encode($response));
   }
 
-  public function get(){
+  public function Update()
+  {       
+      
+    $response = [];
+    $response['error'] = TRUE; 
+    $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+    $recLogin = $this->session->userdata('user_id');
+    $data = array(
+        'status' => $this->input->post("status_update"),                 
+    );
+
+    if($this->input->post("status_update") == 'DITERIMA'){
+      $data['received_by'] = $this->input->post('received_by');
+      $data['received_date'] = date('Y-m-d H:i:s');
+    }
+    $this->db->set($data);
+    $this->db->where('id', $this->input->post('id_rs'));
+    $result  =  $this->db->update('tb_routingslip');  
+
+    if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+    }else{
+        $response['error']= FALSE;
+        unset($data);
+        $data['remark'] = $this->input->post('remark');
+        $data['id_routing'] = $this->input->post('id_rs');
+        $data['latitude'] = $this->input->post('lat');
+        $data['longitude'] = $this->input->post('long');
+        $data['created_by'] = $this->input->post('driver');
+        $data['status'] = $this->input->post("status_update");
+
+        $this->db->insert('tb_routingslip_history', $data);
+    }
+                          
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+
+  public function get()
+  {
     if($this->admin->logged_id())
     {
       $id= $this->input->get("id");
-      $routing = $this->admin->get_row('tb_routingslip',array( 'id' => $id));
-      $data['data'] = $this->admin->get_array('tb_spk',array( 'id' => $routing->id_spk));
-      $data['data_routing'] = $routing;
+      $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
+      // $data['data'] = $this->admin->get_array('tb_spk',array( 'id' => $routing->id_spk));
+      $data['data'] = $routing;
       
-      $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data']['id_pengirim']),'cust_name');
-      $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data']['id_penerima']),'cust_name');
+      // print("<pre>".print_r($routing->id_pengirim,true)."</pre>"); exit();
+      $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $routing['id_pengirim']),'cust_name');
+      $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $routing['id_penerima']),'cust_name');
 
       $this->db->select("A.moda_name,A.moda_img, B.moda_kategori,C.*");
       $this->db->from("tb_moda A");
       $this->db->join('tb_moda_kat B', 'A.id=B.id_moda');
       $this->db->join('tb_moda_sub C', 'B.id=C.id_moda_kat');
-      $data['moda'] = $this->db->where('C.id', $routing->id_moda)->get()->row();
+      $data['moda'] = $this->db->where('C.id', $routing['id_moda'])->get()->row();
 
-      // print("<pre>".print_r($data,true)."</pre>"); exit();
 
 
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
@@ -252,5 +309,65 @@ class Trace extends CI_Controller {
     $query = $this->db->where('id_routing', $this->input->get('id'))->get()->result();
     $this->output->set_content_type('application/json')->set_output(json_encode($query));
   }
+
+  public function proses_upload(){
+
+        $config['upload_path'] = './upload/';
+        $config['allowed_types'] = 'gif|jpg|png|ico|jpeg';
+        $this->load->library('upload',$config);
+
+        if($this->upload->do_upload('userfile')){
+          $token=$this->input->post('token_foto');
+          $nama=$this->upload->data('file_name');
+          $this->db->insert('tb_routingslip_document',array('nama_dokumen'=>$nama,'token'=>$token, 'id_routing' => $this->input->post('id_rs')));
+        }
+
+
+  }
+  function remove_foto(){
+
+    //Ambil token foto
+    $token=$this->input->post('token');
+
+    
+    $foto=$this->db->get_where('tb_routingslip_document',array('token'=>$token));
+
+
+    if($foto->num_rows()>0){
+      $hasil=$foto->row();
+      $nama_dokumen=$hasil->nama_dokumen;
+      if(file_exists($file='./upload/'.$nama_dokumen)){
+        unlink($file);
+      }
+      $this->db->delete('tb_routingslip_document',array('token'=>$token));
+
+    }
+
+
+    echo "{}";
+  }
+  public function getImage()
+  {
+    $this->db->from("tb_routingslip_document");
+    $query = $this->db->where('id_routing', $this->input->get('id'))->get()->result();
+
+    $target_dir = "upload/";
+    $file_list = array();
+
+    foreach ($query as $row){
+      $file_path = $target_dir.$row->nama_dokumen;
+      if(!is_dir($file_path)){
+
+         $size = filesize($file_path);
+
+         $file_list[] = array('token'=>$row->token,'name'=>$row->nama_dokumen,'size'=>$size,'path'=>base_url().$file_path);
+
+      }
+      // print("<pre>".print_r($file_list,true)."</pre>"); exit();
+
+    }
+    $this->output->set_content_type('application/json')->set_output(json_encode($file_list));
+  }
+
 
 }

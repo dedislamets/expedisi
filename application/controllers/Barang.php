@@ -11,7 +11,10 @@ class Barang extends CI_Controller {
 	public function index()
 	{		
 		if($this->admin->logged_id())
-        {
+    {
+      if(CheckMenuRole('cargo')){
+        redirect("barang");
+      }
 			$data['title'] = 'Master Barang';
 			$data['main'] = 'barang/index';
 			$data['js'] = 'script/barang';
@@ -19,10 +22,10 @@ class Barang extends CI_Controller {
 
 			$this->load->view('home',$data,FALSE); 
 
-        }else{
-            redirect("login");
+    }else{
+        redirect("login");
 
-        }				  
+    }				  
 						
 	}
 

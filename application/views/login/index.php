@@ -2,7 +2,7 @@
 <?php if(isset($error)) { echo $error; }; ?>
 <form method="POST" action="<?php echo base_url() ?>index.php/login" class="md-float-material form-material">                   
     <div class="text-center">
-        <img src="<?= base_url(); ?>assets\images\favicon.png" alt="logo.png">
+        <img src="<?= base_url(); ?>assets\images\cropped-logo-wml-180x180.png" alt="logo.png">
     </div>
     <div class="auth-box card">
         <div class="card-block">
@@ -41,15 +41,7 @@
                 </div>
             </div>
             <hr>
-            <div class="row">
-                <div class="col-md-10">
-                    <p class="text-inverse text-left m-b-0">Thank you.</p>
-                    <p class="text-inverse text-left"><a href="index-1.htm"><b class="f-w-600">Back to website</b></a></p>
-                </div>
-                <div class="col-md-2">
-                    <img src="<?= base_url(); ?>assets\images\auth\Logo-small-bottom.png" alt="small-logo.png">
-                </div>
-            </div>
+            
         </div>
     </div>
 </form>

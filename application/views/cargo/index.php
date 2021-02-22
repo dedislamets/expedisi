@@ -1,4 +1,10 @@
 <style type="text/css">
+  .preview-dropzone{
+        color: firebrick;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
   .lokasi {
     font-size: 13px;
     font-weight: bold;
@@ -62,6 +68,10 @@
     background: linear-gradient(to right, #3f535a, #212425);
     color: #fff !important;
   }
+  #ViewTableMulti>thead{
+    background: linear-gradient(to right, #3f535a, #212425);
+    color: #fff !important;
+  }
   .form-bg-inverse {
     background-color: #404E67 !important;
     border-color: #404E67 !important;
@@ -72,24 +82,30 @@
     font-weight: bold;
     color: darkorange;
     background-color: black;
-    padding: 10px;
+    padding:4px;
     text-align: center;
   }
 </style>
 
-<div class="page-body">
+<div class="page-body" id="app">
   <div class="row">
     <div class="col-sm-12">
 
       <div class="card z-depth-0">
         <div class="card-header" style="background-color: #404E67;color:#fff">
           <div class="row">
-              <div class="col-xl-10">
-                  <h4><?= $title ?></h4>
+              <div class="col-xl-6">
+                  <h4><?= $title ?> <a href="<?= base_url() ?>listrs"> Back </a></h4>
                   <span>Halaman ini menampilkan data connote yang tersimpan</span>
               </div>
+              <div class="col-xl-2" >
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/rs?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetak" class="btn btn-block hor-grd btn-grd-warning" target="_blank">  <i class="icofont icofont-print" ></i>Cetak</a>
+              </div>
+              <div class="col-xl-2" >
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>trace/view/<?= empty($data) ? "" : $data['id'] ?>" id="btnTracking" class="btn btn-block hor-grd btn-grd-success">  <i class="icofont icofont-long-drive" ></i>Tracking</a>
+              </div>
               <div class="col-xl-2">
-                <div class="status-trans">INPUT</div>
+                <div class="status-trans"><?= empty($data) ? "INPUT" : $data['status'] ?></div>
                   <!-- <a href="<?= base_url() ?>connote" class="btn btn-grd-success" ><i class="icofont icofont-ui-add"></i> Tambah baru</a> -->
               </div>
           </div>
@@ -101,37 +117,278 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO ROUTING</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control form-bg-inverse" id="nomor_rs" name="nomor_rs" value="<?= empty($data) ? "" : $data['no_routing'] ?>" required>
+                <input type="text" class="form-control form-bg-inverse" id="nomor_rs" name="nomor_rs" value="<?= empty($data) ? "" : $data['no_routing'] ?>" required :readonly="last_status == 'DITERIMA'">
               </div>
             </div>
             
-            <div class="form-group row">
+            <!-- <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO SPK/DO/DN</label>
               <div class="col-sm-10">
-                <div class="input-group input-group-button m-b-0">
+                <input type="text" class="form-control" id="nomor_spk" name="nomor_spk" readonly v-if="last_status == 'DITERIMA'">
+
+                <div class="input-group input-group-button m-b-0" v-if="last_status != 'DITERIMA'">
                   <input type="text" class="form-control" id="nomor_spk" name="nomor_spk" readonly>
                   <span class="input-group-addon btn btn-grd-inverse" id="btnBrowse" style="border-width: 0;background-color: #01a9ac;">
                     <span class="">Browse..</span>
                   </span>
                 </div>
-                <input type="hidden" class="form-control" id="id_spk" name="id_spk" value="<?= empty($data) ? "" : $data['id_spk'] ?>">
+                <input type="hidden" class="form-control" id="id_spk" name="id_spk" >
               </div>
-            </div>
+            </div> -->
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NAMA PROJECT</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="project" name="project" placeholder="" readonly />
+                <input type="text" class="form-control form-bg-inverse" id="project" name="project" placeholder="Masukkan nama project" value="<?= empty($data) ? "" : $data['nama_project'] ?>">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO SPK/DO/DN</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control form-bg-inverse" id="nomor_spk" name="nomor_spk" placeholder="Masukkan nomor SPK" value="<?= empty($data) ? "" : $data['spk_no'] ?>">
               </div>
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">TANGGAL DO </label>
               <div class="col-sm-10">
-                <input class="form-control" type="date" id="tgl_do" name="tgl_do" value="" readonly />
+                <input class="form-control form-bg-inverse" type="date" id="tgl_do" name="tgl_do" value="<?= empty($data) ? "" : $data['tgl_spk']  ?>" />
               </div>
             </div>
-            
 
             <div class="row" id="pengirim">
+              <div class="col-sm-12">
+                <div class="card user-card-full">
+                    <div class="row m-l-0 m-r-0">
+                        <div class="col-sm-6 bg-c-lite-green">
+                          <div class="card-block text-white">
+                            <div class="row b-b-default m-b-20 p-b-5">
+                              <div class="col-sm-6  f-w-600">Pengirim</div>
+                              <div class="col-sm-6">
+                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btnCariPengirim" style="float: right;color: #fff;">Cari</a>
+                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btn-grd-success btnAddPengirim" style="float: right;color: #fff;">Tambah</a>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-10 col-sm-offset-1">
+                                
+                                <div class="form-group">
+                                  <label>Nama Pengirim <small>(required)</small></label>
+                                  <input name="nama_pengirim" readonly id="nama_pengirim" type="text" class="form-control" placeholder="">
+                                  <input type="hidden" name="id_pengirim" id="id_pengirim" value="<?= empty($data) ? "" : $data['id_pengirim']?>">
+                                </div>
+                                <div class="form-group">
+                                  <label>Alamat Pengirim <small>(required)</small></label>
+                                  <textarea name="alamat_pengirim" id="alamat_pengirim" rows="4" class="form-control required" placeholder="" style="height: 100px;" ><?= empty($data) ? "" : $data['alamat_pengirim']?></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kota/Kab <small></small></label>
+                                    <select name="region_pengirim" id="region_pengirim" class="js-example-basic-single col-sm-12">
+                                      <option value="">Pilih Kota</option>
+                                      <?php 
+                                      foreach($kota_asal as $row)
+                                      { 
+                                        if( empty($data) ? "" : $data['kota_pengirim'] === $row->kota){
+                                          echo '<option value="'.$row->kota.'" selected >'.$row->kota.'</option>';
+                                        }else{
+                                          echo '<option value="'.$row->kota.'">'.$row->kota.'</option>';
+                                        }
+                                      }
+                                      ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                  <label>Kecamatan <small>(required)</small></label>
+                                  <select name="kecamatan_pengirim" id="kecamatan_pengirim" class="js-example-basic-single col-sm-12">
+                                    <option value="">Pilih Kecamatan</option>
+                                    <?php 
+                                      foreach($kec_pengirim as $row)
+                                      { 
+                                        if( empty($data) ? "" : $data['kec_pengirim'] === $row->kecamatan){
+                                          echo '<option value="'.$row->kecamatan.'" selected >'.$row->kecamatan.'</option>';
+                                        }else{
+                                          echo '<option value="'.$row->kecamatan.'">'.$row->kecamatan.'</option>';
+                                        }
+                                      }
+                                      ?>
+                                  </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Zip Code <small></small></label>
+                                    <select name="zip_pengirim" id="zip_pengirim" class="js-example-basic-single col-sm-12">
+                                      <option  value="">Pilih Kodepos</option>
+                                      <?php 
+                                        foreach($zip_pengirim as $row)
+                                        { 
+                                          if( empty($data) ? "" : $data['zip_pengirim'] === $row->kodepos){
+                                            echo '<option value="'.$row->kodepos.'" selected >'.$row->kodepos.'</option>';
+                                          }else{
+                                            echo '<option value="'.$row->kodepos.'">'.$row->kodepos.'</option>';
+                                          }
+                                        }
+                                      ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                  <label>No Handphone </label>
+                                  <input name="phone_pengirim" id="phone_pengirim" type="text" class="form-control" value="<?= empty($data) ? "" : $data['hp_pengirim']?>">
+                                </div>
+                                <div class="form-group">
+                                  <label>Attention </label>
+                                  <input name="attn_pengirim" id="attn_pengirim" type="text" class="form-control" value="<?= empty($data) ? "" : $data['attn_pengirim']?>">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6" style="background: linear-gradient(to right, #546D77, #3F5159);;color: #fff;">
+                          <div class="card-block">
+                            <div class="row b-b-default m-b-20 p-b-5">
+                              <div class="col-sm-6  f-w-600">Penerima</div>
+                              <div class="col-sm-6">
+                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btnCariPenerima" style="float: right;color: #fff;">Cari</a>
+                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btn-grd-success btnAddPenerima" style="float: right;color: #fff;">Tambah</a>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-10 col-sm-offset-1">
+                                  <div class="form-group">
+                                    <label>Nama Penerima <small>(required)</small></label>
+                                    <input name="nama_penerima" id="nama_penerima" type="text" class="form-control" placeholder="" readonly>
+                                    <input type="hidden" name="id_penerima" id="id_penerima" value="<?= empty($data) ? "" : $data['id_penerima']?>">
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Alamat Penerima <small>(required)</small></label>
+                                    <textarea name="alamat_penerima" id="alamat_penerima"  rows="4" class="form-control" style="height: 100px;"><?= empty($data) ? "" : $data['alamat_penerima']?></textarea>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Kota/Kab <small></small></label>
+                                    <select name="region_penerima" id="region_penerima" class="js-example-basic-single col-sm-12">
+                                      <option value="">Pilih Kota</option>
+                                      <?php 
+                                      foreach($kota_asal as $row)
+                                      { 
+                                        if( empty($data) ? "" : $data['kota_penerima'] === $row->kota){
+                                          echo '<option value="'.$row->kota.'" selected >'.$row->kota.'</option>';
+                                        }else{
+                                          echo '<option value="'.$row->kota.'">'.$row->kota.'</option>';
+                                        }
+                                      }
+                                      ?>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Kecamatan <small>(required)</small></label>
+                                    <select name="kecamatan_penerima" id="kecamatan_penerima" class="js-example-basic-single col-sm-12">
+                                      <option value="">Pilih Kecamatan</option>
+                                      <?php 
+                                      foreach($kec_penerima as $row)
+                                      { 
+                                        if( empty($data) ? "" : $data['kec_penerima'] === $row->kecamatan){
+                                          echo '<option value="'.$row->kecamatan.'" selected >'.$row->kecamatan.'</option>';
+                                        }else{
+                                          echo '<option value="'.$row->kecamatan.'">'.$row->kecamatan.'</option>';
+                                        }
+                                      }
+                                      ?>
+                                    </select>
+                                  </div>
+                                  <div class="form-group">
+                                      <label>Zip Code <small></small></label>
+                                      <select name="zip_penerima" id="zip_penerima" class="js-example-basic-single col-sm-12">
+                                        <option value="">Pilih Kodepos</option>
+                                        <?php 
+                                        foreach($zip_penerima as $row)
+                                        { 
+                                          if( empty($data) ? "" : $data['zip_penerima'] === $row->kodepos){
+                                            echo '<option value="'.$row->kodepos.'" selected >'.$row->kodepos.'</option>';
+                                          }else{
+                                            echo '<option value="'.$row->kodepos.'">'.$row->kodepos.'</option>';
+                                          }
+                                        }
+                                        ?>
+                                      </select>
+                                  </div>
+                                  <div class="form-group">
+                                    <label>No Handphone</label>
+                                    <input name="phone_penerima" id="phone_penerima" type="text" class="form-control" value="<?= empty($data) ? "" : $data['hp_penerima']?>" >
+                                  </div>
+                                  <div class="form-group">
+                                    <label>Attention </label>
+                                    <input name="attn_penerima" id="attn_penerima" type="text" class="form-control" value="<?= empty($data) ? "" : $data['attn_penerima']?>">
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" id="barang">
+              <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Input Data Barang
+                  <button class="btn btn-grd-inverse" id="btnAdd"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+              </h4>
+              <div class="col-sm-12">
+                <div class="dt-responsive table-responsive table-brg">
+                  <input type="hidden" id="total-row" name="total-row" value="<?= $totalrow ?>">
+                  <table id="ViewTableBrg" class="table table-striped" style="margin-top: 0 !important;width: 100% !important;">
+                      <thead class="text-primary">
+                          <tr>
+                              <th>
+                                No
+                              </th>
+                              <th>
+                                Aksi
+                              </th>
+                              <th>
+                                Nama Barang
+                              </th>
+                              <th>
+                                Qty
+                              </th>
+                              <th>
+                                Satuan
+                              </th>
+                              <th>
+                                Berat Kg
+                              </th>
+                              
+                              
+                          </tr>
+                      </thead>
+                      <tbody id="tbody-table">
+                          <?php 
+                          $urut=1;
+                          foreach($data_detail as $row): ?>
+                            <tr>
+                              <td style="width:1%"><?=$urut?></td>
+                              <td>
+                                <input type="text" id="kode<?=$urut?>" name="kode<?=$urut?>" class="form-control hidden" value="<?=$row['id_barang']?>">
+                                <input type="text" id="id_detail<?=$urut?>" name="id_detail<?=$urut?>" class="form-control hidden" value="<?=$row['id']?>">
+                                <a href="#" class="btn hor-grd btn-grd-success" onclick="cari_dealer(this)">
+                                  <i class="icofont icofont-search"></i> Cari
+                                </a>
+                                <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a>
+                              </td>
+                              <td><?=$row['nama_barang']?></td>
+                              <td>
+                                <input type="number" id="qty<?=$urut?>" name="qty<?=$urut?>" placeholder="Qty" class="form-control" style="width:100%" value="<?=$row['qty']?>">
+                              </td>
+                              
+                              <td>
+                                <input type="text" name="satuan<?=$urut?>" id="satuan<?=$urut?>" class="form-control" value="<?=$row['satuan']?>"/>
+                              </td>
+                              <td><input type="number" id="kg<?=$urut?>" name="kg<?=$urut?>" placeholder="Kg" class="form-control" style="width:100%" value="<?=$row['kg']?>"></td>
+                            </tr>
+                            <?php $urut++?>
+                          <?php endforeach; ?>
+
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row" id="pengirim">
               <div class="col-sm-12">
                 <div class="card user-card-full m-b-0">
                     <div class="row m-l-0 m-r-0">
@@ -177,7 +434,7 @@
                     </div>
                 </div>
               </div>
-            </div>
+            </div> 
             <div class="" id="barang">
               <div class="card z-depth-bottom-1">
                 <div class="card-header" style="padding: 10px 20px;">
@@ -215,20 +472,49 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
 
             <div class="m-t-20" id="moda">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Moda Transportasi
               </h4>
               <div class="card z-depth-0">
                 <div class="card-header" style="padding: 10px 20px;">
-                  <h4 style="font-size: 2.2rem;font-weight: bold;"><button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse ">Pilih Moda Transportasi</button></h4>
-                  <input type="hidden" name="moda_tran" id="moda_tran" value="<?= empty($data) ? "" : $data['id_moda'] ?>">
+                  <!-- <h4 style="font-size: 2.2rem;font-weight: bold;" v-if="last_status != 'DITERIMA'">
+                    <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse ">Pilih Moda Transportasi</button>
+                  </h4> -->
+                  <!-- <input type="hidden" name="moda_tran" id="moda_tran" value="<?= empty($data) ? "" : $data['id_moda'] ?>"> -->
                   <input type="hidden" name="jenis_moda" id="jenis_moda">
-
+                  
                 </div>
-                <div class="card-block panels-wells hidden" id="p-moda">
-                  <div class="row">
+                <div class="card-block panels-wells">
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" style="font-weight: bold;">Moda <small>(required)</small></label>
+                    <div class="col-sm-10">
+                      <select name="moda_tran" id="moda_tran" class="form-control">
+                        <option value="">Pilih Moda</option>
+                        <?php 
+                        foreach($moda_only as $row)
+                        { 
+                          if( empty($data) ? "" : $data['id_moda'] === $row->id){
+                            echo '<option value="'.$row->id.'" selected >'.$row->moda_name.'</option>';
+                          }else{
+                            echo '<option value="'.$row->id.'">'.$row->moda_name.'</option>';
+                          }
+                        }
+                        ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" style="font-weight: bold;">Kategori <small>(required)</small></label>
+                    <div class="col-sm-10">
+                      <select name="moda_kat" id="moda_kat" class="form-control">
+                        
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="row hidden">
                     <div class="col">
                       <div class="well well-lg">
                         <div class="row" >
@@ -255,7 +541,54 @@
                 </div>
               </div>                        
             </div>
+            <div class="card z-depth-0">
+              <div class="card-block panels-wells">
+                <div class="row">
+                  <h4 class="info-text" style="padding-left: 10px;">Multi Drop
+                      <button class="btn btn-grd-invers" id="btnAddModa"  ><i class="icofont icofont-ui-add"></i> Tambah</button>
+                  </h4>
+                  <input type="hidden" id="total-row-multi" name="total-row-multi" value="<?= $totalrowmulti ?>">
+                  <table id="ViewTableMulti" class="table table-bordered">
+                    <thead class="text-primary thead-color">
+                        <tr>
+                            <th width="50">
+                              No
+                            </th>
+                            <th width="100">
+                              Aksi
+                            </th>
+                            <th>
+                              Rute
+                            </th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-table-multi">
+                      <?php 
+                        $urut=1;
+                        foreach($data_multi as $row): ?>
+                          <tr>
+                            <td style="width:1%"><?= $urut ?></td>
+                            <td style="width:8%">
+                              <input type="hidden" id="id_detail_multi_<?= $urut ?>" name="id_detail_multi_<?= $urut ?>" class="form-control " value="<?= $row['id'] ?>">
+                              <input type="hidden" id="deleted_<?= $urut ?>" name="deleted_<?= $urut ?>" value="0">
+                              <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelMulti(this)">
+                                <i class="icofont icofont-trash"></i> Del</a>
+                            </td>
+                            
+                            <td>
+                              <input type="text" name="aktifitas_<?= $urut ?>" id="aktifitas_<?= $urut ?>" class="form-control" value="<?= $row['rute'] ?>" >
+                            </td>
 
+                          </tr>
+                          <?php $urut++?>
+                        <?php endforeach; ?>
+                        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
             <div class="" id="deliv">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Detail Pengiriman
               </h4>
@@ -270,23 +603,23 @@
                             <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR PELAYARAN</label>
                               <div class="col-sm-10">
-                                <input type="text" class="form-control" id="pelayaran_no" name="pelayaran_no" placeholder="">
+                                <input type="text" class="form-control" id="pelayaran_no" name="pelayaran_no" placeholder="" value="<?= empty($data) ? "" : $data['no_pelayaran'] ?>">
                               </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">TGL PELAYARAN</label>
                               <div class="col-sm-10">
-                                <input class="form-control" type="date" id="tgl_pelayaran" name="tgl_pelayaran" />
+                                <input class="form-control" type="date" id="tgl_pelayaran" name="tgl_pelayaran" value="<?= empty($data) ? "" : $data['tgl_pelayaran'] ?>" />
                               </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETA</label>
                               <div class="col-sm-4">
-                                <input type="time" class="form-control" id="eta_laut" name="eta_laut" placeholder="">
+                                <input type="time" class="form-control" id="eta_laut" name="eta_laut" placeholder="" value="<?= empty($data) ? "" : $data['eta'] ?>">
                               </div>
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETD</label>
                               <div class="col-sm-4">
-                                <input type="time" class="form-control" id="etd_laut" name="etd_laut" placeholder="">
+                                <input type="time" class="form-control" id="etd_laut" name="etd_laut" placeholder="" value="<?= empty($data) ? "" : $data['etd'] ?>">
                               </div>
                             </div>
                           </div>
@@ -338,9 +671,40 @@
                         <div class="card">
                           <div class="card-block">
                             <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">LINK/URL REF</label>
+                              <div class="col-sm-10">
+                                <div class="input-group input-group-button m-b-0" >
+
+                                  <input type="text" class="form-control" id="link" name="link" value="<?= empty($data) ? "" : $data['link'] ?>">
+                                  <span class="input-group-addon btn btn-grd-inverse" id="btnShowLink" style="border-width: 0;background-color: #01a9ac;">
+                                    <span class="">Show</span>
+                                  </span>
+                                </div>
+
+                              </div>
+                            </div>
+                            <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">AGENT/VENDOR</label>
                               <div class="col-sm-10">
                                 <input type="text" class="form-control" id="agent" name="agent" value="<?= empty($data) ? "" : $data['agent'] ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">HP AGENT/VENDOR</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="agent_hp" name="agent_hp" value="<?= empty($data) ? "" : $data['agent_hp'] ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ARMADA</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="armada" name="armada" value="<?= empty($data) ? "" : $data['armada'] ?>">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO. CONTAINER / SHIPPING NAME</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="no_container" name="no_container" value="<?= empty($data) ? "" : $data['no_container'] ?>">
                               </div>
                             </div>
                           </div>
@@ -350,39 +714,124 @@
                             
                             <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP DATE</label>
-                              <div class="col-sm-10">
+                              <div class="col-sm-4">
                                 <input class="form-control" type="date" id="pickup_date" name="pickup_date" value="<?= empty($data) ? "" : $data['pickup_date'] ?>" />
+                              </div>
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP TIME</label>
+                              <div class="col-sm-4">
+                                <input type="time" class="form-control" id="pickup_time" name="pickup_time" value="<?= empty($data) ? "" : $data['pickup_time'] ?>">
                               </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP ADDRESS</label>
                               <div class="col-sm-10">
-                                <textarea rows="5" cols="5" class="form-control" id="pickup_address" name="pickup_address" placeholder="Masukkan alamat pickup" style="height: auto;"><?= empty($data) ? "" : $data['pickup_address'] ?></textarea>
+                                <textarea rows="5" cols="5" class="form-control" id="pickup_address" name="pickup_address" placeholder="Masukkan alamat pickup" style="height: auto;" ><?= empty($data) ? "" : $data['pickup_address'] ?></textarea>
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">SITE NAME</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="site_name" name="site_name" value="<?= empty($data) ? "" : $data['site_name'] ?>" >
                               </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR KENDARAAN</label>
                               <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nomor_plat" name="nomor_plat" value="<?= empty($data) ? "" : $data['no_kendaraan'] ?>">
+                                <input type="text" class="form-control" id="nomor_plat" name="nomor_plat" value="<?= empty($data) ? "" : $data['no_kendaraan'] ?>" >
                               </div>
                             </div>
                             <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">DRIVER / SUPIR</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="driver" name="driver" value="<?= empty($data) ? "" : $data['driver'] ?>">
+                              <div class="col-sm-10" >
+                                <input type="text" class="form-control" id="driver" name="driver" value="<?= empty($data) ? "" : $data['driver'] ?>" >
                               </div>
                             </div>
                           </div>
                         </div>
-
-                        <div class="row">
-                          <div class="col-sm-10 col-sm-offset-1" style="margin-top: 10px;">
-                            <input type="hidden" name="id_rs" id="id_rs" value="<?= empty($data) ? "" : $data['id'] ?>">
-                            <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
-
-                            <button class="btn btn-block btn-grd-success" id="btn-finish">Simpan</button>
+                        <div class="card">
+                          <div class="card-block">
+                            <h4 class="info-text" style="padding-left: 0px;font-size: 25px;">Riwayat Status</h4>
+                            <p>Riwayat ini terisi otomatis jika ada perubahan status</p>
+                            <hr>
+                            <div class="form-group row" v-if="mode == 'edit' && (last_status == 'PICKUP' || last_status == 'DALAM PERJALANAN')">
+                              <label class="col-sm-1 col-form-label" style="font-weight: bold;">Remark</label>
+                              <div class="col-sm-5" >
+                                <input type="text" class="form-control" id="remark" name="remark" value="" >
+                              </div>
+                              <label class="col-sm-1 col-form-label" style="font-weight: bold;">Status</label>
+                              <div class="col-sm-3" >
+                                <input type="text" readonly class="form-control" id="status_history" name="status_history" value="DALAM PERJALANAN" >
+                              </div>
+                              <div class="col-sm-2">
+                                <button type="button" id="btnAddHistory" v-on:click="updateHistory()" class="btn hor-grd btn-grd-inverse btn-block" style="float: right;">Tambah</button>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <input type="hidden" id="total-row-multi" name="total-row-multi" value="<?= $totalrowhistory ?>">
+                              <table id="ViewTableMulti" class="table table-bordered">
+                                <thead class="text-primary thead-color">
+                                    <tr>
+                                        <th width="50">
+                                          No
+                                        </th>
+                                        <th>
+                                          Catatan
+                                        </th>
+                                        <th>
+                                          Status
+                                        </th>
+                                        <th>
+                                          Created Time
+                                        </th>
+                                        <th>
+                                          Input By
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-table-multi">
+                                  <template v-for="(log, index) in history">
+                                    <tr>
+                                        <td style="width:1%">{{ (index+1) }}</td>
+                                        <td>{{ log.remark }}</td>
+                                        <td>{{ log.status }}</td>
+                                        <td>{{ log.created_date }}</td>
+                                        <td>{{ log.created_by }}</td>
+                                    </tr>
+                                  </template>
+                                  
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
+
+                        <div class="card">
+                          <div class="card-block">
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">RECEIVED BY</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="received_by" name="received_by" value="<?= empty($data) ? "" : $data['received_by'] ?>" :disabled="last_status != 'DITERIMA' && last_status != 'DALAM PERJALANAN'">
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">RECEIVED DATE</label>
+                              <div class="col-sm-10">
+                                <input type="text" class="form-control" id="received_date" name="received_date" value="<?= empty($data) ? "" : $data['received_date'] ?>" :disabled="last_status != 'DITERIMA' && last_status != 'DALAM PERJALANAN'">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="sub-title" style="color: #2c3e50;">Dokumen Terkait (Foto, Berita Acara, DO/BO,dll)</div>
+                              <div class="dropzone" id="dropzone">
+
+                                <div class="dz-message">
+                                 <h3> Klik atau Drop gambar disini</h3>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -390,7 +839,45 @@
               </div> 
               
             </div>
-            <div>
+            <div class="" id="doc">
+              <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Dokumen Kembali
+              </h4>
+              <div class="card z-depth-0">
+                <div class="card-block panels-wells">
+                  <div class="row">
+                    <div class="col">
+                      <div class="well well-lg">
+                        <div class="card ">
+                          <div class="card-block">
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">TGL TERIMA</label>
+                              <div class="col-sm-10">
+                                <input class="form-control" type="date" id="tgl_terima_doc" name="tgl_terima_doc" :disabled="last_status != 'DITERIMA'" value="<?= empty($data) ? "" : $data['received_doc'] ?>" />
+                              </div>
+                            </div>
+                            <div class="form-group row">
+                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">DISERAHKAN ACC</label>
+                              <div class="col-sm-10">
+                                <input class="form-control" type="date" id="tgl_serah_acc" name="tgl_serah_acc" :disabled="last_status != 'DITERIMA'" value="<?= empty($data) ? "" : $data['sent_acc'] ?>" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-10 col-sm-offset-1" style="margin-top: 10px;">
+                <input type="hidden" name="id_rs" id="id_rs" value="<?= empty($data) ? "" : $data['id'] ?>">
+                <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
+
+                <button class="btn btn-block btn-grd-success" id="btn-finish">Simpan</button>
+              </div>
+            </div>
+            <!-- <div v-if="mode == 'edit'">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Riwayat Pengiriman
                 <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse" style="float: right;">Update Status</button>
               </h4>
@@ -478,7 +965,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </form>
 
         </div>
@@ -487,150 +974,7 @@
     </div>
   </div>
 </div>
-<div id="app">
-  <form >
-    
-    
-    
 
-    <!-- <div class="row" id="preview">
-      <hr style="width: 81%;border-top: 2px dotted rgba(0,0,0,.3);">
-      <h4 class="info-text"> Summary </h4>
-      <div class="row">
-        <div class="col-sm-10 col-sm-offset-1" style="border: 1px dotted;border-radius: 10px;padding: 10px;background-color: #fff;">
-          <div class="row">
-            <div class="col-sm-6" style="border-right: 2px dotted;">
-              <div class="row">
-                  <div class="col-sm-12">
-                      <div class="row">
-                        <div class="col-sm-4">
-                          <img style="height: 38px;margin-top: 10px;" src="assets\images\logo.png" >
-                        </div>
-                        <div class="col-sm-8">
-                          <div>Wilayah Pusat</div>
-                          <div>Jl. Raya Kalimalang KM 108, Bekasi</div>
-                          <div>Telp. 08656787878</div>
-                        </div>
-                      </div>
-                      <hr style="width: 100%;border-top: 2px dotted rgba(0,0,0,.3);">
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <div>Tanggal</div>
-                        </div>
-                        <div class="col-sm-9">
-                          <div>11 Desember 2020</div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-sm-3">
-                          <div>Pengirim:</div>
-                        </div>
-                        <div class="col-sm-9">
-                          <div id="t_npeni">{{ nama_pengirim }}</div>
-                          <div id="t_apeni">{{ alamat_pengirim }}</div>
-                          <div id="t_telppeni">Telp. {{ hp_pengirim }}</div>
-                        </div>
-                      </div>
-                      <div class="row" style="margin-bottom: 10px;">
-                        <div class="col-sm-3">
-                          <div>Penerima:</div>
-                        </div>
-                        <div class="col-sm-9">
-                          <div id="t_npen">{{ nama_penerima }}</div>
-                          <div id="t_apen">{{ alamat_penerima }}</div>
-                          <div id="t_telppen">Telp. {{ hp_penerima }}</div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <div>Moda :</div>
-                        </div>
-                        <div class="col-sm-3">
-                          <div id="t_moda">Darat</div>
-                        </div>
-                        <div class="col-sm-3">
-                          <div>Service :</div>
-                        </div>
-                        <div class="col-sm-3">
-                          <div id="t_services">Reguler</div>
-                        </div>
-                      </div>
-          
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <div>Payment :</div>
-                        </div>
-                        <div class="col-sm-3">
-                          <div id="metode">Tunai</div>
-                        </div>
-                        <div class="col-sm-3">
-                          <div>Tarif :</div>
-                        </div>
-                        <div class="col-sm-3">
-                          <div id="t_services">100.000</div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <div>Kasir :</div>
-                        </div>
-                        <div class="col-sm-9">
-                          <div>Dedi Slamet</div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="row">
-                <h2 style="text-align: center;width: 100%;" id="rute">{{ asal }} - {{ tujuan }}</h2>
-              </div>
-              <div class="row" style="margin-bottom: 10px;">
-                <div class="col-sm-10 col-sm-offset-1">
-                  <img src="<? echo $barcode; ?>" class="img-fluid" style="width: 100%;"></div>
-              </div>
-              <div class="row" style="font-weight: bold;">
-                <div class="col-sm-7">Barang</div>
-                <div class="col-sm-2">Qty</div>
-                <div class="col-sm-3">Satuan</div>
-              </div>
-              <hr style="width: 100%;border-top: 2px dotted rgba(0,0,0,.3);">
-              <div class="row">
-                <div class="col-sm-7">Tiang Telp</div>
-                <div class="col-sm-2">10</div>
-                <div class="col-sm-3">Pcs</div>
-              </div>
-              <div class="row">
-                <div class="col-sm-7">Kabel Udara</div>
-                <div class="col-sm-2">10</div>
-                <div class="col-sm-3">Mtr</div>
-              </div>
-              <hr style="width: 100%;border-top: 2px dotted rgba(0,0,0,.3);">
-              <div class="row">
-                <div class="col-sm-3">
-                  <div>Berat</div>
-                </div>
-                <div class="col-sm-9">
-                  <div>300 kg</div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-3">
-                  <div>Total Tarif</div>
-                </div>
-                <div class="col-sm-9">
-                  <div id="t_tarif">2.000.000,-</div>
-                </div>
-              </div>
-            </div>
-            <p style="width: 100%;padding-top: 15px;text-align: center;font-size: 12px;">Untuk mengetahui status kiriman anda silahkan kunjungin website kami di www.aaaaa.co.id</p>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    
-  </form>
-</div>
 <?php
   $this->load->view($modal); 
 ?>

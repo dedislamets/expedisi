@@ -16,44 +16,34 @@ class Login extends CI_Controller {
             // print("<pre>".print_r($password,true)."</pre>");exit();
             if($this->admin->logged_id())
             {
-                //jika memang session sudah terdaftar, maka redirect ke halaman dahsboard
                 redirect("home");
 
             }else{
 
-                //jika session belum terdaftar
-
-                //set form validation
                 $this->form_validation->set_rules('username', 'Username', 'required');
                 $this->form_validation->set_rules('password', 'Password', 'required');
 
-                //set message form validation
                 $this->form_validation->set_message('required', '<div class="alert alert-danger" >
                     <div class="header"><b><i class="fa fa-exclamation-circle"></i> {field}</b> harus diisi</div></div>');
 
                 //cek validasi
                 if ($this->form_validation->run() == TRUE) {
-
-                    //get data dari FORM
                     $username = $this->input->post("username", TRUE);
                     $password = $this->Acak($this->input->post('password', TRUE), "goldenginger");
-                    // echo $password;exit();
+                    $checking = $this->admin->check_login('tb_user', array('email' => $username), array('password' => $password), array('status' => 1));
 
-                    //checking data via model
-                    $checking = $this->admin->check_login('system_users', array('email' => $username), array('password' => $password));
-
-                    // $data['setup'] = $this->admin->masterSetup();
-                    // echo $checking; exit();
                     //jika ditemukan, maka create session
                     if (!empty($checking)) {
                         foreach ($checking as $apps) {
+                            $role = ChangeRole($apps->id_user);
                             $session_data = array(
-                                'user_id'   => $apps->id,
-                                'role'  => $apps->use_role_id,
+                                'user_id'   => $apps->id_user,
+                                'username'   => $apps->nama_user,
+                                'role'  => $role[0]->group,
+                                'role_id'  => $role[0]->id_group_role,
                                 'email' => $apps->email,
                                
                             );
-                            //set session userdata
                             $this->session->set_userdata($session_data);
                             // print("<pre>".print_r($session_data,true)."</pre>");exit();
                             redirect('home/');
@@ -69,7 +59,6 @@ class Login extends CI_Controller {
 
                 }else{
                     $data['main'] = 'login/index';
-                    // $data['setup'] = $this->admin->masterSetup();
                     $this->load->view('login', $data);
                 }
 
@@ -88,6 +77,12 @@ class Login extends CI_Controller {
     {
         $this->session->sess_destroy();
         redirect('login');
+    }
+
+    public function ChangeAccess($id)
+    {
+        $this->session->set_userdata("role_id",$id);
+        redirect('home');
     }
 
     function TidakAcak($varMsg,$strKey) {

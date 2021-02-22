@@ -84,27 +84,27 @@ if (! function_exists('vdebug')) {
 
         $c = 0;
 
-        // for ($i = 0; $i < $max; $i++) {
+        for ($i = 0; $i < $max; $i++) {
 
-        //     if ($match[1]{$i} == "(") {
+            if ($match[1]{$i} == "(") {
 
-        //         $c++;
+                $c++;
 
-        //     } elseif ($match[1]{$i} == ")") {
+            } elseif ($match[1]{$i} == ")") {
 
-        //         $c--;
+                $c--;
 
-        //     }
+            }
 
-        //     if ($c < 0) {
+            if ($c < 0) {
 
-        //         break;
+                break;
 
-        //     }
+            }
 
-        //     $varname .= $match[1]{$i};
+            $varname .= $match[1]{$i};
 
-        // }
+        }
 
 
 

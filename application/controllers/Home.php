@@ -12,14 +12,37 @@ class Home extends CI_Controller {
 	{		
 		if($this->admin->logged_id()){
         	
-			$recLogin = $this->session->userdata('user_id');
-			// $data['menu'] = $this->M_menu->getMenu($recLogin,0,"");
-			// $data['live'] = $live;	
-			// $data['title'] = 'Home';
-			$data['main'] = 'home';
-			
+            $this->db->limit(6);
+            $this->db->select("B.*,no_routing");
+            $this->db->from("tb_routingslip_history B");
+            $this->db->join('tb_routingslip A', 'A.id = B.id_routing');
+            $this->db->order_by("created_date","desc");
+            $data['history'] = $this->db->get()->result_array();
 
+            $data['list_kurir'] = $this->db->get_where('tb_routingslip',array('status <>'=> 'DITERIMA'))->result_array();
+
+            $this->db->from("tb_invoice");
+            $this->db->join('tb_term', 'tb_term.id = tb_invoice.id_term');
+            $this->db->where('tb_invoice.id_term <>', 6);
+            $this->db->where('tb_invoice.status <>', 'LUNAS');
+            $this->db->where('TIMESTAMPDIFF(DAY,CURDATE(),due_date) <', 5);
+            $data['total_duedate'] = $this->db->get()->num_rows();
+
+            $this->db->from("tb_invoice_vendor");
+            $this->db->join('tb_term', 'tb_term.id = tb_invoice_vendor.id_term');
+            $this->db->where('tb_invoice_vendor.id_term <>', 6);
+            $this->db->where('tb_invoice_vendor.status <>', 'LUNAS');
+            $this->db->where('TIMESTAMPDIFF(DAY,CURDATE(),due_date) <', 5);
+            $data['total_duedate_vendor'] = $this->db->get()->num_rows();
+
+			$data['main'] = 'home';
+			$data['total_SPK'] = $this->db->from('tb_spk')->get()->num_rows();
+            $data['total_routing'] = $this->db->from('tb_routingslip')->get()->num_rows();
+            $data['perjalanan'] = $this->db->get_where('tb_routingslip',array('status'=> 'DALAM PERJALANAN'))->num_rows();
+            $data['pickup'] = $this->db->get_where('tb_routingslip',array('status'=> 'INPUT'))->num_rows();
 			$data['js'] = 'home/js';
+            // print("<pre>".print_r($data,true)."</pre>");
+            // exit();
 			$this->load->view('home',$data,FALSE); 
 
         }else{
@@ -37,93 +60,17 @@ class Home extends CI_Controller {
         redirect('login');
     }
 
-    public function generateDashboard(){
-
-    	$start = date('Y-m-d'); 
-        if(!empty($this->input->get('start')))
-        	$start= date("Y-m-d", strtotime($this->input->get('start')));
-        
-        $end = date('Y-m-d'); 
-        if(!empty($this->input->get('end')))
-        	$end = date("Y-m-d", strtotime($this->input->get('end')));
-
-    	$row_data = $this->db->query("SELECT * from DashboardType WHERE Recnum='". $this->input->get('recnum') ."'")->result_array();
-    	$query = $row_data[0]['IsQuery'];
-    	$title = $row_data[0]['IsDesc'];
-    	$query = str_replace('@RecnumEmployee', $this->session->userdata('user_id'), $query);
-    	$query = str_replace('@StartDate', "'".$start. "'", $query);
-    	$query = str_replace('@EndDate', "'". $end . "'", $query);
-    	$data_column = $this->db->query($query)->result_array();
-    	$arr_data = [];
-    	$arr_data['judul'] = $title;
-    	$arr_data['data'] = [];
-    	foreach($data_column as $k => $value) {
-            if(!empty($data_column[$k]['IsDesc'])) {
-               array_push($arr_data['data'], $data_column[$k]);
-            }
-        }
-    	$this->output->set_content_type('application/json')->set_output(json_encode($arr_data));
-    }
-    public function getPeriode(){
-    	$id = $this->input->get('id');
-    	$this->output->set_content_type('application/json')->set_output(json_encode($this->admin->getmaster('Period', 'Recnum=' . $id)));
-    }
-
-    public function getKontenPolicy(){
-    	$id = $this->input->get('recnum');
-    	$this->output->set_content_type('application/json')->set_output(json_encode($this->admin->getmaster('HrPolicies', 'Recnum=' . $id)));
-    }
-
-    public function getDetailDashboard(){
-    	$start = date('Y-m-d'); 
-        if(!empty($this->input->get('start')))
-        	$start= date("Y-m-d", strtotime($this->input->get('start')));
-        
-        $end = date('Y-m-d'); 
-        if(!empty($this->input->get('end')))
-        	$end = date("Y-m-d", strtotime($this->input->get('end')));
-
-    	$id = $this->input->get('recnum');
-    	$row_data = $this->db->query("SELECT * from DashboardType WHERE Recnum='". $this->input->get('recnum') ."'")->result_array();
-
-    	$query = $row_data[0]['IsQueryDetail'];
-    	$title = $row_data[0]['IsDesc'];
-    	
-    	$query = str_replace('@RecnumEmployee', $this->session->userdata('user_id'), $query);
-    	$query = str_replace('@StartDate', "'".$start. "'", $query);
-    	$query = str_replace('@EndDate', "'". $end . "'", $query);
-
-    	$data_column = $this->db->query($query)->result_array();
-    	$arr_data = [];
-    	$arr_data['data'] = [];
-    	foreach($data_column as $k => $value) {
-            array_push($arr_data['data'], $data_column[$k]);
-        }
-
-        $table = '<table id="tabel-detail" class="table table-striped table-bordered table-hover" style="margin-bottom: 0" style="width: 100%">';
-        $myArray = $data_column;
-        
-        $table .="<thead><tr>";
-        foreach($myArray[0] as $key => $item) {
-        	
-        	$table .="<td >". $key ."</td>";
-        }
-        $table .="</tr></thead><tbody>";  
-
-
-        foreach($myArray as $ky => $it) {
-            $table .="<tr>";
-           
-            foreach($myArray[$ky] as $key => $item) {
-                $table .="<td class=". ($key=='Recnum' ? 'hidden':'').">". $item ."</td>";
-            }
-            $table .="</tr>"; 
-        }
-         
-        $table .= "</tbody></table>";
-        $arr_data['tabel'] = $table;
-        $arr_data['judul'] = $title;
-    	$this->output->set_content_type('application/json')->set_output(json_encode($arr_data));
+    public function getMap(){
+        $maps = $this->db->query("SELECT tbl.*,logg.`latitude`,logg.`longitude`,logg.`status`,logg.`created_date` FROM (
+                                    SELECT A.`no_routing`,B.`id_routing`,MAX(B.id) id
+                                    FROM tb_routingslip A
+                                    JOIN tb_routingslip_history B ON A.id=B.`id_routing`
+                                    GROUP BY A.`no_routing`
+                                    ORDER BY A.no_routing,B.`id_routing`,B.id DESC
+                                )tbl
+                                JOIN tb_routingslip_history logg ON tbl.id=logg.id
+                                WHERE logg.`status` NOT IN ('INPUT','DITERIMA')");
+        $this->output->set_content_type('application/json')->set_output(json_encode($maps->result()));
     }
 	
 }

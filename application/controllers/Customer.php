@@ -11,18 +11,20 @@ class Customer extends CI_Controller {
 	public function index()
 	{		
 		if($this->admin->logged_id())
-        {
+    {
+      if(CheckMenuRole('customer')){
+        redirect("errors");
+      }
 			$data['title'] = 'Master Vendor';
 			$data['main'] = 'vendor/list';
 			$data['js'] = 'script/list-vendor';
 			$data['modal'] = 'modal/vendor';
-
 			$this->load->view('home',$data,FALSE); 
 
-        }else{
-            redirect("login");
+    }else{
+        redirect("login");
 
-        }				  
+    }				  
 						
 	}
 
@@ -157,7 +159,10 @@ class Customer extends CI_Controller {
   public function edit(){
       $id = $this->input->get('id');
       $arr_par = array('id' => $id);
-      $data = $this->admin->getmaster('master_customer',$arr_par);
+      $row = $this->admin->getmaster('master_customer',$arr_par);
+      $data['parent'] = $row;
+      $data['child'] = $this->admin->getmaster('master_customer_address',array('id_master' => $id));
+      $data['total'] = $this->admin->get_num_rows('master_customer_address',array('id_master' => $id));
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
   }
 
@@ -169,12 +174,12 @@ class Customer extends CI_Controller {
       $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
       $recLogin = $this->session->userdata('user_id');
       $data = array(
-          'cust_name'   => $this->input->post('cust_name'),
-          'cust_address'  => $this->input->post('cust_address'),
-          'phone1'  => $this->input->post('phone1'),
-          'phone2'        => $this->input->post('phone2'),
-          'attn'        => $this->input->post('attn'),
-          'region'        => $this->input->post('region'),
+          'cust_name'   => $this->input->post('cust_name',TRUE),
+          'cust_address'  => $this->input->post('cust_address',TRUE),
+          'phone1'  => $this->input->post('phone1',TRUE),
+          'phone2'        => $this->input->post('phone2',TRUE),
+          'attn'        => $this->input->post('attn',TRUE),
+          'region'        => $this->input->post('region',TRUE),
                       
       );
 
@@ -185,13 +190,31 @@ class Customer extends CI_Controller {
           $data['EditDate'] = date('Y-m-d');
 
           $this->db->set($data);
-          $this->db->where('id', $this->input->post('id'));
+          $this->db->where('id', $this->input->post('id',TRUE));
           $result  =  $this->db->update('master_customer');  
 
           if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
           }else{
               $response['error']= FALSE;
+
+              $total = intval($this->input->post('total-row',TRUE));
+              for ($i=1; $i <= $total ; $i++) { 
+                if(!empty($this->input->post('tag_'.$i,TRUE) )){
+                  unset($data);
+                  $data['id_master'] = $this->input->post('id',TRUE);
+                  $data['tag'] = $this->input->post('tag_'.$i,TRUE);
+                  $data['other_address'] = $this->input->post('alamat_'.$i,TRUE);
+
+                  if(!empty($this->input->post('id_detail_'.$i,TRUE) )){
+                    $this->db->set($data);
+                    $this->db->where(array( "id" => $this->input->post('id_detail_'.$i,TRUE) ));
+                    $this->db->update('master_customer_address');
+                  }else{
+                    $this->db->insert('master_customer_address', $data);
+                  }
+                }
+              }
           }
       }else{  
           $data['CreateBy'] = $recLogin;
@@ -203,6 +226,20 @@ class Customer extends CI_Controller {
               print("<pre>".print_r($this->db->error(),true)."</pre>");
           }else{
               $response['error']= FALSE;
+              $last_id = $this->db->insert_id();
+              $response['id']= $last_id;
+
+              $total = intval($this->input->post('total-row'));
+              for ($i=1; $i <= $total ; $i++) { 
+                if(!empty($this->input->post('tag_'.$i) )){
+                  unset($data);
+                  $data['id_master'] = $last_id;
+                  $data['tag'] = $this->input->post('tag_'.$i);
+                  $data['other_address'] = $this->input->post('alamat_'.$i);
+                  $this->db->insert('master_customer_address', $data);
+                  
+                }
+              }
           }
       }
 
@@ -214,11 +251,21 @@ class Customer extends CI_Controller {
   {
       $response = [];
       $response['error'] = TRUE; 
-      if($this->admin->deleteTable("id",$this->input->get('id'), 'master_customer' )){
+      if($this->admin->deleteTable("id",$this->input->get('id',TRUE), 'master_customer' )){
         $response['error'] = FALSE;
       } 
 
       $this->output->set_content_type('application/json')->set_output(json_encode($response)); 
+  }
+  public function delete_address()
+  {
+    $response = [];
+    $response['error'] = TRUE; 
+    if($this->admin->deleteTable("id",$this->input->get('id',TRUE), 'master_customer_address' )){
+      $response['error'] = FALSE;
+    } 
+
+    $this->output->set_content_type('application/json')->set_output(json_encode($response)); 
   }
 
 }

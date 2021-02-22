@@ -12,10 +12,21 @@ class Cargo extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
     {
+      if(CheckMenuRole('cargo')){
+        redirect("errors");
+      }
 			$data['title'] = 'Entry Routing Slip';
 			$data['main'] = 'cargo/index';
 			$data['js'] = 'script/cargo';
 			$data['modal'] = 'modal/cargo';	
+      $data['totalrow'] = 0;
+      $data['totalrowmulti'] = 1;
+      $data['totalrowhistory'] = 0;
+      $data['kota_asal'] = $this->db->query('select distinct kota from master_city')->result();
+      $data['kota_tujuan'] = $data['kota_asal'];
+      $data['data_detail'] = array();
+      $data['data_multi'] = array();
+      $data['moda_only'] = $this->admin->getmaster('tb_moda');
 
       $moda = $this->db->query("SELECT A.moda_name,A.moda_img, B.moda_kategori,C.* FROM tb_moda A
               INNER JOIN tb_moda_kat B ON A.id=B.id_moda
@@ -56,20 +67,41 @@ class Cargo extends CI_Controller {
     	$arr_par = array('id' => $this->input->post('id_rs'));
 
       $data['no_routing'] = $this->input->post('nomor_rs');
-      $data['id_spk'] = $this->input->post('id_spk');
+      // $data['id_spk'] = $this->input->post('id_spk');
 
       $data['id_moda'] = $this->input->post('moda_tran');
+      $data['id_moda_kat'] = $this->input->post('moda_kat');
       $data['moda_name'] = $this->input->post('text-moda');
 
       $data['agent'] = $this->input->post('agent');
-      $data['pickup_date'] = $this->input->post('pickup_date');
-      $data['pickup_address'] = $this->input->post('pickup_address');
-      $data['no_kendaraan'] = $this->input->post('nomor_plat');
+      // $data['pickup_date'] = $this->input->post('pickup_date');
+      // $data['pickup_address'] = $this->input->post('pickup_address');
+      // $data['no_kendaraan'] = $this->input->post('nomor_plat');
+      // $data['driver'] = $this->input->post('driver');
 
-      $data['driver'] = $this->input->post('driver');
+      $data['spk_no'] = $this->input->post('nomor_spk');
+      $data['nama_project'] = $this->input->post('project');
+      $data['tgl_spk'] = date("Y-m-d", strtotime($this->input->post('tgl_do')));
+
+      $data['id_pengirim'] = $this->input->post('id_pengirim');
+      $data['alamat_pengirim'] = $this->input->post('alamat_pengirim');
+      $data['kota_pengirim'] = $this->input->post('region_pengirim');
+      $data['kec_pengirim'] = $this->input->post('kecamatan_pengirim');
+      $data['zip_pengirim'] = $this->input->post('zip_pengirim');
+      $data['hp_pengirim'] = $this->input->post('phone_pengirim');
+      $data['attn_pengirim'] = $this->input->post('attn_pengirim');
+
+      $data['id_penerima'] = $this->input->post('id_penerima');
+      $data['alamat_penerima'] = $this->input->post('alamat_penerima');
+      $data['kota_penerima'] = $this->input->post('region_penerima');
+      $data['kec_penerima'] = $this->input->post('kecamatan_penerima');
+      $data['zip_penerima'] = $this->input->post('zip_penerima');
+      $data['hp_penerima'] = $this->input->post('phone_penerima');
+      $data['attn_penerima'] = $this->input->post('attn_penerima');
+
       $data['no_pelayaran'] = $this->input->post('pelayaran_no');
-      $data['eta'] = ($this->input->post('jenis_moda') == "Laut") ? $this->input->post('eta_laut') : $this->input->post('eta');
-      $data['etd'] = ($this->input->post('jenis_moda') == "Laut") ? $this->input->post('etd_laut') : $this->input->post('etd');
+      $data['eta'] = ($this->input->post('text-moda') == "LAUT") ? $this->input->post('eta_laut') : $this->input->post('eta');
+      $data['etd'] = ($this->input->post('text-moda') == "LAUT") ? $this->input->post('etd_laut') : $this->input->post('etd');
       $data['tgl_pelayaran'] = $this->input->post('tgl_pelayaran');
 
       $data['awb'] = $this->input->post('awb');
@@ -79,8 +111,41 @@ class Cargo extends CI_Controller {
       $data['flight_no'] = $this->input->post('flight_no');
       $data['flight_date'] = $this->input->post('flight_date');
 
+      $data['agent_hp'] = $this->input->post('agent_hp');
+      $data['armada'] = $this->input->post('armada');
+      $data['no_container'] = $this->input->post('no_container');
+      $data['link'] = $this->input->post('link');
+
+      if(!empty($this->input->post('tgl_terima_doc'))){
+        $data['received_doc'] = $this->input->post('tgl_terima_doc');
+      }
+      if(!empty($this->input->post('tgl_serah_acc'))){
+        $data['sent_acc'] = $this->input->post('tgl_serah_acc');
+      }
+
+      $data['driver']         = $this->input->post('driver');
+      $data['no_kendaraan']   = $this->input->post('nomor_plat');
+      $data['pickup_address'] = $this->input->post('pickup_address');
+      $data['pickup_date']    = $this->input->post('pickup_date');
+      $data['pickup_time']    = $this->input->post('pickup_time');
+      $data['site_name']      = $this->input->post('site_name');
+
 	    if($this->input->post('mode') === "edit"){
 	        
+          if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) && !empty($this->input->post('pickup_address') )){
+            $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $this->input->post('id_rs', TRUE)));
+            if($routing['status'] == "INPUT"){
+              $data['status'] = 'PICKUP';
+
+              $data_hist = array();
+              $data_hist['remark'] = 'Barang sudah dipickup';
+              $data_hist['id_routing'] = $this->input->post('id_rs');
+              $data_hist['created_by'] = $this->session->userdata('username');
+              $data_hist['status'] = 'PICKUP';
+
+              $this->db->insert('tb_routingslip_history', $data_hist);
+            }
+          }
 
 	      	$this->db->set($data);
 	        $this->db->where($arr_par);
@@ -90,9 +155,56 @@ class Cargo extends CI_Controller {
               print("<pre>".print_r($this->db->error(),true)."</pre>");
 	        }else{
 	            $response['error']= FALSE;
+              $response['id']= $this->input->post('id_rs', TRUE);
+              $total = intval($this->input->post('total-row'));
+              for ($i=1; $i <= $total ; $i++) { 
+                if(!empty($this->input->post('kode'.$i) )){
+                  unset($data);
+                  $data['id_routing'] = $this->input->post('id_rs');
+                  $data['no_routing'] = $this->input->post('nomor_rs');
+                  $data['id_barang'] = $this->input->post('kode'.$i);
+                  $data['qty'] = $this->input->post('qty'.$i);
+                  $data['satuan'] = $this->input->post('satuan'.$i);
+                  $data['kg'] = $this->input->post('kg'.$i);
+
+                  if(!empty($this->input->post('id_detail'.$i) )){
+                    $this->db->set($data);
+                    $this->db->where(array( "id" => $this->input->post('id_detail'.$i) ));
+                    $this->db->update('tb_routingslip_detail');
+                  }else{
+                    $this->db->insert('tb_routingslip_detail', $data);
+                  }
+                }
+              }
+
+              $total_cost = intval($this->input->post('total-row-multi'));
+              for ($i=1; $i <= $total_cost ; $i++) { 
+                if(!empty($this->input->post('aktifitas_'.$i,TRUE) )){
+                  unset($data);
+                  $data['id_routing'] = $this->input->post('id_rs');
+                  $data['rute'] = $this->input->post('aktifitas_'.$i,TRUE);
+
+                  if(!empty($this->input->post('id_detail_multi_'.$i) )){
+                    if($this->input->post('deleted_'.$i) == 1 ){
+                      $this->admin->deleteTable("id",$this->input->post('id_detail_multi_'.$i), 'tb_routingslip_multi' );
+                    }else{
+                      $this->db->set($data);
+                      $this->db->where(array( "id" => $this->input->post('id_detail_multi_'.$i) ));
+                      $this->db->update('tb_routingslip_multi');                      
+                    }
+                  }else{
+                    $this->db->insert('tb_routingslip_multi', $data);
+                  }
+                  
+                }
+              }
 	        }
 	    }else{
         $data['CreatedDate'] = date('Y-m-d H:i:s');
+
+        if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) && !empty($this->input->post('pickup_address') )){
+          $data['status'] = 'PICKUP';
+        }
 
         $result_header = $this->admin->getmaster('tb_routingslip',array('no_routing' => $this->input->post('nomor_rs')));
         if($result_header){
@@ -103,7 +215,57 @@ class Cargo extends CI_Controller {
           if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
           }else{
+              $last_id = $this->db->insert_id();
+              $response['id']= $last_id;
+              $total = intval($this->input->post('total-row'));
+              for ($i=1; $i <= $total ; $i++) { 
+                if(!empty($this->input->post('kode'.$i) )){
+                  unset($data);
+                  $data['no_routing'] = $this->input->post('nomor_rs');
+                  $data['id_routing'] = $last_id;
+                  $data['id_barang'] = $this->input->post('kode'.$i);
+                  $data['qty'] = $this->input->post('qty'.$i);
+                  $data['satuan'] = $this->input->post('satuan'.$i);
+                  $data['kg'] = $this->input->post('kg'.$i);
+                  
+                  $this->db->insert('tb_routingslip_detail', $data);
+                  
+                }
+              }
+
+              $total_cost = intval($this->input->post('total-row-multi'));
+              for ($i=1; $i <= $total_cost ; $i++) { 
+                if(!empty($this->input->post('aktifitas_'.$i,TRUE) )){
+                  unset($data);
+                  $data['id_routing'] = $last_id;
+                  $data['rute'] = $this->input->post('aktifitas_'.$i,TRUE);
+
+                  $this->db->insert('tb_routingslip_multi', $data);
+                  
+                }
+              }
+
+              unset($data);
+              
+              $data['remark'] = 'Membuat Routing Slip';
+              $data['id_routing'] = $last_id;
+              $data['created_by'] = $this->session->userdata('username');
+              $data['status'] = 'INPUT';
+
+              $this->db->insert('tb_routingslip_history', $data);
               $response['error']= FALSE;
+
+              if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) && !empty($this->input->post('pickup_address') )){
+
+                  $data_hist = array();
+                  $data_hist['remark'] = 'Barang sudah dipickup';
+                  $data_hist['id_routing'] = $last_id;
+                  $data_hist['created_by'] = $this->session->userdata('username');
+                  $data_hist['status'] = 'PICKUP';
+
+                  $this->db->insert('tb_routingslip_history', $data_hist);
+                
+              }
           }
         } 
       }
@@ -121,11 +283,61 @@ class Cargo extends CI_Controller {
       $data['modal'] = 'modal/cargo';  
 
       $data['data'] = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
+      $data['moda_only'] = $this->admin->getmaster('tb_moda');
+      $data['kota_asal'] = $this->db->query('select distinct kota from master_city')->result();
+      $data['kota_tujuan'] = $data['kota_asal'];
+      $data['kec_pengirim'] = $this->db->query("select distinct kecamatan from master_city where kota='". $data['data']['kota_pengirim'] ."'")->result();
+      $data['zip_pengirim'] = $this->db->query("select distinct kodepos from master_city where kota='". $data['data']['kota_pengirim'] ."' and kecamatan='". $data['data']['kec_pengirim'] ."'")->result();
+      $data['kec_penerima'] = $this->db->query("select distinct kecamatan from master_city where kota='". $data['data']['kota_penerima'] ."'")->result();
+      $data['zip_penerima'] = $this->db->query("select distinct kodepos from master_city where kota='". $data['data']['kota_penerima'] ."' and kecamatan='". $data['data']['kec_penerima'] ."'")->result();
+
+      $data['totalrow'] = 0;
+      $data['totalrowmulti'] = 1;
+      $data['totalrowhistory'] = 0;
+
       if(empty($data['data'])){
         redirect("Cargo");
       }
-      // $data['data_detail'] = $this->admin->get_result_array('tb_spk_detail',array( 'spk_no' => $data['data']['spk_no']));
+
+      // $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data']['id_pengirim']),'cust_name');
+      // $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data']['id_penerima']),'cust_name');
+      $data['data_detail'] = $this->admin->get_result_array('tb_routingslip_detail',array( 'id_routing' => $id));
+
+      foreach ($data['data_detail'] as $key => $value) {
+        $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
+        $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
+        $data['data_detail'][$key]['berat'] = $item['berat_barang'];
+
+        $data['totalrow'] ++;
+      }
+
+      $data['data_multi'] = $this->admin->get_result_array('tb_routingslip_multi',array( 'id_routing' => $id));
+
+      foreach ($data['data_multi'] as $key => $value) {
+        $data['totalrowmulti'] ++;
+      }
+
+      $data['data_history'] = $this->admin->get_result_array('tb_routingslip_history',array( 'id_routing' => $id));
+
+      foreach ($data['data_history'] as $key => $value) {
+        $data['totalrowhistory'] ++;
+      }
+
+      
       $data['mode'] ='edit';
+
+      $moda = $this->db->query("SELECT A.moda_name,A.moda_img, B.moda_kategori,C.* FROM tb_moda A
+              INNER JOIN tb_moda_kat B ON A.id=B.id_moda
+              INNER JOIN tb_moda_sub C ON B.id=C.id_moda_kat");
+
+      $data_arr = array();
+      foreach($moda->result() as $key => $value)
+      {
+          $data_arr[$value->moda_name]['data'][$value->moda_kategori][] = $value;
+          $data_arr[$value->moda_name]['img'] = $value->moda_img;
+      }
+
+      $data['moda'] = $data_arr;
 
       // print("<pre>".print_r($data,true)."</pre>"); exit();
     
@@ -134,9 +346,16 @@ class Cargo extends CI_Controller {
     }else{
         redirect("login");
     } 
-
   }
+  public function getModaKategori()
+  {
+    $arr_par = array(
+      'id_moda' => $this->input->get('id')
+    );
 
+    $data = $this->admin->getmaster('tb_moda_kat',$arr_par);
+    $this->output->set_content_type('application/json')->set_output(json_encode($data));
+  }
 	public function dataTableDetail()
   {
   	$draw = intval($this->input->get("draw"));
@@ -181,11 +400,42 @@ class Cargo extends CI_Controller {
 
   public function getInfoModa()
   {
-    $this->db->select("A.moda_name,A.moda_img, B.moda_kategori,C.*");
+    $this->db->select("A.moda_name,A.moda_img, B.*");
     $this->db->from("tb_moda A");
     $this->db->join('tb_moda_kat B', 'A.id=B.id_moda');
-    $this->db->join('tb_moda_sub C', 'B.id=C.id_moda_kat');
+    // $this->db->join('tb_moda_sub C', 'B.id=C.id_moda_kat');
     $query = $this->db->where('C.id', $this->input->get('id'))->get()->row();
     $this->output->set_content_type('application/json')->set_output(json_encode($query));
+  }
+
+  public function updatehistory()
+  {       
+      
+    $response = [];
+    $response['error'] = TRUE; 
+    $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+    $recLogin = $this->session->userdata('user_id');
+    $data = array(
+        'status' => $this->input->post("status_history"),                 
+    );
+
+    $this->db->set($data);
+    $this->db->where('id', $this->input->post('id_rs'));
+    $result  =  $this->db->update('tb_routingslip');  
+
+    if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+    }else{
+        $response['error']= FALSE;
+        unset($data);
+        $data['remark'] = $this->input->post('remark');
+        $data['id_routing'] = $this->input->post('id_rs');
+        $data['created_by'] = $this->session->userdata('username');
+        $data['status'] = $this->input->post("status_history");
+
+        $this->db->insert('tb_routingslip_history', $data);
+    }
+                          
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
   }
 }

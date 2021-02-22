@@ -1,39 +1,93 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){  
-		$('#ViewTable').DataTable({
-			dom: 'Bfrtip',
-        	buttons: ['excel', 'pdf', 'print'],
-			ajax: {		            
-	            "url": "Moda/dataTable",
-	            "type": "GET"
-	        },
-	        processing	: true,
-			serverSide	: true,			
-			"bPaginate": true,	
-			// "ordering": false,
-			"autoWidth": true,
-			// "order": [[ 4, "desc" ]],
-			columnDefs:[
-				{ "width": "100px", "targets": [2] },
+		// $('#ViewTable').DataTable({
+		// 	dom: 'Bfrtip',
+  //       	buttons: ['excel', 'pdf', 'print'],
+		// 	ajax: {		            
+	 //            "url": "Moda/dataTable",
+	 //            "type": "GET"
+	 //        },
+	 //        processing	: true,
+		// 	serverSide	: true,			
+		// 	"bPaginate": true,	
+		// 	"autoWidth": true,
+		// 	columnDefs:[
+		// 		{ "width": "100px", "targets": [2] },
 				
-			]
+		// 	]
 
-	    });
+	 //    });
 
 	})
 
+	var app = new Vue({
+	    el: "#app",
+	    mounted: function () {
+	      this.loadMenuSelected();
+	      
+	    },
+	    updated: function () {
+	    	
+	    },
+	    data: {
+	      menu_text: '',
+	      menu_id:'',
+	      group_id: '1',
+	      group_text:'Darat',
+	      menu_selected: [],
+	   
+	      myTable2: ''
+	    },
+	    methods: {
+	    	loadMenuSelected: function () {
+		        myTable = $('#ViewTable').DataTable({
+					dom: 'frtip',
+					ajax: {		            
+			            "url": "moda/dataTable?id=" + this.group_id,
+			            "type": "GET"
+			        },
+			        processing	: true,
+					serverSide	: true,			
+					"bPaginate": true,	
+					"autoWidth": true,
+					"destroy": true,
+		            
+			    });
+
+			  //   this.myTable2 = $('#ModalTableUser').DataTable({
+					// dom: 'frtip',
+					// ajax: {		            
+			  //           "url": "roleusers/dataTableModal?id=" + this.group_id,
+			  //           "type": "GET"
+			  //       },
+			  //       processing	: true,
+					// serverSide	: true,			
+					// "bPaginate": true,	
+					// "autoWidth": true,
+					// "destroy": true,
+		            
+			  //   });
+		    },
+		    
+	    }
+	})
+
+    $(".btnGroup").on('click', function (event) {
+    	app.group_id = $(this).data('id');
+    	app.group_text = $(this).text();
+    	app.loadMenuSelected();
+    }) 
+
 	function editmodal(val){
 
-		$.get('barang/edit', { id: $(val).data('id') }, function(data){ 
+		$.get('moda/edit', { id: $(val).data('id') }, function(data){ 
 				$("#lbl-title").text("Edit");
-         		$("#jenis").val(data[0]['jenis_barang']);
+         		$("#moda").val(data[0]['id_moda']);
 				$("#jenis").change();
-				$("#satuan").val(data[0]['satuan']);
-				$("#satuan").change();
-				$("#nama_barang").val(data[0]['nama_barang']);
-				$("#berat_barang").val(data[0]['berat_barang']);
-				$("#id_barang").val(data[0]['id_barang']);
+				
+				$("#kategori").val(data[0]['moda_kategori']);
+				$("#id").val(data[0]['id']);
            		$('#ModalAdd').modal({backdrop: 'static', keyboard: false}) ;
            
         });
@@ -42,12 +96,8 @@
 	
 	$('#btnAdd').on('click', function (event) {
 		$("#lbl-title").text('Tambah');
-		$("#jenis").val('Gadget');
-		$("#satuan").val('Kg');
-		$("#nama_barang").val('');
-		$("#berat_barang").val(0);
-		$("#id_barang").val('');
-		$('#Form').find(':input:disabled').removeAttr('disabled');
+		$("#kategori").val('');
+		$("#id").val('');
 		
 		$('#ModalAdd').modal({backdrop: 'static', keyboard: false}) ;
 	});
@@ -57,22 +107,15 @@
     	var sParam = $('#Form').serialize();
     	var validator = $('#Form').validate({
 							rules: {
-									nama_barang: {
+									kategori: {
 							  			required: true
 									},
-									berat_barang: {
-							  			required: true
-									},
-									jenis: {
-							  			required: true
-									},
-									  
 								}
 							});
 	 	validator.valid();
 	 	$status = validator.form();
 	 	if($status) {
-	 		var link = 'Barang/Save';
+	 		var link = 'moda/Save';
 	 		$.post(link,sParam, function(data){
 				if(data.error==false){									
 					window.location.reload();
@@ -90,8 +133,8 @@
 		var r = confirm("Yakin dihapus?");
 		if (r == true) {
 			
-			$.get('Barang/delete', { id: $(val).data('id') }, function(data){ 
-				window.location.reload();
+			$.get('moda/delete', { id: $(val).data('id') }, function(data){ 
+				app.loadMenuSelected();
 			})
 		
 		}

@@ -1,4 +1,10 @@
 <style type="text/css">
+    .preview-dropzone{
+        color: firebrick;
+        text-align: center;
+        display: block;
+        width: 100%;
+    }
     .info-text{
         margin-bottom: 12px;
         padding-left: 10%;
@@ -6,12 +12,28 @@
         font-weight: bold;
         width: 100%;
       }
-      .lokasi {
+    .lokasi {
         font-size: 13px;
         font-weight: bold;
         padding: 10px;
         background-image: linear-gradient(to right, #ffb56a , red) !important;
-      }
+        height: 300px;
+    }
+    .lokasi-address {
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px;
+        background-image: linear-gradient(to right, #ffb56a , red) !important;
+        height: 200px;
+        margin-top: 16px;
+        /*display: flex;*/
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+    .jFiler-input-dragDrop {
+        width: auto;
+    }
 </style>
 <div id="app">
     <div class="row">
@@ -29,8 +51,10 @@
                 
                 <div class="row seacrh-header">
                     <div class="col-lg-4 offset-lg-4 offset-sm-3 col-sm-6 offset-sm-1 col-xs-12">
-                            <input type="text" id="no" name="no" class="form-control" placeholder="Masukkan Nomor Routing" autocomplete="on">
-                            <input type="hidden" name="id" id="id" value="">
+                            <input type="text" id="no" name="no" class="form-control" placeholder="Masukkan Nomor Routing" value="<?= empty($routing) ? "" : $routing->no_routing ?>" autocomplete="on">
+                            <input type="hidden" name="id" id="id" value="<?= empty($routing) ? "" : $routing->id ?>">
+                            <input type="hidden" name="mode" id="mode" value="<?= $mode ?>">
+
                         <!-- <div class="input-group input-group-button input-group-primary m-b-0">
                             <span class="input-group-addon btn btn-grd-inverse" id="btnBrowse" style="border-width: 0;background-color: #01a9ac;">
                                 <span class="">Cari..</span>
@@ -43,7 +67,7 @@
             </div>
         </div>   
     </div>
-    <div class="row" id="pengirim">
+    <div class="row" id="pengirim" v-if="id != ''">
         <div class="card z-depth-bottom-1">
             <div class="card-block panels-wells">
                 <div class="col-sm-12">
@@ -122,10 +146,12 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="id != ''">
         <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Riwayat Pengiriman
-            <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse" style="float: right;">Update Status</button>
+            <button type="button" id="btnPickup" data-toggle="modal" data-target="#large-Modal" class="btn hor-grd btn-grd-inverse" v-if="last_status == 'INPUT'" style="float: right;"><i class="icofont icofont-long-drive" ></i>Atur Pickup</button>
+            <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse" style="float: right;" v-if="last_status != 'INPUT' && last_status != 'DITERIMA'" data-toggle="modal" data-target="#large-Modal"><i class="icofont icofont-long-drive" ></i>Update Status</button>
         </h4>
+        <!-- <div class="col-md-12" id="maps4" style="height: 300px;">Lokasi terakhir update yang diambil dari kordinat google maps</div> -->
         <div class="card z-depth-bottom-1">
             <div class="card-block panels-wells">
                 <div class="col-md-12 timeline-dot">
@@ -148,9 +174,10 @@
                                                     <div class="col-sm-6">
                                                       <p style="font-style: italic">{{ log.remark }}</p>
                                                       <p class="m-b-0">Updated by: {{ log.created_by }}</p>
+                                                      <p :id="'address' + log.id" v-if="log.latitude != null" class="lokasi-address <?= ($this->session->userdata('role_id') ==  1 ? "" : "hidden") ?>"></p>
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                      <div class="lokasi" v-if="log.latitude != null">Lokasi terakhir update yang diambil dari kordinat google maps</div>
+                                                    <div class="col-sm-4 <?= ($this->session->userdata('role_id') ==  1 ? "" : "hidden") ?>">
+                                                      <div class="lokasi" v-if="log.latitude != null" :id="'maps' + log.id"></div>
                                                     </div>
                                                     <div class="col-sm-2">
                                                       <div style="font-size: 1.5rem;padding: 10px;text-align: center;font-weight: bold;">{{ log.status }}</div>
@@ -180,4 +207,7 @@
             </div>
         </div>
     </div>
+    <?php
+      $this->load->view($modal); 
+    ?>
 </div>

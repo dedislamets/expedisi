@@ -11,18 +11,22 @@ class Moda extends CI_Controller {
 	public function index()
 	{		
 		if($this->admin->logged_id())
-        {
+    {
+      if(CheckMenuRole('moda')){
+        redirect("errors");
+      }
 			$data['title'] = 'Master Moda';
 			$data['main'] = 'moda/index';
 			$data['js'] = 'script/moda';
-			$data['modal'] = 'modal/cabang';
+			$data['modal'] = 'modal/moda';
+      $data['moda'] = $this->admin->get('tb_moda');
 
 			$this->load->view('home',$data,FALSE); 
 
-        }else{
-            redirect("login");
+    }else{
+        redirect("login");
 
-        }				  
+    }				  
 						
 	}
 
@@ -52,13 +56,11 @@ class Moda extends CI_Controller {
         }
 
         $valid_columns = array(
-            0=>'kode_moda',
-            1=>'nama_moda',
+            0=>'moda_kategori',
            
         );
         $valid_sort = array(
-            0=>'kode_moda',
-            1=>'nama_moda',
+            0=>'moda_kategori',
            
         );
         if(!isset($valid_sort[$col]))
@@ -91,23 +93,27 @@ class Moda extends CI_Controller {
             }                 
         }
         $this->db->limit($length,$start);
-        $pengguna = $this->db->get("tb_moda");
+        $this->db->select("tb_moda_kat.*,tb_moda.moda_name");
+        $this->db->join("tb_moda", "tb_moda.id=tb_moda_kat.id_moda");
+        $this->db->where('tb_moda.id', $this->input->get('id',true));
+        $pengguna = $this->db->get("tb_moda_kat");
         $data = array();
         foreach($pengguna->result() as $r)
         {
 
             $data[] = array( 
-                        $r->kode_moda,
-                        $r->nama_moda,
-                        '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->kode_moda.'"  >
+                        $r->id,
+                        $r->moda_name,
+                        $r->moda_kategori,
+                        '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->id.'"  >
                           <i class="icofont icofont-ui-edit"></i>Edit
                         </button>
-                        <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="hapus(this)"  data-id="'.$r->kode_moda.'" >
+                        <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="hapus(this)"  data-id="'.$r->id.'" >
                           <i class="icofont icofont-trash"></i>Hapus
                         </button> ',
                    );
         }
-        $total_pengguna = $this->totalPengguna($search, $valid_columns);
+        $total_pengguna = $this->totalPengguna($search, $valid_columns, $this->input->get('id',true));
 
         $output = array(
             "draw" => $draw,
@@ -119,7 +125,7 @@ class Moda extends CI_Controller {
         exit();
     }
 
-    public function totalPengguna($search, $valid_columns)
+    public function totalPengguna($search, $valid_columns,$id)
     {
       $query = $this->db->select("COUNT(*) as num");
       if(!empty($search))
@@ -138,7 +144,9 @@ class Moda extends CI_Controller {
                 $x++;
             }                 
         }
-      $query = $this->db->get("tb_origin");
+      $this->db->join("tb_moda", "tb_moda.id=tb_moda_kat.id_moda");
+      $this->db->where('tb_moda.id', $id);
+      $query = $this->db->get("tb_moda_kat");
       $result = $query->row();
       if(isset($result)) return $result->num;
       return 0;
@@ -146,8 +154,8 @@ class Moda extends CI_Controller {
 
     public function edit(){
         $id = $this->input->get('id');
-        $arr_par = array('kode_cabang' => $id);
-        $data = $this->admin->getmaster('tb_origin',$arr_par);
+        $arr_par = array('id' => $id);
+        $data = $this->admin->getmaster('tb_moda_kat',$arr_par);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
@@ -159,20 +167,17 @@ class Moda extends CI_Controller {
       $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
       $recLogin = $this->session->userdata('user_id');
       $data = array(
-          'kode_cabang'   => $this->input->post('kode_cabang'),
-          'nama_barang'  => $this->input->post('nama_barang'),
-          'alamat'  => $this->input->post('alamat'),
-          'telp_cabang'        => $this->input->post('telp_cabang'),
-                      
+          'moda_kategori'   => $this->input->post('kategori'),
+          'id_moda'  => $this->input->post('moda'),
       );
 
       $this->db->trans_begin();
 
-      if($this->input->post('kode_cabang') != "") {
+      if($this->input->post('id') != "") {
 
           $this->db->set($data);
-          $this->db->where('kode_cabang', $this->input->post('kode_cabang'));
-          $result  =  $this->db->update('tb_cabang');  
+          $this->db->where('id', $this->input->post('id'));
+          $result  =  $this->db->update('tb_moda_kat');  
 
           if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
@@ -181,7 +186,7 @@ class Moda extends CI_Controller {
           }
       }else{  
 
-          $result  = $this->db->insert('tb_cabang', $data);
+          $result  = $this->db->insert('tb_moda_kat', $data);
           
           if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
@@ -199,7 +204,7 @@ class Moda extends CI_Controller {
   {
       $response = [];
       $response['error'] = TRUE; 
-      if($this->admin->deleteTable("id_barang",$this->input->get('id'), 'barang' )){
+      if($this->admin->deleteTable("id",$this->input->get('id'), 'tb_moda_kat' )){
         $response['error'] = FALSE;
       } 
 

@@ -12,6 +12,9 @@ class Listrs extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
     {
+      if(CheckMenuRole('listrs')){
+        redirect("errors");
+      }
       $data['title'] = 'List Routing Slip';
       $data['main'] = 'cargo/list';
       $data['js'] = 'script/list-rs';
@@ -101,11 +104,11 @@ class Listrs extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("A.`cust_name` penerima,B.`cust_name` pengirim,R.*, tb_spk.spk_no,nama_project");
+      $this->db->select("A.`cust_name` penerima,B.`cust_name` pengirim,R.*, spk_no,nama_project");
       $this->db->from("tb_routingslip R");
-      $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
-      $this->db->join('master_customer A', 'tb_spk.id_penerima = A.id');
-      $this->db->join('master_customer B', 'tb_spk.id_pengirim = B.id');
+      // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
+      $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      $this->db->join('master_customer B', 'R.id_pengirim = B.id');
       $pengguna = $this->db->get();
       $data = array();
       foreach($pengguna->result() as $r)
@@ -120,13 +123,20 @@ class Listrs extends CI_Controller {
                       $r->moda_name,
                       $r->status,
                       '<a href="Cargo/edit/'.$r->id.'"  class="btn btn-warning btn-sm "  >
-                        <i class="icofont icofont-ui-edit"></i>Edit
+                        <i class="icofont icofont-ui-edit"></i>
                       </a>
                       <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="deleteList(this)"  data-id="'.$r->id.'" >
-                        <i class="icofont icofont-ui-delete"></i>Hapus
+                        <i class="icofont icofont-ui-delete"></i>
                       </button>
-                      <button type="button" rel="tooltip" class="btn btn-success btn-sm " onclick="deleteList(this)"  data-id="'.$r->id.'" data-routing="'.$r->no_routing.'"  >Riwayat
-                      </button>
+                      <a href="cetak/rs?id='.$r->id .'" target="_blank"  class="btn btn-primary btn-sm">
+                        <i class="icofont icofont-print"></i>T 1
+                      </a>
+                      <a href="cetak/rsa?id='.$r->id .'" target="_blank"  class="btn btn-primary btn-sm">
+                        <i class="icofont icofont-print"></i>T 2
+                      </a>
+                      <a href="trace/view/'.$r->id.'" class="btn btn-success btn-sm "><i class="icofont icofont-long-drive" ></i>Riwayat
+                      </a>
+                      
                       ',
                  );
       }
@@ -142,6 +152,228 @@ class Listrs extends CI_Controller {
       exit();
   }
 
+  public function dataTableRS()
+  {
+      $draw = intval($this->input->get("draw"));
+      $start = intval($this->input->get("start"));
+      $length = intval($this->input->get("length"));
+      $order = $this->input->get("order");
+      $search= $this->input->get("search");
+      $search = $search['value'];
+      $col = 10;
+      $dir = "";
+
+      if(!empty($order))
+      {
+          foreach($order as $o)
+          {
+              $col = $o['column'];
+              $dir= $o['dir'];
+          }
+      }
+
+      if($dir != "asc" && $dir != "desc")
+      {
+          $dir = "desc";
+      }
+
+      $valid_columns = array(
+          0=>'no_routing',
+          1=>'spk_no',
+          2=>'nama_project',
+          3=>'pengirim',
+          4=>'penerima',
+          5=>'moda_name',
+          6=>'status',
+      );
+      $valid_sort = array(
+          0=>'no_routing',
+          1=>'spk_no',
+          2=>'nama_project',
+          3=>'pengirim',
+          4=>'penerima',
+          5=>'moda_name',
+          6=>'status',
+      );
+      if(!isset($valid_sort[$col]))
+      {
+          $order = null;
+      }
+      else
+      {
+          $order = $valid_sort[$col];
+      }
+      if($order !=null)
+      {
+          $this->db->order_by($order, $dir);
+      }
+      
+      if(!empty($search))
+      {
+          $x=0;
+          foreach($valid_columns as $sterm)
+          {
+              if($x==0)
+              {
+                  $this->db->like($sterm,$search);
+              }
+              else
+              {
+                  $this->db->or_like($sterm,$search);
+              }
+              $x++;
+          }                 
+      }
+
+      $this->db->limit($length,$start);
+      $this->db->select("A.`cust_name` penerima,B.`cust_name` pengirim,R.*, spk_no,nama_project");
+      $this->db->from("tb_routingslip R");
+      // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
+      $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      $this->db->join('master_customer B', 'R.id_pengirim = B.id');
+      $this->db->join('tb_invoice I', 'I.id_routing = R.id','left');
+      $this->db->where('I.id_routing', NULL);
+      $this->db->where('R.status <>', "DITERIMA");
+      $pengguna = $this->db->get();
+      $data = array();
+      foreach($pengguna->result() as $r)
+      {
+
+          $data[] = array( 
+                      $r->no_routing,
+                      $r->CreatedDate,
+                      $r->spk_no,
+                      $r->nama_project,
+                      $r->penerima,
+                      $r->moda_name,
+                      $r->status,
+                      '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="pilih('.$r->id.')"  data-id="'.$r->id.'"  >
+                        <i class="icofont icofont-ui-edit"></i>Pilih
+                      </button>',
+                 );
+      }
+      $total_pengguna = $this->totalPengguna($search, $valid_columns);
+
+      $output = array(
+          "draw" => $draw,
+          "recordsTotal" => $total_pengguna,
+          "recordsFiltered" => $total_pengguna,
+          "data" => $data
+      );
+      echo json_encode($output);
+      exit();
+  }
+  public function dataTableRSVendor()
+  {
+      $draw = intval($this->input->get("draw"));
+      $start = intval($this->input->get("start"));
+      $length = intval($this->input->get("length"));
+      $order = $this->input->get("order");
+      $search= $this->input->get("search");
+      $search = $search['value'];
+      $col = 10;
+      $dir = "";
+
+      if(!empty($order))
+      {
+          foreach($order as $o)
+          {
+              $col = $o['column'];
+              $dir= $o['dir'];
+          }
+      }
+
+      if($dir != "asc" && $dir != "desc")
+      {
+          $dir = "desc";
+      }
+
+      $valid_columns = array(
+          0=>'no_routing',
+          1=>'spk_no',
+          2=>'nama_project',
+          3=>'pengirim',
+          4=>'penerima',
+          5=>'moda_name',
+          6=>'status',
+      );
+      $valid_sort = array(
+          0=>'no_routing',
+          1=>'spk_no',
+          2=>'nama_project',
+          3=>'pengirim',
+          4=>'penerima',
+          5=>'moda_name',
+          6=>'status',
+      );
+      if(!isset($valid_sort[$col]))
+      {
+          $order = null;
+      }
+      else
+      {
+          $order = $valid_sort[$col];
+      }
+      if($order !=null)
+      {
+          $this->db->order_by($order, $dir);
+      }
+      
+      if(!empty($search))
+      {
+          $x=0;
+          foreach($valid_columns as $sterm)
+          {
+              if($x==0)
+              {
+                  $this->db->like($sterm,$search);
+              }
+              else
+              {
+                  $this->db->or_like($sterm,$search);
+              }
+              $x++;
+          }                 
+      }
+
+      $this->db->limit($length,$start);
+      $this->db->select("A.`cust_name` penerima,B.`cust_name` pengirim,R.*, spk_no,nama_project");
+      $this->db->from("tb_routingslip R");
+      // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
+      $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      $this->db->join('master_customer B', 'R.id_pengirim = B.id');
+      $this->db->join('tb_invoice_vendor I', 'I.id_routing = R.id','left');
+      $this->db->where('I.id_routing', NULL);
+      $this->db->where('R.status <>', "DITERIMA");
+      $pengguna = $this->db->get();
+      $data = array();
+      foreach($pengguna->result() as $r)
+      {
+
+          $data[] = array( 
+                      $r->no_routing,
+                      $r->CreatedDate,
+                      $r->spk_no,
+                      $r->nama_project,
+                      $r->penerima,
+                      $r->moda_name,
+                      $r->status,
+                      '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="pilih('.$r->id.')"  data-id="'.$r->id.'"  >
+                        <i class="icofont icofont-ui-edit"></i>Pilih
+                      </button>',
+                 );
+      }
+      $total_pengguna = $this->totalPengguna($search, $valid_columns);
+
+      $output = array(
+          "draw" => $draw,
+          "recordsTotal" => $total_pengguna,
+          "recordsFiltered" => $total_pengguna,
+          "data" => $data
+      );
+      echo json_encode($output);
+      exit();
+  }
   public function totalPengguna($search, $valid_columns)
   {
     $query = $this->db->select("COUNT(*) as num");
@@ -162,9 +394,9 @@ class Listrs extends CI_Controller {
           }                 
       }
     $this->db->from("tb_routingslip R");
-    $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
-    $this->db->join('master_customer A', 'tb_spk.id_penerima = A.id');
-    $query = $this->db->join('master_customer B', 'tb_spk.id_pengirim = B.id')->get();
+    // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
+    $this->db->join('master_customer A', 'R.id_penerima = A.id');
+    $query = $this->db->join('master_customer B', 'R.id_pengirim = B.id')->get();
     $result = $query->row();
     if(isset($result)) return $result->num;
     return 0;

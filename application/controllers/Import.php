@@ -18,6 +18,9 @@ class Import extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
         {
+            if(CheckMenuRole('import')){
+                redirect("errors");
+              }
 			$data['title'] = 'Import Excel';
 			$data['main'] = 'import/index';
 			$data['js'] = 'script/barang';
