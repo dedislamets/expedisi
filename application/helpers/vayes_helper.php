@@ -338,11 +338,11 @@ if (!function_exists('terminal')) {
 
         for ($i = 0; $i < $max; $i++) {
 
-            if ($match[1]{$i} == "(") {
+            if ($match[1][$i] == "(") {
 
                 $c++;
 
-            } elseif ($match[1]{$i} == ")") {
+            } elseif ($match[1][$i] == ")") {
 
                 $c--;
 
@@ -354,7 +354,7 @@ if (!function_exists('terminal')) {
 
             }
 
-            $varname .= $match[1]{$i};
+            $varname .= $match[1][$i];
 
         }
 
