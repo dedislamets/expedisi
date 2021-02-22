@@ -86,11 +86,11 @@ if (! function_exists('vdebug')) {
 
         for ($i = 0; $i < $max; $i++) {
 
-            if ($match[1]{$i} == "(") {
+            if ($match[1][$i] == "(") {
 
                 $c++;
 
-            } elseif ($match[1]{$i} == ")") {
+            } elseif ($match[1][$i] == ")") {
 
                 $c--;
 
@@ -102,7 +102,7 @@ if (! function_exists('vdebug')) {
 
             }
 
-            $varname .= $match[1]{$i};
+            $varname .= $match[1][$i];
 
         }
 
