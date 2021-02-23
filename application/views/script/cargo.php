@@ -7,7 +7,7 @@
 	    },
 	    updated: function () {
 	    	var that = this;
-	    	if(that.last_status == 'DALAM PERJALANAN'){
+	    	if(that.last_status == 'DALAM PERJALANAN' || that.last_status == 'DITERIMA'){
       			app.dropzone();
 	    		
 	    	}

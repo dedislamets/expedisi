@@ -816,7 +816,8 @@
                             <div class="form-group row">
                               <label class="col-sm-2 col-form-label" style="font-weight: bold;">RECEIVED DATE</label>
                               <div class="col-sm-10">
-                                <input type="text" class="form-control" id="received_date" name="received_date" value="<?= empty($data) ? "" : $data['received_date'] ?>" :disabled="last_status != 'DITERIMA' && last_status != 'DALAM PERJALANAN'">
+                                <input type="date" class="form-control" id="received_date" name="received_date" value="<?= empty($data) ? "" : $data['received_date'] ?>" v-if="last_status != 'DITERIMA'" :disabled="last_status != 'DITERIMA' && last_status != 'DALAM PERJALANAN'">
+                                <input type="text" class="form-control" id="received_date" name="received_date" value="<?= empty($data) ? "" : $data['received_date'] ?>" v-if="last_status == 'DITERIMA'" disabled>
                               </div>
                             </div>
                             <div class="form-group">

@@ -122,6 +122,9 @@ class Cargo extends CI_Controller {
       if(!empty($this->input->post('tgl_serah_acc'))){
         $data['sent_acc'] = $this->input->post('tgl_serah_acc');
       }
+      if(!empty($this->input->post('received_date'))){
+        $data['received_date'] = $this->input->post('received_date');
+      }
 
       $data['driver']         = $this->input->post('driver');
       $data['no_kendaraan']   = $this->input->post('nomor_plat');
@@ -129,6 +132,7 @@ class Cargo extends CI_Controller {
       $data['pickup_date']    = $this->input->post('pickup_date');
       $data['pickup_time']    = $this->input->post('pickup_time');
       $data['site_name']      = $this->input->post('site_name');
+      $data['received_by']     = $this->input->post('received_by');
 
 	    if($this->input->post('mode') === "edit"){
 	        
@@ -142,6 +146,21 @@ class Cargo extends CI_Controller {
               $data_hist['id_routing'] = $this->input->post('id_rs');
               $data_hist['created_by'] = $this->session->userdata('username');
               $data_hist['status'] = 'PICKUP';
+
+              $this->db->insert('tb_routingslip_history', $data_hist);
+            }
+          }
+
+          if(!empty($this->input->post('received_by',TRUE)) && !empty($this->input->post('received_date',TRUE)) ){
+            $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $this->input->post('id_rs', TRUE)));
+            if($routing['status'] == "DALAM PERJALANAN"){
+              $data['status'] = 'DITERIMA';
+
+              $data_hist = array();
+              $data_hist['remark'] = 'Barang sudah diterima oleh '. $this->input->post('received_by',TRUE);
+              $data_hist['id_routing'] = $this->input->post('id_rs',TRUE);
+              $data_hist['created_by'] = $this->session->userdata('username');
+              $data_hist['status'] = 'DITERIMA';
 
               $this->db->insert('tb_routingslip_history', $data_hist);
             }
