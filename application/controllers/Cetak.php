@@ -73,6 +73,7 @@ class Cetak extends CI_Controller {
       $data['moda'] = $this->admin->get_array('tb_moda',array( 'id' => $data['data']['id_moda']));
       $data['multi'] = $this->admin->get('tb_routingslip_multi',array( 'id_routing' => $id));
       $data['data_detail'] = $this->admin->get_result_array('tb_routingslip_detail',array( 'id_routing' => $id));
+      $data['data_biaya'] = $this->admin->get_result_array('tb_routingslip_biaya',array( 'id_routing' => $id));
 
       foreach ($data['data_detail'] as $key => $value) {
 

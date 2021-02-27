@@ -98,7 +98,7 @@
         <div class="card-header" style="background-color: #404E67;color:#fff">
           <div class="row">
               <div class="col-xl-7">
-                  <h4><?= $title ?></h4>
+                  <h4><?= $title ?> <a href="<?= base_url() ?>listinvoice"> Back </a></h4>
                   <span>Halaman ini menampilkan data connote yang tersimpan</span>
               </div>
               <div class="col-xl-3" >
@@ -119,7 +119,7 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label" style="font-weight: bold;">INVOICE NO</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="no_invoice" name="no_invoice" placeholder="Ketikan No Invoice" value="<?= empty($data) ? "" : $data['no_invoice']?>" :disabled="last_status == 'LUNAS'">
+                    <input type="text" class="form-control" id="no_invoice" name="no_invoice" placeholder="Ketikan No Invoice" value="<?= empty($data) ? $no_invoice : $data['no_invoice']?>" readonly>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -348,7 +348,10 @@
                         </td>
                       </tr>
                       <tr>
-                        <td style="text-align:right;">Tax/VAT</td>
+                        <td style="text-align:right;">
+                          <span style="width: 70px;display: inline;vertical-align: middle;">Tax/VAT</span> 
+                          <input type="number" id="tax_percent" name="tax_percent" value="<?= empty($data) ? "1" : $data['tax_percent']?>" class="form-control" style="width: 80px;float: right;margin-left: 10px;">
+                        </td>
                         <td style="text-align:right;">
                           <input type="text" id="tax" name="tax" class="form-control " readonly style="text-align:right;" value="<?= empty($data) ? "0" : rupiah($data['tax'])?>">
                         </td>

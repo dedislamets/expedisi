@@ -1,3 +1,9 @@
+<style type="text/css">
+    #ViewTable>thead{
+        background: linear-gradient(to right, #3f535a, #212425);
+        color: #fff !important;
+      }
+</style>
 <div class="row">
     <div class="card z-depth-0">
         <div class="card-header" style="background-color: #404E67;color:#fff">
@@ -17,17 +23,18 @@
                     <thead class="text-primary">
                         <tr>
                             <th>
-                              No Routing 
-                            </th>
-                            <th>
-                              Project
-                            </th>
-                            <th>
                               Invoice Customer
                             </th>
                             <th>
                               Tgl Submit
                             </th>
+                            <th>
+                              No Routing 
+                            </th>
+                            <th>
+                              Project
+                            </th>
+                            
                             <th>
                               Term
                             </th>

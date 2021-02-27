@@ -54,22 +54,24 @@ class Listinvoice extends CI_Controller {
           $dir = "desc";
       }
       $valid_columns = array(
-          0=>'no_routing',
-          1=>'nama_project',
-          2=>'tgl_submit_invoice',
-          3=>'term',
-          4=>'due_date',
-          5=>'total',
-          6=>'status',
+          0=>'no_invoice',
+          1=>'tgl_submit_invoice',
+          2=>'no_routing',
+          3=>'nama_project',
+          4=>'term',
+          5=>'due_date',
+          6=>'total',
+          7=>'status',
       );
       $valid_sort = array(
-          0=>'no_routing',
-          1=>'nama_project',
-          2=>'tgl_submit_invoice',
-          3=>'term',
-          4=>'due_date',
-          5=>'total',
-          6=>'status',
+          0=>'no_invoice',
+          1=>'tgl_submit_invoice',
+          2=>'no_routing',
+          3=>'nama_project',
+          4=>'term',
+          5=>'due_date',
+          6=>'total',
+          7=>'status',
       );
       if(!isset($valid_sort[$col]))
       {
@@ -107,16 +109,19 @@ class Listinvoice extends CI_Controller {
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
       $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      // $this->db->order_by("tgl_submit_invoice","ASC");
+
       $pengguna = $this->db->get();
+      // echo $this->db->last_query();exit();
       $data = array();
       foreach($pengguna->result() as $r)
       {
 
           $data[] = array( 
-                      $r->no_routing,
-                      $r->nama_project,
                       $r->no_invoice,
                       $r->tgl_submit_invoice,
+                      $r->no_routing,
+                      $r->nama_project,
                       $r->term,
                       $r->due_date,
                       number_format($r->total),
