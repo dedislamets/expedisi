@@ -72,6 +72,14 @@
     background: linear-gradient(to right, #3f535a, #212425);
     color: #fff !important;
   }
+  #ViewTableBiaya>thead{
+    background: linear-gradient(to right, #3f535a, #212425);
+    color: #fff !important;
+  }
+  #ViewTableHist>thead{
+    background: linear-gradient(to right, #3f535a, #212425);
+    color: #fff !important;
+  }
   .form-bg-inverse {
     background-color: #404E67 !important;
     border-color: #404E67 !important;
@@ -163,8 +171,8 @@
                             <div class="row b-b-default m-b-20 p-b-5">
                               <div class="col-sm-6  f-w-600">Pengirim</div>
                               <div class="col-sm-6">
-                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btnCariPengirim" style="float: right;color: #fff;">Cari</a>
-                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btn-grd-success btnAddPengirim" style="float: right;color: #fff;">Tambah</a>
+                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btnCariPengirim" style="float: right;color: #fff;" v-if="last_status != 'CLOSED'">Cari</a>
+                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btn-grd-success btnAddPengirim" style="float: right;color: #fff;" v-if="last_status != 'CLOSED'">Tambah</a>
                               </div>
                             </div>
                             <div class="row">
@@ -244,8 +252,8 @@
                             <div class="row b-b-default m-b-20 p-b-5">
                               <div class="col-sm-6  f-w-600">Penerima</div>
                               <div class="col-sm-6">
-                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btnCariPenerima" style="float: right;color: #fff;">Cari</a>
-                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btn-grd-success btnAddPenerima" style="float: right;color: #fff;">Tambah</a>
+                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btnCariPenerima" style="float: right;color: #fff;" v-if="last_status != 'CLOSED'">Cari</a>
+                                <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btn-grd-success btnAddPenerima" style="float: right;color: #fff;" v-if="last_status != 'CLOSED'">Tambah</a>
                               </div>
                             </div>
                             <div class="row">
@@ -326,7 +334,7 @@
 
             <div class="row" id="barang">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Input Data Barang
-                  <button class="btn btn-grd-inverse" id="btnAdd"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                  <button class="btn btn-grd-inverse" id="btnAdd" v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
               </h4>
               <div class="col-sm-12">
                 <div class="dt-responsive table-responsive table-brg">
@@ -365,10 +373,10 @@
                               <td>
                                 <input type="text" id="kode<?=$urut?>" name="kode<?=$urut?>" class="form-control hidden" value="<?=$row['id_barang']?>">
                                 <input type="text" id="id_detail<?=$urut?>" name="id_detail<?=$urut?>" class="form-control hidden" value="<?=$row['id']?>">
-                                <a href="#" class="btn hor-grd btn-grd-success" onclick="cari_dealer(this)">
+                                <a href="#" class="btn hor-grd btn-grd-success" onclick="cari_dealer(this)" v-if="last_status != 'CLOSED'">
                                   <i class="icofont icofont-search"></i> Cari
                                 </a>
-                                <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a>
+                                <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancel(this)" v-if="last_status != 'CLOSED'"><i class="icofont icofont-trash"></i> Del</a>
                               </td>
                               <td><?=$row['nama_barang']?></td>
                               <td>
@@ -545,7 +553,7 @@
               <div class="card-block panels-wells">
                 <div class="row">
                   <h4 class="info-text" style="padding-left: 10px;">Multi Drop
-                      <button class="btn btn-grd-invers" id="btnAddModa"  ><i class="icofont icofont-ui-add"></i> Tambah</button>
+                      <button class="btn btn-grd-invers" id="btnAddModa"  v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah</button>
                   </h4>
                   <input type="hidden" id="total-row-multi" name="total-row-multi" value="<?= $totalrowmulti ?>">
                   <table id="ViewTableMulti" class="table table-bordered">
@@ -572,7 +580,7 @@
                             <td style="width:8%">
                               <input type="hidden" id="id_detail_multi_<?= $urut ?>" name="id_detail_multi_<?= $urut ?>" class="form-control " value="<?= $row['id'] ?>">
                               <input type="hidden" id="deleted_<?= $urut ?>" name="deleted_<?= $urut ?>" value="0">
-                              <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelMulti(this)">
+                              <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelMulti(this)" v-if="last_status != 'CLOSED'">
                                 <i class="icofont icofont-trash"></i> Del</a>
                             </td>
                             
@@ -767,8 +775,8 @@
                               </div>
                             </div>
                             <div class="row">
-                              <input type="hidden" id="total-row-multi" name="total-row-multi" value="<?= $totalrowhistory ?>">
-                              <table id="ViewTableMulti" class="table table-bordered">
+                              <input type="hidden" id="total-row-history" name="total-row-history" value="0">
+                              <table id="ViewTableHist" class="table table-bordered">
                                 <thead class="text-primary thead-color">
                                     <tr>
                                         <th width="50">
@@ -788,7 +796,7 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbody-table-multi">
+                                <tbody id="tbody-table-hist">
                                   <template v-for="(log, index) in history">
                                     <tr>
                                         <td style="width:1%">{{ (index+1) }}</td>
@@ -840,6 +848,65 @@
               </div> 
               
             </div>
+
+            <div id="cost">
+              <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Biaya Tambahan (Customer)
+                <button class="btn btn-grd-inverse" id="btnAddBiaya" v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+              </h4>
+              <div class="card z-depth-0">
+                <div class="card-block panels-wells">
+                  <div class="row">
+                    <div class="col">
+                      <div class="well well-lg">
+                        <input type="hidden" id="total-row-biaya" name="total-row-biaya" value="<?= $totalrowbiaya ?>">
+                        <table id="ViewTableBiaya" class="table table-bordered">
+                          <thead class="text-primary thead-color">
+                              <tr>
+                                  <th width="50">
+                                    No
+                                  </th>
+                                  <th width="100">
+                                    Aksi
+                                  </th>
+                                  <th>
+                                    Aktifitas
+                                  </th>
+                                  <th width="16%">
+                                    Biaya
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody id="tbody-table-biaya">
+                            <?php 
+                            $urut=1;
+                            foreach($data_biaya as $row): ?>
+                              <tr>
+                                <td style="width:1%"><?= $urut ?></td>
+                                <td style="width:8%">
+                                  <input type="hidden" id="id_detail_biaya_<?= $urut ?>" name="id_detail_biaya_<?= $urut ?>" class="form-control " value="<?= $row['id'] ?>">
+                                  <input type="hidden" id="deleted_biaya_<?= $urut ?>" name="deleted_biaya_<?= $urut ?>" value="0">
+                                  <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)" v-if="last_status != 'CLOSED'">
+                                    <i class="icofont icofont-trash"></i> Del</a>
+                                </td>
+                                
+                                <td>
+                                  <input type="text" name="aktifitas_biaya_<?= $urut ?>" id="aktifitas_biaya_<?= $urut ?>" class="form-control" value="<?= $row['aktifitas'] ?>" >
+                                </td>
+                                <td>
+                                  <input type="number" id="biaya_<?= $urut ?>" name="biaya_<?= $urut ?>" value="<?= $row['biaya'] ?>" class="form-control">
+                                </td>
+                              </tr>
+                              <?php $urut++?>
+                            <?php endforeach; ?>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="" id="doc">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Dokumen Kembali
               </h4>
@@ -870,12 +937,14 @@
                 </div>
               </div>
             </div>
+
+            
             <div class="row">
               <div class="col-sm-10 col-sm-offset-1" style="margin-top: 10px;">
                 <input type="hidden" name="id_rs" id="id_rs" value="<?= empty($data) ? "" : $data['id'] ?>">
                 <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
 
-                <button class="btn btn-block btn-grd-success" id="btn-finish">Simpan</button>
+                <button class="btn btn-block btn-grd-success" id="btn-finish" v-if="last_status != 'CLOSED'">Simpan</button>
               </div>
             </div>
             <!-- <div v-if="mode == 'edit'">

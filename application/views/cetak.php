@@ -459,7 +459,16 @@
 							<td class="no-border" style="font-weight: bold;">INVOICE</td>
 						</tr>
 						<tr>
-							<td style="height: 100px;"></td>
+							<td style="height: 100px;">
+								<?php 
+									$urut=1;
+                                  	foreach($data_biaya as $row)
+                                  	{
+                                  		echo $urut . ". " . $row['aktifitas'] ." / Rp. " . number_format($row['biaya']) ."<br>";
+                                  		$urut++;
+                                  	}
+                                ?>
+							</td>
 							<td style="height: 100px;"></td>
 						</tr>
 					</table>

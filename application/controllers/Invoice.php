@@ -25,6 +25,20 @@ class Invoice extends CI_Controller {
       $data['totalrow'] = 0;
       $data['totalrowbiaya'] = 1;
       $data['data_detail'] = array();
+
+      $count = $this->db->query("SELECT no_invoice FROM tb_invoice WHERE MONTH(tgl_invoice) = MONTH(CURDATE()) AND YEAR(tgl_invoice)=YEAR(CURDATE()) ORDER BY tgl_invoice DESC LIMIT 1")->result();
+      if(empty($count)){
+        $last_no = '0001';
+      }else{
+
+        $last_no = $count[0]->no_invoice;
+        $last_no = explode("/", $last_no);
+        $last_no = str_pad(intval(substr($last_no[0], 3))+1, 4,'0',STR_PAD_LEFT);
+      }
+
+
+
+      $data['no_invoice'] = "WML" . $last_no . "/" .bulan_ke_romawi(date("m")) ."/". date("Y");
       $data['term'] = $this->admin->getmaster('tb_term');
 			$this->load->view('home',$data,FALSE); 
 
@@ -181,6 +195,7 @@ class Invoice extends CI_Controller {
       $id= $this->input->get("id");
       $data['data'] = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
       $data['data_detail'] = $this->admin->get_result_array('tb_routingslip_detail',array( 'id_routing' => $id));
+      $data['data_biaya'] = $this->admin->get_result_array('tb_routingslip_biaya',array( 'id_routing' => $id));
       $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data']['id_pengirim']),'cust_name');
       $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data']['id_penerima']),'cust_name');
       $data['data_tag'] = $this->admin->get_result_array('master_customer_address',array( 'id_master' => $data['data']['id_pengirim']));
@@ -201,6 +216,11 @@ class Invoice extends CI_Controller {
         $data['data_detail'][$key]['qty'] = $qty;
         $data['data_detail'][$key]['kg'] = $value['kg'];
         $data['totalrow'] ++;
+      }
+
+      $data['totalrowbiaya'] = 0;
+      foreach ($data['data_biaya'] as $key => $value) {
+        $data['totalrowbiaya'] ++;
       }
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
       // print("<pre>".print_r($data,true)."</pre>"); exit();
@@ -294,6 +314,7 @@ class Invoice extends CI_Controller {
       $data['total'] = str_replace('.', '',  $this->input->post('total',TRUE)); 
 
       $data['tax'] = str_replace('.', '', $this->input->post('tax',TRUE));
+      $data['tax_percent'] = $this->input->post('tax_percent',TRUE);
       
       if($this->input->post('mode') === "edit"){
           

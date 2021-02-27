@@ -7,7 +7,7 @@
 	    },
 	    updated: function () {
 	    	var that = this;
-	    	if(that.last_status == 'DALAM PERJALANAN' || that.last_status == 'DITERIMA'){
+	    	if(that.last_status == 'DALAM PERJALANAN' || that.last_status == 'DITERIMA' || that.last_status == 'CLOSED'){
       			app.dropzone();
 	    		
 	    	}
@@ -38,7 +38,7 @@
 		              	$.get('<?= base_url()?>trace/getImage', { id: $("#id_rs").val() }, function(data){ 
 							$.each(data, function(key,value) {
 					          var mockFile = { name: value.name, size: value.size,token: value.token };
-
+					          myDropzone.createThumbnailFromUrl(mockFile,value.path);
 					          myDropzone.emit("addedfile", mockFile);
 					          myDropzone.emit("thumbnail", mockFile, value.path);
 					          myDropzone.emit("complete", mockFile);
@@ -354,6 +354,35 @@
 		}
 	});
 
+	$('#btnAddBiaya').on('click', function (event) {
+		event.preventDefault();
+		var nomor = $('#tbody-table-biaya tr:nth-last-child(1) td:first-child').html();
+		if( $.isNumeric( nomor ) ) 	{
+			nomor = parseInt(nomor) + 1;
+		}else{		
+			nomor = 1
+		}
+
+		$('#total-row-biaya').val(nomor);
+		$(".no-data").remove();
+		var baris = '<tr>';
+		baris += '<td style="width:1%">'+ nomor+'</td>';
+		baris += '<td style="width:8%"><input type="text" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control hidden" value=""><input type="hidden" id="deleted_biaya_'+ nomor +'" name="deleted_biaya_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+		
+		baris += '<td><input type="text" name="aktifitas_biaya_'+ nomor +'" id="aktifitas_biaya_'+ nomor +'" class="form-control"/></td>';
+		baris += '<td><input type="number" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" placeholder="" class="form-control" value="0" ></td>';
+		
+	
+		baris += '</tr>';
+		
+		var last = $('#tbody-table-biaya tr:last').html();
+		if(last== undefined){
+			$(baris).appendTo("#tbody-table-biaya");
+		}else{
+			$('#tbody-table-biaya tr:last').after(baris);
+		}
+	});
+
     $(".list-moda").on('click', function (event) {
     	var tipe = $(this).data('moda');
     	var moda = $(this).data('moda') + ' - ' + $(this).data('kat') + ' - ' + $(this).data('sub');
@@ -394,6 +423,18 @@
 			// debugger;
 			$(val).prevAll()[0].value = 1;
 			$(val).parent().parent().addClass('hidden');
+
+		}else{
+			$(val).parent().parent().remove();
+		}
+	}
+
+	function cancelBiaya(val) {
+		var id=$(val).prevAll()[1].value;
+		if(id != ""){
+			$(val).prevAll()[0].value = 1;
+			$(val).parent().parent().addClass('hidden');
+			$("#biaya_" + nomor).val(0);
 
 		}else{
 			$(val).parent().parent().remove();

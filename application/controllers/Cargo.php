@@ -22,6 +22,7 @@ class Cargo extends CI_Controller {
       $data['totalrow'] = 0;
       $data['totalrowmulti'] = 1;
       $data['totalrowhistory'] = 0;
+      $data['totalrowbiaya'] = 0;
       $data['kota_asal'] = $this->db->query('select distinct kota from master_city')->result();
       $data['kota_tujuan'] = $data['kota_asal'];
       $data['data_detail'] = array();
@@ -166,6 +167,34 @@ class Cargo extends CI_Controller {
             }
           }
 
+          if(!empty($this->input->post('tgl_serah_acc'))){
+            $data['sent_acc'] = $this->input->post('tgl_serah_acc');
+            $data['status'] = 'CLOSED';
+          }
+
+          $total_cost_biaya = intval($this->input->post('total-row-biaya'));
+          for ($i=1; $i <= $total_cost_biaya ; $i++) { 
+            if(!empty($this->input->post('aktifitas_biaya_'.$i,TRUE) )){
+              $data_biaya = array();
+              $data_biaya['id_routing'] = $this->input->post('id_rs',TRUE);
+              $data_biaya['aktifitas'] = $this->input->post('aktifitas_biaya_'.$i,TRUE);
+              $data_biaya['biaya'] = str_replace('.', '',  $this->input->post('biaya_'.$i,TRUE));
+
+              if(!empty($this->input->post('id_detail_biaya_'.$i) )){
+                if($this->input->post('deleted_biaya_'.$i) == "1"){
+                  $this->admin->deleteTable("id",$this->input->post('id_detail_biaya_'.$i, TRUE), 'tb_routingslip_biaya' );
+                }else{
+                  $this->db->set($data_biaya);
+                  $this->db->where(array( "id" => $this->input->post('id_detail_biaya_'.$i) ));
+                  $this->db->update('tb_routingslip_biaya');      
+                }
+              }else{
+                $this->db->insert('tb_routingslip_biaya', $data_biaya);
+              }
+              
+            }
+          }
+
 	      	$this->db->set($data);
 	        $this->db->where($arr_par);
 	        $result  =  $this->db->update('tb_routingslip'); 
@@ -264,6 +293,29 @@ class Cargo extends CI_Controller {
                 }
               }
 
+              $total_cost_biaya = intval($this->input->post('total-row-biaya'));
+              for ($i=1; $i <= $total_cost_biaya ; $i++) { 
+                if(!empty($this->input->post('aktifitas_biaya_'.$i,TRUE) )){
+                  $data_biaya = array();
+                  $data_biaya['id_routing'] =$last_id;
+                  $data_biaya['aktifitas'] = $this->input->post('aktifitas_biaya_'.$i,TRUE);
+                  $data_biaya['biaya'] = str_replace('.', '',  $this->input->post('biaya_'.$i,TRUE));
+
+                  if(!empty($this->input->post('id_detail_biaya_'.$i) )){
+                    if($this->input->post('deleted_biaya_'.$i) == "1"){
+                      $this->admin->deleteTable("id",$this->input->post('id_detail_biaya_'.$i, TRUE), 'tb_routingslip_biaya' );
+                    }else{
+                      $this->db->set($data_biaya);
+                      $this->db->where(array( "id" => $this->input->post('id_detail_biaya_'.$i) ));
+                      $this->db->update('tb_routingslip_biaya');      
+                    }
+                  }else{
+                    $this->db->insert('tb_routingslip_biaya', $data_biaya);
+                  }
+                  
+                }
+              }
+
               unset($data);
               
               $data['remark'] = 'Membuat Routing Slip';
@@ -313,6 +365,7 @@ class Cargo extends CI_Controller {
       $data['totalrow'] = 0;
       $data['totalrowmulti'] = 1;
       $data['totalrowhistory'] = 0;
+      $data['totalrowbiaya'] = 0;
 
       if(empty($data['data'])){
         redirect("Cargo");
@@ -340,6 +393,12 @@ class Cargo extends CI_Controller {
 
       foreach ($data['data_history'] as $key => $value) {
         $data['totalrowhistory'] ++;
+      }
+
+      $data['data_biaya'] = $this->admin->get_result_array('tb_routingslip_biaya',array( 'id_routing' => $id));
+
+      foreach ($data['data_biaya'] as $key => $value) {
+        $data['totalrowbiaya'] ++;
       }
 
       

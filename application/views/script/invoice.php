@@ -388,7 +388,38 @@
 					}
 				});
 				
+				$("#ViewTableBiaya tbody").empty();
+				const tbodyBiaya = $("#ViewTableBiaya tbody");
+				var barisBiaya;
+				tbodyBiaya.html('');
+				$.each(data['data_biaya'], function(_, obj) {
+				    var nomor = $('#tbody-table-biaya tr:nth-last-child(1) td:first-child').html();
+					if( $.isNumeric( nomor ) ) 	{
+						nomor = parseInt(nomor) + 1;
+					}else{		
+						nomor = 1
+					}
+
+					$('#total-row-biaya').val(nomor);
+					$(".no-data").remove();
+					baris = '<tr>';
+					baris += '<td style="width:1%">'+ nomor+'</td>';
+					baris += '<td style="width:8%">' + (app.last_status == "LUNAS" ? "" : '<input type="hidden" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control " value="' + obj.id+'"><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a>') + '</td>';
+					baris += '<td><input type="text" name="aktifitas_'+ nomor +'" id="aktifitas_'+ nomor +'" class="form-control" value="' + obj.aktifitas +'" /></td>';
+					
+					baris += '<td><input type="text" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" value="' + parseFloat(obj.biaya)+'" class="form-control" style="width:100%;text-align:right;"></td>';
 				
+					baris += '</tr>';
+					
+					var last = $('#tbody-table-biaya tr:last').html();
+					if(last== undefined){
+						$(baris).appendTo("#tbody-table-biaya");
+					}else{
+						$('#tbody-table-biaya tr:last').after(baris);
+					}
+				});
+
+				calculateTotal();
 
 				$('#modalBrowse').modal('hide');
 			// }
@@ -560,6 +591,10 @@
 		calculateTotal();
 	});	
 
+	$(document).on('blur', "[id^=tax_percent]", function(){
+		calculateTotal();
+	});	
+
 	function calculateTotal(){
 		var totalAmount = 0; 
 		$("[id^='price_']").each(function() {
@@ -586,7 +621,7 @@
 		});
 		$('#other_cost').val(parseFloat(other_cost).toLocaleString('id-ID'));	
 		$('#subtotal').val(parseFloat(totalAmount).toLocaleString('id-ID'));	
-		var taxRate = 1;
+		var taxRate = $('#tax_percent').val();
 		var subTotal = totalAmount;	
 		if(subTotal) {
 			var taxAmount = (subTotal+ other_cost)*(taxRate/100);
