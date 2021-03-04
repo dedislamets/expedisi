@@ -23,7 +23,8 @@ class Invoice extends CI_Controller {
 			$data['modal'] = 'modal/invoice';
       $data['mode'] = 'new';
       $data['totalrow'] = 0;
-      $data['totalrowbiaya'] = 1;
+      $data['totalrowbiaya'] = 0;
+      $data['totalrowrouting'] = 0;
       $data['data_detail'] = array();
 
       $count = $this->db->query("SELECT no_invoice FROM tb_invoice WHERE MONTH(tgl_invoice) = MONTH(CURDATE()) AND YEAR(tgl_invoice)=YEAR(CURDATE()) ORDER BY tgl_invoice DESC LIMIT 1")->result();
@@ -236,25 +237,33 @@ class Invoice extends CI_Controller {
     {
       $id= $this->input->get("id");
       $data['data'] = $this->admin->get_array('tb_invoice',array( 'id' => $id));
-      $data['data_routing'] = $this->admin->get_array('tb_routingslip',array( 'id' => $data['data']['id_routing']));
-
+      $data['data_routing'] = $this->admin->get_result_array('tb_invoice_routing',array( 'id_invoice' => $id));
+      $data['totalrowrouting'] = 0;
+      foreach ($data['data_routing'] as $key => $value) {
+        $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
+        $data['data_routing'][$key]['project'] = $routing['nama_project'];
+        $data['data_routing'][$key]['spk'] = $routing['spk_no'];
+        $data['data_routing'][$key]['tanggal'] = $routing['CreatedDate'];
+      }
       $data['data_detail'] = $this->admin->get_result_array('tb_invoice_detail',array( 'id_invoice' => $id));
-      $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_pengirim']),'cust_name');
-      $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_penerima']),'cust_name');
-      $data['data_tag'] = $this->admin->get_result_array('master_customer_address',array( 'id_master' => $data['data_routing']['id_pengirim']));
-      $data['data_tag'][] = array(
-          "id" => 0,
-          "main" =>0,
-          "other_address" => $data['data_routing']['alamat_pengirim'],
-          "tag" => "Sesuai Routing"
-      );
+      // $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_pengirim']),'cust_name');
+      // $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_penerima']),'cust_name');
+      // $data['data_tag'] = $this->admin->get_result_array('master_customer_address',array( 'id_master' => $data['data_routing']['id_pengirim']));
+      // $data['data_tag'][] = array(
+      //     "id" => 0,
+      //     "main" =>0,
+      //     "other_address" => $data['data_routing']['alamat_pengirim'],
+      //     "tag" => "Sesuai Routing"
+      // );
 
       $data['totalrow'] = 0;
       foreach ($data['data_detail'] as $key => $value) {
         $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
+        $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
         $satuan = $data['data_detail'][$key]['satuan'];
         $qty = $data['data_detail'][$key]['qty'];
-       
+
+        $data['data_detail'][$key]['routing'] = $routing['no_routing'];
         $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
         $data['data_detail'][$key]['berat'] = $item['berat_barang'];
         $data['data_detail'][$key]['satuan'] = $satuan;
@@ -268,6 +277,8 @@ class Invoice extends CI_Controller {
       $data['totalrowbiaya'] = 1;
       $data['data_biaya'] = $this->admin->get_result_array('tb_invoice_opt_charge',array( 'id_invoice' => $id));
       foreach ($data['data_biaya'] as $key => $value) {
+        $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
+        $data['data_biaya'][$key]['routing'] = $routing['no_routing'];
         $data['totalrowbiaya'] ++;
       }
 
@@ -301,8 +312,8 @@ class Invoice extends CI_Controller {
         $data['due_date'] = date("Y-m-d", strtotime($this->input->post('due_date',TRUE)));
       }
 
-      $data['no_routing'] = $this->input->post('no_routing',TRUE);
-      $data['id_routing'] = $this->input->post('id_routing',TRUE);
+      // $data['no_routing'] = $this->input->post('no_routing',TRUE);
+      // $data['id_routing'] = $this->input->post('id_routing',TRUE);
 
       $data['id_term'] = $this->input->post('id_term',TRUE);
       $data['id_tag'] = $this->input->post('id_tag',TRUE);
@@ -327,43 +338,50 @@ class Invoice extends CI_Controller {
               print("<pre>".print_r($this->db->error(),true)."</pre>");
           }else{
               $response['error']= FALSE;
-              $total = intval($this->input->post('total-row'));
-              for ($i=1; $i <= $total ; $i++) { 
-                if(!empty($this->input->post('kode'.$i) )){
+
+              $this->admin->deleteTable("id_invoice",$this->input->post('id_invoice',TRUE), 'tb_invoice_routing' );
+
+              $total_routing = intval($this->input->post('total-row-invoice'));
+              for ($i=1; $i <= $total_routing ; $i++) { 
+                  $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $this->input->post('id_routing_'.$i,TRUE)));
+
                   unset($data);
                   $data['id_invoice'] = $this->input->post('id_invoice');
-                  $data['id_barang'] = $this->input->post('kode'.$i,TRUE);
-                  $data['qty'] = $this->input->post('qty_'.$i,TRUE);
-                  $data['kg'] = $this->input->post('kg_'.$i,TRUE);
-                  $data['satuan'] = $this->input->post('satuan'.$i,TRUE);
-                  $data['price'] = str_replace('.', '',  $this->input->post('price_'.$i,TRUE));
-                  $data['subtotal'] = str_replace('.', '',  $this->input->post('sub_'.$i,TRUE));
-
-                  if(!empty($this->input->post('id_detail'.$i) )){
-                    $this->db->set($data);
-                    $this->db->where(array( "id" => $this->input->post('id_detail'.$i) ));
-                    $this->db->update('tb_invoice_detail');
-                  }else{
-                    $this->db->insert('tb_invoice_detail', $data);
-                  }
-                }
+                  $data['id_routing'] = $this->input->post('id_routing_'.$i,TRUE);
+                  $data['no_routing'] = $routing['no_routing'];
+                 
+                  $this->db->insert('tb_invoice_routing', $data);
               }
+
+              $this->admin->deleteTable("id_invoice",$this->input->post('id_invoice',TRUE), 'tb_invoice_detail' );
+
+              $total = intval($this->input->post('total-row'));
+              for ($i=1; $i <= $total ; $i++) { 
+                unset($data);
+                $data['id_invoice'] = $this->input->post('id_invoice');
+                $data['id_routing'] = $this->input->post('id_routing_item'.$i,TRUE);
+                $data['id_barang'] = $this->input->post('kode'.$i,TRUE);
+                $data['qty'] = $this->input->post('qty_'.$i,TRUE);
+                $data['kg'] = $this->input->post('kg_'.$i,TRUE);
+                $data['satuan'] = $this->input->post('satuan'.$i,TRUE);
+                $data['price'] = str_replace('.', '',  $this->input->post('price_'.$i,TRUE));
+                $data['subtotal'] = str_replace('.', '',  $this->input->post('sub_'.$i,TRUE));
+
+                $this->db->insert('tb_invoice_detail', $data);
+              }
+
+              $this->admin->deleteTable("id_invoice",$this->input->post('id_invoice',TRUE), 'tb_invoice_opt_charge' );
 
               $total_cost = intval($this->input->post('total-row-biaya'));
               for ($i=1; $i <= $total_cost ; $i++) { 
                 if(!empty($this->input->post('aktifitas_'.$i,TRUE) )){
                   unset($data);
                   $data['id_invoice'] = $this->input->post('id_invoice');
+                  $data['id_routing'] = $this->input->post('id_routing_biaya'.$i,TRUE);
                   $data['aktifitas'] = $this->input->post('aktifitas_'.$i,TRUE);
                   $data['biaya'] = str_replace('.', '',  $this->input->post('biaya_'.$i,TRUE));
 
-                  if(!empty($this->input->post('id_detail_biaya_'.$i) )){
-                    $this->db->set($data);
-                    $this->db->where(array( "id" => $this->input->post('id_detail_biaya_'.$i) ));
-                    $this->db->update('tb_invoice_opt_charge');
-                  }else{
-                    $this->db->insert('tb_invoice_opt_charge', $data);
-                  }
+                  $this->db->insert('tb_invoice_opt_charge', $data);
                   
                 }
               }
@@ -382,11 +400,28 @@ class Invoice extends CI_Controller {
           }else{
               $last_id = $this->db->insert_id();
 
+              $total_routing = intval($this->input->post('total-row-invoice'));
+              for ($i=1; $i <= $total_routing ; $i++) { 
+                if(!empty($this->input->post('kode'.$i,TRUE) )){
+
+                  $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $this->input->post('id_routing_'.$i,TRUE)));
+
+                  unset($data);
+                  $data['id_invoice'] = $last_id;
+                  $data['id_routing'] = $this->input->post('id_routing_'.$i,TRUE);
+                  $data['no_routing'] = $routing['no_routing'];
+                 
+                  $this->db->insert('tb_invoice_routing', $data);
+                  
+                }
+              }
+
               $total = intval($this->input->post('total-row'));
               for ($i=1; $i <= $total ; $i++) { 
                 if(!empty($this->input->post('kode'.$i,TRUE) )){
                   unset($data);
                   $data['id_invoice'] = $last_id;
+                  $data['id_routing'] = $this->input->post('id_routing_item'.$i,TRUE);
                   $data['id_barang'] = $this->input->post('kode'.$i,TRUE);
                   $data['qty'] = $this->input->post('qty_'.$i,TRUE);
                   $data['kg'] = $this->input->post('kg_'.$i,TRUE);
@@ -403,6 +438,7 @@ class Invoice extends CI_Controller {
                 if(!empty($this->input->post('aktifitas_'.$i,TRUE) )){
                   unset($data);
                   $data['id_invoice'] = $last_id;
+                  $data['id_routing'] = $this->input->post('id_routing_biaya'.$i,TRUE);
                   $data['aktifitas'] = $this->input->post('aktifitas_'.$i,TRUE);
                   $data['biaya'] = str_replace('.', '',  $this->input->post('biaya_'.$i,TRUE));
                   $this->db->insert('tb_invoice_opt_charge', $data);
@@ -430,7 +466,9 @@ class Invoice extends CI_Controller {
       $data['term'] = $this->admin->getmaster('tb_term');
 
       $data['totalrow'] = 0;
-      $data['totalrowbiaya'] = 1;
+      $data['totalrowbiaya'] = 0;
+      $data['totalrowrouting'] = 0;
+
 
       if(empty($data['data'])){
         redirect("invoice");
@@ -438,6 +476,7 @@ class Invoice extends CI_Controller {
 
       $data['data_detail'] = $this->admin->get_result_array('tb_invoice_detail',array( 'id_invoice' => $id));
       $data['data_biaya'] = $this->admin->get_result_array('tb_invoice_opt_charge',array( 'id_invoice' => $id));
+      $data['data_routing'] = $this->admin->get_result_array('tb_invoice_routing',array( 'id_invoice' => $id));
 
       foreach ($data['data_detail'] as $key => $value) {
         $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
@@ -449,6 +488,10 @@ class Invoice extends CI_Controller {
 
       foreach ($data['data_biaya'] as $key => $value) {
         $data['totalrowbiaya'] ++;
+      }
+
+      foreach ($data['data_routing'] as $key => $value) {
+        $data['totalrowrouting'] ++;
       }
 
       

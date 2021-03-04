@@ -1,4 +1,7 @@
 <style type="text/css">
+  .swal2-styled.swal2-confirm {
+    background-color: #bf2111 !important;
+  }
   #ViewTableBrg td, #ViewTableBrg th {
     padding: .55rem;
   }
@@ -17,7 +20,7 @@
   .info-text{
     margin-bottom: 12px;
     padding-left: 10%;
-    font-size: 36px;
+    font-size: 29px;
     font-weight: bold;
   }
   .img-tabs a img {
@@ -69,6 +72,10 @@
 
   #ViewTableBrg>thead{
     background: linear-gradient(to right, #3f535a, #212425);
+    color: #fff !important;
+  }
+  #ViewTableInvoice>thead{
+    background: linear-gradient(to right, #e6800f, #ff8100);
     color: #fff !important;
   }
   .thead-color {
@@ -136,7 +143,7 @@
                 </div>
               </div>
               <div class="col-sm-6">
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                   <label class="col-sm-3 col-form-label" style="font-weight: bold;">NO ROUTING</label>
                   <div class="col-sm-9">
 
@@ -149,7 +156,7 @@
                     </div>
                     <input type="hidden" class="form-control" id="id_routing" name="id_routing" >
                   </div>
-                </div>  
+                </div>  --> 
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label" style="font-weight: bold;">TERM</label>
                   <div class="col-sm-9">
@@ -176,7 +183,7 @@
               </div>
             </div>
             
-            <div class="row m-l-0 m-r-0">
+            <div class="row m-l-0 m-r-0 hidden">
                 <div class="col-sm-6 bg-c-lite-green">
                   <div class="card-block text-white">
                     <div class="row b-b-default m-b-20 p-b-5">
@@ -213,9 +220,7 @@
                       <div class="row b-b-default m-b-10 p-b-5">
                         <div class="col-sm-6  f-w-600">Penerima</div>
                         <div class="col-sm-6">
-                          <!-- <h3 id="attn_penerima"></h3> -->
                           <h3 id="nama_penerima"></h3>
-                          <!-- <h5 id="alamat_penerima"></h5> -->
                         </div>
                       </div>
                       <div class="row">
@@ -237,10 +242,61 @@
                   </div>
                 </div>
             </div>
-
-            <div class="row" id="barang">
+            <div class="row" id="row-invoice">
               <h4 class="info-text" style="padding-left: 10px;">
-                  <button class="btn btn-grd-invers hidden" id="btnAdd" ><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                  Routing Slip <button type="button" class="btn btn-grd-inverse btn-sm" id="btnBrowse" >Browse..</button>
+              </h4>
+              <div class="col-sm-12">
+                <div class="dt-responsive table-responsive table-brg">
+                  <input type="hidden" id="total-row-invoice" name="total-row-invoice" value="<?= $totalrowrouting ?>">
+                  <table id="ViewTableInvoice" class="table table-bordered" style="margin-top: 0 !important;width: 100% !important;">
+                      <thead class="text-primary">
+                          <tr>
+                              <th>
+                                No
+                              </th>
+                              <th width="100px">
+                                Aksi
+                              </th>
+                              <th>
+                                No Routing
+                              </th>
+                              <th>
+                                Tanggal
+                              </th>
+                              <th>
+                                NO SPK
+                              </th>
+                              <th>
+                                Project
+                              </th>
+                              
+                          </tr>
+                      </thead>
+                      <tbody id="tbody-table-invoice">
+                          <template v-for="(log, index) in list_routing">
+                            <tr>
+                                <td style="width:1%">{{ (index+1) }}</td>
+                                <td>
+                                  <input type="hidden" class="form-control" :id="'id_routing_' + (index+1)" :name="'id_routing_' + (index+1)" :value="log.id_routing">
+                                  <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelRouting(this)" :data-id="log.id"><i class="icofont icofont-trash"></i> Del</a>
+                                </td>
+                                <td>{{ log.no_routing }}</td>
+                                <td>{{ log.tanggal }}</td>
+                                <td>{{ log.spk }}</td>
+                                <td>{{ log.project }}</td>
+                            </tr>
+                          </template>
+                      </tbody>
+                  </table>
+                  
+                  
+                </div>
+              </div>
+            </div>
+            <div class="row" id="barang">
+              <h4 class="info-text" style="padding-left: 10px;">Detail Item
+                  <button class="btn btn-grd-invers hidden" id="btnAdd" ><i class="icofont icofont-ui-add"></i> Tambah</button>
               </h4>
               <div class="col-sm-12">
                 <div class="dt-responsive table-responsive table-brg">
@@ -253,6 +309,9 @@
                               </th>
                               <th>
                                 Aksi
+                              </th>
+                              <th>
+                                Routing
                               </th>
                               <th>
                                 Nama Barang
@@ -279,7 +338,7 @@
                       </tbody>
                   </table>
                   <h4 class="info-text" style="padding-left: 10px;">Tambahan Biaya
-                      <button class="btn btn-grd-invers" id="btnAddBiaya" v-if="last_status != 'LUNAS'" ><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                      <button class="btn btn-grd-inverse btn-sm" id="btnAddBiaya" v-if="last_status != 'LUNAS'" ><i class="icofont icofont-ui-add"></i> Tambah</button>
                   </h4>
                   <input type="hidden" id="total-row-biaya" name="total-row-biaya" value="<?= $totalrowbiaya ?>">
 
@@ -292,6 +351,9 @@
                             <th width="100">
                               Aksi
                             </th>
+                            <th width="120">
+                              Routing
+                            </th>
                             <th>
                               Aktifitas
                             </th>
@@ -302,22 +364,7 @@
                         </tr>
                     </thead>
                     <tbody id="tbody-table-biaya">
-                        <tr>
-                          <td style="width:1%">1</td>
-                          <td style="width:8%">
-                            <input type="hidden" id="id_detail_biaya_1" name="id_detail_biaya_1" class="form-control " value="">
-                            <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)">
-                              <i class="icofont icofont-trash"></i> Del</a>
-                          </td>
-                          
-                          <td>
-                            <input type="text" name="aktifitas_1" id="aktifitas_1" class="form-control" value="" >
-                          </td>
-                          <td>
-                            <input type="number" id="biaya_1" name="biaya_1" value="0" class="form-control">
-                          </td>
-                          
-                        </tr>
+                        
                     </tbody>
                   </table>
                   <table class="table table-bordered">
@@ -356,12 +403,6 @@
                           <input type="text" id="tax" name="tax" class="form-control " readonly style="text-align:right;" value="<?= empty($data) ? "0" : rupiah($data['tax'])?>">
                         </td>
                       </tr>
-                      <!-- <tr>
-                        <td style="text-align:right;">WHT 23</td>
-                        <td style="text-align:right;">
-                          <input type="text" id="wht" name="wht" class="form-control " value="0" readonly style="text-align:right;">
-                        </td>
-                      </tr> -->
                       <tr>
                         <td style="text-align:right;">Total</td>
                         <td style="text-align:right;">

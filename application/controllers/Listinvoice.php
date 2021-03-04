@@ -56,8 +56,8 @@ class Listinvoice extends CI_Controller {
       $valid_columns = array(
           0=>'no_invoice',
           1=>'tgl_submit_invoice',
-          2=>'no_routing',
-          3=>'nama_project',
+          2=>'group_routing',
+          3=>'group_project',
           4=>'term',
           5=>'due_date',
           6=>'total',
@@ -66,8 +66,8 @@ class Listinvoice extends CI_Controller {
       $valid_sort = array(
           0=>'no_invoice',
           1=>'tgl_submit_invoice',
-          2=>'no_routing',
-          3=>'nama_project',
+          2=>'group_routing',
+          3=>'group_project',
           4=>'term',
           5=>'due_date',
           6=>'total',
@@ -104,11 +104,26 @@ class Listinvoice extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("I.*,term,nama_project,cust_name");
+      $this->db->select("I.*,term,(
+                                     SELECT GROUP_CONCAT(no_routing SEPARATOR ', ') AS no_routing FROM tb_invoice_routing WHERE id_invoice=I.`id`
+                                  )group_routing,
+                                  (
+                                     SELECT GROUP_CONCAT(cust_name SEPARATOR ', ') AS cust_name 
+                                     FROM tb_invoice_routing IR
+                                     JOIN `tb_routingslip` `R` ON `R`.`id` = `IR`.`id_routing` 
+                                     JOIN `master_customer` `mc` ON `R`.`id_penerima` = `mc`.`id`
+                                     WHERE id_invoice=I.`id`
+                                  )group_cust,
+                                  (
+                                     SELECT GROUP_CONCAT(nama_project SEPARATOR ', ') AS nama_project 
+                                     FROM tb_invoice_routing IR
+                                     JOIN `tb_routingslip` `R` ON `R`.`id` = `IR`.`id_routing` 
+                                     WHERE id_invoice=I.`id`
+                                  )group_project");
       $this->db->from("tb_invoice I");
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
-      $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
-      $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      // $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
+      // $this->db->join('master_customer A', 'R.id_penerima = A.id');
       // $this->db->order_by("tgl_submit_invoice","ASC");
 
       $pengguna = $this->db->get();
@@ -120,8 +135,8 @@ class Listinvoice extends CI_Controller {
           $data[] = array( 
                       $r->no_invoice,
                       $r->tgl_submit_invoice,
-                      $r->no_routing,
-                      $r->nama_project,
+                      $r->group_routing,
+                      $r->group_project,
                       $r->term,
                       $r->due_date,
                       number_format($r->total),
@@ -170,9 +185,7 @@ class Listinvoice extends CI_Controller {
           }                 
       }
     $this->db->from("tb_invoice I");
-    $this->db->join('tb_term', 'tb_term.id = I.id_term');
-    $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
-    $query = $this->db->join('master_customer A', 'R.id_penerima = A.id')->get();
+    $query = $this->db->join('tb_term', 'tb_term.id = I.id_term')->get();
     $result = $query->row();
     if(isset($result)) return $result->num;
     return 0;

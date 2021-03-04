@@ -107,16 +107,17 @@ class Listinvoicevendor extends CI_Controller {
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
       $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      $this->db->order_by('tgl_submit_invoice', 'DESC');
       $pengguna = $this->db->get();
       $data = array();
       foreach($pengguna->result() as $r)
       {
 
           $data[] = array( 
-                      $r->no_routing,
-                      $r->nama_project,
                       $r->no_invoice,
                       $r->tgl_submit_invoice,
+                      $r->no_routing,
+                      $r->nama_project,
                       $r->term,
                       $r->due_date,
                       number_format($r->total),

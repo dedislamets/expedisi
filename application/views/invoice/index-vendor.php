@@ -98,7 +98,7 @@
         <div class="card-header" style="background-color: #404E67;color:#fff">
           <div class="row">
               <div class="col-xl-10">
-                  <h4><?= $title ?></h4>
+                  <h4><?= $title ?> <a href="<?= base_url() ?>listinvoicevendor"> Back </a></h4>
                   <span>Halaman ini menampilkan data connote yang tersimpan</span>
               </div>
               
@@ -234,8 +234,9 @@
             </div>
 
             <div class="row" id="barang">
-              <h4 class="info-text" style="padding-left: 10px;">
-                  <button class="btn btn-grd-invers hidden" id="btnAdd" ><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+              <h4 class="info-text" style="padding-left: 15px;margin-top: 10px;">
+                  <button class="btn hor-grd btn-grd-primary btn-sm" id="btnLoad" type="button" v-on:click="loadItem"><i class="icofont icofont-refresh"></i> Load Item Routing</button>
+                  <button class="btn hor-grd btn-grd-danger btn-sm" type="button" id="btnReset" v-on:click="restItem"><i class="icofont icofont-trash"></i> Kosongkan Item</button>
               </h4>
               <div class="col-sm-12">
                 <div class="dt-responsive table-responsive table-brg">
@@ -270,11 +271,34 @@
                           </tr>
                       </thead>
                       <tbody id="tbody-table">
-                        
+                          <tr v-for="(obj, index) in list_item">
+                            <td style="width:1%">{{ (index+1) }}</td>
+                            <td style="width:8%">
+                              <input type="hidden" :name="'kode'+ (index+1)" :id="'kode' + (index+1)" class="form-control " :value="obj.id_barang">
+                              <input type="hidden" :id="'id_detail'+ (index+1)" :name="'id_detail'+ (index+1)" class="form-control " :value="obj.id">
+                              <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a>
+                            </td>
+                            <td>{{ obj.nama_barang }}</td>
+                            <td>
+                              <input type="number" :id="'qty_'+ (index+1)" :name="'qty_'+ (index+1)" :value="obj.qty" class="form-control" style="width:100%">
+                            </td>
+                            
+                            <td>
+                              <input type="text" :name="'satuan'+ (index+1)" :id="'satuan'+ (index+1)" class="form-control" :value="obj.satuan" />
+                            </td>
+                            <td><input type="text" :name="'kg_'+ (index+1)" :id="'kg_'+ (index+1)" class="form-control" :value="obj.kg" /></td>
+                            <td>
+                              <input type="number" :id="'price_'+ (index+1)" :name="'price_'+ (index+1)" :value="mode=='new'? '0' : obj.price" class="form-control" style="width:100%">
+                            </td>
+                            <td>
+                              <input type="text" :id="'sub_'+ (index+1)" :name="'sub_'+ (index+1)" :value="mode=='new'? '0' : obj.subtotal" class="form-control" style="width:100%;text-align:right;" readonly>
+                            </td>
+                          
+                          </tr>
                       </tbody>
                   </table>
-                  <h4 class="info-text" style="padding-left: 10px;">Tambahan Biaya
-                      <button class="btn btn-grd-invers" id="btnAddBiaya" v-if="last_status != 'LUNAS'" ><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                  <h4 class="info-text" style="padding-left: 10px;font-size: 29px;">Tambahan Biaya
+                      <button class="btn btn-grd-inverse btn-sm" id="btnAddBiaya" v-if="last_status != 'LUNAS'" ><i class="icofont icofont-ui-add"></i> Tambah</button>
                   </h4>
                   <input type="hidden" id="total-row-biaya" name="total-row-biaya" value="<?= $totalrowbiaya ?>">
 
@@ -301,7 +325,7 @@
                           <td style="width:1%">1</td>
                           <td style="width:8%">
                             <input type="hidden" id="id_detail_biaya_1" name="id_detail_biaya_1" class="form-control " value="">
-                            <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)">
+                            <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelBiaya(this)">
                               <i class="icofont icofont-trash"></i> Del</a>
                           </td>
                           

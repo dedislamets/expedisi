@@ -219,6 +219,8 @@ class Invoicevendor extends CI_Controller {
       $data['data_routing'] = $this->admin->get_array('tb_routingslip',array( 'id' => $data['data']['id_routing']));
 
       $data['data_detail'] = $this->admin->get_result_array('tb_invoice_vendor_detail',array( 'id_invoice' => $id));
+      $data['data_detail_routing'] = $this->admin->get_result_array('tb_routingslip_detail',array( 'id_routing' => $data['data']['id_routing']));
+
       $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_pengirim']),'cust_name');
       $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_penerima']),'cust_name');
       $data['data_tag'] = $this->admin->get_result_array('master_customer_address',array( 'id_master' => $data['data_routing']['id_pengirim']));
@@ -243,6 +245,17 @@ class Invoicevendor extends CI_Controller {
         $data['data_detail'][$key]['kg'] = $value['kg'];
         $data['data_detail'][$key]['subtotal'] = $value['subtotal'];
         $data['totalrow'] ++;
+      }
+
+      foreach ($data['data_detail_routing'] as $key => $value) {
+        $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
+        $satuan = $data['data_detail_routing'][$key]['satuan'];
+        $qty = $data['data_detail_routing'][$key]['qty'];
+        $data['data_detail_routing'][$key]['nama_barang'] = $item['nama_barang'];
+        $data['data_detail_routing'][$key]['berat'] = $item['berat_barang'];
+        $data['data_detail_routing'][$key]['satuan'] = $satuan;
+        $data['data_detail_routing'][$key]['qty'] = $qty;
+        $data['data_detail_routing'][$key]['kg'] = $value['kg'];
       }
 
       $data['totalrowbiaya'] = 1;
@@ -306,6 +319,9 @@ class Invoicevendor extends CI_Controller {
               print("<pre>".print_r($this->db->error(),true)."</pre>");
           }else{
               $response['error']= FALSE;
+
+              $this->admin->deleteTable("id_invoice",$this->input->post('id_invoice',TRUE), 'tb_invoice_vendor_detail' );
+
               $total = intval($this->input->post('total-row'));
               for ($i=1; $i <= $total ; $i++) { 
                 if(!empty($this->input->post('kode'.$i) )){
@@ -318,13 +334,8 @@ class Invoicevendor extends CI_Controller {
                   $data['price'] = str_replace('.', '',  $this->input->post('price_'.$i,TRUE));
                   $data['subtotal'] = str_replace('.', '',  $this->input->post('sub_'.$i,TRUE));
 
-                  if(!empty($this->input->post('id_detail'.$i) )){
-                    $this->db->set($data);
-                    $this->db->where(array( "id" => $this->input->post('id_detail'.$i) ));
-                    $this->db->update('tb_invoice_vendor_detail');
-                  }else{
-                    $this->db->insert('tb_invoice_vendor_detail', $data);
-                  }
+                  $this->db->insert('tb_invoice_vendor_detail', $data);
+
                 }
               }
 
@@ -337,9 +348,13 @@ class Invoicevendor extends CI_Controller {
                   $data['biaya'] = str_replace('.', '',  $this->input->post('biaya_'.$i,TRUE));
 
                   if(!empty($this->input->post('id_detail_biaya_'.$i) )){
-                    $this->db->set($data);
-                    $this->db->where(array( "id" => $this->input->post('id_detail_biaya_'.$i) ));
-                    $this->db->update('tb_invoice_vendor_opt_charge');
+                    if($this->input->post('deleted_'.$i) == "1"){
+                      $this->admin->deleteTable("id",$this->input->post('id_detail_biaya_'.$i, TRUE), 'tb_invoice_vendor_opt_charge' );
+                    }else{  
+                      $this->db->set($data);
+                      $this->db->where(array( "id" => $this->input->post('id_detail_biaya_'.$i) ));
+                      $this->db->update('tb_invoice_vendor_opt_charge');
+                    }
                   }else{
                     $this->db->insert('tb_invoice_vendor_opt_charge', $data);
                   }
@@ -373,7 +388,7 @@ class Invoicevendor extends CI_Controller {
                   $data['price'] = str_replace('.', '',  $this->input->post('price_'.$i,TRUE));
                   $data['subtotal'] = str_replace('.', '',  $this->input->post('sub_'.$i,TRUE));
                   $this->db->insert('tb_invoice_vendor_detail', $data);
-                  
+                  // echo $this->db->last_query();exit();
                 }
               }
 

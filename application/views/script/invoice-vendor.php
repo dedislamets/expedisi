@@ -15,10 +15,51 @@
         	term: '2',
         	id_invoice:'',
         	last_status:'<?= empty($data) ? "INPUT" : $data['status'] ?>',
-        	
+        	list_item: [],
+        	store_item: []
         },
         methods: {
-        
+        	loadItem: function (event){
+        		let copy = JSON.parse(JSON.stringify(this.store_item));
+    			this.list_item =  copy;
+    			$("#total-row").val(copy.length);
+        	},
+        	restItem: function(event){
+        		this.list_item=[];
+        		$("#total-row").val(0);
+        		this.calculateTotal();
+        	},
+        	calculateTotal: function(){
+        		var totalAmount = 0; 
+				$("[id^='price_']").each(function() {
+					var id = $(this).attr('id');
+					id = id.replace("price_",'');
+					var price = $('#price_'+id).val();
+					var quantity  = $('#kg_'+id).val();
+					if(!quantity) {
+						quantity = 1;
+					}
+					var total = price*quantity;
+					$('#sub_'+id).val(parseFloat(total).toLocaleString('id-ID'));
+					totalAmount += total;			
+				});
+				var other_cost = 0;
+				$("[id^='biaya_']").each(function() {
+					var id = $(this).attr('id');
+					id = id.replace("biaya_",'');
+					var biaya = $('#biaya_'+id).val();
+					if(!biaya) {
+						biaya = 0;
+					}
+					other_cost += parseFloat(biaya);			
+				});
+				$('#other_cost').val(parseFloat(other_cost).toLocaleString('id-ID'));	
+				$('#subtotal').val(parseFloat(totalAmount).toLocaleString('id-ID'));	
+				var taxRate = 1;
+				var subTotal = totalAmount;	
+				subTotal = parseFloat(subTotal)+parseFloat(other_cost);
+				$('#total').val(subTotal.toLocaleString('id-ID'));		
+        	}
         }
     });
 
@@ -80,6 +121,9 @@
 
     $("#btnCariBarang").on('click', function (event) {
     	$('#modalBarang').modal({backdrop: 'static', keyboard: false}) ;
+    });
+    $("#btnReset").on('click', function (event) {
+    	app.calculateTotal();
     });
 
 	$("#id_pengirim").change(function(e, params){   
@@ -227,8 +271,8 @@
 	function validateBarang(){
     	var flag = true;
     	if($("#tbody-table").html().trim() == ""){
-    		alertError('Anda belum memasukkan daftar item..');
-    		flag = false;
+    		// alertError('Anda belum memasukkan daftar item..');
+    		// flag = false;
     	}else{
     		$("#tbody-table").find('tr').each(function (i, el) {
 		        var $tds = $(this).find('td');
@@ -287,39 +331,40 @@
 				$("#pickup").text(data['data']['pickup_address']);
 
 				$("#ViewTableBrg tbody").empty();
-				const tbody = $("#ViewTableBrg tbody");
-				var baris;
-				tbody.html('');
-				$.each(data['data_detail'], function(_, obj) {
-				    var nomor = $('#tbody-table tr:nth-last-child(1) td:first-child').html();
-					if( $.isNumeric( nomor ) ) 	{
-						nomor = parseInt(nomor) + 1;
-					}else{		
-						nomor = 1
-					}
+				app.store_item = data['data_detail'];
+				// const tbody = $("#ViewTableBrg tbody");
+				// var baris;
+				// tbody.html('');
+				// $.each(data['data_detail'], function(_, obj) {
+				//     var nomor = $('#tbody-table tr:nth-last-child(1) td:first-child').html();
+				// 	if( $.isNumeric( nomor ) ) 	{
+				// 		nomor = parseInt(nomor) + 1;
+				// 	}else{		
+				// 		nomor = 1
+				// 	}
 
-					$('#total-row').val(nomor);
-					$(".no-data").remove();
-					baris = '<tr>';
-					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success disabled" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger disabled" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
-					baris += '<td>' + obj.nama_barang+'</td>';
-					baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';
+				// 	$('#total-row').val(nomor);
+				// 	$(".no-data").remove();
+				// 	baris = '<tr>';
+				// 	baris += '<td style="width:1%">'+ nomor+'</td>';
+				// 	baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success btn-sm" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+				// 	baris += '<td>' + obj.nama_barang+'</td>';
+				// 	baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';
 					
-					baris += '<td><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control" value="' + obj.satuan+'" /></td>';
-					baris += '<td><input type="text" name="kg_'+ nomor +'" id="kg_'+ nomor +'" class="form-control" value="' + obj.kg+'" /></td>';
-					baris += '<td><input type="number" id="price_'+ nomor +'" name="price_'+ nomor +'" value="0" class="form-control" style="width:100%"></td>';
-					baris += '<td><input type="text" id="sub_'+ nomor +'" name="sub_'+ nomor +'" value="0" class="form-control" style="width:100%;text-align:right;" readonly></td>';
+				// 	baris += '<td><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control" value="' + obj.satuan+'" /></td>';
+				// 	baris += '<td><input type="text" name="kg_'+ nomor +'" id="kg_'+ nomor +'" class="form-control" value="' + obj.kg+'" /></td>';
+				// 	baris += '<td><input type="number" id="price_'+ nomor +'" name="price_'+ nomor +'" value="0" class="form-control" style="width:100%"></td>';
+				// 	baris += '<td><input type="text" id="sub_'+ nomor +'" name="sub_'+ nomor +'" value="0" class="form-control" style="width:100%;text-align:right;" readonly></td>';
 				
-					baris += '</tr>';
+				// 	baris += '</tr>';
 					
-					var last = $('#tbody-table tr:last').html();
-					if(last== undefined){
-						$(baris).appendTo("#tbody-table");
-					}else{
-						$('#tbody-table tr:last').after(baris);
-					}
-				});
+				// 	var last = $('#tbody-table tr:last').html();
+				// 	if(last== undefined){
+				// 		$(baris).appendTo("#tbody-table");
+				// 	}else{
+				// 		$('#tbody-table tr:last').after(baris);
+				// 	}
+				// });
 				
 				
 
@@ -352,39 +397,42 @@
 				$("#pickup").text(data['data_routing']['pickup_address']);
 
 				$("#ViewTableBrg tbody").empty();
-				const tbody = $("#ViewTableBrg tbody");
-				var baris;
-				tbody.html('');
-				$.each(data['data_detail'], function(_, obj) {
-				    var nomor = $('#tbody-table tr:nth-last-child(1) td:first-child').html();
-					if( $.isNumeric( nomor ) ) 	{
-						nomor = parseInt(nomor) + 1;
-					}else{		
-						nomor = 1
-					}
+				app.store_item = data['data_detail_routing'];
+				let copy = JSON.parse(JSON.stringify(data['data_detail']));
+    			app.list_item =  copy;
+				// const tbody = $("#ViewTableBrg tbody");
+				// var baris;
+				// tbody.html('');
+				// $.each(data['data_detail'], function(_, obj) {
+				//     var nomor = $('#tbody-table tr:nth-last-child(1) td:first-child').html();
+				// 	if( $.isNumeric( nomor ) ) 	{
+				// 		nomor = parseInt(nomor) + 1;
+				// 	}else{		
+				// 		nomor = 1
+				// 	}
 
-					$('#total-row').val(nomor);
-					$(".no-data").remove();
-					baris = '<tr>';
-					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success disabled" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger disabled" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
-					baris += '<td>' + obj.nama_barang+'</td>';
-					baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';
+				// 	$('#total-row').val(nomor);
+				// 	$(".no-data").remove();
+				// 	baris = '<tr>';
+				// 	baris += '<td style="width:1%">'+ nomor+'</td>';
+				// 	baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success disabled" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger disabled" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+				// 	baris += '<td>' + obj.nama_barang+'</td>';
+				// 	baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';
 					
-					baris += '<td><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control" value="' + obj.satuan+'" /></td>';
-					baris += '<td><input type="text" name="kg_'+ nomor +'" id="kg_'+ nomor +'" class="form-control" value="' + obj.kg+'" /></td>';
-					baris += '<td><input type="number" id="price_'+ nomor +'" name="price_'+ nomor +'" value="' + obj.price+'" class="form-control" style="width:100%"></td>';
-					baris += '<td><input type="text" id="sub_'+ nomor +'" name="sub_'+ nomor +'" value="' + parseFloat(obj.subtotal).toLocaleString('id-ID')+'" class="form-control" style="width:100%;text-align:right;" readonly></td>';
+				// 	baris += '<td><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control" value="' + obj.satuan+'" /></td>';
+				// 	baris += '<td><input type="text" name="kg_'+ nomor +'" id="kg_'+ nomor +'" class="form-control" value="' + obj.kg+'" /></td>';
+				// 	baris += '<td><input type="number" id="price_'+ nomor +'" name="price_'+ nomor +'" value="' + obj.price+'" class="form-control" style="width:100%"></td>';
+				// 	baris += '<td><input type="text" id="sub_'+ nomor +'" name="sub_'+ nomor +'" value="' + parseFloat(obj.subtotal).toLocaleString('id-ID')+'" class="form-control" style="width:100%;text-align:right;" readonly></td>';
 				
-					baris += '</tr>';
+				// 	baris += '</tr>';
 					
-					var last = $('#tbody-table tr:last').html();
-					if(last== undefined){
-						$(baris).appendTo("#tbody-table");
-					}else{
-						$('#tbody-table tr:last').after(baris);
-					}
-				});
+				// 	var last = $('#tbody-table tr:last').html();
+				// 	if(last== undefined){
+				// 		$(baris).appendTo("#tbody-table");
+				// 	}else{
+				// 		$('#tbody-table tr:last').after(baris);
+				// 	}
+				// });
 				
 				$("#ViewTableBiaya tbody").empty();
 				const tbodyBiaya = $("#ViewTableBiaya tbody");
@@ -402,7 +450,7 @@
 					$(".no-data").remove();
 					baris = '<tr>';
 					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td style="width:8%">' + (app.last_status == "LUNAS" ? "" : '<input type="hidden" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control " value="' + obj.id+'"><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a>') + '</td>';
+					baris += '<td style="width:8%">' + (app.last_status == "LUNAS" ? "" : '<input type="hidden" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control " value="' + obj.id+'"><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a>') + '</td>';
 					baris += '<td><input type="text" name="aktifitas_'+ nomor +'" id="aktifitas_'+ nomor +'" class="form-control" value="' + obj.aktifitas +'" /></td>';
 					
 					baris += '<td><input type="text" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" value="' + parseFloat(obj.biaya)+'" class="form-control" style="width:100%;text-align:right;"></td>';
@@ -451,26 +499,23 @@
 	}
 
 	function cancel(val) {
-		var id=$(val).prevAll()[1].value;
-		if(id != ""){
-			var r = confirm("Yakin dihapus?");
-			if (r == true) {
-				$.get('<?= base_url()?>spk/delete', { id: id }, function(data){ 
-					$(val).parent().parent().remove();
-				})
+		var id = $(val).prev().val();
+		$.each(app.list_item, function(_, obj) {
+			if(obj.id == id){
+				app.list_item.splice(_,1);
+				$("#total-row").val(app.list_item.length);
 			}
-		}else{
-			$(val).parent().parent().remove();
-		}
+		})
+		// $(val).parent().parent().remove();	
+		// app.list_item.splice
 	}
 	function cancelBiaya(val) {
 		var id=$(val).prevAll()[1].value;
 		if(id != ""){
-			// debugger;
 			$(val).prevAll()[0].value = 1;
 			$(val).parent().parent().addClass('hidden');
-			$("#biaya_" + nomor).val(0);
-			calculateTotal();
+			$(val).parent().next().next().children().val(0);
+			app.calculateTotal();
 
 		}else{
 			$(val).parent().parent().remove();
@@ -478,49 +523,13 @@
 	}
 
 	$(document).on('blur', "[id^=qty_]", function(){
-		calculateTotal();
+		app.calculateTotal();
 	});	
 	$(document).on('blur', "[id^=price_]", function(){
-		calculateTotal();
+		app.calculateTotal();
 	});	
 	$(document).on('blur', "[id^=biaya_]", function(){
-		calculateTotal();
+		app.calculateTotal();
 	});	
-
-	function calculateTotal(){
-		var totalAmount = 0; 
-		$("[id^='price_']").each(function() {
-			var id = $(this).attr('id');
-			id = id.replace("price_",'');
-			var price = $('#price_'+id).val();
-			var quantity  = $('#kg_'+id).val();
-			if(!quantity) {
-				quantity = 1;
-			}
-			var total = price*quantity;
-			$('#sub_'+id).val(parseFloat(total).toLocaleString('id-ID'));
-			totalAmount += total;			
-		});
-		var other_cost = 0;
-		$("[id^='biaya_']").each(function() {
-			var id = $(this).attr('id');
-			id = id.replace("biaya_",'');
-			var biaya = $('#biaya_'+id).val();
-			if(!biaya) {
-				biaya = 0;
-			}
-			other_cost += parseFloat(biaya);			
-		});
-		$('#other_cost').val(parseFloat(other_cost).toLocaleString('id-ID'));	
-		$('#subtotal').val(parseFloat(totalAmount).toLocaleString('id-ID'));	
-		var taxRate = 1;
-		var subTotal = totalAmount;	
-		if(subTotal) {
-			subTotal = parseFloat(subTotal)+parseFloat(other_cost);
-			$('#total').val(subTotal.toLocaleString('id-ID'));		
-			
-		}
-	}
-
 	
 </script>

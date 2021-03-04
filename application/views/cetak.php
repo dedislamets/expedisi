@@ -124,7 +124,7 @@
 							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["cost"] + $data["subtotal"]) ?></td>
 						</tr>
 						<tr>
-							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;">PPN 1%</td>
+							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;">PPN <?= $data["tax_percent"] ?>%</td>
 							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["tax"]) ?></td>
 						</tr>
 						<tr>

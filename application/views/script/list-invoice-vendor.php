@@ -16,7 +16,8 @@
             {
 			    "targets": [6,7],
 			    "className": "text-right"
-			}]
+			}],
+			"order": [[ 0, "desc" ]]
 	    });
 
 	})

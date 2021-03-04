@@ -3,7 +3,7 @@
 	var app = new Vue({
         el: "#app",
         mounted: function () {
-	      // this.loadHistory();
+	      // this.initmodal();
 	    },
 	    updated: function () {
 	    	var that = this;
@@ -19,7 +19,8 @@
         	id_invoice:'',
         	last_status:'<?= empty($data) ? "INPUT" : $data['status'] ?>',
         	tag:['Sesuai Routing'],
-        	tag_select: 'Sesuai Routing'
+        	tag_select: 'Sesuai Routing',
+        	list_routing: []
         },
         methods: {
         	dropzone: function(){
@@ -76,6 +77,25 @@
 						}
 					});
 				});
+		    },
+		    initmodal: function(){
+		    	var list="";
+		    	$.each(this.list_routing, function(_, obj) {
+					list += obj.id + ",";
+				})
+				if(list.substr(list.length-1) == ",")
+					list = list.slice(0, -1);
+		    	$('#ViewTableSPK').DataTable({
+					ajax: {		            
+			            "url": "<?= base_url(); ?>listrs/dataTableRS?r=" + list,
+			            "type": "GET"
+			        },
+			        processing	: true,
+					serverSide	: true,			
+					"bPaginate": true,	
+					"autoWidth": true,
+					"destroy" : true
+			    });
 		    }
         }
     });
@@ -102,17 +122,7 @@
 			}
 		);
 
-		$('#ViewTableSPK').DataTable({
-			ajax: {		            
-	            "url": "<?= base_url(); ?>listrs/dataTableRS",
-	            "type": "GET"
-	        },
-	        processing	: true,
-			serverSide	: true,			
-			"bPaginate": true,	
-			"autoWidth": true,
-
-	    });
+		
 
 		if($("#mode").val() == 'edit') {
 			app.mode = 'edit';
@@ -186,7 +196,7 @@
 		$(".no-data").remove();
 		var baris = '<tr>';
 		baris += '<td style="width:1%">'+ nomor+'</td>';
-		baris += '<td style="width:8%"><input type="text" id="kode'+ nomor +'" name="kode'+ nomor +'" placeholder="Kode Item" class="form-control hidden"><input type="text" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control hidden" value=""><a href="javascript:void(0)" class="btn hor-grd btn-grd-success" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+		baris += '<td style="width:8%"><input type="text" id="kode'+ nomor +'" name="kode'+ nomor +'" placeholder="Kode Item" class="form-control hidden"><input type="text" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control hidden" value=""><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger hidden" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
 		baris += '<td style="width:39%">Nama Item</td>';
 		baris += '<td>Berat</td>';
 		baris += '<td style="width:25%"><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control"/></td>';
@@ -216,10 +226,10 @@
 		$(".no-data").remove();
 		var baris = '<tr>';
 		baris += '<td style="width:1%">'+ nomor+'</td>';
-		baris += '<td style="width:8%"><input type="text" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control hidden" value=""><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
-		
+		baris += '<td style="width:8%"><input type="text" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control hidden" value=""><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+		baris += '<td><input type="hidden" id="id_routing_biaya'+ nomor +'" name="id_routing_biaya'+ nomor +'" class="form-control " value="">-</td>';
 		baris += '<td><input type="text" name="aktifitas_'+ nomor +'" id="aktifitas_'+ nomor +'" class="form-control"/></td>';
-		baris += '<td><input type="number" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" placeholder="" class="form-control" value="0" ></td>';
+		baris += '<td><input type="number" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" placeholder="" class="form-control" value="0" style="text-align:right;"></td>';
 		
 	
 		baris += '</tr>';
@@ -233,6 +243,7 @@
 	});
 
     $('#btnBrowse').on('click', function (event) {
+    	app.initmodal();
     	$('#modalBrowse').modal({backdrop: 'static', keyboard: false}) ;
     });
     
@@ -303,8 +314,7 @@
 			        	alertError('Item belum dipilih..');
 			        	flag= false;
 			        }
-
-			        var price = $($tds[6]).children().val();
+			        var price = $($tds[7]).children().val();
 			        if(price == 0){
 			        	alertError('Harga Barang belum di berikan..');
 			        	flag= false;
@@ -333,13 +343,12 @@
 					if(obj.tag == "Sesuai Routing")
 						$("#id_tag").val(obj.id)
 				})
-				$("#no_routing").val(data['data']['no_routing']);
-				$("#id_routing").val(data['data']['id']);
-				$("#project").val(data['data']['nama_project']);
-				$("#tgl_do").val(data['data']['tgl_spk']);
+				// $("#no_routing").val(data['data']['no_routing']);
+				// $("#id_routing").val(data['data']['id']);
+				// $("#project").val(data['data']['nama_project']);
+				// $("#tgl_do").val(data['data']['tgl_spk']);
 
 				$("#id_pengirim").val(data['data']['id_pengirim']);
-				// $("#attn_pengirim").text(data['data']['attn_pengirim']);
 				$("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
 				$("#alamat_pengirim").text(data['data']['alamat_pengirim']);
 				$("#origin").text(data['data']['kec_pengirim'] + ' - ' + data['data']['kota_pengirim']);
@@ -350,13 +359,23 @@
 				$("#project").text(data['data']['nama_project']);
 				$("#moda").text(data['data']['moda_name']);
 				$("#destination").text(data['data']['kec_penerima'] + ' - ' + data['data']['kota_penerima']);
-				$("#spk").text(data['data']['spk_no']);
+				// $("#spk").text(data['data']['spk_no']);
 				$("#note").text("Jasa Pengiriman (" + $("#origin").text() + ") - (" + $("#destination").text() + ")");
+				app.list_routing.push({
+					id: data['data']['id'],
+        			no_routing: data['data']['no_routing'],
+        			tanggal: data['data']['CreatedDate'],
+        			spk: data['data']['spk_no'],
+        			project: data['data']['nama_project']
+				}); 
+				var id_rs = data['data']['id'];
+				var routing = data['data']['no_routing'];
 
-				$("#ViewTableBrg tbody").empty();
+				$('#total-row-invoice').val(app.list_routing.length);
+				// $("#ViewTableBrg tbody").empty();
 				const tbody = $("#ViewTableBrg tbody");
 				var baris;
-				tbody.html('');
+				// tbody.html('');
 				$.each(data['data_detail'], function(_, obj) {
 				    var nomor = $('#tbody-table tr:nth-last-child(1) td:first-child').html();
 					if( $.isNumeric( nomor ) ) 	{
@@ -369,7 +388,8 @@
 					$(".no-data").remove();
 					baris = '<tr>';
 					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success disabled" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger disabled" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+					baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger hidden" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+					baris += '<td><input type="hidden" id="id_routing_item'+ nomor +'" name="id_routing_item'+ nomor +'" class="form-control " value="' + id_rs +'">' + obj.no_routing+'</td>';
 					baris += '<td>' + obj.nama_barang+'</td>';
 					baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';
 					
@@ -388,10 +408,10 @@
 					}
 				});
 				
-				$("#ViewTableBiaya tbody").empty();
+				// $("#ViewTableBiaya tbody").empty();
 				const tbodyBiaya = $("#ViewTableBiaya tbody");
 				var barisBiaya;
-				tbodyBiaya.html('');
+				// tbodyBiaya.html('');
 				$.each(data['data_biaya'], function(_, obj) {
 				    var nomor = $('#tbody-table-biaya tr:nth-last-child(1) td:first-child').html();
 					if( $.isNumeric( nomor ) ) 	{
@@ -404,10 +424,11 @@
 					$(".no-data").remove();
 					baris = '<tr>';
 					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td style="width:8%">' + (app.last_status == "LUNAS" ? "" : '<input type="hidden" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control " value="' + obj.id+'"><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a>') + '</td>';
+					baris += '<td style="width:8%">' + (app.last_status == "LUNAS" ? "" : '<input type="hidden" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control " value="' + obj.id+'"><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a>') + '</td>';
+					baris += '<td><input type="hidden" id="id_routing_biaya'+ nomor +'" name="id_routing_biaya'+ nomor +'" class="form-control " value="' + id_rs +'">' + routing+'</td>';
 					baris += '<td><input type="text" name="aktifitas_'+ nomor +'" id="aktifitas_'+ nomor +'" class="form-control" value="' + obj.aktifitas +'" /></td>';
 					
-					baris += '<td><input type="text" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" value="' + parseFloat(obj.biaya)+'" class="form-control" style="width:100%;text-align:right;"></td>';
+					baris += '<td><input type="number" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" value="' + parseFloat(obj.biaya)+'" class="form-control" style="width:100%;text-align:right;"></td>';
 				
 					baris += '</tr>';
 					
@@ -422,38 +443,39 @@
 				calculateTotal();
 
 				$('#modalBrowse').modal('hide');
-			// }
+		
 			
 		})
 	}
 
 	function pilih_edit(val){
 		$.get('<?= base_url()?>invoice/get_edit', { id: val }, function(data){ 
-				app.tag = data['data_tag'];
-				$.each(data['data_tag'], function(_, obj) {
-					if(obj.id == data['data']['id_tag']){
-						$("#id_tag").val(obj.id)
-						app.tag_select = obj.tag;
-						$("#alamat_pengirim").text(obj.other_address);
-					}
-				})
-				$("#no_routing").val(data['data']['no_routing']);
-				$("#id_routing").val(data['data']['id_routing']);
-				$("#tgl_do").val(data['data']['tgl_spk']);
+				 // remark karana multi invoice
+				// app.tag = data['data_tag'];
+				// $.each(data['data_tag'], function(_, obj) {
+				// 	if(obj.id == data['data']['id_tag']){
+				// 		$("#id_tag").val(obj.id)
+				// 		app.tag_select = obj.tag;
+				// 		$("#alamat_pengirim").text(obj.other_address);
+				// 	}
+				// })
+				
+				// $("#no_routing").val(data['data']['no_routing']);
+				// $("#id_routing").val(data['data']['id_routing']);
+				// $("#tgl_do").val(data['data']['tgl_spk']);
 
-				$("#id_pengirim").val(data['data_routing']['id_pengirim']);
-				// $("#attn_pengirim").text(data['data_routing']['attn_pengirim']);
-				$("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
-				$("#origin").text(data['data_routing']['kec_pengirim'] + ' - ' + data['data_routing']['kota_pengirim']);
+				// $("#id_pengirim").val(data['data_routing']['id_pengirim']);
+				// $("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
+				// $("#origin").text(data['data_routing']['kec_pengirim'] + ' - ' + data['data_routing']['kota_pengirim']);
 				
-				
-				// $("#attn_penerima").text(data['data_routing']['attn_penerima']);
-				$("#nama_penerima").text(data['data']['penerima']['cust_name']);
-				$("#alamat_penerima").text(data['data_routing']['alamat_penerima']);
-				$("#project").text(data['data_routing']['nama_project']);
-				$("#moda").text(data['data_routing']['moda_name']);
-				$("#destination").text(data['data_routing']['kec_penerima'] + ' - ' + data['data_routing']['kota_penerima']);
-				$("#spk").text(data['data_routing']['spk_no']);
+				// $("#nama_penerima").text(data['data']['penerima']['cust_name']);
+				// $("#alamat_penerima").text(data['data_routing']['alamat_penerima']);
+				// $("#project").text(data['data_routing']['nama_project']);
+				// $("#moda").text(data['data_routing']['moda_name']);
+				// $("#destination").text(data['data_routing']['kec_penerima'] + ' - ' + data['data_routing']['kota_penerima']);
+				// $("#spk").text(data['data_routing']['spk_no']);
+
+				app.list_routing = data['data_routing'];
 
 				$("#ViewTableBrg tbody").empty();
 				const tbody = $("#ViewTableBrg tbody");
@@ -471,7 +493,8 @@
 					$(".no-data").remove();
 					baris = '<tr>';
 					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success disabled" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger disabled" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+					baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger hidden" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+					baris += '<td><input type="hidden" id="id_routing_item'+ nomor +'" name="id_routing_item'+ nomor +'" class="form-control " value="' + obj.id_routing +'">' + obj.routing+'</td>';
 					baris += '<td>' + obj.nama_barang+'</td>';
 					baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';
 					
@@ -506,7 +529,8 @@
 					$(".no-data").remove();
 					baris = '<tr>';
 					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td style="width:8%">' + (app.last_status == "LUNAS" ? "" : '<input type="hidden" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control " value="' + obj.id+'"><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a>') + '</td>';
+					baris += '<td style="width:8%">' + (app.last_status == "LUNAS" ? "" : '<input type="hidden" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control " value="' + obj.id+'"><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a>') + '</td>';
+					baris += '<td><input type="hidden" id="id_routing_biaya'+ nomor +'" name="id_routing_biaya'+ nomor +'" class="form-control " value="' + obj.id_routing +'">' + obj.routing+'</td>';
 					baris += '<td><input type="text" name="aktifitas_'+ nomor +'" id="aktifitas_'+ nomor +'" class="form-control" value="' + obj.aktifitas +'" /></td>';
 					
 					baris += '<td><input type="text" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" value="' + parseFloat(obj.biaya)+'" class="form-control" style="width:100%;text-align:right;"></td>';
@@ -567,18 +591,58 @@
 			$(val).parent().parent().remove();
 		}
 	}
-	function cancelBiaya(val) {
-		var id=$(val).prevAll()[1].value;
-		if(id != ""){
-			// debugger;
-			$(val).prevAll()[0].value = 1;
-			$(val).parent().parent().addClass('hidden');
-			$("#biaya_" + nomor).val(0);
-			calculateTotal();
 
-		}else{
-			$(val).parent().parent().remove();
-		}
+	function cancelRouting(val) {
+		var id = $(val).prev().val();
+		const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-danger btn-round',
+		    cancelButton: 'btn btn-primary btn-round'
+		  },
+		})
+		swalWithBootstrapButtons.fire({
+		  title: 'Yakin di hapus Routing Slip ini?',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: `Ya!`,
+		  denyButtonText: `Tidak`,
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		    $.each(app.list_routing, function(_, obj) {
+				if(obj.id == id){
+					app.list_routing.splice(_,1);
+					$("#total-row-invoice").val(app.list_routing.length);
+					//hapus detail brg
+					var table_item = document.getElementById('ViewTableBrg');
+					var total_remove =0;
+					for (var i = 1; i < table_item.rows.length; i++) {
+					  if(table_item.rows[i].cells.length) {
+					  	if(table_item.rows[i].cells[2].firstElementChild.value == id){
+					  		table_item.rows[i].remove();
+					  		total_remove++;
+					  	}
+					  }
+					}
+					$("#total-row").val($("#total-row").val()-total_remove);
+					//hapus detail biaya
+					var table_biaya = document.getElementById('ViewTableBiaya');
+					var total_remove =0;
+					for (var i = 1; i < table_biaya.rows.length; i++) {
+					  if(table_biaya.rows[i].cells.length) {
+					  	if(table_biaya.rows[i].cells[2].firstElementChild.value == id){
+					  		table_biaya.rows[i].remove();
+					  		total_remove++;
+					  	}
+					  }
+					}
+					$("#total-row-biaya").val($("#total-row-biaya").val()-total_remove);
+				}
+			})
+		  } 
+		})
+	}
+	function cancelBiaya(val) {
+		$(val).parent().parent().remove();
 	}
 
 	$(document).on('blur', "[id^=qty_]", function(){

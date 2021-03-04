@@ -231,10 +231,14 @@ class Listrs extends CI_Controller {
       // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
       $this->db->join('master_customer B', 'R.id_pengirim = B.id');
-      $this->db->join('tb_invoice I', 'I.id_routing = R.id','left');
+      $this->db->join('tb_invoice_routing I', 'I.id_routing = R.id','left');
       $this->db->where('I.id_routing', NULL);
-      $this->db->where('R.status <>', "DITERIMA");
+      if(!empty($this->input->get('r',true))){
+        $this->db->where_not_in('R.id', explode(",", $this->input->get('r',true)));
+      }
       $pengguna = $this->db->get();
+      // print("<pre>".print_r($this->db->last_query(),true)."</pre>");exit();
+
       $data = array();
       foreach($pengguna->result() as $r)
       {
@@ -342,9 +346,9 @@ class Listrs extends CI_Controller {
       // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
       $this->db->join('master_customer B', 'R.id_pengirim = B.id');
-      $this->db->join('tb_invoice_vendor I', 'I.id_routing = R.id','left');
-      $this->db->where('I.id_routing', NULL);
-      $this->db->where('R.status <>', "DITERIMA");
+      // $this->db->join('tb_invoice_vendor I', 'I.id_routing = R.id','left');
+      // $this->db->where('I.id_routing', NULL);
+      // $this->db->where('R.status <>', "DITERIMA");
       $pengguna = $this->db->get();
       $data = array();
       foreach($pengguna->result() as $r)
