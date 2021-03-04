@@ -81,7 +81,7 @@
 		    initmodal: function(){
 		    	var list="";
 		    	$.each(this.list_routing, function(_, obj) {
-					list += obj.id + ",";
+					list += obj.id_routing + ",";
 				})
 				if(list.substr(list.length-1) == ",")
 					list = list.slice(0, -1);
@@ -362,7 +362,7 @@
 				// $("#spk").text(data['data']['spk_no']);
 				$("#note").text("Jasa Pengiriman (" + $("#origin").text() + ") - (" + $("#destination").text() + ")");
 				app.list_routing.push({
-					id: data['data']['id'],
+					id_routing: data['data']['id'],
         			no_routing: data['data']['no_routing'],
         			tanggal: data['data']['CreatedDate'],
         			spk: data['data']['spk_no'],
@@ -609,7 +609,7 @@
 		}).then((result) => {
 		  if (result.isConfirmed) {
 		    $.each(app.list_routing, function(_, obj) {
-				if(obj.id == id){
+				if(obj.id_routing == id){
 					app.list_routing.splice(_,1);
 					$("#total-row-invoice").val(app.list_routing.length);
 					//hapus detail brg
