@@ -160,15 +160,16 @@
 		$.get('<?= base_url()?>payment/get', { id: val,tipe: $("#type_payment").val() }, function(data){ 
 				
 				$("#no_invoice").val(data['data']['no_invoice']);
-				$("#id_pengirim").val(data['data_routing']['id_pengirim']);
-				$("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
-				$("#origin").text(data['data_routing']['kec_pengirim'] + ' - ' + data['data_routing']['kota_pengirim']);
-				$("#nama_penerima").text(data['data']['penerima']['cust_name']);
-				$("#destination").text(data['data_routing']['kec_penerima'] + ' - ' + data['data_routing']['kota_penerima']);
+				// $("#id_pengirim").val(data['data_routing']['id_pengirim']);
+				// $("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
+				// $("#origin").text(data['data_routing']['kec_pengirim'] + ' - ' + data['data_routing']['kota_pengirim']);
+				// $("#nama_penerima").text(data['data']['penerima']['cust_name']);
+				// $("#destination").text(data['data_routing']['kec_penerima'] + ' - ' + data['data_routing']['kota_penerima']);
+				debugger;
 				var sisa = parseFloat(data['data']['total'])-parseFloat(data['data']['sudah_dibayar']);
 				$("#label_subtotal").val(sisa.toLocaleString('id-ID'));
 				$("#subtotal").val(sisa);
-				$("#vendor").text(data['data_routing']['agent']);
+				// $("#vendor").text(data['data_routing']['agent']);
 				$('#modalBrowse').modal('hide');
 			
 		})

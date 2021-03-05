@@ -152,7 +152,7 @@
               </div>
             </div>
             
-            <div class="row m-l-0 m-r-0">
+            <!-- <div class="row m-l-0 m-r-0">
                 <div class="col-sm-6 bg-c-lite-green">
                   <div class="card-block text-white">
                     <div class="row b-b-default m-b-20 p-b-5">
@@ -186,7 +186,7 @@
                       </div>
                   </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row" id="barang">
               <div class="col-sm-12">

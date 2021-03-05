@@ -60,7 +60,7 @@ class Payment extends CI_Controller {
       }
 
       $valid_columns = array(
-          0=>'no_routing',
+          0=>'R.no_routing',
           1=>'nama_project',
           2=>'tgl_submit_invoice',
           3=>'term',
@@ -69,7 +69,7 @@ class Payment extends CI_Controller {
           6=>'status',
       );
       $valid_sort = array(
-          0=>'no_routing',
+          0=>'R.no_routing',
           1=>'nama_project',
           2=>'tgl_submit_invoice',
           3=>'term',
@@ -108,17 +108,24 @@ class Payment extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("I.*,term,nama_project,cust_name");
       if($tipe == 'Customer'){
+        $this->db->select("I.*,term,nama_project,cust_name,R.no_routing");
         $this->db->from("tb_invoice I");
+        $this->db->join('tb_invoice_routing IR', 'IR.id_invoice = I.id');
+        $this->db->join('tb_routingslip R', 'R.id = IR.id_routing');
+
+
       }elseif ($tipe == 'Vendor') {
+        $this->db->select("I.*,term,nama_project,cust_name");
         $this->db->from("tb_invoice_vendor I");
+        $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
+
       }
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
-      $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
       $this->db->where('I.status <>', "LUNAS");
       $pengguna = $this->db->get();
+      // echo $this->db->last_query();exit();
       $data = array();
       foreach($pengguna->result() as $r)
       {
@@ -169,13 +176,22 @@ class Payment extends CI_Controller {
               $x++;
           }                 
       }
+
     if($tipe == 'Customer'){
       $this->db->from("tb_invoice I");
+      $this->db->join('tb_invoice_routing IR', 'IR.id_invoice = I.id');
+      $this->db->join('tb_routingslip R', 'R.id = IR.id_routing');
+      $this->db->join('tb_term', 'tb_term.id = I.id_term');
+      // $this->db->join('master_customer A', 'R.id_penerima = A.id');
+
     }elseif ($tipe == 'Vendor') {
       $this->db->from("tb_invoice_vendor I");
+      $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
+      $this->db->join('tb_term', 'tb_term.id = I.id_term');
+      // $this->db->join('master_customer A', 'R.id_penerima = A.id');
     }
-    $this->db->join('tb_term', 'tb_term.id = I.id_term');
-    $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
+    
+
     $query = $this->db->join('master_customer A', 'R.id_penerima = A.id')->get();
     $result = $query->row();
     if(isset($result)) return $result->num;
@@ -277,11 +293,11 @@ class Payment extends CI_Controller {
       $data['data'] = $this->admin->get_array('tb_invoice',array( 'id' => $id));
       if($tipe == "Vendor")
         $data['data'] = $this->admin->get_array('tb_invoice_vendor',array( 'id' => $id));
-      $data['data_routing'] = $this->admin->get_array('tb_routingslip',array( 'id' => $data['data']['id_routing']));
+      // $data['data_routing'] = $this->admin->get_array('tb_routingslip',array( 'id' => $data['data']['id_routing']));
 
       $data['data_detail'] = $this->admin->get_result_array('tb_invoice_detail',array( 'id_invoice' => $id));
-      $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_pengirim']),'cust_name');
-      $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_penerima']),'cust_name');
+      // $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_pengirim']),'cust_name');
+      // $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data_routing']['id_penerima']),'cust_name');
 
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
       
