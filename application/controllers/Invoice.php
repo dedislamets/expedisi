@@ -41,6 +41,7 @@ class Invoice extends CI_Controller {
 
       $data['no_invoice'] = "WML" . $last_no . "/" .bulan_ke_romawi(date("m")) ."/". date("Y");
       $data['term'] = $this->admin->getmaster('tb_term');
+      $data['rekening'] = $this->admin->getmaster('tb_rekening');
 			$this->load->view('home',$data,FALSE); 
 
     }else{
@@ -312,7 +313,7 @@ class Invoice extends CI_Controller {
         $data['due_date'] = date("Y-m-d", strtotime($this->input->post('due_date',TRUE)));
       }
 
-      // $data['no_routing'] = $this->input->post('no_routing',TRUE);
+      $data['alamat_penagihan'] = $this->input->post('alamat_penagihan',TRUE);
       // $data['id_routing'] = $this->input->post('id_routing',TRUE);
 
       $data['id_term'] = $this->input->post('id_term',TRUE);
@@ -365,6 +366,7 @@ class Invoice extends CI_Controller {
                 $data['kg'] = $this->input->post('kg_'.$i,TRUE);
                 $data['satuan'] = $this->input->post('satuan'.$i,TRUE);
                 $data['price'] = str_replace('.', '',  $this->input->post('price_'.$i,TRUE));
+                $data['price_chartered'] = str_replace('.', '',  $this->input->post('prices_chartered_'.$i,TRUE));
                 $data['subtotal'] = str_replace('.', '',  $this->input->post('sub_'.$i,TRUE));
 
                 $this->db->insert('tb_invoice_detail', $data);
@@ -399,7 +401,7 @@ class Invoice extends CI_Controller {
               print("<pre>".print_r($this->db->error(),true)."</pre>");
           }else{
               $last_id = $this->db->insert_id();
-
+              $response['last_id']= $last_id;
               $total_routing = intval($this->input->post('total-row-invoice'));
               for ($i=1; $i <= $total_routing ; $i++) { 
                 if(!empty($this->input->post('kode'.$i,TRUE) )){
@@ -427,6 +429,7 @@ class Invoice extends CI_Controller {
                   $data['kg'] = $this->input->post('kg_'.$i,TRUE);
                   $data['satuan'] = $this->input->post('satuan'.$i,TRUE);
                   $data['price'] = str_replace('.', '',  $this->input->post('price_'.$i,TRUE));
+                  $data['price_chartered'] = str_replace('.', '',  $this->input->post('prices_chartered_'.$i,TRUE));
                   $data['subtotal'] = str_replace('.', '',  $this->input->post('sub_'.$i,TRUE));
                   $this->db->insert('tb_invoice_detail', $data);
                   
@@ -477,6 +480,7 @@ class Invoice extends CI_Controller {
       $data['data_detail'] = $this->admin->get_result_array('tb_invoice_detail',array( 'id_invoice' => $id));
       $data['data_biaya'] = $this->admin->get_result_array('tb_invoice_opt_charge',array( 'id_invoice' => $id));
       $data['data_routing'] = $this->admin->get_result_array('tb_invoice_routing',array( 'id_invoice' => $id));
+      $data['rekening'] = $this->admin->getmaster('tb_rekening');
 
       foreach ($data['data_detail'] as $key => $value) {
         $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));

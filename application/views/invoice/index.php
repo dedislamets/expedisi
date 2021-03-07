@@ -180,6 +180,14 @@
                     <input class="form-control" type="date" id="due_date" name="due_date" readonly style="background-color: #4f0c0c;color: #fff;" value="<?= empty($data) ? "" : $data['due_date']?>" />
                   </div>
                 </div>
+                <div class="form-group row" >
+                  <label class="col-sm-3 col-form-label" style="font-weight: bold;">ALAMAT PENAGIHAN</label>
+                  <div class="col-sm-9">
+                      <textarea rows="3" cols="5" class="form-control" id="alamat_penagihan" name="alamat_penagihan" placeholder="" style="height: auto;" ><?= empty($data) ? "" : $data['alamat_penagihan']?></textarea>
+                      <p style="line-height: 17px;font-size: 13px;color: brown;">* Alamat terisi otomatis sesuai alamat pengirim pada routing slip. Jika tidak sesuai bisa di edit/ubah pada kolom.</p>
+                      <!-- <a href="javascript:void(0)" style="float: right;">Ganti Alamat</a> -->
+                  </div>
+                </div>
               </div>
             </div>
             
@@ -326,7 +334,10 @@
                                 Berat Kg
                               </th>
                               <th>
-                                Price
+                                Price Kg
+                              </th>
+                              <th>
+                                Price Chartered
                               </th>
                               <th>
                                 Subtotal
@@ -382,6 +393,24 @@
                         <td rowspan="4" colspan="6">
                           <h4>*Catatan Kwitansi :</h4>
                           <textarea rows="8" cols="5" class="form-control" id="note" name="note" placeholder="Masukkan Catatan" style="height: auto;" :disabled="last_status == 'LUNAS'"><?= empty($data) ? "" : $data['remark']?></textarea>
+                          <br>
+                          <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" style="font-weight: bold;">REKENING BANK</label>
+                            <div class="col-sm-9">
+                              <select name="id_rekening" id="id_rekening" class="form-control" >
+                                <?php 
+                                foreach($rekening as $row)
+                                { 
+                                  if( empty($data) ? "" : $data['id_rekening'] === $row->id){
+                                    echo '<option value="'.$row->id.'" selected >'.$row->bank.'</option>';
+                                  }else{
+                                    echo '<option value="'.$row->id.'">'.$row->bank.'</option>';
+                                  }
+                                }
+                                ?>
+                              </select>
+                            </div>
+                          </div>
                         </td>
                         <td style="text-align:right;" width="16%">Subtotal</td>
                         <td width="16%">

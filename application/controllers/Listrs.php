@@ -57,21 +57,23 @@ class Listrs extends CI_Controller {
 
       $valid_columns = array(
           0=>'no_routing',
-          1=>'spk_no',
-          2=>'nama_project',
-          3=>'pengirim',
-          4=>'penerima',
-          5=>'moda_name',
-          6=>'status',
+          1=>'CreatedDate',
+          2=>'spk_no',
+          3=>'nama_project',
+          4=>'B.cust_name',
+          5=>'A.cust_name',
+          6=>'moda_name',
+          7=>'status',
       );
       $valid_sort = array(
           0=>'no_routing',
-          1=>'spk_no',
-          2=>'nama_project',
-          3=>'pengirim',
-          4=>'penerima',
-          5=>'moda_name',
-          6=>'status',
+          1=>'CreatedDate',
+          2=>'spk_no',
+          3=>'nama_project',
+          4=>'B.cust_name',
+          5=>'A.cust_name',
+          6=>'moda_name',
+          7=>'status',
       );
       if(!isset($valid_sort[$col]))
       {
@@ -110,6 +112,8 @@ class Listrs extends CI_Controller {
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
       $this->db->join('master_customer B', 'R.id_pengirim = B.id');
       $pengguna = $this->db->get();
+       // print("<pre>".print_r($this->db->last_query(),true)."</pre>");exit();
+
       $data = array();
       foreach($pengguna->result() as $r)
       {

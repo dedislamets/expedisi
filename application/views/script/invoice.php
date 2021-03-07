@@ -289,7 +289,7 @@
 		 		var link = '<?= base_url(); ?>invoice/Header';
 		 		$.post(link,sParam, function(data){
 					if(data.error==false){	
-						alertOK(window.location.reload());
+						alertOK(window.location.href="<?= base_url(); ?>invoice/edit/"+ data.last_id);
 					}else{	
 						alertError(data.message);				  	
 					}
@@ -314,11 +314,22 @@
 			        	alertError('Item belum dipilih..');
 			        	flag= false;
 			        }
+			        var qty = $($tds[6]).children().val();
 			        var price = $($tds[7]).children().val();
-			        if(price == 0){
-			        	alertError('Harga Barang belum di berikan..');
-			        	flag= false;
+			        var price_chartered = $($tds[8]).children().val();
+
+			        if(parseInt(qty)>0){
+			        	if(price == 0){
+				        	alertError('Harga Kg Barang belum di berikan..');
+				        	flag= false;
+				        }
+			        }else{
+			        	if(price_chartered == 0){
+				        	alertError('Harga Chartered Barang belum di berikan..');
+				        	flag= false;
+				        }
 			        }
+			        
 			    }
 		    });
     	}
@@ -351,6 +362,7 @@
 				$("#id_pengirim").val(data['data']['id_pengirim']);
 				$("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
 				$("#alamat_pengirim").text(data['data']['alamat_pengirim']);
+				$("#alamat_penagihan").text(data['data']['alamat_pengirim']);
 				$("#origin").text(data['data']['kec_pengirim'] + ' - ' + data['data']['kota_pengirim']);
 
 				$("#attn_penerima").text(data['data']['attn_penerima']);
@@ -395,7 +407,14 @@
 					
 					baris += '<td><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control" value="' + obj.satuan+'" /></td>';
 					baris += '<td><input type="text" name="kg_'+ nomor +'" id="kg_'+ nomor +'" class="form-control" value="' + obj.kg+'" /></td>';
-					baris += '<td><input type="number" id="price_'+ nomor +'" name="price_'+ nomor +'" value="0" class="form-control" style="width:100%"></td>';
+					var readonly_kg ="";
+					var readonly_charter ="readonly";
+					if(obj.kg>0){
+						readonly_kg = "readonly";
+						readonly_charter="";
+					}
+					baris += '<td><input type="number" id="price_'+ nomor +'" name="price_'+ nomor +'" value="0" class="form-control" style="width:100%" '+ readonly_kg +'></td>';
+					baris += '<td><input type="number" id="prices_chartered_'+ nomor +'" name="prices_chartered_'+ nomor +'" value="0" class="form-control" style="width:100%" '+ readonly_charter +'></td>';
 					baris += '<td><input type="text" id="sub_'+ nomor +'" name="sub_'+ nomor +'" value="0" class="form-control" style="width:100%;text-align:right;" readonly></td>';
 				
 					baris += '</tr>';
@@ -500,7 +519,16 @@
 					
 					baris += '<td><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control" value="' + obj.satuan+'" /></td>';
 					baris += '<td><input type="text" name="kg_'+ nomor +'" id="kg_'+ nomor +'" class="form-control" value="' + obj.kg+'" /></td>';
-					baris += '<td><input type="number" id="price_'+ nomor +'" name="price_'+ nomor +'" value="' + obj.price+'" class="form-control" style="width:100%"></td>';
+					var readonly_kg ="readonly";
+					var readonly_charter ="";
+					if(parseInt(obj.kg)>0){
+						readonly_charter = "readonly";
+						readonly_kg="";
+					}
+					baris += '<td><input type="number" id="price_'+ nomor +'" name="price_'+ nomor +'" value="' + obj.price+'" class="form-control" style="width:100%" '+ readonly_kg +'></td>';
+					baris += '<td><input type="number" id="prices_chartered_'+ nomor +'" name="prices_chartered_'+ nomor +'" value="' + obj.price_chartered+'" class="form-control" style="width:100%" '+ readonly_charter +'></td>';
+
+				
 					baris += '<td><input type="text" id="sub_'+ nomor +'" name="sub_'+ nomor +'" value="' + parseFloat(obj.subtotal).toLocaleString('id-ID')+'" class="form-control" style="width:100%;text-align:right;" readonly></td>';
 				
 					baris += '</tr>';
@@ -651,6 +679,9 @@
 	$(document).on('blur', "[id^=price_]", function(){
 		calculateTotal();
 	});	
+	$(document).on('blur', "[id^=prices_chartered_]", function(){
+		calculateTotal();
+	});	
 	$(document).on('blur', "[id^=biaya_]", function(){
 		calculateTotal();
 	});	
@@ -664,10 +695,20 @@
 		$("[id^='price_']").each(function() {
 			var id = $(this).attr('id');
 			id = id.replace("price_",'');
-			var price = $('#price_'+id).val();
+			
 			var quantity  = $('#kg_'+id).val();
 			if(!quantity) {
 				quantity = 1;
+			}
+			if(parseInt(quantity)>0){
+				var price = $('#price_'+id).val();
+				$('#price_'+id).removeAttr('readonly');
+				$('#prices_chartered_'+id).attr('readonly','readonly');
+			}else{
+				var price = $('#prices_chartered_'+id).val();
+				quantity=1;
+				$('#prices_chartered_'+id).removeAttr('readonly');
+				$('#price_'+id).attr('readonly','readonly');
 			}
 			var total = price*quantity;
 			$('#sub_'+id).val(parseFloat(total).toLocaleString('id-ID'));

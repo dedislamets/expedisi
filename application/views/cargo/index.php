@@ -358,7 +358,7 @@
                                 Satuan
                               </th>
                               <th>
-                                Berat Kg
+                                Berat Kg <span style="color:orange">(isi 0 jika Charter)</span>
                               </th>
                               
                               

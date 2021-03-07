@@ -27,6 +27,7 @@ class Cargo extends CI_Controller {
       $data['kota_tujuan'] = $data['kota_asal'];
       $data['data_detail'] = array();
       $data['data_multi'] = array();
+      $data['data_biaya'] = array();
       $data['moda_only'] = $this->admin->getmaster('tb_moda');
 
       $moda = $this->db->query("SELECT A.moda_name,A.moda_img, B.moda_kategori,C.* FROM tb_moda A

@@ -45,11 +45,7 @@
 							<tr>
 								<td class="no-border" style="font-weight: bold;vertical-align: top;">To :</td>
 								<td class="no-border" style="font-weight: bold;">
-									PT. Telkom Akses<br>
-									Gedung Telkom Jakarta Barat<br>
-									Jl. Letjen S Parman Kav. 8<br>
-									Tomang Grogol Petamburan<br>
-									Jakarta Barat - DKI Jakarta 11440<br>
+									<?= empty($data) ? "" : nl2br($data['alamat_penagihan']) ?>
 								</td>
 								<td class="no-border">
 									<table id="meta">
@@ -89,7 +85,7 @@
 							<td class="item-name"><?= $row["qty"] ?></td>
 							<td class="item-name"><?= $row["satuan"] ?></td>
 							<td class="item-name"><?= $row["kg"] ?></td>
-							<td style="text-align: right;"><?= number_format($row["price"]) ?></td>
+							<td style="text-align: right;"><?= ($row["kg"]>0 ? number_format($row["price"]) : number_format($row["price_chartered"])) ?></td>
 							<td style="text-align: right;"><?= number_format($row["subtotal"]) ?></td>						
 						</tr>
 						<?php $urut++?>
@@ -145,15 +141,15 @@
 							</tr>
 							<tr>
 								<td class="p-0">Acc. Name</td>
-								<td class="p-0">: PT. Wahana Multi Logistik</td>
+								<td class="p-0">: <?= empty($data) ? "" : $rekening['nama_rekening']?></td>
 							</tr>
 							<tr>
 								<td class="p-0">Acc Number</td>
-								<td class="p-0">: 042501-000647-30-1</td>
+								<td class="p-0">: <?= empty($data) ? "" : $rekening['rekening']?></td>
 							</tr>
 							<tr>
 								<td class="p-0">Name of Bank</td>
-								<td class="p-0">: Bank BRI Cabang Tendean </td>
+								<td class="p-0">: <?= empty($data) ? "" : $rekening['bank']?> </td>
 							</tr>
 						</table>
 					</div>
@@ -338,7 +334,7 @@
 					<table class="table" style="margin-bottom:10px;margin-top: 10px;">
 						<tr>
 							<td width="20%" height="100px;">
-								REF<br><br>
+								ROUTING SLIP<br><br>
 								<?= empty($data) ? "" : $data['no_routing'] ?>
 							</td>
 							<td style="border: none" width="50%">

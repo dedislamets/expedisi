@@ -17,7 +17,7 @@ class Cetak extends CI_Controller {
       if(!empty($this->input->get('id',TRUE))){
         $id = $this->input->get('id',TRUE);
         $data['data'] = $this->admin->get_array('tb_invoice',array( 'id' => $id));
-
+        $data['rekening'] = $this->admin->get_array('tb_rekening',array( 'id' => $data['data']['id_rekening']));
         $data['data_detail'] = $this->admin->get_result_array('tb_invoice_detail',array( 'id_invoice' => $id));
         $data['data_biaya'] = $this->admin->get_result_array('tb_invoice_opt_charge',array( 'id_invoice' => $id));
 
