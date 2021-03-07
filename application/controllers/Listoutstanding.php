@@ -100,15 +100,22 @@ class Listoutstanding extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("tb_invoice.id,no_invoice,due_date AS due_date,TIMESTAMPDIFF(DAY,CURDATE(),due_date) AS selisih_hari,term,no_routing,
+
+      $this->db->select("I.id,no_invoice,due_date AS due_date,TIMESTAMPDIFF(DAY,CURDATE(),due_date) AS selisih_hari,term,GROUP_CONCAT(DISTINCT `IR`.`no_routing`) no_routing,
                         CASE WHEN TIMESTAMPDIFF(DAY,CURDATE(),due_date) BETWEEN 1 AND 5 THEN 'Hampir Jatuh Tempo' 
                         WHEN TIMESTAMPDIFF(DAY,CURDATE(),due_date) = 0 THEN 'Jatuh Tempo'
                         WHEN TIMESTAMPDIFF(DAY,CURDATE(),due_date) < 0 THEN 'Melewati Jatuh Tempo'
                         ELSE '' END status_due,total");
-      $this->db->from("tb_invoice");
-      $this->db->join('tb_term', 'tb_term.id = tb_invoice.id_term');
-      $this->db->where('tb_invoice.id_term <>', 6);
-      $this->db->where('tb_invoice.status <>', 'LUNAS');
+      $this->db->from("tb_invoice I");
+      $this->db->join('tb_invoice_routing IR', 'IR.id_invoice = I.id');
+      $this->db->join('tb_term', 'tb_term.id = I.id_term');
+      $this->db->join('tb_user U', 'U.id_user = I.CreatedBy');
+      $this->db->where('U.cabang',$this->session->userdata('cabang'));
+      $this->db->where("I.status  NOT IN ('LUNAS','VOID') ");
+      $this->db->where('I.id_term <>', 6);
+      $this->db->group_by('I.id,tgl_invoice');
+
+     
       $filter_status = $this->input->get('status',true);
       if ($filter_status > 0 ){
         if($filter_status ==1 ){
@@ -292,7 +299,9 @@ class Listoutstanding extends CI_Controller {
     $this->db->from("tb_invoice");
     $this->db->join('tb_term', 'tb_term.id = tb_invoice.id_term');
     $this->db->where('tb_invoice.id_term <>', 6);
-    $this->db->where('tb_invoice.status <>', 'LUNAS');
+     $this->db->where("tb_invoice.status  NOT IN ('LUNAS','VOID') ");
+    $this->db->join('tb_user U', 'U.id_user = tb_invoice.CreatedBy');
+    $this->db->where('U.cabang',$this->session->userdata('cabang'));
     $query = $this->db->get();
     $result = $query->row();
     if(isset($result)) return $result->num;
