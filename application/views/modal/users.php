@@ -42,6 +42,13 @@
 			                    </select>
 							</div>	
 							<div class="form-group">
+								<label>Regional<span style="color:red"> *</span></label>
+								<select name="cabang" id="cabang" class="form-control">
+									<option value="JAKARTA">JAKARTA</option>
+									<option value="SURABAYA">SURABAYA</option>
+			                    </select>
+							</div>	
+							<div class="form-group">
 								<label>Aktif</label><br>
 								<input type="checkbox" id="status" name="status" class="js-single" checked />
 							</div>

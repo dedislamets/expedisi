@@ -165,7 +165,6 @@
 				// $("#origin").text(data['data_routing']['kec_pengirim'] + ' - ' + data['data_routing']['kota_pengirim']);
 				// $("#nama_penerima").text(data['data']['penerima']['cust_name']);
 				// $("#destination").text(data['data_routing']['kec_penerima'] + ' - ' + data['data_routing']['kota_penerima']);
-				debugger;
 				var sisa = parseFloat(data['data']['total'])-parseFloat(data['data']['sudah_dibayar']);
 				$("#label_subtotal").val(sisa.toLocaleString('id-ID'));
 				$("#subtotal").val(sisa);

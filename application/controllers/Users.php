@@ -173,8 +173,9 @@ class Users extends CI_Controller {
       $recLogin = $this->session->userdata('user_id');
       $data = array(
           'nama_user'   => $this->input->post('nama_user',TRUE),
-          'email'  => $this->input->post('email',TRUE),
-          'department'      => $this->input->post('department',TRUE),
+          'email'       => $this->input->post('email',TRUE),
+          'department'  => $this->input->post('department',TRUE),
+          'cabang'      => $this->input->post('cabang',TRUE),
       );
       if(!empty($this->input->post('password',TRUE))){
         $new_password = Acak($this->input->post('password', TRUE), "goldenginger");

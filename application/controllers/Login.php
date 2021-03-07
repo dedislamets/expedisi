@@ -42,7 +42,7 @@ class Login extends CI_Controller {
                                 'role'  => $role[0]->group,
                                 'role_id'  => $role[0]->id_group_role,
                                 'email' => $apps->email,
-                               
+                                'cabang' => $apps->cabang
                             );
                             $this->session->set_userdata($session_data);
                             // print("<pre>".print_r($session_data,true)."</pre>");exit();

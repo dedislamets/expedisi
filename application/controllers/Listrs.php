@@ -108,9 +108,10 @@ class Listrs extends CI_Controller {
       $this->db->limit($length,$start);
       $this->db->select("A.`cust_name` penerima,B.`cust_name` pengirim,R.*, spk_no,nama_project");
       $this->db->from("tb_routingslip R");
-      // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
       $this->db->join('master_customer B', 'R.id_pengirim = B.id');
+      $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
+      $this->db->where('U.cabang',$this->session->userdata('cabang'));
       $pengguna = $this->db->get();
        // print("<pre>".print_r($this->db->last_query(),true)."</pre>");exit();
 
@@ -235,8 +236,11 @@ class Listrs extends CI_Controller {
       // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
       $this->db->join('master_customer B', 'R.id_pengirim = B.id');
-      $this->db->join('tb_invoice_routing I', 'I.id_routing = R.id','left');
+      $this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
+      $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
+      $this->db->where('U.cabang',$this->session->userdata('cabang'));
       $this->db->where('I.id_routing', NULL);
+      // $this->db->where('I.status <>', "DITERIMA");
       if(!empty($this->input->get('r',true))){
         $this->db->where_not_in('R.id', explode(",", $this->input->get('r',true)));
       }
@@ -404,6 +408,9 @@ class Listrs extends CI_Controller {
     $this->db->from("tb_routingslip R");
     // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
     $this->db->join('master_customer A', 'R.id_penerima = A.id');
+    $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
+    $this->db->where('U.cabang',$this->session->userdata('cabang'));
+    
     $query = $this->db->join('master_customer B', 'R.id_pengirim = B.id')->get();
     $result = $query->row();
     if(isset($result)) return $result->num;

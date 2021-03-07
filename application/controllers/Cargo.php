@@ -195,6 +195,8 @@ class Cargo extends CI_Controller {
               
             }
           }
+          $data['EditBy'] = $recLogin;
+          $data['EditDate'] = date('Y-m-d H:i:s');
 
 	      	$this->db->set($data);
 	        $this->db->where($arr_par);
@@ -250,7 +252,7 @@ class Cargo extends CI_Controller {
 	        }
 	    }else{
         $data['CreatedDate'] = date('Y-m-d H:i:s');
-
+        $data['CreatedBy'] = $recLogin;
         if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) && !empty($this->input->post('pickup_address') )){
           $data['status'] = 'PICKUP';
         }

@@ -189,7 +189,7 @@
                                     <i class="feather icon-maximize full-screen"></i>
                                 </a>
                             </li> -->
-                            <li><h3 style="padding-top: 10px;padding-left: 10px;">E-Tracking Sistem Management</h3></li>
+                            <li><h3 style="padding-top: 10px;padding-left: 10px;">E-SYSTEM WML - REGIONAL <?= $this->session->userdata('cabang') ?></h3></li>
                         </ul>
                         <ul class="nav-right">
                             

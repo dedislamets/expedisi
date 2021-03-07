@@ -95,6 +95,14 @@
     padding:4px;
     text-align: center;
   }
+  .status-void{
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    background-color: red;
+    padding:4px;
+    text-align: center;
+  }
 </style>
 
 <div class="page-body" id="app">
@@ -106,14 +114,14 @@
           <div class="row">
               <div class="col-xl-7">
                   <h4><?= $title ?> <a href="<?= base_url() ?>listinvoice"> Back </a></h4>
-                  <span>Halaman ini menampilkan data connote yang tersimpan</span>
+                  <span>Halaman ini adalah form input invoice customer</span>
               </div>
               <div class="col-xl-3" >
                 <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak?id=<?= empty($data) ? "" : $data['id'] ?>" target="_blank" id="btnTracking" class="btn btn-block hor-grd btn-grd-success">  <i class="icofont icofont-print" ></i>Cetak Invoice & Kwitansi</a>
 
               </div>
               <div class="col-xl-2">
-                <div class="status-trans"><?= empty($data) ? "INPUT" : $data['status'] ?></div>
+                <div class="status-trans" v-bind:class="[last_status=='VOID' ? 'status-void' : 'status-trans', 'status-trans']"><?= empty($data) ? "INPUT" : $data['status'] ?></div>
                   <!-- <a href="<?= base_url() ?>connote" class="btn btn-grd-success" ><i class="icofont icofont-ui-add"></i> Tambah baru</a> -->
               </div>
           </div>
@@ -252,7 +260,7 @@
             </div>
             <div class="row" id="row-invoice">
               <h4 class="info-text" style="padding-left: 10px;">
-                  Routing Slip <button type="button" class="btn btn-grd-inverse btn-sm" id="btnBrowse" >Browse..</button>
+                  Routing Slip <button type="button" class="btn btn-grd-inverse btn-sm" id="btnBrowse" v-if="last_status != 'LUNAS' && last_status != 'VOID'">Browse..</button>
               </h4>
               <div class="col-sm-12">
                 <div class="dt-responsive table-responsive table-brg">
@@ -287,7 +295,7 @@
                                 <td style="width:1%">{{ (index+1) }}</td>
                                 <td>
                                   <input type="hidden" class="form-control" :id="'id_routing_' + (index+1)" :name="'id_routing_' + (index+1)" :value="log.id_routing">
-                                  <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelRouting(this)" :data-id="log.id"><i class="icofont icofont-trash"></i> Del</a>
+                                  <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelRouting(this)" :data-id="log.id" v-if="last_status != 'LUNAS' && last_status != 'VOID'"><i class="icofont icofont-trash"></i> Del</a>
                                 </td>
                                 <td>{{ log.no_routing }}</td>
                                 <td>{{ log.tanggal }}</td>
@@ -349,7 +357,7 @@
                       </tbody>
                   </table>
                   <h4 class="info-text" style="padding-left: 10px;">Tambahan Biaya
-                      <button class="btn btn-grd-inverse btn-sm" id="btnAddBiaya" v-if="last_status != 'LUNAS'" ><i class="icofont icofont-ui-add"></i> Tambah</button>
+                      <button class="btn btn-grd-inverse btn-sm" id="btnAddBiaya" v-if="last_status != 'LUNAS' && last_status != 'VOID'" ><i class="icofont icofont-ui-add"></i> Tambah</button>
                   </h4>
                   <input type="hidden" id="total-row-biaya" name="total-row-biaya" value="<?= $totalrowbiaya ?>">
 
@@ -449,7 +457,7 @@
                 <input type="hidden" name="id_invoice" id="id_invoice" value="<?= empty($data) ? "" : $data['id'] ?>">
                 <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
 
-                <button class="btn btn-block btn-grd-success" v-if="last_status != 'LUNAS'" id="btn-finish">Simpan</button>
+                <button class="btn btn-block btn-grd-success" v-if="last_status != 'LUNAS' && last_status != 'VOID'" id="btn-finish">Simpan</button>
               </div>
             </div>
           </form>

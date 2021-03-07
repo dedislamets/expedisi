@@ -107,6 +107,8 @@ class Listinvoicevendor extends CI_Controller {
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
       $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      $this->db->join('tb_user U', 'U.id_user = I.CreatedBy');
+      $this->db->where('U.cabang',$this->session->userdata('cabang'));
       $this->db->order_by('tgl_submit_invoice', 'DESC');
       $pengguna = $this->db->get();
       $data = array();
@@ -166,6 +168,8 @@ class Listinvoicevendor extends CI_Controller {
     $this->db->from("tb_invoice_vendor I");
     $this->db->join('tb_term', 'tb_term.id = I.id_term');
     $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
+    $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
+    $this->db->where('U.cabang',$this->session->userdata('cabang'));
     $query = $this->db->join('master_customer A', 'R.id_penerima = A.id')->get();
     $result = $query->row();
     if(isset($result)) return $result->num;

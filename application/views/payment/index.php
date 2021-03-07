@@ -98,7 +98,7 @@
         <div class="card-header" style="background-color: #404E67;color:#fff">
           <div class="row">
               <div class="col-xl-9">
-                  <h4><?= $title ?></h4>
+                  <h4><?= $title ?> <a href="<?= base_url() ?>listpayment"> Back </a></h4>
                   <span>Halaman ini menampilkan data connote yang tersimpan</span>
               </div>
               <div class="col-xl-3" >
@@ -115,7 +115,7 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label" style="font-weight: bold;">NO</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="no_payment" name="no_payment" placeholder="Ketikan No Invoice" value="<?= empty($data) ? "" : $data['no_payment'] ?>" :readonly="mode == 'edit'" >
+                    <input type="text" class="form-control" id="no_payment" name="no_payment" placeholder="Ketikan No Invoice" value="<?= empty($data) ? $no_payment : $data['no_payment'] ?>" readonly>
                   </div>
                 </div>
                 <div class="form-group row">

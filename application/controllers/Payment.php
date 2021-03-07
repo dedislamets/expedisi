@@ -24,6 +24,21 @@ class Payment extends CI_Controller {
       $data['totalrowbiaya'] = 1;
       $data['data_detail'] = array();
       $data['term'] = $this->admin->getmaster('tb_term');
+
+      $count = $this->db->query("SELECT no_payment FROM tb_payment WHERE type_payment='CUSTOMER' ORDER BY CreatedDate DESC LIMIT 1")->result();
+      
+      if(empty($count)){
+        $last_no = '001';
+      }else{
+
+        $last_no = $count[0]->no_payment;
+        // print("<pre>".print_r($count,true)."</pre>"); exit();
+        // $last_no = explode("/", $last_no);
+        $last_no = str_pad(intval($last_no)+1, 3,'0',STR_PAD_LEFT);
+      }
+
+      $data['no_payment'] = $last_no ;
+
 			$this->load->view('home',$data,FALSE); 
 
     }else{
@@ -109,21 +124,24 @@ class Payment extends CI_Controller {
 
       $this->db->limit($length,$start);
       if($tipe == 'Customer'){
-        $this->db->select("I.*,term,nama_project,cust_name,R.no_routing");
+        $this->db->select("`I`.id,I.no_invoice,tgl_invoice,due_date,tgl_submit_invoice, `term`, GROUP_CONCAT(DISTINCT nama_project) nama_project,GROUP_CONCAT(DISTINCT cust_name) cust_name,GROUP_CONCAT(DISTINCT `R`.`no_routing`) no_routing,total,I.status");
         $this->db->from("tb_invoice I");
         $this->db->join('tb_invoice_routing IR', 'IR.id_invoice = I.id');
         $this->db->join('tb_routingslip R', 'R.id = IR.id_routing');
-
+        $this->db->join('tb_term', 'tb_term.id = I.id_term');
+        $this->db->join('master_customer A', 'R.id_penerima = A.id');
+        $this->db->where("I.status  NOT IN ('LUNAS','VOID') ");
+        $this->db->group_by('I.id,tgl_invoice');
 
       }elseif ($tipe == 'Vendor') {
         $this->db->select("I.*,term,nama_project,cust_name");
         $this->db->from("tb_invoice_vendor I");
         $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
-
+        $this->db->join('tb_term', 'tb_term.id = I.id_term');
+        $this->db->join('master_customer A', 'R.id_penerima = A.id');
+        $this->db->where('I.status <>', "LUNAS");
       }
-      $this->db->join('tb_term', 'tb_term.id = I.id_term');
-      $this->db->join('master_customer A', 'R.id_penerima = A.id');
-      $this->db->where('I.status <>', "LUNAS");
+      
       $pengguna = $this->db->get();
       // echo $this->db->last_query();exit();
       $data = array();
@@ -131,13 +149,13 @@ class Payment extends CI_Controller {
       {
 
           $data[] = array( 
-                      $r->no_routing,
-                      $r->nama_project,
                       $r->no_invoice,
                       $r->tgl_submit_invoice,
+                      $r->no_routing,
+                      $r->nama_project,
                       $r->term,
                       $r->due_date,
-                      $r->total,
+                      number_format($r->total),
                       $r->status,
                       '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="pilih('.$r->id.')"  data-id="'.$r->id.'"  >
                         <i class="icofont icofont-ui-edit"></i>Pilih
@@ -159,7 +177,7 @@ class Payment extends CI_Controller {
   
   public function totalPengguna($search, $valid_columns, $tipe)
   {
-    $query = $this->db->select("COUNT(*) as num");
+
     if(!empty($search))
       {
           $x=0;
@@ -178,24 +196,32 @@ class Payment extends CI_Controller {
       }
 
     if($tipe == 'Customer'){
+      $this->db->select("no_invoice");
       $this->db->from("tb_invoice I");
       $this->db->join('tb_invoice_routing IR', 'IR.id_invoice = I.id');
       $this->db->join('tb_routingslip R', 'R.id = IR.id_routing');
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
       // $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      $this->db->where("I.status  NOT IN ('LUNAS','VOID') ");
+      $this->db->group_by('I.id,tgl_invoice');
+      $query = $this->db->join('master_customer A', 'R.id_penerima = A.id')->get();
+      // $result = $query->result();
+      return $query->num_rows();
 
     }elseif ($tipe == 'Vendor') {
+      $this->db->select("COUNT(*) as num");
       $this->db->from("tb_invoice_vendor I");
       $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
-      // $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      $query = $this->db->join('master_customer A', 'R.id_penerima = A.id')->get();
+      $result = $query->row();
+      if(isset($result)) return $result->num;
+      return 0;
     }
-    
 
-    $query = $this->db->join('master_customer A', 'R.id_penerima = A.id')->get();
-    $result = $query->row();
-    if(isset($result)) return $result->num;
-    return 0;
+    // echo $this->db->last_query();exit();
+
+    
   }
   public function Header()
   {       

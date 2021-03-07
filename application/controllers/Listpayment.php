@@ -99,7 +99,9 @@ class Listpayment extends CI_Controller {
 
       $this->db->limit($length,$start);
       // $this->db->select("tb_payment.*");
-      $this->db->from("tb_payment");
+      $this->db->from("tb_payment I");
+      $this->db->join('tb_user U', 'U.id_user = I.CreatedBy');
+      $this->db->where('U.cabang',$this->session->userdata('cabang'));
       // $this->db->join('tb_invoice', 'tb_term.id = tb_invoice.id_term');
       if($this->input->get('status',true) <> "")
         $this->db->where('type_payment', $this->input->get('status',true));

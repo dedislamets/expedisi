@@ -67,6 +67,10 @@
 				$("#lbl-title").text("Edit");
          		$("#nama_user").val(data['parent'][0]['nama_user']);
 				$("#email").val(data['parent'][0]['email']);
+
+				$("#department").val(data['parent'][0]['department']);
+				$("#cabang").val(data['parent'][0]['cabang']);
+
 				$("#password").val('');
 				$("#id_role").val(data['parent'][0]['id_role']);
 				if(data['parent'][0]['status'] == 0){

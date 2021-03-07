@@ -15,16 +15,16 @@
 	                    <thead class="text-primary">
 	                        <tr>
 	                            <th>
-	                              No Routing 
-	                            </th>
-	                            <th>
-	                              Project
-	                            </th>
-	                            <th>
 	                              Invoice Customer
 	                            </th>
 	                            <th>
 	                              Tgl Submit
+	                            </th>
+	                            <th>
+	                              No Routing 
+	                            </th>
+	                            <th>
+	                              Project
 	                            </th>
 	                            <th>
 	                              Term

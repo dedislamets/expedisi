@@ -27,7 +27,7 @@ class Invoice extends CI_Controller {
       $data['totalrowrouting'] = 0;
       $data['data_detail'] = array();
 
-      $count = $this->db->query("SELECT no_invoice FROM tb_invoice WHERE MONTH(tgl_invoice) = MONTH(CURDATE()) AND YEAR(tgl_invoice)=YEAR(CURDATE()) ORDER BY tgl_invoice DESC LIMIT 1")->result();
+      $count = $this->db->query("SELECT no_invoice FROM tb_invoice WHERE MONTH(tgl_invoice) = MONTH(CURDATE()) AND YEAR(tgl_invoice)=YEAR(CURDATE()) ORDER BY CreatedDate DESC LIMIT 1")->result();
       if(empty($count)){
         $last_no = '0001';
       }else{

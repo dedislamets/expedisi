@@ -16,6 +16,8 @@ class Home extends CI_Controller {
             $this->db->select("B.*,no_routing");
             $this->db->from("tb_routingslip_history B");
             $this->db->join('tb_routingslip A', 'A.id = B.id_routing');
+            $this->db->join('tb_user U', 'U.id_user = A.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
             $this->db->order_by("created_date","desc");
             $data['history'] = $this->db->get()->result_array();
 
@@ -23,6 +25,8 @@ class Home extends CI_Controller {
 
             $this->db->from("tb_invoice");
             $this->db->join('tb_term', 'tb_term.id = tb_invoice.id_term');
+            $this->db->join('tb_user U', 'U.id_user = tb_invoice.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
             $this->db->where('tb_invoice.id_term <>', 6);
             $this->db->where('tb_invoice.status <>', 'LUNAS');
             $this->db->where('TIMESTAMPDIFF(DAY,CURDATE(),due_date) <', 5);
@@ -30,6 +34,8 @@ class Home extends CI_Controller {
 
             $this->db->from("tb_invoice_vendor");
             $this->db->join('tb_term', 'tb_term.id = tb_invoice_vendor.id_term');
+            $this->db->join('tb_user U', 'U.id_user = tb_invoice_vendor.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
             $this->db->where('tb_invoice_vendor.id_term <>', 6);
             $this->db->where('tb_invoice_vendor.status <>', 'LUNAS');
             $this->db->where('TIMESTAMPDIFF(DAY,CURDATE(),due_date) <', 5);
@@ -37,9 +43,24 @@ class Home extends CI_Controller {
 
 			$data['main'] = 'home';
 			$data['total_SPK'] = $this->db->from('tb_spk')->get()->num_rows();
-            $data['total_routing'] = $this->db->from('tb_routingslip')->get()->num_rows();
-            $data['perjalanan'] = $this->db->get_where('tb_routingslip',array('status'=> 'DALAM PERJALANAN'))->num_rows();
-            $data['pickup'] = $this->db->get_where('tb_routingslip',array('status'=> 'INPUT'))->num_rows();
+
+            $this->db->from('tb_routingslip');
+            $this->db->join('tb_user U', 'U.id_user = tb_routingslip.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
+            $data['total_routing'] = $this->db->get()->num_rows();
+
+            $this->db->from('tb_routingslip');
+            $this->db->join('tb_user U', 'U.id_user = tb_routingslip.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
+            $this->db->where('tb_routingslip.status','DALAM PERJALANAN');
+            $data['perjalanan'] = $this->db->get()->num_rows();
+
+            $this->db->from('tb_routingslip');
+            $this->db->join('tb_user U', 'U.id_user = tb_routingslip.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
+            $this->db->where('tb_routingslip.status','INPUT');
+            $data['pickup'] = $this->db->get()->num_rows();
+
 			$data['js'] = 'home/js';
             // print("<pre>".print_r($data,true)."</pre>");
             // exit();

@@ -55,7 +55,7 @@ class Listinvoice extends CI_Controller {
       }
       $valid_columns = array(
           0=>'no_invoice',
-          1=>'tgl_submit_invoice',
+          1=>'I.CreatedDate',
           2=>'group_routing',
           3=>'group_project',
           4=>'term',
@@ -65,7 +65,7 @@ class Listinvoice extends CI_Controller {
       );
       $valid_sort = array(
           0=>'no_invoice',
-          1=>'tgl_submit_invoice',
+          1=>'I.CreatedDate',
           2=>'group_routing',
           3=>'group_project',
           4=>'term',
@@ -122,9 +122,11 @@ class Listinvoice extends CI_Controller {
                                   )group_project");
       $this->db->from("tb_invoice I");
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
+      $this->db->join('tb_user U', 'U.id_user = I.CreatedBy');
+      $this->db->where('U.cabang',$this->session->userdata('cabang'));
       // $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       // $this->db->join('master_customer A', 'R.id_penerima = A.id');
-      // $this->db->order_by("tgl_submit_invoice","ASC");
+      // $this->db->order_by("CreatedDate","ASC");
 
       $pengguna = $this->db->get();
       // echo $this->db->last_query();exit();
@@ -134,7 +136,7 @@ class Listinvoice extends CI_Controller {
 
           $data[] = array( 
                       $r->no_invoice,
-                      $r->tgl_submit_invoice,
+                      $r->CreatedDate,
                       $r->group_routing,
                       $r->group_project,
                       $r->term,
@@ -144,11 +146,11 @@ class Listinvoice extends CI_Controller {
                       $r->status,
                       '<a href="invoice/edit/'.$r->id.'"  class="btn btn-warning btn-sm "  >
                         <i class="icofont icofont-ui-edit"></i>
-                      </a>' . ($r->status == "LUNAS" ? "" : '
+                      </a>' . ($r->status == "LUNAS" || $r->status == "VOID" ? "" : '
                       <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="deleteList(this)"  data-id="'.$r->id.'" >
-                        <i class="icofont icofont-ui-delete"></i>
+                        <i class="icofont icofont-ui-delete"></i> Void
                       </button>
-                      <a href="trace/view/'.$r->id.'" class="btn btn-success btn-sm "><i class="icofont icofont-print" ></i>
+                      <a href="cetak?id='.$r->id.'" class="btn btn-success btn-sm" target="_blank"><i class="icofont icofont-print" ></i>
                       </a>'),
                  );
       }
@@ -185,6 +187,8 @@ class Listinvoice extends CI_Controller {
           }                 
       }
     $this->db->from("tb_invoice I");
+    $this->db->join('tb_user U', 'U.id_user = I.CreatedBy');
+    $this->db->where('U.cabang',$this->session->userdata('cabang'));
     $query = $this->db->join('tb_term', 'tb_term.id = I.id_term')->get();
     $result = $query->row();
     if(isset($result)) return $result->num;
@@ -202,10 +206,24 @@ class Listinvoice extends CI_Controller {
   {
       $response = [];
       $response['error'] = TRUE; 
-      if($this->admin->deleteTable("id",$this->input->get('id'), 'tb_routingslip' )){
-        // $this->admin->deleteTable("spk_no",$this->input->get('spk'), 'tb_spk_detail' );
-        $response['error'] = FALSE;
-      } 
+
+      $arr_par = array('id' => $this->input->get('id'));
+      $inv = $this->admin->get_array('tb_invoice', $arr_par);
+
+      if(intval($inv['sudah_dibayar']) > 0){
+        $response['msg'] = "Tidak dapat di Void karena sudah ada pembayaran!"; 
+      }else{ 
+        $data['status'] = 'VOID';
+
+        $this->db->set($data);
+        $this->db->where($arr_par);
+        $result  =  $this->db->update('tb_invoice'); 
+
+        if($result){
+          $response['error'] = FALSE;
+        } 
+      }
+
 
       $this->output->set_content_type('application/json')->set_output(json_encode($response)); 
   }

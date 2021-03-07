@@ -17,19 +17,38 @@
 			    "targets": [6,7],
 			    "className": "text-right"
 			}],
-			"order": [[ 1, "desc" ]]
+			"order": [[ 1, "desc" ]],
+			"createdRow": function( row, data, dataIndex){
+                if( data[8] ==  'VOID'){
+                    $(row).css('background-color','red');
+                    $(row).css('color','white');
+                }
+            }
 	    });
 
 	})
 
 	function deleteList(val) {
-		var r = confirm("Yakin dihapus?");
-		if (r == true) {
-			
-			$.get('listrs/delete', { id: $(val).data('id') }, function(data){ 
-				alertOK(window.location.reload());
+		Swal.fire({
+			  title: 'Yakin divoid?',
+			  text: "Pembayaran ini akan dilakukan void!",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Ya, yakin!'
+			}).then((result) => {
+				
+			  	if(result.isConfirmed){
+			  		$.get('listinvoice/delete', { id: $(val).data('id') }, function(data){ 
+						if(data.error){
+							alertError(data.msg);
+						}else{
+							alertOK(window.location.reload());	
+						}
+					})
+			  	}
 			})
-		
-		}
+
 	}
 </script>

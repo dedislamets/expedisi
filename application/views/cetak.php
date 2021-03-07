@@ -635,7 +635,7 @@
 	<!-- <script  src="<?= base_url(); ?>assets\js\index.js"></script> -->
 	<script type="text/javascript">
 		$(document).ready(function(){  
-			// window.print();
+			window.print();
 		})
 	</script>
 </body>
