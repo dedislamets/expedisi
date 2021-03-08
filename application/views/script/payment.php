@@ -44,6 +44,13 @@
 		}
 
 		$('#type_payment').on('change', function() {
+			var link = "getNumberVendor";
+			if($(this).val() == "Customer"){
+				link = "getNumber";
+			}
+			$.get('<?= base_url() ?>payment/'+ link, { }, function(data){ 
+				$("#no_payment").val(data);		
+		    });
 			myTable.ajax.url("payment/dataTable?tipe=" + $('#type_payment').val() ).load();
 		});
 	})

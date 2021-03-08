@@ -33,7 +33,6 @@ class Payment extends CI_Controller {
 
         $last_no = $count[0]->no_payment;
         // print("<pre>".print_r($count,true)."</pre>"); exit();
-        // $last_no = explode("/", $last_no);
         $last_no = str_pad(intval($last_no)+1, 3,'0',STR_PAD_LEFT);
       }
 
@@ -374,4 +373,30 @@ class Payment extends CI_Controller {
     } 
   }
 
+  public function getNumber(){
+    $count = $this->db->query("SELECT no_payment FROM tb_payment WHERE type_payment='CUSTOMER' ORDER BY CreatedDate DESC LIMIT 1")->result();
+      
+    if(empty($count)){
+      $last_no = '001';
+    }else{
+
+      $last_no = $count[0]->no_payment;
+      $last_no = str_pad(intval($last_no)+1, 3,'0',STR_PAD_LEFT);
+    }
+
+    $this->output->set_content_type('application/json')->set_output(json_encode($last_no));
+  }
+  public function getNumberVendor(){
+    $count = $this->db->query("SELECT no_payment FROM tb_payment WHERE type_payment='VENDOR' ORDER BY CreatedDate DESC LIMIT 1")->result();
+      
+    if(empty($count)){
+      $last_no = 'V001';
+    }else{
+
+      $last_no = $count[0]->no_payment;
+      $last_no = "V".str_pad(intval(substr($last_no, 1))+1, 3,'0',STR_PAD_LEFT);
+    }
+
+    $this->output->set_content_type('application/json')->set_output(json_encode($last_no));
+  }
 }
