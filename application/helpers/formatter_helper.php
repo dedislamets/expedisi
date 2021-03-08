@@ -232,7 +232,7 @@ function menu(){
                                 SELECT DISTINCT A.parent_id FROM tb_menu A
                                 LEFT JOIN tb_group_menu C ON C.`id_menu`=A.id 
                                 WHERE A.parent_id>0 AND C.`id_group`=". $recLogin ." 
-                            ) ORDER BY parent_id,title ASC ")->result();
+                            ) ORDER BY parent_id,title,menu ASC ")->result();
     foreach($menu as $row)
     {
 
