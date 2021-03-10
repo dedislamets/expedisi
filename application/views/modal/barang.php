@@ -34,6 +34,7 @@
 					<div class="form-group">
 						<label>Satuan</label>
 						<select id="satuan" name="satuan" class="form-control">
+							<option value="Pcs">Pcs</option>
 		                   <option value="Kg">Kg</option>
 		                   <option value="M">Meter</option>
 		                   <option value="Ton">Ton</option>
