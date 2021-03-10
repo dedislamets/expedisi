@@ -48,7 +48,7 @@ class Reportrs extends CI_Controller {
         $this->db->join('barang B', 'B.`id_barang`=RD.`id_barang`');
         $this->db->join('master_customer mc', 'mc.`id`=R.`id_pengirim`');
         $this->db->join('master_customer mcp', 'mcp.`id`=R.`id_penerima`');
-        $this->db->where("CreatedDate BETWEEN '". $start ."' AND '". $end ."'");
+        $this->db->where("DATE(CreatedDate) BETWEEN '". $start ."' AND '". $end ."'");
         if($cust != "all"){
           $this->db->where("id_pengirim", $cust);
         }
