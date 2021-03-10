@@ -358,7 +358,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="<?= base_url(); ?>assets/js/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDG6gW-g3Tv-5WtfghXA8y2MKt9RAaW5E&callback=initialize" async defer></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDG6gW-g3Tv-5WtfghXA8y2MKt9RAaW5E&callback=initialize" async defer></script> -->
     <!-- <script src="<?= base_url(); ?>assets/pages/jquery.filer/js/jquery.filer.min.js"></script>
     <script src="<?= base_url(); ?>assets/pages/filer/jquery.fileuploads.init.js" type="text/javascript"></script> -->
     <!-- <script type="text/javascript" src="<?= base_url(); ?>assets\pages\advance-elements\select2-custom.js"></script> -->

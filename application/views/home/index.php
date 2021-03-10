@@ -71,7 +71,7 @@
     <?php if($this->session->userdata('role_id') ==  1 || $this->session->userdata('role_id') == 2): ?>
     <div class="col-xl-12 col-md-12">
         <div class="row">
-            <div class="col-xl-4 col-md-6">
+            <div class="col-xl-3 col-md-6">
                 <div class="card social-card bg-simple-c-pink">
                     <div class="card-block">
                         <div class="row align-items-center">
@@ -87,23 +87,7 @@
                     <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
                 </div>
             </div>
-            <div class="col-xl-4 col-md-6">
-                <div class="card social-card bg-simple-c-green">
-                    <div class="card-block">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <p class="m-b-5">DALAM PERJALANAN</p>
-                                <h4 class="m-b-0"><?= $perjalanan ?></h4>
-                            </div>
-                            <div class="col col-auto text-right">
-                                <i class="feather icon-navigation-2 f-50 text-c-yellow"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
-                </div>
-            </div>
-            <div class="col-xl-4 col-md-6">
+            <div class="col-xl-3 col-md-6">
                 <div class="card social-card bg-simple-c-blue" style="background-color: #3F5159;">
                     <div class="card-block">
                         <div class="row align-items-center">
@@ -120,36 +104,62 @@
                     <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
                 </div>
             </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card social-card bg-simple-c-green">
+                    <div class="card-block">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <p class="m-b-5">DALAM PERJALANAN</p>
+                                <h4 class="m-b-0"><?= $perjalanan ?></h4>
+                            </div>
+                            <div class="col col-auto text-right">
+                                <i class="feather icon-navigation-2 f-50 text-c-yellow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="card social-card bg-simple-c-indigo" style="background-color: #FF7814;">
+                    <div class="card-block">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <p class="m-b-5">CLOSED</p>
+                                <h4 class="m-b-0"><?= $closed ?></h4>
+                            </div>
+                            <div class="col col-auto text-right">
+                                <i class="feather icon-book f-50 text-c-yellow"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                </div>
+            </div>
         </div>
         <div class="row">
-            <div class="col-xl-4 col-md-12">
+            <div class="col-xl-6 col-md-12">
               <div class="card">
+                <div class="card-header" style="padding: 15px;background-color: #ED8D00;opacity: 0.8;">
+                  <h5 style="color: #fff;">Grafik Routing Bulan Berjalan</h5>
+                </div>
                 <div class="card-block bg-c-green">
                   <div id="proj-earning" style="height: 230px"></div>
                 </div>
-                <div class="card-footer">
-                  <h6 class="text-muted m-b-30 m-t-15">Total project and customer</h6>
-                  <div class="row text-center">
-                    <div class="col-6 b-r-default">
-                      <h6 class="text-muted m-b-10">Projects</h6>
-                      <h4 class="m-b-0 f-w-600 ">175</h4>
-                    </div>
-                    <div class="col-6">
-                      <h6 class="text-muted m-b-10">Total Customer</h6>
-                      <h4 class="m-b-0 f-w-600 ">76.6M</h4>
-                    </div>
-                  </div>
-                </div>
+                <button class="btn btn-block p-t-15 p-b-15" style="background-color: #ED8D00;opacity: 0.8;color: #fff;">Total Routing : <?= $current_routing_total ?></button>
+             
               </div>
             </div>
-            <div class="col-xl-8 col-md-12">
+            <div class="col-xl-6 col-md-12">
                 <div class="card table-card">
-                    <div class="card-header btn-grd-danger">
-                      <h5>Status Terakhir di update</h5>
+                    <div class="card-header" style="padding: 15px;background-color: #ED8D00;opacity: 0.8;">
+                      <h5 style="color: #fff;">Status Terakhir di update</h5>
                     </div>
                     <div class="card-block">
                       <div class="table-responsive">
-                        <table class="table table-hover table-borderless">
+                        <table class="table table-hover table-striped table-borderless">
                           <thead>
                             <tr>
                               <th>#</th>
@@ -172,9 +182,7 @@
                           </tbody>
                         </table>
                       </div>
-                      <div class="text-right  m-r-20">
-                        <a href="#!" class="b-b-primary text-primary">View all Sales Locations </a>
-                      </div>
+                      
                     </div>
                 </div>
             </div>

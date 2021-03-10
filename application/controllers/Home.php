@@ -12,7 +12,7 @@ class Home extends CI_Controller {
 	{		
 		if($this->admin->logged_id()){
         	
-            $this->db->limit(6);
+            $this->db->limit(5);
             $this->db->select("B.*,no_routing");
             $this->db->from("tb_routingslip_history B");
             $this->db->join('tb_routingslip A', 'A.id = B.id_routing');
@@ -60,6 +60,34 @@ class Home extends CI_Controller {
             $this->db->where('U.cabang',$this->session->userdata('cabang'));
             $this->db->where('tb_routingslip.status','INPUT');
             $data['pickup'] = $this->db->get()->num_rows();
+
+            $this->db->from('tb_routingslip');
+            $this->db->join('tb_user U', 'U.id_user = tb_routingslip.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
+            $this->db->where('tb_routingslip.status','CLOSED');
+            $data['closed'] = $this->db->get()->num_rows();
+
+            $this->db->from('tb_routingslip');
+            $this->db->join('tb_user U', 'U.id_user = tb_routingslip.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
+            $this->db->where('MONTH(tb_routingslip.createdDate)', date('m'));
+            $this->db->where('YEAR(tb_routingslip.createdDate)', date('Y'));
+            $data['current_routing_total'] = $this->db->get()->num_rows();
+
+            $this->db->select('DATE(tb_routingslip.createdDate) AS tgl, COUNT(no_routing) AS jml');
+            $this->db->from('tb_routingslip');
+            $this->db->join('tb_user U', 'U.id_user = tb_routingslip.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
+            $this->db->where('MONTH(tb_routingslip.createdDate)', date('m'));
+            $this->db->where('YEAR(tb_routingslip.createdDate)', date('Y'));
+            $this->db->group_by('DATE(tb_routingslip.createdDate)');
+            $records = $this->db->get()->result_array();
+
+            $data_chart=[];
+            foreach($records as $row) {
+                $data_chart[] = ['type' => date('d M',strtotime($row['tgl'])), 'visits' =>$row['jml']];
+            }
+            $data['chart_rs'] = json_encode($data_chart);
 
 			$data['js'] = 'home/js';
             // print("<pre>".print_r($data,true)."</pre>");
