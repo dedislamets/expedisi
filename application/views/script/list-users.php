@@ -70,6 +70,7 @@
 
 				$("#department").val(data['parent'][0]['department']);
 				$("#cabang").val(data['parent'][0]['cabang']);
+				$("#jenis_kelamin").val(data['parent'][0]['jenis_kelamin']);
 
 				$("#password").val('');
 				$("#id_role").val(data['parent'][0]['id_role']);

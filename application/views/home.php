@@ -210,7 +210,11 @@
                             <li class="user-profile header-notification">
                                 <div class="dropdown-primary dropdown">
                                     <div class="dropdown-toggle" data-toggle="dropdown">
-                                        <img src="<?= base_url(); ?>assets\images\avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
+                                        <? if($this->session->userdata('gender') == "Pria"): ?>
+                                            <img src="<?= base_url(); ?>assets\images\avaco.png" class="img-radius" alt="User-Profile-Image">
+                                        <? else: ?>
+                                           <img src="<?= base_url(); ?>assets\images\avace.png" class="img-radius" alt="User-Profile-Image">
+                                        <? endif; ?>
                                         <span><?= $this->session->userdata('username') ?></span>
                                         <i class="feather icon-chevron-down"></i>
                                     </div>

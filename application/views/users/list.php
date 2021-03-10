@@ -22,11 +22,17 @@
                             <th>
                               Nama Users
                             </th>
-                            <th class="text-center">
+                            <th>
                               Email
                             </th>
                             <th>
+                              Gender
+                            </th>
+                            <th>
                               Dept
+                            </th>
+                            <th>
+                              Cabang
                             </th>
                             <th>
                               Status

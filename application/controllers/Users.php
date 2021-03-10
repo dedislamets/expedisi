@@ -59,12 +59,16 @@ class Users extends CI_Controller {
             1=>'nama_user',
             2=>'email',
             3=>'department',
+            4=>'jenis_kelamin',
+            5=>'cabang',
         );
         $valid_sort = array(
             0=>'id_user',
             1=>'nama_user',
             2=>'email',
             3=>'department',
+            4=>'jenis_kelamin',
+            5=>'cabang',
         );
         if(!isset($valid_sort[$col]))
         {
@@ -107,7 +111,9 @@ class Users extends CI_Controller {
                         $r->id_user,
                         $r->nama_user,
                         $r->email,
+                        $r->jenis_kelamin,
                         $r->department,
+                        $r->cabang,
                         $r->status,
                         '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="editmodal(this)"  data-id="'.$r->id_user.'"  >
                           <i class="icofont icofont-ui-edit"></i>Edit
@@ -176,6 +182,7 @@ class Users extends CI_Controller {
           'email'       => $this->input->post('email',TRUE),
           'department'  => $this->input->post('department',TRUE),
           'cabang'      => $this->input->post('cabang',TRUE),
+          'jenis_kelamin'      => $this->input->post('jenis_kelamin',TRUE),
       );
       if(!empty($this->input->post('password',TRUE))){
         $new_password = Acak($this->input->post('password', TRUE), "goldenginger");

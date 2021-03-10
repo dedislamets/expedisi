@@ -47,6 +47,13 @@
 									<option value="JAKARTA">JAKARTA</option>
 									<option value="SURABAYA">SURABAYA</option>
 			                    </select>
+							</div>
+							<div class="form-group">
+								<label>Jenis Kelamin</label>
+								<select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+									<option value="Pria">Pria</option>
+									<option value="Wanita">Wanita</option>
+			                    </select>
 							</div>	
 							<div class="form-group">
 								<label>Aktif</label><br>
