@@ -39,6 +39,7 @@ class Reportrs extends CI_Controller {
   {
         $start = date("Y-m-d", strtotime($this->parse->anti_injection($this->input->get('from',TRUE))));
         $end = date("Y-m-d", strtotime($this->parse->anti_injection($this->input->get('to',TRUE))));
+        $cust = $this->parse->anti_injection($this->input->get('c',TRUE));
 
         $this->db->select("R.no_routing,createdDate,mc.`cust_name`,mcp.cust_name as cust_name_penerima,spk_no,`nama_project`,kota_pengirim,kota_penerima,B.`nama_barang`,moda_name,pickup_date,
           received_date,received_doc,STATUS,agent,RD.`qty`,RD.`satuan`");
@@ -47,7 +48,10 @@ class Reportrs extends CI_Controller {
         $this->db->join('barang B', 'B.`id_barang`=RD.`id_barang`');
         $this->db->join('master_customer mc', 'mc.`id`=R.`id_pengirim`');
         $this->db->join('master_customer mcp', 'mcp.`id`=R.`id_penerima`');
-        // $this->db->where('I.status <>', "LUNAS");
+        $this->db->where("CreatedDate BETWEEN '". $start ."' AND '". $end ."'");
+        if($cust != "all"){
+          $this->db->where("id_pengirim", $cust);
+        }
         $data = $this->db->get()->result();
 
         $spreadsheet = new Spreadsheet;

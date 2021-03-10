@@ -25,7 +25,7 @@
                         <label class="col-sm-1 col-form-label f-w-700">Customer</label>
                         <div class="col-sm-3">
                             <select name="cust" id="cust" class="js-example-basic-single form-control">
-                                <option value="">Semua</option>
+                                <option value="all">Semua</option>
                                 <?php 
                                   foreach($customer as $row)
                                   { 
