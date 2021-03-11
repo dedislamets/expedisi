@@ -15,7 +15,7 @@ class ReportFinance extends CI_Controller {
 
     if($this->admin->logged_id())
     {
-      if(CheckMenuRole('reportrs')){
+      if(CheckMenuRole('reportfinance')){
         redirect("errors");
       }
     }else{
