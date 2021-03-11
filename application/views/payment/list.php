@@ -28,7 +28,7 @@
         </div>
         <div class="card-block" style="padding-top: 10px;">
             <div>
-              <h4 class="info-text" style="margin-top: 30px;">Filter
+              <h4 class="info-text" style="margin-top: 10px;">Filter
               </h4>
               <div class="card z-depth-0">
                 <div class="card-header" style="padding: 10px 20px;">
