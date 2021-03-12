@@ -54,7 +54,7 @@ class ReportFinance extends CI_Controller {
             ,CASE WHEN RD.kg=0 AND mk.`moda_kategori`='DLL' THEN RD.qty ELSE '' END OTHERS
             ,received_date AS MOS_DATE
             ,ivd.price AS rate_vendor,ivd.subtotal AS subtotal_vendor,
-            agent,iv.no_invoice AS invoice_vendor,tb_term.`term` term_vendor,
+            agent,iv.id as id_invoice_vendor,iv.no_invoice AS invoice_vendor,tb_term.`term` term_vendor,
             iv.tgl_submit_invoice,iv.due_date due_date_vendor
             ,TIMESTAMPDIFF(DAY,CURDATE(),iv.due_date) outstanding_vendor
             ,CASE WHEN id.kg>0 THEN id.subtotal ELSE '' END KG_I
@@ -100,12 +100,24 @@ class ReportFinance extends CI_Controller {
                 ),
             ),
         );
-        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'LAPORAN FINANCE ('. $start.' s/d '. $end .')');
-        $spreadsheet->getActiveSheet()->mergeCells("A1:R1");
 
-        $spreadsheet->getActiveSheet()->mergeCells("A2:R2");
+        $formatnumber = array(
+           'numberFormat' => [
+                'formatCode' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_CURRENCY_EUR
+            ]
+        );
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'LAPORAN FINANCE ('. $start.' s/d '. $end .')');
+        $spreadsheet->getActiveSheet()->mergeCells("A1:S1");
+
+        $spreadsheet->getActiveSheet()->mergeCells("A2:S2");
         $spreadsheet->setActiveSheetIndex(0)->setCellValue('A2', 'DELIVERY ORDER LIST');
-        $spreadsheet->getActiveSheet()->getStyle('A2:R2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('f4f403');
+        $spreadsheet->getActiveSheet()->getStyle('A2:S2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('f4f403');
+
+        $spreadsheet->getActiveSheet()->mergeCells("T2:AC2");
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('T2', 'VENDOR');
+        $spreadsheet->getActiveSheet()->getStyle('T2:AC2')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('0000ff');
+
+       
 
         $spreadsheet->setActiveSheetIndex(0)
           ->setCellValue('A3', 'No')
@@ -125,15 +137,50 @@ class ReportFinance extends CI_Controller {
           ->setCellValue('O3', 'FUSO')
           ->setCellValue('P3', 'Tronton')
           ->setCellValue('Q3', 'LCL/Container/FCL')
-          ->setCellValue('R3', 'Chartered');
+          ->setCellValue('R3', 'Chartered')
+          ->setCellValue('S3', 'Mos Date')
+          ->setCellValue('T3', 'Rate')
+          ->setCellValue('U3', 'Subtotal')
+          ->setCellValue('V3', 'Add Cost')
+          ->setCellValue('W3', 'Total Invoice')
+          ->setCellValue('X3', 'Vendor')
+          ->setCellValue('Y3', 'Invoice No')
+          ->setCellValue('Z3', 'Submit Date')
+          ->setCellValue('AA3', 'Term')
+          ->setCellValue('AB3', 'Due Date')
+          ->setCellValue('AC3', 'Days Outstanding');
 
-        $spreadsheet->getActiveSheet()->getStyle('A3:R3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('f4f403');
-        $spreadsheet->getActiveSheet()->getStyle('A3:R3')->applyFromArray($styleArray);
+        $spreadsheet->getActiveSheet()->getStyle('A3:S3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('f4f403');
+        $spreadsheet->getActiveSheet()->getStyle('T3:AC3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('0000ff');
+        $spreadsheet->getActiveSheet()->getStyle('A3:AC3')->applyFromArray($styleArray);
 
         $spreadsheet->getActiveSheet()->setTitle('Recapitulation');
 
         $i=4; 
+        $arr_inv_vend = array();
+
         foreach($data as $key=>$row) {
+          $add_cost_vendor = "";
+          $total_vendor = "";
+          if (in_array($row->id_invoice_vendor,array_keys($arr_inv_vend))) {
+            
+          }else{
+            if(!empty($row->invoice_vendor)){
+              $arr_inv_vend[$row->id_invoice_vendor] = $row->invoice_vendor; 
+              $tes = $this->db->query("select sum(biaya) add_cost_vendor 
+                            from tb_invoice_vendor_opt_charge WHERE id_invoice='". $row->id_invoice_vendor."'
+                            GROUP BY id_invoice")->row_array();
+              $add_cost_vendor = $tes['add_cost_vendor'];
+
+              $tes = $this->db->query("SELECT no_invoice,SUM(dibayar)dibayar 
+                                      FROM tb_payment
+                                      WHERE  type_payment='Vendor' and no_invoice='". $row->invoice_vendor."'
+                                      GROUP BY no_invoice")->row_array();
+              $total_vendor = $tes['dibayar'];
+            }
+              
+
+          }
 
           $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A'.$i, $key+1)
@@ -153,19 +200,39 @@ class ReportFinance extends CI_Controller {
             ->setCellValue('O'.$i, $row->FUSO)
             ->setCellValue('P'.$i, $row->TRONTON)
             ->setCellValue('Q'.$i, $row->LCL_DLL_FCL)
-            ->setCellValue('R'.$i, $row->CHARTERED);
+            ->setCellValue('R'.$i, $row->CHARTERED)
+            ->setCellValue('S'.$i, $row->MOS_DATE)
+            ->setCellValue('T'.$i, $row->rate_vendor)
+            ->setCellValue('U'.$i, $row->subtotal_vendor)
+            ->setCellValue('V'.$i, $add_cost_vendor)
+            ->setCellValue('W'.$i, $total_vendor)
+            ->setCellValue('X'.$i, $row->agent)
+            ->setCellValue('Y'.$i, $row->invoice_vendor)
+            ->setCellValue('Z'.$i, $row->tgl_submit_invoice)
+            ->setCellValue('AA'.$i, $row->term_vendor)
+            ->setCellValue('AB'.$i, $row->due_date_vendor)
+            ->setCellValue('AC'.$i, $row->outstanding_vendor);
 
-            $spreadsheet->getActiveSheet()->getStyle('A2:R'.$i)->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('A4:AC'.$i)->applyFromArray($styleArray);
+            //format number
+            $spreadsheet->getActiveSheet()->getStyle('T'.$i)->getNumberFormat()->setFormatCode('#,##0.00');
+            $spreadsheet->getActiveSheet()->getStyle('U'.$i)->getNumberFormat()->setFormatCode('#,##0.00');
+            $spreadsheet->getActiveSheet()->getStyle('V'.$i)->getNumberFormat()->setFormatCode('#,##0.00');
+            $spreadsheet->getActiveSheet()->getStyle('W'.$i)->getNumberFormat()->setFormatCode('#,##0.00');
           $i++;
         }
 
+        // print("<pre>".print_r($arr_inv_vend,true)."</pre>");exit();
 
-        foreach (range('A','Q') as $col) {
-          $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);  
+        // foreach (range('A','Z') as $col) {
+        //   $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);  
+        // }
+
+        foreach ($this->excelColumnRange('A', 'AC') as $value) {
+            $spreadsheet->getActiveSheet()->getColumnDimension($value)->setAutoSize(true);  
         }
+        
 
-       
-        // exit();
         $writer = new Xlsx($spreadsheet);
 
         header('Content-Type: application/vnd.ms-excel');
@@ -175,6 +242,14 @@ class ReportFinance extends CI_Controller {
         $writer->save('php://output');
   }
 
+  function excelColumnRange($lower, $upper) {
+    ++$upper;
+    for ($i = $lower; $i !== $upper; ++$i) {
+        yield $i;
+    }
+  }
   
 
 }
+
+
