@@ -17,6 +17,12 @@
 			.no-border {
 				border-top: 0px solid !important;
 			}
+			.border-dotted {
+				border-bottom: dotted 2px;
+				    border-top: none;
+    			border-left: none;
+    			border-right: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -471,14 +477,14 @@
 					
 				</div>
 			<? } elseif ($page == "routing_new") { ?>
-				<div class="row">
+				<div class="row" style="padding: 10px;">
 					<table class="table" style="margin-bottom:10px;margin-top: 10px;">
 						<tr>
 							<td width="50%" height="100px;" class="no-border">
 								<table style="width: 100%">
 									<tr>
 										<td style="font-weight: bold;width: 70%" class="no-border">
-											<div style="border: solid 1px grey;padding: 10px;">Reff:</div>
+											<div style="border: solid 1px grey;padding: 10px;">Reff: <?= empty($data) ? "" : $data['no_routing'] ?></div>
 										</td>
 										<td class="no-border" width="30%">
 											<img src="<?= base_url(); ?>assets\images\cropped-logo-wml-180x180.png" style="height: 80px;width: 80px;" class="">
@@ -508,7 +514,7 @@
 										</td>
 										<td class="no-border" width="1%" style="padding: 10px 5px;">:</td>
 										<td class="no-border" width="49%" >
-											<div style="border: solid 1px grey;padding: 10px;font-size: 12px;"><?= empty($data) ? "" : $data['pickup_address'] ?></div>
+											<div style="border: solid 1px grey;padding: 10px;font-size: 12px;"><?= empty($data) ? "" : $data['site_name'] ?></div>
 										</td>
 									</tr>
 									<tr>
@@ -529,98 +535,199 @@
 					</h1>
 					<table style="width: 100%">
 						<tr>
-							<td width="50%" class="no-border" style="vertical-align: top;">
+							<td style="font-weight: bold" class="no-border">TGL TERIMA ORDER BY EMAIL</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted"><?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['CreatedDate']))) ?></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold" class="no-border">COMBINE/MULTI</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted">
+								<?php 
+									$urut=1;
+                                  foreach($multi as $row)
+                                  {
+                                  	echo $urut . ". " .$row->rute ."<br>";
+                                  	$urut++;
+                                  }
+                                ?>
+							</td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold" class="no-border" width="250px;">CARRIER / VEHICLE NO.</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted"><?= empty($data) ? "" : $data['no_kendaraan'] ?></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold" class="no-border">TANGGAL PICKUP</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted"><?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['pickup_date']))) ?></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold" class="no-border">ALAMAT PICKUP</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted"><?= empty($data) ? "" : $data['pickup_address'] ?></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold" class="no-border">VENDOR NAME</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted"><?= empty($data) ? "" : $data['agent'] ?></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold" class="no-border">NAMA BARANG</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted">
+								<?php 
+									$urut=1;
+                                  	foreach($data_detail as $row)
+                                  	{
+                                  		echo $urut . ". " . $row['nama_barang'] ."<br>";
+                                  		$urut++;
+                                  	}
+                                ?>
+							</td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold" class="no-border">JUMLAH BARANG</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted">
+								<?php 
+									$urut=1;
+                                  	foreach($data_detail as $row)
+                                  	{
+                                  		echo $urut . ". " . $row['qty'] ." ". $row['satuan'] ."<br>";
+                                  		$urut++;
+                                  	}
+                                ?>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3" style="padding: 20px;" class="no-border"></td>
+						</tr>
+						
+					</table>
+					<table style="width: 100%">
+						<tr>
+							<td width="100px;" class="no-border"></td>
+							<td style="font-weight: bold" width="100px">NO. SPK</td>
+							<td style="text-align: center;"><?= empty($data) ? "" : $data['spk_no'] ?></td>
+							<td width="100px;" class="no-border"></td>
+						</tr>
+
+						<tr>
+							<td colspan="3" style="padding: 30px;" class="no-border"></td>
+						</tr>
+
+					</table>
+					<table style="width: 100%">
+						<tr>
+							<td style="text-align: center;font-weight: bold;">DELIVERY</td>
+						</tr>
+						<tr>
+							<td>
 								<table style="width: 100%">
 									<tr>
-										<td style="font-weight: bold">TANGGAL DO</td>
-										<td colspan="3"></td>
+										<td style="font-weight: bold;width: 250px;" class="no-border">TANGGAL PENGIRIMAN</td>
+										<td class="no-border" width="20px;">:</td>
+										<td class="border-dotted"><?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['CreatedDate']))) ?></td>
 									</tr>
 									<tr>
-										<td style="font-weight: bold">NOMOR DO</td>
-										<td colspan="3">123</td>
+										<td style="font-weight: bold;width: 250px;" class="no-border">ALAMAT PENERIMA</td>
+										<td class="no-border" width="20px;">:</td>
+										<td class="border-dotted"><?= empty($data) ? "" : $data['alamat_penerima'] ?></td>
 									</tr>
 									<tr>
-										<td style="font-weight: bold">COMBINE/MULTI</td>
-										<td colspan="3"></td>
-									</tr>
-									<tr>
-										<td rowspan="2" style="font-weight: bold">JENIS PENGIRIMAN</td>
-										<td style="font-weight: bold">DARAT</td>
-										<td style="font-weight: bold">LAUT</td>
-										<td style="font-weight: bold">UDARA</td>
-									</tr>
-									<tr>
-										<td>KG</td>
-										<td>KG</td>
-										<td>KG</td>
-									</tr>
-									<tr>
-										<td colspan="4" class="no-border"></td>
-									</tr>
-									<tr>
-										<td style="font-weight: bold">VENDOR NAME</td>
-										<td colspan="3">123</td>
-									</tr>
-									<tr>
-										<td style="font-weight: bold">NO HP</td>
-										<td colspan="3">123</td>
-									</tr>
-									<tr>
-										<td style="font-weight: bold">JENIS ARMADA</td>
-										<td colspan="3">123</td>
+										<td style="font-weight: bold;width: 250px;" class="no-border">TGL & NAMA PENERIMA BARANG</td>
+										<td class="no-border" width="20px;">:</td>
+										<td class="border-dotted"><?= empty($data) ? "" : ( $data['received_date'] == '' ? '' : tgl_indo(date("Y-m-d", strtotime($data['received_date'])))) . ' / '. $data['received_by'] ?></td>
 									</tr>
 								</table>
 							</td>
-							<td width="50%" class="no-border" style="vertical-align: top;">
-								<table style="width: 100%;">
-									<tr>
-										<td  width="50%" style="font-weight: bold">PICKUP ADDRESS</td>
-										<td  width="50%" style="font-weight: bold">DESTINATION</td>
-									</tr>
-									<tr>
-										<td>
-											Jl. Kalimalang No.123<br>
-											Bekasi 17510
-										</td>
-										<td>
-											Perum. Graha Prima Blok IA NO.88A
-											Tambun Utara
-										</td>
-									</tr>
-									<tr>
-										<td colspan="2" class="no-border"></td>
-									</tr>
-									<tr>
-										<td style="font-weight: bold">NO. TRUCKING</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td style="font-weight: bold">NO. CONTAINER / SHIPPING NAME</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td style="font-weight: bold">NO. SMU / AIRLINES</td>
-										<td></td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2" class="no-border"></td>
-						</tr>
-						<tr>
-							<td colspan="2" style="height: 100px;"></td>
-						</tr>
-						<tr>
-							<td class="no-border" style="font-weight: bold;">PAYMENT</td>
-							<td class="no-border" style="font-weight: bold;">INVOICE</td>
-						</tr>
-						<tr>
-							<td style="height: 100px;"></td>
-							<td style="height: 100px;"></td>
 						</tr>
 					</table>
-					
+
+					<table style="width: 100%;margin-top: 30px;">
+						<tr>
+							<td style="text-align: center;font-weight: bold;">DOKUMEN KEMBALI</td>
+						</tr>
+						<tr>
+							<td>
+								<table style="width: 100%">
+									<tr>
+										<td style="font-weight: bold;width: 250px;" class="no-border">TANGGAL TERIMA DOKUMEN</td>
+										<td class="no-border" width="20px;">:</td>
+										<td class="border-dotted"><?= empty($data) ? "" : ( $data['received_doc'] == '' ? '' : tgl_indo(date("Y-m-d", strtotime($data['received_doc'])))) . $data['received_doc'] ?></td>
+									</tr>
+									<tr>
+										<td style="font-weight: bold;width: 250px;" class="no-border">DIPERIKSA OLEH</td>
+										<td class="no-border" width="20px;">:</td>
+										<td class="border-dotted"></td>
+									</tr>
+									<tr>
+										<td style="font-weight: bold;width: 250px;" class="no-border">TGL. DISERAHKAN KE ACC</td>
+										<td class="no-border" width="20px;">:</td>
+										<td class="border-dotted"><?= empty($data) ? "" : ( $data['sent_acc'] == '' ? '' : tgl_indo(date("Y-m-d", strtotime($data['sent_acc'])))) . $data['sent_acc'] ?></td>
+									</tr>
+
+								</table>
+							</td>
+						</tr>
+					</table>
+
+					<table style="width: 100%">
+						<tr>
+							<td colspan="3" style="padding: 10px;" class="no-border"></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;width: 150px;" class="no-border">REMARK</td>
+							<td class="no-border" width="20px;">:</td>
+							<td class="border-dotted"></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;width: 150px;" class="no-border"></td>
+							<td class="no-border" width="20px;">&nbsp;</td>
+							<td class="border-dotted"></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;width: 150px;" class="no-border"></td>
+							<td class="no-border" width="20px;">&nbsp;</td>
+							<td class="border-dotted"></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;width: 150px;" class="no-border"></td>
+							<td class="no-border" width="20px;">&nbsp;</td>
+							<td class="border-dotted"></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;width: 150px;" class="no-border"></td>
+							<td class="no-border" width="20px;">&nbsp;</td>
+							<td class="border-dotted"></td>
+						</tr>
+						<tr>
+							<td colspan="3" style="padding: 10px;" class="no-border">
+								
+							</td>
+						</tr>
+					</table>
+					<table style="width: 100%;text-align: center;">
+						<tr>
+							<td>Prepare By</td>
+							<td>Ori docs Prepare by</td>
+							<td>Inv Prepare By</td>
+							<td>Inv Submitr Date</td>
+						</tr>
+						<tr>
+							<td>
+								<br>
+								<br>
+								<br>
+							</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						
+					</table>
 				</div>
 			<? } ?>
 		</div>
@@ -635,7 +742,7 @@
 	<!-- <script  src="<?= base_url(); ?>assets\js\index.js"></script> -->
 	<script type="text/javascript">
 		$(document).ready(function(){  
-			window.print();
+			// window.print();
 		})
 	</script>
 </body>

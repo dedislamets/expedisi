@@ -98,6 +98,16 @@ class Cetak extends CI_Controller {
       $data['data'] = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
       $data['moda'] = $this->admin->get_array('tb_moda',array( 'id' => $data['data']['id_moda']));
       $data['multi'] = $this->admin->get('tb_routingslip_multi',array( 'id_routing' => $id));
+      $data['data_detail'] = $this->admin->get_result_array('tb_routingslip_detail',array( 'id_routing' => $id));
+      $data['data_biaya'] = $this->admin->get_result_array('tb_routingslip_biaya',array( 'id_routing' => $id));
+
+      foreach ($data['data_detail'] as $key => $value) {
+
+        $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
+        $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
+        $data['data_detail'][$key]['berat'] = $item['berat_barang'];
+      }
+
       $data['page'] = "routing_new";
       $this->load->view('cetak',$data,FALSE); 
     }else{
