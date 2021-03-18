@@ -283,11 +283,11 @@
 			        	flag= false;
 			        }
 
-			        var price = $($tds[6]).children().val();
-			        if(price == 0){
-			        	alertError('Harga Barang belum di berikan..');
-			        	flag= false;
-			        }
+			        // var price = $($tds[6]).children().val();
+			        // if(price == 0){
+			        // 	alertError('Harga Barang belum di berikan..');
+			        // 	flag= false;
+			        // }
 			    }
 		    });
     	}

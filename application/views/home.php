@@ -20,7 +20,7 @@
 
     <!-- feather Awesome -->
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\icon\feather\css\feather.css">
-
+    <link rel="stylesheet" href="<?= base_url(); ?>assets/css/chosen.min.css" />
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\datatables.net-bs4\css\dataTables.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\pages\data-table\css\buttons.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets\bower_components\datatables.net-responsive-bs4\css\responsive.bootstrap4.min.css">
@@ -364,7 +364,7 @@
     <!-- <script type="text/javascript" src="<?= base_url(); ?>assets\pages\advance-elements\select2-custom.js"></script> -->
     <script type="text/javascript" src="<?= base_url(); ?>assets\js\dropzone.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
-
+    <script src="<?= base_url(); ?>assets/js/chosen.jquery.min.js"></script>
 
     <script type="text/javascript">
         function alertOK(href="") {

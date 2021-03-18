@@ -22,18 +22,7 @@
                 </div>
                 <div class="card-block panels-wells">
                     <div class="form-group row m-b-0">
-                        <label class="col-sm-1 col-form-label f-w-700">Customer</label>
-                        <div class="col-sm-3">
-                            <select name="cust" id="cust" class="js-example-basic-single form-control">
-                                <option value="all">Semua</option>
-                                <?php 
-                                  foreach($customer as $row)
-                                  { 
-                                    echo '<option value="'.$row->id.'">'.$row->cust_name.'</option>';
-                                  }
-                                ?>
-                            </select>
-                        </div>
+                        
                         <label class="col-sm-1 col-form-label f-w-700">Dari</label>
                         <div class="col-sm-2">
                             <input class="form-control form-bg-inverse" type="date" id="from_tanggal" name="from_tanggal"  />
@@ -42,10 +31,39 @@
                         <div class="col-sm-2">
                             <input class="form-control form-bg-inverse" type="date" id="to_tanggal" name="to_tanggal"  />
                         </div>
-                        <div class="col-sm-2">
+                        
+
+                    </div>
+                    <div class="form-group row m-t-10">
+                        <label class="col-sm-1 col-form-label f-w-700">Customer</label>
+                        <div class="col-sm-3">
+                            <select name="cust" id="cust" class="chosen-select form-control" multiple="">
+                                <?php 
+                                  foreach($customer as $row)
+                                  { 
+                                    echo '<option value="'.$row->id.'">'.$row->cust_name.'</option>';
+                                  }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row m-t-10">
+                        <label class="col-sm-1 col-form-label f-w-700">Vendor</label>
+                        <div class="col-sm-3">
+                            <select name="vend" id="vend" class="chosen-select form-control" multiple="">
+                                <?php 
+                                  foreach($customer as $row)
+                                  { 
+                                    echo '<option value="'.$row->id.'">'.$row->cust_name.'</option>';
+                                  }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row m-t-10">
+                        <div class="col-sm-4">
                             <button class="btn btn-success btn-block btn-round" id="btnExport"><i class="icofont icofont-download"></i> Download</button>
                         </div>
-
                     </div>
                 </div>
               </div>                        
