@@ -319,10 +319,10 @@
 			        var price_chartered = $($tds[8]).children().val();
 
 			        if(parseInt(qty)>0){
-			        	if(price == 0){
-				        	alertError('Harga Kg Barang belum di berikan..');
-				        	flag= false;
-				        }
+			        	// if(price == 0){
+				        // 	alertError('Harga Kg Barang belum di berikan..');
+				        // 	flag= false;
+				        // }
 			        }else{
 			        	if(price_chartered == 0){
 				        	alertError('Harga Chartered Barang belum di berikan..');
