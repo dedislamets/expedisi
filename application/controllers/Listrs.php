@@ -57,23 +57,23 @@ class Listrs extends CI_Controller {
 
       $valid_columns = array(
           0=>'no_routing',
-          1=>'CreatedDate',
+          1=>'R.CreatedDate',
           2=>'spk_no',
           3=>'nama_project',
           4=>'B.cust_name',
           5=>'A.cust_name',
           6=>'moda_name',
-          7=>'status',
+          7=>'R.status',
       );
       $valid_sort = array(
           0=>'no_routing',
-          1=>'CreatedDate',
+          1=>'R.CreatedDate',
           2=>'spk_no',
           3=>'nama_project',
           4=>'B.cust_name',
           5=>'A.cust_name',
           6=>'moda_name',
-          7=>'status',
+          7=>'R.status',
       );
       if(!isset($valid_sort[$col]))
       {
