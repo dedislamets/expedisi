@@ -4,6 +4,10 @@
 <script src="<?= base_url(); ?>assets/js/flot-old/jquery.flot.pie.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>assets/js/google/loader.js"></script>
 
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
 <script type="text/javascript">
   $(document).ready(function(){ 
     
@@ -43,21 +47,6 @@
       hideCredits:!0,
       theme:"light",
       dataProvider: chartData,
-        // [{
-        //   type:"UI",visits:10
-        // },
-        // {
-        //   type:"UX",visits:15
-        // },
-        // {
-        //   type:"Web",visits:12
-        // },
-        // {
-        //   type:"App",visits:16
-        // },
-        // {
-        //   type:"SEO",visits:8
-        // }],
       valueAxes:[
         {
           gridAlpha:.3,
@@ -94,6 +83,52 @@
       },
       export:true
     });
+
+    var chartDataFinance = <?php echo $chart_finance; ?>;
+
+    // AmCharts.makeChart(
+    // "proj-finance",
+    // {
+    //   type:"serial",
+    //   hideCredits:!0,
+    //   theme:"light",
+    //   dataProvider: chartDataFinance,
+    //   valueAxes:[
+    //     {
+    //       gridAlpha:.3,
+    //       gridColor:"#fff",
+    //       axisColor:"transparent",
+    //       color:"#fff",dashLength:0
+    //     }]
+    //   ,gridAboveGraphs:!0,
+    //   startDuration:1,
+    //   graphs:[
+    //     {
+    //       balloonText:"Total Invoice: <b>[[value]]</b>",
+    //       fillAlphas:1,
+    //       lineAlpha:1,
+    //       lineColor:"#fff",
+    //       type:"column",
+    //       valueField:"visits",
+    //       columnWidth:.5
+    //     }],
+    //   chartCursor:{
+    //     categoryBalloonEnabled:!1,
+    //     cursorAlpha:0,
+    //     zoomable:!1
+    //   },
+    //   categoryField:"type",
+    //   categoryAxis:{
+    //     gridPosition:"start",
+    //     gridAlpha:0,
+    //     axesAlpha:0,
+    //     lineAlpha:0,
+    //     fontSize:12,
+    //     color:"#fff",
+    //     tickLength:0
+    //   },
+    //   export:true
+    // });
   });
   
   var app = new Vue({
@@ -183,4 +218,79 @@
 
   }
   
+</script>
+
+<!-- Chart code -->
+<script>
+    am4core.ready(function() {
+
+    // Themes begin
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+    // Add data
+    chart.data = [ {
+      "year": "2003",
+      "europe": 2.5,
+      "namerica": 2.5,
+      "asia": 2.1,
+      "lamerica": 1.2,
+      "meast": 0.2,
+      "africa": 0.1
+    }, {
+      "year": "2004",
+      "europe": 2.6,
+      "namerica": 2.7,
+      "asia": 2.2,
+      "lamerica": 1.3,
+      "meast": 0.3,
+      "africa": 0.1
+    }, {
+      "year": "2005",
+      "europe": 2.8,
+      "namerica": 2.9,
+      "asia": 2.4,
+      "lamerica": 1.4,
+      "meast": 0.3,
+      "africa": 0.1
+    } ];
+
+    // Create axes
+    var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = "year";
+    categoryAxis.title.text = "Local country offices";
+    categoryAxis.renderer.grid.template.location = 0;
+    categoryAxis.renderer.minGridDistance = 20;
+    categoryAxis.renderer.cellStartLocation = 0.1;
+    categoryAxis.renderer.cellEndLocation = 0.9;
+
+    var  valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.min = 0;
+    valueAxis.title.text = "Expenditure (M)";
+
+    // Create series
+    function createSeries(field, name, stacked) {
+      var series = chart.series.push(new am4charts.ColumnSeries());
+      series.dataFields.valueY = field;
+      series.dataFields.categoryX = "year";
+      series.name = name;
+      series.columns.template.tooltipText = "{name}: [bold]{valueY}[/]";
+      series.stacked = stacked;
+      series.columns.template.width = am4core.percent(95);
+    }
+
+    createSeries("europe", "Europe", false);
+    createSeries("namerica", "North America", true);
+    createSeries("asia", "Asia", false);
+    createSeries("lamerica", "Latin America", true);
+    createSeries("meast", "Middle East", true);
+    createSeries("africa", "Africa", true);
+
+    // Add legend
+    chart.legend = new am4charts.Legend();
+
+    }); // end am4core.ready()
 </script>

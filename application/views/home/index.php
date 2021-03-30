@@ -201,17 +201,16 @@
     <?php endif ?>
     <?php if($this->session->userdata('role_id') ==  1 || $this->session->userdata('role_id') == 3): ?>
     <div class="col-xl-9 col-md-12">
-
-        <div class="card">
-            <div class="card-header">
-              <h5>Grafik Payment 5 Bulan Terakhir</h5>
-              <span>Chart transaksi pembayaran dari customer dan ke vendor</span>
-            </div>
-            <div class="card-block">
-              <div id="chart_Combo" style="width: 100%; height: 300px;"></div>
-            </div>
+      <div class="card">
+        <div class="card-header" style="padding: 15px;background-color: #ED8D00;opacity: 0.8;">
+          <h5 style="color: #fff;">Grafik Routing Bulan Berjalan</h5>
         </div>
-
+        <div class="card-block">
+          <div id="chartdiv" style="height: 400px"></div>
+        </div>
+        <button class="btn btn-block p-t-15 p-b-15" style="background-color: #ED8D00;opacity: 0.8;color: #fff;">Total Routing : <?= $current_routing_total ?></button>
+     
+      </div>
     </div>
     <div class="col-xl-3 col-md-12">
         <div class="card user-card2">
@@ -239,7 +238,7 @@
     </div>
     <?php endif ?>
     <?php if($this->session->userdata('role_id') ==  1 || $this->session->userdata('role_id') == 4): ?>
-    <div class="col-xl-12 col-md-12">
+    <!-- <div class="col-xl-12 col-md-12">
         <div class="row">
             <?php foreach($list_kurir as $row): ?>
             <div class="col-sm-6 ">
@@ -283,9 +282,7 @@
             </div>
             <?php endforeach ?>
         </div>
- 
-    </div>
-
+    </div> -->
     <?php endif ?>
 </div>
 

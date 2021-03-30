@@ -89,6 +89,21 @@ class Home extends CI_Controller {
             }
             $data['chart_rs'] = json_encode($data_chart);
 
+            $this->db->select('DATE(tb_invoice.tgl_invoice) AS tgl, COUNT(no_invoice) AS jml');
+            $this->db->from('tb_invoice');
+            $this->db->join('tb_user U', 'U.id_user = tb_invoice.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
+            $this->db->where('MONTH(tb_invoice.tgl_invoice)', date('m'));
+            $this->db->where('YEAR(tb_invoice.tgl_invoice)', date('Y'));
+            $this->db->group_by('DATE(tb_invoice.tgl_invoice)');
+            $records_finance = $this->db->get()->result_array();
+
+            $data_chart_finance=[];
+            foreach($records_finance as $row) {
+                $data_chart_finance[] = ['type' => date('d M',strtotime($row['tgl'])), 'visits' =>$row['jml']];
+            }
+            $data['chart_finance'] = json_encode($data_chart_finance);
+
 			$data['js'] = 'home/js';
             // print("<pre>".print_r($data,true)."</pre>");
             // exit();
