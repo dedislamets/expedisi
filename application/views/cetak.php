@@ -361,7 +361,7 @@
 								<table style="width: 100%">
 									<tr>
 										<td style="font-weight: bold">TANGGAL DO</td>
-										<td colspan="3"><?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['CreatedDate']))) ?></td>
+										<td colspan="3"><?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['tgl_spk']))) ?></td>
 										
 									</tr>
 									<tr>
