@@ -203,12 +203,12 @@
     <div class="col-xl-9 col-md-12">
       <div class="card">
         <div class="card-header" style="padding: 15px;background-color: #ED8D00;opacity: 0.8;">
-          <h5 style="color: #fff;">Grafik Routing Bulan Berjalan</h5>
+          <h5 style="color: #fff;">Grafik Total Invoice Bulan Berjalan</h5>
         </div>
         <div class="card-block">
-          <div id="chartdiv" style="height: 400px"></div>
+          <div id="chartdiv" style="height: 450px"></div>
         </div>
-        <button class="btn btn-block p-t-15 p-b-15" style="background-color: #ED8D00;opacity: 0.8;color: #fff;">Total Routing : <?= $current_routing_total ?></button>
+        
      
       </div>
     </div>

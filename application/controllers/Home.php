@@ -89,23 +89,48 @@ class Home extends CI_Controller {
             }
             $data['chart_rs'] = json_encode($data_chart);
 
-            $this->db->select('DATE(tb_invoice.tgl_invoice) AS tgl, COUNT(no_invoice) AS jml');
-            $this->db->from('tb_invoice');
-            $this->db->join('tb_user U', 'U.id_user = tb_invoice.CreatedBy');
-            $this->db->where('U.cabang',$this->session->userdata('cabang'));
-            $this->db->where('MONTH(tb_invoice.tgl_invoice)', date('m'));
-            $this->db->where('YEAR(tb_invoice.tgl_invoice)', date('Y'));
-            $this->db->group_by('DATE(tb_invoice.tgl_invoice)');
-            $records_finance = $this->db->get()->result_array();
+            $records_finance = $this->db->query("SELECT * FROM (
+                                SELECT DATE(tb_invoice.tgl_invoice) AS tgl, COUNT(no_invoice) AS jml ,'cust' AS inv
+                                FROM `tb_invoice` 
+                                JOIN `tb_user` `U` ON `U`.`id_user` = `tb_invoice`.`CreatedBy` 
+                                WHERE `U`.`cabang` = '". $this->session->userdata('cabang') ."' AND MONTH(tb_invoice.tgl_invoice) = '".date('m')."' 
+                                AND YEAR(tb_invoice.tgl_invoice) = '". date('Y') ."' 
+                                GROUP BY DATE(tb_invoice.tgl_invoice)
+                                UNION ALL
+                                SELECT DATE(tb_invoice_vendor.tgl_invoice) AS tgl, COUNT(no_invoice) AS jml  ,'vendor' AS inv
+                                FROM `tb_invoice_vendor` 
+                                JOIN `tb_user` `U` ON `U`.`id_user` = `tb_invoice_vendor`.`CreatedBy` 
+                                WHERE `U`.`cabang` = '". $this->session->userdata('cabang') ."' AND MONTH(tb_invoice_vendor.tgl_invoice) = '". date('m') ."' 
+                                AND YEAR(tb_invoice_vendor.tgl_invoice) = '". date('Y') ."' 
+                                GROUP BY DATE(tb_invoice_vendor.tgl_invoice)
+                            )t_graph order by tgl")->result();
+
+            // echo $this->db->last_query();exit();
 
             $data_chart_finance=[];
             foreach($records_finance as $row) {
-                $data_chart_finance[] = ['type' => date('d M',strtotime($row['tgl'])), 'visits' =>$row['jml']];
+                if(array_search(date('d M',strtotime($row->tgl)), array_column($data_chart_finance, 'tgl')) !== false) {
+                    foreach($data_chart_finance as $key=>$rs) {
+                        if(date('d M',strtotime($row->tgl)) == $data_chart_finance[$key]['tgl']){
+                            if ($row->inv == 'cust'){
+                                $data_chart_finance[$key]['jml_inv'] += $row->jml;
+                            }else{
+                                $data_chart_finance[$key]['jml_vendor'] += $row->jml;
+                            } 
+                        }
+                    }
+                }else{
+                    $data_chart_finance[] = [
+                                'tgl' => date('d M',strtotime($row->tgl)), 
+                                'jml_inv' => ($row->inv == 'cust' ? intval($row->jml) : 0),
+                                'jml_vendor' => ($row->inv == 'vendor' ? intval($row->jml) : 0) 
+                            ];
+                }
             }
             $data['chart_finance'] = json_encode($data_chart_finance);
 
 			$data['js'] = 'home/js';
-            // print("<pre>".print_r($data,true)."</pre>");
+            // print("<pre>".print_r($data['chart_finance'],true)."</pre>");
             // exit();
 			$this->load->view('home',$data,FALSE); 
 
