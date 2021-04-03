@@ -23,6 +23,13 @@ class Cetak extends CI_Controller {
 
         foreach ($data['data_detail'] as $key => $value) {
           $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
+          $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
+          $data['data_detail'][$key]['spk'] = $routing['spk_no'];
+          $data['data_detail'][$key]['pickup_date'] = $routing['pickup_date'];
+          $data['data_detail'][$key]['dari'] = $routing['kota_pengirim'];
+          $data['data_detail'][$key]['tujuan'] = $routing['kota_penerima'];
+          $data['data_detail'][$key]['layanan'] = $routing['moda_name'];
+
           $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
           $data['data_detail'][$key]['berat'] = $item['berat_barang'];
         }

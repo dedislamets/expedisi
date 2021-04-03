@@ -62,7 +62,7 @@
 										<tr>
 
 											<td class="meta-head no-border">Date</td>
-											<td class="no-border"><?= empty($data) ? "" : date("d M Y", strtotime($data['tgl_invoice']))?></td>
+											<td class="no-border"><?= empty($data) ? "" : tgl_indo($data['tgl_invoice'])?></td>
 										</tr>
 									</table>
 								</td>
@@ -74,7 +74,12 @@
 
 						<tr>
 							<th>No</th>
+							<th>Tgl Pickup</th>
+							<th>Dari</th>
+							<th>Tujuan</th>
+							<th>No PO</th>
 							<th>Nama Barang</th>
+							<th>layanan</th>
 							<th>Qty</th>
 							<th>Satuan</th>
 							<th>Berat/KG</th>
@@ -87,7 +92,13 @@
 	                    foreach($data_detail as $row): ?>
 						<tr class="item-row">
 							<td><?=$urut?></td>
+							<td class="item-name"><?= tgl_indo($row["pickup_date"]) ?></td>
+							<td class="item-name"><?= $row["dari"] ?></td>
+							<td class="item-name"><?= $row["tujuan"] ?></td>
+							<td class="item-name"><?= $row["spk"] ?></td>
+
 							<td class="item-name"><?= $row["nama_barang"] ?></td>
+							<td class="item-name"><?= $row["layanan"] ?></td>
 							<td class="item-name"><?= $row["qty"] ?></td>
 							<td class="item-name"><?= $row["satuan"] ?></td>
 							<td class="item-name"><?= $row["kg"] ?></td>
@@ -97,12 +108,12 @@
 						<?php $urut++?>
 	                    <?php endforeach; ?>
 	                    <tr class="item-row">
-							<td colspan="6" style="text-align: right;">Subtotal</td>
+							<td colspan="11" style="text-align: right;">Subtotal</td>
 							<td style="text-align: right;"><?= number_format($data["subtotal"]) ?></td>
 						</tr>
 	                    <tr>
 							<th>No</th>
-							<th colspan="5">Kegiatan</th>
+							<th colspan="10">Kegiatan</th>
 							<th style="text-align: right;">Biaya</th>
 						</tr>
 
@@ -111,30 +122,30 @@
 	                    foreach($data_biaya as $row): ?>
 						<tr class="item-row">
 							<td><?=$urut?></td>
-							<td class="item-name" colspan="5"><?= $row["aktifitas"] ?></td>
+							<td class="item-name" colspan="10"><?= $row["aktifitas"] ?></td>
 							<td style="text-align: right;"><?= number_format($row["biaya"]) ?></td>					
 						</tr>
 						<?php $urut++?>
 	                    <?php endforeach; ?>
 						
 						<tr class="item-row">
-							<td colspan="6" style="text-align: right;">Charge</td>
+							<td colspan="11" style="text-align: right;">Charge</td>
 							<td style="text-align: right;"><?= number_format($data["cost"]) ?></td>
 						</tr>   
 						<tr>
-							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;">Grand Total</td>
+							<td colspan="11" class="total-line" style="text-align: right;font-weight: bold;">Grand Total</td>
 							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["cost"] + $data["subtotal"]) ?></td>
 						</tr>
 						<tr>
-							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;">PPN <?= $data["tax_percent"] ?>%</td>
+							<td colspan="11" class="total-line" style="text-align: right;font-weight: bold;">PPN <?= $data["tax_percent"] ?>%</td>
 							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["tax"]) ?></td>
 						</tr>
 						<tr>
-							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;border-bottom: 1px solid black;">Total</td>
+							<td colspan="11" class="total-line" style="text-align: right;font-weight: bold;border-bottom: 1px solid black;">Total</td>
 							<td class="total-value" style="text-align: right;font-weight: bold;border-bottom: 1px solid black;"><?= number_format($data["total"]) ?></td>
 						</tr>
 						<tr class="item-row">
-							<td colspan="7" style="text-align:left;font-weight: bold;font-style: italic;font-size: 17px;">The Sum Of :  &nbsp;&nbsp;"<?= terbilang($data["total"]) ?>"</td>
+							<td colspan="12" style="text-align:left;font-weight: bold;font-style: italic;font-size: 17px;">The Sum Of :  &nbsp;&nbsp;"<?= terbilang($data["total"]) ?>"</td>
 						</tr>
 						
 					</table>

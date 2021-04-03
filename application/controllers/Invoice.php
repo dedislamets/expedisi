@@ -26,20 +26,25 @@ class Invoice extends CI_Controller {
       $data['totalrowbiaya'] = 0;
       $data['totalrowrouting'] = 0;
       $data['data_detail'] = array();
+      $setup = $this->admin->get_row('setup');
+
+      $last = $this->admin->get_num_rows('tb_invoice');
 
       $count = $this->db->query("SELECT no_invoice FROM tb_invoice WHERE MONTH(tgl_invoice) = MONTH(CURDATE()) AND YEAR(tgl_invoice)=YEAR(CURDATE()) ORDER BY CreatedDate DESC LIMIT 1")->result();
       if(empty($count)){
-        $last_no = '0001';
+        $last_no = '0001';      
       }else{
-
         $last_no = $count[0]->no_invoice;
         $last_no = explode("/", $last_no);
         $last_no = str_pad(intval(substr($last_no[0], 3))+1, 4,'0',STR_PAD_LEFT);
       }
+      
+      if($last==0){
+        $last_no = str_pad($setup->start_invoice +1, 4,'0',STR_PAD_LEFT);
+      }
 
 
-
-      $data['no_invoice'] = "WML" . $last_no . "/" .bulan_ke_romawi(date("m")) ."/". date("Y");
+      $data['no_invoice'] = $setup->prefix_invoice . $last_no . "/" .bulan_ke_romawi(date("m")) ."/". date("Y");
       $data['term'] = $this->admin->getmaster('tb_term');
       $data['rekening'] = $this->admin->getmaster('tb_rekening');
 			$this->load->view('home',$data,FALSE); 
