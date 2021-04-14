@@ -36,7 +36,7 @@ class Invoice extends CI_Controller {
       }else{
         $last_no = $count[0]->no_invoice;
         $last_no = explode("/", $last_no);
-        $last_no = str_pad(intval(substr($last_no[0], 3))+1, 4,'0',STR_PAD_LEFT);
+        $last_no = str_pad(intval(substr( str_replace( '-','',$last_no[0]), 3))+1, 4,'0',STR_PAD_LEFT);
       }
       
       if($last==0){
@@ -323,6 +323,7 @@ class Invoice extends CI_Controller {
 
       $data['id_term'] = $this->input->post('id_term',TRUE);
       $data['id_tag'] = $this->input->post('id_tag',TRUE);
+      $data['id_rekening'] = $this->input->post('id_rekening',TRUE);
       $data['remark'] = $this->input->post('note',TRUE);
 
       $data['subtotal'] = str_replace('.', '',  $this->input->post('subtotal',TRUE));
