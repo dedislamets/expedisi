@@ -120,7 +120,23 @@
                     <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
                 </div>
             </div>
-            
+            <div class="col-xl-3 col-md-6">
+                <div class="card social-card bg-simple-c-indigo" style="background-color: rgb(73 26 217);">
+                    <div class="card-block">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <p class="m-b-5">DITERIMA</p>
+                                <h4 class="m-b-0"><?= $diterima ?></h4>
+                            </div>
+                            <div class="col col-auto text-right">
+                                <i class="feather icon-book f-50 text-c-yellow"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                </div>
+            </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card social-card bg-simple-c-indigo" style="background-color: #FF7814;">
                     <div class="card-block">

@@ -64,6 +64,12 @@ class Home extends CI_Controller {
             $this->db->from('tb_routingslip');
             $this->db->join('tb_user U', 'U.id_user = tb_routingslip.CreatedBy');
             $this->db->where('U.cabang',$this->session->userdata('cabang'));
+            $this->db->where('tb_routingslip.status','DITERIMA');
+            $data['diterima'] = $this->db->get()->num_rows();
+
+            $this->db->from('tb_routingslip');
+            $this->db->join('tb_user U', 'U.id_user = tb_routingslip.CreatedBy');
+            $this->db->where('U.cabang',$this->session->userdata('cabang'));
             $this->db->where('tb_routingslip.status','CLOSED');
             $data['closed'] = $this->db->get()->num_rows();
 
