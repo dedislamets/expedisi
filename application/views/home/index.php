@@ -216,6 +216,26 @@
     </div>
     <?php endif ?>
     <?php if($this->session->userdata('role_id') ==  1 || $this->session->userdata('role_id') == 3): ?>
+    <div class="col-xl-12 col-md-12">
+        <div class="row">
+            <div class="col-xl-4 col-md-6">
+                <div class="card social-card bg-simple-c-pink">
+                    <div class="card-block">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <p class="m-b-5">ROUTING BELUM INVOICE</p>
+                                <h4 class="m-b-0"><?= $routing_blm_invoice?></h4>
+                            </div>
+                            <div class="col col-auto text-right">
+                                <i class="feather icon-layers f-50 text-c-yellow"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#!" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-xl-9 col-md-12">
       <div class="card">
         <div class="card-header" style="padding: 15px;background-color: #ED8D00;opacity: 0.8;">
