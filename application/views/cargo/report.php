@@ -22,14 +22,14 @@
                 </div>
                 <div class="card-block panels-wells">
                     <div class="form-group row m-b-0">
-                        <label class="col-sm-1 col-form-label f-w-700">Customer</label>
+                        <label class="col-sm-1 col-form-label f-w-700">Project</label>
                         <div class="col-sm-3">
-                            <select name="cust" id="cust" class="js-example-basic-single form-control">
+                            <select name="project" id="project" class="js-example-basic-single form-control">
                                 <option value="all">Semua</option>
                                 <?php 
-                                  foreach($customer as $row)
+                                  foreach($project as $row)
                                   { 
-                                    echo '<option value="'.$row->id.'">'.$row->cust_name.'</option>';
+                                    echo '<option value="'.$row->nama_project.'">'.$row->nama_project.'</option>';
                                   }
                                 ?>
                             </select>

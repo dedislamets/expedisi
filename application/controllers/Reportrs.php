@@ -24,7 +24,9 @@ class Reportrs extends CI_Controller {
       $data['title'] = 'Report Routing Slip';
       $data['main'] = 'cargo/report';
       $data['js'] = 'script/report-rs';
-      $data['customer'] = $this->admin->getmaster('master_customer');
+      // $data['customer'] = $this->admin->getmaster('master_customer');
+
+      $data['project'] = $this->db->query("SELECT distinct nama_project FROM `tb_routingslip` ")->result();
 
 			$this->load->view('home',$data,FALSE); 
 
@@ -50,7 +52,7 @@ class Reportrs extends CI_Controller {
         $this->db->join('master_customer mcp', 'mcp.`id`=R.`id_penerima`');
         $this->db->where("DATE(CreatedDate) BETWEEN '". $start ."' AND '". $end ."'");
         if($cust != "all"){
-          $this->db->where("id_pengirim", $cust);
+          $this->db->where("nama_project", $cust);
         }
         $data = $this->db->get()->result();
 
