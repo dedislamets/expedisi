@@ -138,7 +138,7 @@ class Home extends CI_Controller {
             $sql_routing_blm_invoice = $this->db->query("SELECT `tb_routingslip`.no_routing FROM `tb_routingslip`,tb_user U where U.id_user = tb_routingslip.CreatedBy and tb_routingslip.status in ('DITERIMA','CLOSED') and U.cabang='". $this->session->userdata('cabang') ."' and no_routing NOT in ( select no_routing from tb_invoice_routing)");
             $data['routing_blm_invoice'] = $sql_routing_blm_invoice->num_rows();
 
-            $sql_routing_sdh_invoice = $this->db->query("SELECT `tb_routingslip`.no_routing FROM `tb_routingslip`,tb_user U where U.id_user = tb_routingslip.CreatedBy and tb_routingslip.status in ('DITERIMA','CLOSED') and U.cabang='". $this->session->userdata('cabang') ."' and no_routing in ( select no_routing from tb_invoice_routing)");
+            $sql_routing_sdh_invoice = $this->db->query("SELECT `tb_routingslip`.no_routing FROM `tb_routingslip`,tb_user U where U.id_user = tb_routingslip.CreatedBy and U.cabang='". $this->session->userdata('cabang') ."' and no_routing in ( select no_routing from tb_invoice_routing)");
             $data['routing_sdh_invoice'] = $sql_routing_sdh_invoice->num_rows();
 
 			$data['js'] = 'home/js';
