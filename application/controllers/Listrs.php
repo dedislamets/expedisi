@@ -186,8 +186,8 @@ class Listrs extends CI_Controller {
           0=>'R.no_routing',
           1=>'spk_no',
           2=>'nama_project',
-          3=>'pengirim',
-          4=>'penerima',
+          3=>'B.cust_name',
+          4=>'A.cust_name',
           5=>'moda_name',
           6=>'R.status',
       );
@@ -195,8 +195,8 @@ class Listrs extends CI_Controller {
           0=>'R.no_routing',
           1=>'spk_no',
           2=>'nama_project',
-          3=>'pengirim',
-          4=>'penerima',
+          3=>'B.cust_name',
+          4=>'A.cust_name',
           5=>'moda_name',
           6=>'R.status',
       );
