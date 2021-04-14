@@ -324,10 +324,10 @@
 				        // 	flag= false;
 				        // }
 			        }else{
-			        	if(price_chartered == 0){
-				        	alertError('Harga Chartered Barang belum di berikan..');
-				        	flag= false;
-				        }
+			        	// if(price_chartered == 0){
+				        // 	alertError('Harga Chartered Barang belum di berikan..');
+				        // 	flag= false;
+				        // }
 			        }
 			        
 			    }
