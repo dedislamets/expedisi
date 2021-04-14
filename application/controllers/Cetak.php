@@ -77,6 +77,7 @@ class Cetak extends CI_Controller {
     {
       $id = $this->input->get('id',TRUE);
       $data['data'] = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
+      $data['penerima'] =  $this->admin->get_array('master_customer',array( 'id' => $data['data']['id_penerima']));
       $data['moda'] = $this->admin->get_array('tb_moda',array( 'id' => $data['data']['id_moda']));
       $data['multi'] = $this->admin->get('tb_routingslip_multi',array( 'id_routing' => $id));
       $data['data_detail'] = $this->admin->get_result_array('tb_routingslip_detail',array( 'id_routing' => $id));
