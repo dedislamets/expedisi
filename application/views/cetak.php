@@ -111,12 +111,13 @@
 							<td colspan="11" style="text-align: right;">Subtotal</td>
 							<td style="text-align: right;"><?= number_format($data["subtotal"]) ?></td>
 						</tr>
+						<?php if(intval($data["cost"]) > 0): ?>
 	                    <tr>
 							<th>No</th>
 							<th colspan="10">Kegiatan</th>
 							<th style="text-align: right;">Biaya</th>
 						</tr>
-
+						<?php endif; ?>
 						<?php 
 	                    $urut=1;
 	                    foreach($data_biaya as $row): ?>
@@ -127,11 +128,12 @@
 						</tr>
 						<?php $urut++?>
 	                    <?php endforeach; ?>
-						
+						<?php if(intval($data["cost"]) > 0): ?>
 						<tr class="item-row">
 							<td colspan="11" style="text-align: right;">Charge</td>
 							<td style="text-align: right;"><?= number_format($data["cost"]) ?></td>
 						</tr>   
+						<?php endif; ?>
 						<tr>
 							<td colspan="11" class="total-line" style="text-align: right;font-weight: bold;">Grand Total</td>
 							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["cost"] + $data["subtotal"]) ?></td>
@@ -178,6 +180,8 @@
 						<td width="30%" style="border:none;padding-top: 30px;">
 							<p style="margin-bottom: 0">BEKASI, <?= tgl_indo(date('Y-m-d')) ?></p>
 							<p style="font-weight: bold;">PT. WAHANA MULTI LOGISTIK</p>
+							<br>
+							<br>
 							<br>
 							<br>
 							<br>
@@ -268,6 +272,8 @@
 								<br>
 								<br>
 								<br>
+								<br>
+								<br>
 								<p style="font-weight: bold;">Agus Setiawan, SE, MMTr</p>
 							</td>
 						</tr>
@@ -337,6 +343,8 @@
 							<td width="30%" style="border:none;padding-top: 30px;">
 								<p style="margin-bottom: 0">BEKASI, <?= tgl_indo(date('Y-m-d')) ?></p>
 								<p style="font-weight: bold;">PT. WAHANA MULTI LOGISTIK</p>
+								<br>
+								<br>
 								<br>
 								<br>
 								<br>
