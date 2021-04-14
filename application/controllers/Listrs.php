@@ -183,22 +183,22 @@ class Listrs extends CI_Controller {
       }
 
       $valid_columns = array(
-          0=>'no_routing',
+          0=>'R.no_routing',
           1=>'spk_no',
           2=>'nama_project',
           3=>'pengirim',
           4=>'penerima',
           5=>'moda_name',
-          6=>'status',
+          6=>'R.status',
       );
       $valid_sort = array(
-          0=>'no_routing',
+          0=>'R.no_routing',
           1=>'spk_no',
           2=>'nama_project',
           3=>'pengirim',
           4=>'penerima',
           5=>'moda_name',
-          6=>'status',
+          6=>'R.status',
       );
       if(!isset($valid_sort[$col]))
       {
