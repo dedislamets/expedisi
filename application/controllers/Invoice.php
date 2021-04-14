@@ -44,7 +44,7 @@ class Invoice extends CI_Controller {
       }
 
 
-      $data['no_invoice'] = $setup->prefix_invoice . $last_no . "/" .bulan_ke_romawi(date("m")) ."/". date("Y");
+      $data['no_invoice'] = $setup->prefix_invoice . "-" . $last_no . "/" .bulan_ke_romawi(date("m")) ."/". date("Y");
       $data['term'] = $this->admin->getmaster('tb_term');
       $data['rekening'] = $this->admin->getmaster('tb_rekening');
 			$this->load->view('home',$data,FALSE); 
