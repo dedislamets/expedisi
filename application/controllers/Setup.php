@@ -42,6 +42,7 @@ class Setup extends CI_Controller {
             $data = array(
                 'prefix_invoice'         =>  $this->input->post('prefix_invoice') ,
                 'start_invoice'   =>  $this->input->post('start_invoice') ,
+                'tentukan_invoice' => $this->input->post('tentukan_invoice')
             );
             $this->db->set($data);
             $this->db->update('setup');

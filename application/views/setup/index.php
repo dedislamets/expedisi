@@ -32,6 +32,15 @@
           </fieldset>
           <fieldset>
             <div class="form-group">
+              <label class="col-sm-2 control-label">Tentukan Invoice</label>
+              <div class="col-sm-10">
+                <input type="text" id="tentukan_invoice" name="tentukan_invoice" class="form-control" value="<?php echo $setup[0]->tentukan_invoice ?>">
+                <!-- <span class="help-block">Untuk menentukan jangka waktu berapa hari pengguna akan dikirimkan email notifikasi</span> -->
+              </div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="form-group">
               <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
               <button type="submit" class="btn btn-fill btn-info" style="margin-left: 10px">Submit</button>
             </div>

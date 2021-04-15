@@ -34,12 +34,13 @@ class Invoice extends CI_Controller {
       if(empty($count)){
         $last_no = '0001';      
       }else{
+
         $last_no = $count[0]->no_invoice;
         $last_no = explode("/", $last_no);
         $last_no = str_pad(intval(substr( str_replace( '-','',$last_no[0]), 3))+1, 4,'0',STR_PAD_LEFT);
       }
       
-      if($last==0){
+      if($setup->tentukan_invoice==1){
         $last_no = str_pad($setup->start_invoice +1, 4,'0',STR_PAD_LEFT);
       }
 
