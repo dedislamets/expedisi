@@ -140,13 +140,13 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label" style="font-weight: bold;">TANGGAL </label>
                   <div class="col-sm-9">
-                    <input class="form-control" type="date" id="tgl_invoice" name="tgl_invoice" value="<?= empty($data) ? "" : $data['tgl_invoice']?>" :disabled="last_status == 'LUNAS'" />
+                    <input class="form-control" required type="date" id="tgl_invoice" name="tgl_invoice" value="<?= empty($data) ? "" : $data['tgl_invoice']?>" :disabled="last_status == 'LUNAS'" />
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label" style="font-weight: bold;">TANGGAL SUBMIT </label>
                   <div class="col-sm-9">
-                    <input class="form-control" type="date" id="tgl_submit" name="tgl_submit" value="<?= empty($data) ? "" : $data['tgl_submit_invoice']?>" :disabled="last_status == 'LUNAS'" />
+                    <input class="form-control" required type="date" id="tgl_submit" name="tgl_submit" value="<?= empty($data) ? "" : $data['tgl_submit_invoice']?>" :disabled="last_status == 'LUNAS'" />
                   </div>
                 </div>
               </div>
@@ -183,7 +183,7 @@
                   </div>
                 </div>
                 <div class="form-group row due" >
-                  <label class="col-sm-3 col-form-label" style="font-weight: bold;">DUE DATE </label>
+                  <label class="col-sm-3 col-form-label" style="font-weight: bold;">DUE DATE</label>
                   <div class="col-sm-9">
                     <input class="form-control" type="date" id="due_date" name="due_date" readonly style="background-color: #4f0c0c;color: #fff;" value="<?= empty($data) ? "" : $data['due_date']?>" />
                   </div>

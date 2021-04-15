@@ -61,7 +61,7 @@
 										</tr>
 										<tr>
 
-											<td class="meta-head no-border">Date</td>
+											<td class="meta-head no-border">Date <?= $data['tgl_invoice'] ?></td>
 											<td class="no-border"><?= empty($data) ? "" : tgl_indo($data['tgl_invoice'])?></td>
 										</tr>
 									</table>
@@ -178,7 +178,7 @@
 						<td width="70%" class="no-border">
 						</td>
 						<td width="30%" style="border:none;padding-top: 30px;">
-							<p style="margin-bottom: 0">BEKASI, <?= tgl_indo(date('Y-m-d')) ?></p>
+							<p style="margin-bottom: 0">BEKASI, <?= tgl_indo($data['tgl_invoice']) ?></p>
 							<p style="font-weight: bold;">PT. WAHANA MULTI LOGISTIK</p>
 							<br>
 							<br>
@@ -266,7 +266,7 @@
 							<td width="70%" class="no-border">
 							</td>
 							<td width="30%" style="border:none;padding-top: 30px;">
-								<p style="margin-bottom: 0">BEKASI, <?= tgl_indo(date('Y-m-d')) ?></p>
+								<p style="margin-bottom: 0">BEKASI, <?= tgl_indo($data['tgl_invoice']) ?></p>
 								<p style="font-weight: bold;">PT. WAHANA MULTI LOGISTIK</p>
 								<br>
 								<br>

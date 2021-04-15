@@ -103,11 +103,13 @@
 
 	$(document).ready(function(){  
 		var c_date = new Date();
-		$("#tgl_invoice").val(c_date.toLocaleDateString('en-CA'));
-		$("#tgl_submit").val(c_date.toLocaleDateString('en-CA'));
-
-		var nextWeek = moment().add(30, 'd').format('YYYY-MM-DD');
-		$("#due_date").val(nextWeek);
+		
+		if($("#mode").val() == 'new') {
+		$("#tgl_invoice").val(c_date);
+		$("#tgl_submit").val(c_date);
+			var nextWeek = moment().add(30, 'd').format('YYYY-MM-DD');
+			$("#due_date").val(nextWeek);
+		}
 
 		$(".js-example-basic-single").select2();
 		$(".moda").val($('#moda_tran option:selected').text());
