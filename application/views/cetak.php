@@ -61,7 +61,7 @@
 										</tr>
 										<tr>
 
-											<td class="meta-head no-border">Date <?= $data['tgl_invoice'] ?></td>
+											<td class="meta-head no-border">Date</td>
 											<td class="no-border"><?= empty($data) ? "" : tgl_indo($data['tgl_invoice'])?></td>
 										</tr>
 									</table>
