@@ -278,6 +278,9 @@
                                 No Routing
                               </th>
                               <th>
+                                Status
+                              </th>
+                              <th>
                                 Tanggal
                               </th>
                               <th>
@@ -298,6 +301,7 @@
                                   <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger btn-sm" onclick="cancelRouting(this)" :data-id="log.id" v-if="last_status != 'LUNAS' && last_status != 'VOID'"><i class="icofont icofont-trash"></i> Del</a>
                                 </td>
                                 <td>{{ log.no_routing }}</td>
+                                <td>{{ log.status }}</td>
                                 <td>{{ log.tanggal }}</td>
                                 <td>{{ log.spk }}</td>
                                 <td>{{ log.project }}</td>

@@ -250,6 +250,7 @@ class Invoice extends CI_Controller {
         $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
         $data['data_routing'][$key]['project'] = $routing['nama_project'];
         $data['data_routing'][$key]['spk'] = $routing['spk_no'];
+        $data['data_routing'][$key]['status'] = $routing['status'];
         $data['data_routing'][$key]['tanggal'] = $routing['CreatedDate'];
       }
       $data['data_detail'] = $this->admin->get_result_array('tb_invoice_detail',array( 'id_invoice' => $id));

@@ -380,6 +380,7 @@
         			no_routing: data['data']['no_routing'],
         			tanggal: data['data']['CreatedDate'],
         			spk: data['data']['spk_no'],
+        			status: data['data']['status'],
         			project: data['data']['nama_project']
 				}); 
 				var id_rs = data['data']['id'];
