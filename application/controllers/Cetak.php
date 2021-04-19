@@ -8,6 +8,7 @@ class Cetak extends CI_Controller {
 	   	$this->load->model('M_menu','',TRUE);
 	   	
 	}
+  
 	public function index()
 	{		
 		if($this->admin->logged_id())
@@ -24,10 +25,12 @@ class Cetak extends CI_Controller {
         foreach ($data['data_detail'] as $key => $value) {
           $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
           $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
+          $penerima =  $this->admin->get_array('master_customer',array( 'id' => $routing['id_penerima']));
+
           $data['data_detail'][$key]['spk'] = $routing['spk_no'];
           $data['data_detail'][$key]['pickup_date'] = $routing['pickup_date'];
-          $data['data_detail'][$key]['dari'] = $routing['kota_pengirim'];
-          $data['data_detail'][$key]['tujuan'] = $routing['kota_penerima'];
+          $data['data_detail'][$key]['dari'] = $routing['site_name'];
+          $data['data_detail'][$key]['tujuan'] = $penerima['cust_name'];
           $data['data_detail'][$key]['layanan'] = $routing['moda_name'];
 
           $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
