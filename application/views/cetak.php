@@ -215,7 +215,7 @@
 						<tr>
 							<td class="no-border" style="font-weight: 400;width: 200px;font-style: italic;font-size: 16px;">Received from</td>
 							<td class="no-border" style="font-weight: bold;font-size: 16px;">
-								: PT. Telkom Akses
+								: <?= empty($data) ? "" : nl2br($data['alamat_penagihan']) ?>
 							</td>
 						</tr>
 						<tr>
