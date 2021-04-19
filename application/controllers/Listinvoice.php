@@ -59,7 +59,7 @@ class Listinvoice extends CI_Controller {
           2=>'term',
           3=>'due_date',
           4=>'total',
-          5=>'status',
+          5=>'I.status',
       );
       $valid_sort = array(
           0=>'no_invoice',
@@ -67,7 +67,7 @@ class Listinvoice extends CI_Controller {
           2=>'term',
           3=>'due_date',
           4=>'total',
-          5=>'status',
+          5=>'I.status',
       );
       if(!isset($valid_sort[$col]))
       {
