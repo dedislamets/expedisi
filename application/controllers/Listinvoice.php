@@ -56,22 +56,18 @@ class Listinvoice extends CI_Controller {
       $valid_columns = array(
           0=>'no_invoice',
           1=>'I.CreatedDate',
-          2=>'group_routing',
-          3=>'group_project',
-          4=>'term',
-          5=>'due_date',
-          6=>'total',
-          7=>'status',
+          2=>'term',
+          3=>'due_date',
+          4=>'total',
+          5=>'status',
       );
       $valid_sort = array(
           0=>'no_invoice',
           1=>'I.CreatedDate',
-          2=>'group_routing',
-          3=>'group_project',
-          4=>'term',
-          5=>'due_date',
-          6=>'total',
-          7=>'status',
+          2=>'term',
+          3=>'due_date',
+          4=>'total',
+          5=>'status',
       );
       if(!isset($valid_sort[$col]))
       {
@@ -105,20 +101,20 @@ class Listinvoice extends CI_Controller {
 
       $this->db->limit($length,$start);
       $this->db->select("I.*,term,(
-                                     SELECT GROUP_CONCAT(no_routing SEPARATOR ', ') AS no_routing FROM tb_invoice_routing WHERE id_invoice=I.`id`
+                                     SELECT GROUP_CONCAT(no_routing SEPARATOR ', ') AS no_routing FROM tb_invoice_routing WHERE id_invoice=I.`id` and no_routing like '%". $search ."%'
                                   )group_routing,
                                   (
                                      SELECT GROUP_CONCAT(cust_name SEPARATOR ', ') AS cust_name 
                                      FROM tb_invoice_routing IR
                                      JOIN `tb_routingslip` `R` ON `R`.`id` = `IR`.`id_routing` 
                                      JOIN `master_customer` `mc` ON `R`.`id_penerima` = `mc`.`id`
-                                     WHERE id_invoice=I.`id`
+                                     WHERE id_invoice=I.`id` and cust_name like '%". $search ."%'
                                   )group_cust,
                                   (
                                      SELECT GROUP_CONCAT(nama_project SEPARATOR ', ') AS nama_project 
                                      FROM tb_invoice_routing IR
                                      JOIN `tb_routingslip` `R` ON `R`.`id` = `IR`.`id_routing` 
-                                     WHERE id_invoice=I.`id`
+                                     WHERE id_invoice=I.`id` and nama_project like '%". $search ."%'
                                   )group_project");
       $this->db->from("tb_invoice I");
       $this->db->join('tb_term', 'tb_term.id = I.id_term');
