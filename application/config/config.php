@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 // $config['base_url'] = 'http://localhost:8080/expedisi';
-$config['base_url'] = 'https://wmlogistics.id/esys/';
+$config['base_url'] = 'https://www.wmlogistics.id/esys/';
 
 /*
 |--------------------------------------------------------------------------
