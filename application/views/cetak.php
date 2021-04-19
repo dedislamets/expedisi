@@ -234,8 +234,17 @@
 								<table style="margin-bottom: 0; width: 100%;">
 									<tr class="item-row">
 										<td class="item-name no-border">: <?= empty($data) ? "" : $data['remark']?></td>
-										<td style="text-align: right;width: 200px;" class="no-border">Rp <?= number_format($data["subtotal"] + $data["cost"]) ?></td>					
+										<td style="text-align: right;width: 200px;" class="no-border">Rp <?= number_format($data["subtotal"] ) ?></td>					
 									</tr>
+									<?php 
+				                    $urut=1;
+				                    foreach($data_biaya as $row): ?>
+									<tr class="item-row">
+										<td class="item-name no-border"><?= $row["aktifitas"] ?></td>
+										<td style="text-align: right;" class="no-border"><?= number_format($row["biaya"]) ?></td>					
+									</tr>
+									<?php $urut++?>
+									<?php endforeach; ?>
 									<tr>
 										<td class="item-name no-border" style="text-align: right;font-weight: 400;">Subtotal</td>
 										<td style="text-align: right;width: 200px;text-decoration: overline;" class="no-border">Rp <?= number_format($data["subtotal"] + $data["cost"]) ?>
