@@ -55,19 +55,25 @@ class Listinvoice extends CI_Controller {
       }
       $valid_columns = array(
           0=>'no_invoice',
-          1=>'I.CreatedDate',
+          1=>'tgl_invoice',
           2=>'term',
-          3=>'due_date',
-          4=>'total',
-          5=>'I.status',
+          3=>'group_routing',
+          4=>'group_project',
+          5=>'group_cust',
+          6=>'due_date',
+          7=>'total',
+          8=>'status',
       );
       $valid_sort = array(
           0=>'no_invoice',
-          1=>'I.CreatedDate',
+          1=>'tgl_invoice',
           2=>'term',
-          3=>'due_date',
-          4=>'total',
-          5=>'I.status',
+          3=>'group_routing',
+          4=>'group_project',
+          5=>'group_cust',
+          6=>'due_date',
+          7=>'total',
+          8=>'status',
       );
       if(!isset($valid_sort[$col]))
       {
@@ -100,26 +106,10 @@ class Listinvoice extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("I.*,term,(
-                                     SELECT GROUP_CONCAT(no_routing SEPARATOR ', ') AS no_routing FROM tb_invoice_routing WHERE id_invoice=I.`id` and no_routing like '%". $search ."%'
-                                  )group_routing,
-                                  (
-                                     SELECT GROUP_CONCAT(cust_name SEPARATOR ', ') AS cust_name 
-                                     FROM tb_invoice_routing IR
-                                     JOIN `tb_routingslip` `R` ON `R`.`id` = `IR`.`id_routing` 
-                                     JOIN `master_customer` `mc` ON `R`.`id_penerima` = `mc`.`id`
-                                     WHERE id_invoice=I.`id` and cust_name like '%". $search ."%'
-                                  )group_cust,
-                                  (
-                                     SELECT GROUP_CONCAT(nama_project SEPARATOR ', ') AS nama_project 
-                                     FROM tb_invoice_routing IR
-                                     JOIN `tb_routingslip` `R` ON `R`.`id` = `IR`.`id_routing` 
-                                     WHERE id_invoice=I.`id` and nama_project like '%". $search ."%'
-                                  )group_project");
-      $this->db->from("tb_invoice I");
-      $this->db->join('tb_term', 'tb_term.id = I.id_term');
-      $this->db->join('tb_user U', 'U.id_user = I.CreatedBy');
-      $this->db->where('U.cabang',$this->session->userdata('cabang'));
+
+      $this->db->from("list_invoice");
+    
+      $this->db->where('cabang',$this->session->userdata('cabang'));
       // $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       // $this->db->join('master_customer A', 'R.id_penerima = A.id');
       // $this->db->order_by("CreatedDate","ASC");
@@ -132,7 +122,7 @@ class Listinvoice extends CI_Controller {
 
           $data[] = array( 
                       $r->no_invoice,
-                      $r->CreatedDate,
+                      $r->tgl_invoice,
                       $r->group_routing,
                       $r->group_project,
                       $r->term,
@@ -182,10 +172,9 @@ class Listinvoice extends CI_Controller {
               $x++;
           }                 
       }
-    $this->db->from("tb_invoice I");
-    $this->db->join('tb_user U', 'U.id_user = I.CreatedBy');
-    $this->db->where('U.cabang',$this->session->userdata('cabang'));
-    $query = $this->db->join('tb_term', 'tb_term.id = I.id_term')->get();
+    $this->db->from("list_invoice");
+    $this->db->where('cabang',$this->session->userdata('cabang'));
+    $query = $this->db->get();
     $result = $query->row();
     if(isset($result)) return $result->num;
     return 0;
