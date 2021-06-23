@@ -505,7 +505,6 @@ class Invoice extends CI_Controller {
 
       
       $data['mode'] ='edit';
-      // print("<pre>".print_r($data,true)."</pre>"); exit();
     
       $this->load->view('home',$data,FALSE); 
 
