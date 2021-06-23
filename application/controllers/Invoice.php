@@ -231,7 +231,7 @@ class Invoice extends CI_Controller {
         $data['totalrowbiaya'] ++;
       }
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
-      // print("<pre>".print_r($data,true)."</pre>"); exit();
+      
     
 
     }else{
@@ -324,7 +324,7 @@ class Invoice extends CI_Controller {
       // $data['id_routing'] = $this->input->post('id_routing',TRUE);
 
       $data['id_term'] = $this->input->post('id_term',TRUE);
-      $data['id_tag'] = $this->input->post('id_tag',TRUE);
+      $data['id_tag'] = 0;
       $data['id_rekening'] = $this->input->post('id_rekening',TRUE);
       $data['remark'] = $this->input->post('note',TRUE);
 
@@ -335,14 +335,11 @@ class Invoice extends CI_Controller {
 
       $data['tax'] = str_replace('.', '', $this->input->post('tax',TRUE));
       $data['tax_percent'] = $this->input->post('tax_percent',TRUE);
-      
       if($this->input->post('mode') === "edit"){
-          
 
           $this->db->set($data);
           $this->db->where($arr_par);
           $result  =  $this->db->update('tb_invoice'); 
-
           if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
           }else{
