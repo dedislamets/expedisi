@@ -310,7 +310,6 @@ class Invoice extends CI_Controller {
       
       $data=[];
 
-      $this->db->trans_begin();
       $arr_par = array('id' => $this->input->post('id_invoice'));
 
       $data['no_invoice'] = $this->input->post('no_invoice',TRUE);
@@ -340,6 +339,8 @@ class Invoice extends CI_Controller {
           $this->db->set($data);
           $this->db->where($arr_par);
           $result  =  $this->db->update('tb_invoice'); 
+
+          $response['last_id']=$this->input->post('id_invoice', TRUE);
           if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
           }else{
@@ -456,9 +457,7 @@ class Invoice extends CI_Controller {
               $response['error']= FALSE;
           }
         } 
-      }
-
-      $this->db->trans_complete();                      
+      }                   
       $this->output->set_content_type('application/json')->set_output(json_encode($response));
   }
 
