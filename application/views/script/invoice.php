@@ -733,11 +733,11 @@
 		var subTotal = totalAmount;	
 		if(subTotal) {
 			var taxAmount = (subTotal+ other_cost)*(taxRate/100);
-			$('#tax').val(taxAmount.toLocaleString('id-ID'));
+			$('#tax').val(parseFloat(taxAmount.toFixed(0)).toLocaleString('id-ID'));
 			var wht = taxAmount*2;
 			// $('#wht').val(wht.toLocaleString('id-ID'));
 			subTotal = parseFloat(subTotal)+parseFloat(taxAmount)+parseFloat(other_cost);
-			$('#total').val(subTotal.toLocaleString('id-ID'));		
+			$('#total').val(parseFloat(subTotal.toFixed(0)).toLocaleString('id-ID'));		
 			// var amountPaid = $('#amountPaid').val();
 			// var totalAftertax = $('#totalAftertax').val();	
 			// if(amountPaid && totalAftertax) {

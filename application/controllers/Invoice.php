@@ -334,11 +334,14 @@ class Invoice extends CI_Controller {
 
       $data['tax'] = str_replace('.', '', $this->input->post('tax',TRUE));
       $data['tax_percent'] = $this->input->post('tax_percent',TRUE);
+
+      // print("<pre>".print_r($data,true)."</pre>"); 
       if($this->input->post('mode') === "edit"){
 
           $this->db->set($data);
           $this->db->where($arr_par);
           $result  =  $this->db->update('tb_invoice'); 
+          // echo $this->db->last_query();exit();
 
           $response['last_id']=$this->input->post('id_invoice', TRUE);
           if(!$result){
