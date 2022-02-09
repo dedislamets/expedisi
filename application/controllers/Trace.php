@@ -282,7 +282,7 @@ class Trace extends CI_Controller {
   {
     if($this->admin->logged_id())
     {
-      $id= $this->input->get("id");
+      $id= $this->input->get("id",TRUE);
       $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
       // $data['data'] = $this->admin->get_array('tb_spk',array( 'id' => $routing->id_spk));
       $data['data'] = $routing;
@@ -310,7 +310,7 @@ class Trace extends CI_Controller {
 
   public function info()
   {
-      $id= $this->input->get("id");
+      $id= $this->input->get("id",TRUE);
       $routing = $this->admin->get_array('tb_routingslip',array( 'no_routing' => $id));
       $data['data'] = $routing;
       
@@ -333,7 +333,15 @@ class Trace extends CI_Controller {
   public function getHistory()
   {
     $this->db->from("tb_routingslip_history");
-    $query = $this->db->where('id_routing', $this->input->get('id'))->get()->result();
+    $query = $this->db->where('id_routing', $this->input->get('id',TRUE))->get()->result();
+    $this->output->set_content_type('application/json')->set_output(json_encode($query));
+  }
+  public function tracking()
+  {
+    $routing = $this->admin->get_array('tb_routingslip',array( 'no_routing' => $this->input->get('id',TRUE)));
+
+    $this->db->from("tb_routingslip_history");
+    $query = $this->db->where('id_routing', $routing['id'])->get()->result();
     $this->output->set_content_type('application/json')->set_output(json_encode($query));
   }
 
