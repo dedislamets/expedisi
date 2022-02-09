@@ -303,6 +303,35 @@ class Trace extends CI_Controller {
 
   }
 
+  public function info()
+  {
+    if($this->admin->logged_id())
+    {
+      $id= $this->input->get("id");
+      $routing = $this->admin->get_array('tb_routingslip',array( 'no_routing' => $id));
+      $data['data'] = $routing;
+      
+      // print("<pre>".print_r($routing->id_pengirim,true)."</pre>"); exit();
+      $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $routing['id_pengirim']),'cust_name');
+      $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $routing['id_penerima']),'cust_name');
+
+      $this->db->select("A.moda_name,A.moda_img, B.moda_kategori,C.*");
+      $this->db->from("tb_moda A");
+      $this->db->join('tb_moda_kat B', 'A.id=B.id_moda');
+      $this->db->join('tb_moda_sub C', 'B.id=C.id_moda_kat');
+      $data['moda'] = $this->db->where('C.id', $routing['id_moda'])->get()->row();
+
+
+
+      $this->output->set_content_type('application/json')->set_output(json_encode($data));
+    
+
+    }else{
+        redirect("login");
+    } 
+
+  }
+
   public function getHistory()
   {
     $this->db->from("tb_routingslip_history");
