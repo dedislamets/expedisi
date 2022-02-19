@@ -1,4 +1,20 @@
 <style type="text/css">
+  .float{
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    background-color:#0C9;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+  }
+
+  .my-float{
+    margin-top:22px;
+  }
   .preview-dropzone{
         color: firebrick;
         text-align: center;
@@ -100,17 +116,17 @@
     <div class="col-sm-12">
 
       <div class="card z-depth-0">
-        <div class="card-header" style="background-color: #404E67;color:#fff">
+        <div class="card-header" style="">
           <div class="row">
               <div class="col-xl-6">
-                  <h4><?= $title ?> <a href="<?= base_url() ?>listrs"> Back </a></h4>
-                  <span>Halaman ini menampilkan data connote yang tersimpan</span>
+                  <h4 style="font-weight: bold;"><?= $title ?> <a href="<?= base_url() ?>listrs"> Back </a></h4>
+                  <span style="font-weight: bold;">Halaman ini menampilkan data connote yang tersimpan</span>
               </div>
               <div class="col-xl-2" >
-                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/rs?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetak" class="btn btn-block hor-grd btn-grd-warning" target="_blank">  <i class="icofont icofont-print" ></i>Cetak</a>
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/rs?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetak" class="btn btn-inverse btn-outline-inverse btn-block" target="_blank">  <i class="icofont icofont-print" ></i>Cetak</a>
               </div>
               <div class="col-xl-2" >
-                <a v-if="mode == 'edit'" href="<?= base_url() ?>trace/view/<?= empty($data) ? "" : $data['id'] ?>" id="btnTracking" class="btn btn-block hor-grd btn-grd-success">  <i class="icofont icofont-long-drive" ></i>Tracking</a>
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>trace/view/<?= empty($data) ? "" : $data['id'] ?>" id="btnTracking" class="btn btn-inverse btn-outline-inverse btn-block">  <i class="icofont icofont-long-drive" ></i>Tracking</a>
               </div>
               <div class="col-xl-2">
                 <div class="status-trans"><?= empty($data) ? "INPUT" : $data['status'] ?></div>
@@ -125,7 +141,7 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO ROUTING</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control form-bg-inverse" id="nomor_rs" name="nomor_rs" value="<?= empty($data) ? "" : $data['no_routing'] ?>" required :readonly="last_status == 'DITERIMA'">
+                <input type="text" class="form-control" id="nomor_rs" name="nomor_rs" value="<?= empty($data) ? "" : $data['no_routing'] ?>" required :readonly="last_status == 'DITERIMA'">
               </div>
             </div>
             
@@ -146,41 +162,41 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NAMA PROJECT</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control form-bg-inverse" id="project" name="project" placeholder="Masukkan nama project" value="<?= empty($data) ? "" : $data['nama_project'] ?>">
+                <input type="text" class="form-control" id="project" name="project" placeholder="Masukkan nama project" value="<?= empty($data) ? "" : $data['nama_project'] ?>">
               </div>
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO SPK/DO/DN</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control form-bg-inverse" id="nomor_spk" name="nomor_spk" placeholder="Masukkan nomor SPK" value="<?= empty($data) ? "" : $data['spk_no'] ?>">
+                <input type="text" class="form-control" id="nomor_spk" name="nomor_spk" placeholder="Masukkan nomor SPK" value="<?= empty($data) ? "" : $data['spk_no'] ?>">
               </div>
             </div>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">TANGGAL DO </label>
               <div class="col-sm-10">
-                <input class="form-control form-bg-inverse" type="date" id="tgl_do" name="tgl_do" value="<?= empty($data) ? "" : $data['tgl_spk']  ?>" />
+                <input class="form-control" type="date" id="tgl_do" name="tgl_do" value="<?= empty($data) ? "" : $data['tgl_spk']  ?>" />
               </div>
             </div>
 
             <div class="row" id="pengirim">
               <div class="col-sm-12">
-                <div class="card user-card-full">
+                <div class="card user-card-full" style="border: solid 1px #e2e2e2;">
                     <div class="row m-l-0 m-r-0">
-                        <div class="col-sm-6 bg-c-lite-green">
-                          <div class="card-block text-white">
+                        <div class="col-sm-6" style="border-right: solid 2px #e2e2e2;">
+                          <div class="card-block">
                             <div class="row b-b-default m-b-20 p-b-5">
-                              <div class="col-sm-6  f-w-600">Pengirim</div>
-                              <div class="col-sm-6">
+                              <div class="col-sm-6" style="font-weight: bold;font-size: 20px;">Pengirim</div>
+                              <!-- <div class="col-sm-6">
                                 <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btnCariPengirim" style="float: right;color: #fff;" v-if="last_status != 'CLOSED'">Cari</a>
                                 <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btn-grd-success btnAddPengirim" style="float: right;color: #fff;" v-if="last_status != 'CLOSED'">Tambah</a>
-                              </div>
+                              </div> -->
                             </div>
                             <div class="row">
                               <div class="col-sm-10 col-sm-offset-1">
                                 
                                 <div class="form-group">
                                   <label>Nama Pengirim <small>(required)</small></label>
-                                  <input name="nama_pengirim" readonly id="nama_pengirim" type="text" class="form-control" placeholder="">
+                                  <input name="nama_pengirim" id="nama_pengirim" type="text" class="form-control" placeholder="">
                                   <input type="hidden" name="id_pengirim" id="id_pengirim" value="<?= empty($data) ? "" : $data['id_pengirim']?>">
                                 </div>
                                 <div class="form-group">
@@ -247,20 +263,20 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-6" style="background: linear-gradient(to right, #546D77, #3F5159);;color: #fff;">
+                        <div class="col-sm-6">
                           <div class="card-block">
                             <div class="row b-b-default m-b-20 p-b-5">
-                              <div class="col-sm-6  f-w-600">Penerima</div>
-                              <div class="col-sm-6">
+                              <div class="col-sm-6" style="font-weight: bold;font-size: 20px;">Penerima</div>
+                              <!-- <div class="col-sm-6">
                                 <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btnCariPenerima" style="float: right;color: #fff;" v-if="last_status != 'CLOSED'">Cari</a>
                                 <a href="#" class="btn btn-primary btn-mini waves-effect waves-light btn-grd-success btnAddPenerima" style="float: right;color: #fff;" v-if="last_status != 'CLOSED'">Tambah</a>
-                              </div>
+                              </div> -->
                             </div>
                             <div class="row">
                               <div class="col-sm-10 col-sm-offset-1">
                                   <div class="form-group">
                                     <label>Nama Penerima <small>(required)</small></label>
-                                    <input name="nama_penerima" id="nama_penerima" type="text" class="form-control" placeholder="" readonly>
+                                    <input name="nama_penerima" id="nama_penerima" type="text" class="form-control" placeholder="" >
                                     <input type="hidden" name="id_penerima" id="id_penerima" value="<?= empty($data) ? "" : $data['id_penerima']?>">
                                   </div>
                                   <div class="form-group">
@@ -334,7 +350,7 @@
 
             <div class="row" id="barang">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Input Data Barang
-                  <button class="btn btn-grd-inverse" id="btnAdd" v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                  <button class="btn btn-inverse btn-outline-inverse" id="btnAdd" v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
               </h4>
               <div class="col-sm-12">
                 <div class="dt-responsive table-responsive table-brg">
@@ -373,10 +389,10 @@
                               <td>
                                 <input type="text" id="kode<?=$urut?>" name="kode<?=$urut?>" class="form-control hidden" value="<?=$row['id_barang']?>">
                                 <input type="text" id="id_detail<?=$urut?>" name="id_detail<?=$urut?>" class="form-control hidden" value="<?=$row['id']?>">
-                                <a href="#" class="btn hor-grd btn-grd-success" onclick="cari_dealer(this)" v-if="last_status != 'CLOSED'">
+                                <a href="#" class="btn btn-inverse btn-outline-inverse" onclick="cari_dealer(this)" v-if="last_status != 'CLOSED'">
                                   <i class="icofont icofont-search"></i> Cari
                                 </a>
-                                <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancel(this)" v-if="last_status != 'CLOSED'"><i class="icofont icofont-trash"></i> Del</a>
+                                <a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cancel(this)" v-if="last_status != 'CLOSED'"><i class="icofont icofont-trash"></i> Del</a>
                               </td>
                               <td><?=$row['nama_barang']?></td>
                               <td>
@@ -549,11 +565,211 @@
                 </div>
               </div>                        
             </div>
+            
+            <div class="" id="deliv">
+              <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Detail Pengiriman
+              </h4>
+              <div class="card z-depth-0">
+                <div class="card">
+                  <div class="card-block">
+                    
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">TGL PICKUP</label>
+                      <div class="col-sm-4">
+                        <input class="form-control" type="date" id="pickup_date" name="pickup_date" value="<?= empty($data) ? "" : $data['pickup_date'] ?>" />
+                      </div>
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">WAKTU PICKUP</label>
+                      <div class="col-sm-4">
+                        <input type="time" class="form-control" id="pickup_time" name="pickup_time" value="<?= empty($data) ? "" : $data['pickup_time'] ?>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">ALAMAT PICKUP</label>
+                      <div class="col-sm-10">
+                        <textarea rows="5" cols="5" class="form-control" id="pickup_address" name="pickup_address" placeholder="Masukkan alamat pickup" style="height: auto;" ><?= empty($data) ? "" : $data['pickup_address'] ?></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">SITE NAME</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="site_name" name="site_name" value="<?= empty($data) ? "" : $data['site_name'] ?>" >
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR KENDARAAN</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="nomor_plat" name="nomor_plat" value="<?= empty($data) ? "" : $data['no_kendaraan'] ?>" >
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">DRIVER / SUPIR</label>
+                      <div class="col-sm-10" >
+                        <input type="text" class="form-control" id="driver" name="driver" value="<?= empty($data) ? "" : $data['driver'] ?>" >
+                      </div>
+                    </div>
+                    <div class="dp hidden" id="dp-laut">
+                  
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">NAMA PELAYARAN</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="pelayaran_no" name="pelayaran_no" placeholder="" value="<?= empty($data) ? "" : $data['no_pelayaran'] ?>">
+                        </div>
+                      </div>
+                      <div class="form-group row hidden">
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">TGL PELAYARAN</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="date" id="tgl_pelayaran" name="tgl_pelayaran" value="<?= empty($data) ? "" : $data['tgl_pelayaran'] ?>" />
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETD</label>
+                        <div class="col-sm-4">
+                          <input type="date" class="form-control" id="etd_laut" name="etd_laut" placeholder="" value="<?= empty($data) ? "" : $data['etd'] ?>">
+                        </div>
+
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETA</label>
+                        <div class="col-sm-4">
+                          <input type="date" class="form-control" id="eta_laut" name="eta_laut" placeholder="" value="<?= empty($data) ? "" : $data['eta'] ?>">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="dp hidden" id="dp-udara">
+               
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">AWB NO</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="awb" name="awb" value="<?= empty($data) ? "" : $data['awb'] ?>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">ORIGIN</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="origin" name="origin" value="<?= empty($data) ? "" : $data['origin'] ?>">
+                        </div>
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">DESTINATION</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="dest" name="dest" value="<?= empty($data) ? "" : $data['destination'] ?>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">FLIGHT NO</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="flight_no" name="flight_no" value="<?= empty($data) ? "" : $data['flight_no'] ?>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">FLIGHT DATE</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="date" id="flight_date" name="flight_date" value="<?= empty($data) ? "" : $data['flight_date'] ?>" />
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETA</label>
+                        <div class="col-sm-4">
+                          <input type="time" class="form-control" id="eta" name="eta" value="<?= empty($data) ? "" : $data['eta'] ?>">
+                        </div>
+                        <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETD</label>
+                        <div class="col-sm-4">
+                          <input type="time" class="form-control" id="etd" name="etd" value="<?= empty($data) ? "" : $data['etd'] ?>">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">LINK/URL REF</label>
+                      <div class="col-sm-10">
+                        <div class="input-group input-group-button m-b-0" >
+
+                          <input type="text" class="form-control" id="link" name="link" value="<?= empty($data) ? "" : $data['link'] ?>">
+                          <span class="input-group-addon btn btn-grd-inverse" id="btnShowLink" style="border-width: 0;background-color: #01a9ac;">
+                            <span class="">Show</span>
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">AGENT/VENDOR 1</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control" id="agent" name="agent" value="<?= empty($data) ? "" : $data['agent'] ?>">
+                      </div>
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">HP AGENT/VENDOR 1</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control" id="agent_hp" name="agent_hp" value="<?= empty($data) ? "" : $data['agent_hp'] ?>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">AGENT/VENDOR 2</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control" id="agent2" name="agent2" value="<?= empty($data) ? "" : $data['agent2'] ?>">
+                      </div>
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">HP AGENT/VENDOR 2</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control" id="agent_hp2" name="agent_hp2" value="<?= empty($data) ? "" : $data['agent_hp2'] ?>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">AGENT/VENDOR 3</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control" id="agent3" name="agent3" value="<?= empty($data) ? "" : $data['agent3'] ?>">
+                      </div>
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">HP AGENT/VENDOR 3</label>
+                      <div class="col-sm-4">
+                        <input type="text" class="form-control" id="agent_hp3" name="agent_hp3" value="<?= empty($data) ? "" : $data['agent_hp3'] ?>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">HP AGENT/VENDOR</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="agent_hp" name="agent_hp" value="<?= empty($data) ? "" : $data['agent_hp'] ?>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">ARMADA</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="armada" name="armada" value="<?= empty($data) ? "" : $data['armada'] ?>">
+                      </div>
+                    </div>
+                    <div class="form-group row hidden">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO. CONTAINER / SHIPPING NAME</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="no_container" name="no_container" value="<?= empty($data) ? "" : $data['no_container'] ?>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">RECEIVED BY</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="received_by" name="received_by" value="<?= empty($data) ? "" : $data['received_by'] ?>" :disabled="last_status != 'DITERIMA' && last_status != 'DALAM PERJALANAN'">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">RECEIVED DATE</label>
+                      <div class="col-sm-10">
+                        <input type="date" class="form-control" id="received_date" name="received_date" value="<?= empty($data) ? "" : $data['received_date'] ?>" v-if="last_status != 'DITERIMA'" :disabled="last_status != 'DITERIMA' && last_status != 'DALAM PERJALANAN'">
+                        <input type="text" class="form-control" id="received_date" name="received_date" value="<?= empty($data) ? "" : $data['received_date'] ?>" v-if="last_status == 'DITERIMA'" disabled>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="sub-title" style="color: #2c3e50;">Dokumen Terkait (Foto, Berita Acara, DO/BO,dll)</div>
+                      <div class="dropzone" id="dropzone">
+
+                        <div class="dz-message">
+                         <h3> Klik atau Drop gambar disini</h3>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+              
+            </div>
+
             <div class="card z-depth-0">
               <div class="card-block panels-wells">
                 <div class="row">
                   <h4 class="info-text" style="padding-left: 10px;">Multi Drop
-                      <button class="btn btn-grd-invers" id="btnAddModa"  v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah</button>
+                      <button class="btn btn-inverse btn-outline-inverse" id="btnAddModa"  v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah</button>
                   </h4>
                   <input type="hidden" id="total-row-multi" name="total-row-multi" value="<?= $totalrowmulti ?>">
                   <table id="ViewTableMulti" class="table table-bordered">
@@ -597,261 +813,10 @@
                 </div>
               </div>
             </div>
-            <div class="" id="deliv">
-              <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Detail Pengiriman
-              </h4>
-              <div class="card z-depth-0">
-                <div class="card-block panels-wells">
-                  <div class="row">
-                    <div class="col">
-                      <div class="well well-lg">
-                        <div class="card dp hidden" id="dp-laut">
-                          <div class="card-block">
-
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR PELAYARAN</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="pelayaran_no" name="pelayaran_no" placeholder="" value="<?= empty($data) ? "" : $data['no_pelayaran'] ?>">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">TGL PELAYARAN</label>
-                              <div class="col-sm-10">
-                                <input class="form-control" type="date" id="tgl_pelayaran" name="tgl_pelayaran" value="<?= empty($data) ? "" : $data['tgl_pelayaran'] ?>" />
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETA</label>
-                              <div class="col-sm-4">
-                                <input type="time" class="form-control" id="eta_laut" name="eta_laut" placeholder="" value="<?= empty($data) ? "" : $data['eta'] ?>">
-                              </div>
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETD</label>
-                              <div class="col-sm-4">
-                                <input type="time" class="form-control" id="etd_laut" name="etd_laut" placeholder="" value="<?= empty($data) ? "" : $data['etd'] ?>">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-
-                        <div class="card dp hidden" id="dp-udara">
-                          <div class="card-block">
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">AWB NO</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="awb" name="awb" value="<?= empty($data) ? "" : $data['awb'] ?>">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ORIGIN</label>
-                              <div class="col-sm-4">
-                                <input type="text" class="form-control" id="origin" name="origin" value="<?= empty($data) ? "" : $data['origin'] ?>">
-                              </div>
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">DESTINATION</label>
-                              <div class="col-sm-4">
-                                <input type="text" class="form-control" id="dest" name="dest" value="<?= empty($data) ? "" : $data['destination'] ?>">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">FLIGHT NO</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="flight_no" name="flight_no" value="<?= empty($data) ? "" : $data['flight_no'] ?>">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">FLIGHT DATE</label>
-                              <div class="col-sm-10">
-                                <input class="form-control" type="date" id="flight_date" name="flight_date" value="<?= empty($data) ? "" : $data['flight_date'] ?>" />
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETA</label>
-                              <div class="col-sm-4">
-                                <input type="time" class="form-control" id="eta" name="eta" value="<?= empty($data) ? "" : $data['eta'] ?>">
-                              </div>
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETD</label>
-                              <div class="col-sm-4">
-                                <input type="time" class="form-control" id="etd" name="etd" value="<?= empty($data) ? "" : $data['etd'] ?>">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card">
-                          <div class="card-block">
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">LINK/URL REF</label>
-                              <div class="col-sm-10">
-                                <div class="input-group input-group-button m-b-0" >
-
-                                  <input type="text" class="form-control" id="link" name="link" value="<?= empty($data) ? "" : $data['link'] ?>">
-                                  <span class="input-group-addon btn btn-grd-inverse" id="btnShowLink" style="border-width: 0;background-color: #01a9ac;">
-                                    <span class="">Show</span>
-                                  </span>
-                                </div>
-
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">AGENT/VENDOR</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="agent" name="agent" value="<?= empty($data) ? "" : $data['agent'] ?>">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">HP AGENT/VENDOR</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="agent_hp" name="agent_hp" value="<?= empty($data) ? "" : $data['agent_hp'] ?>">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">ARMADA</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="armada" name="armada" value="<?= empty($data) ? "" : $data['armada'] ?>">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO. CONTAINER / SHIPPING NAME</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="no_container" name="no_container" value="<?= empty($data) ? "" : $data['no_container'] ?>">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card">
-                          <div class="card-block">
-                            
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP DATE</label>
-                              <div class="col-sm-4">
-                                <input class="form-control" type="date" id="pickup_date" name="pickup_date" value="<?= empty($data) ? "" : $data['pickup_date'] ?>" />
-                              </div>
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP TIME</label>
-                              <div class="col-sm-4">
-                                <input type="time" class="form-control" id="pickup_time" name="pickup_time" value="<?= empty($data) ? "" : $data['pickup_time'] ?>">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP ADDRESS</label>
-                              <div class="col-sm-10">
-                                <textarea rows="5" cols="5" class="form-control" id="pickup_address" name="pickup_address" placeholder="Masukkan alamat pickup" style="height: auto;" ><?= empty($data) ? "" : $data['pickup_address'] ?></textarea>
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">SITE NAME</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="site_name" name="site_name" value="<?= empty($data) ? "" : $data['site_name'] ?>" >
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR KENDARAAN</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nomor_plat" name="nomor_plat" value="<?= empty($data) ? "" : $data['no_kendaraan'] ?>" >
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">DRIVER / SUPIR</label>
-                              <div class="col-sm-10" >
-                                <input type="text" class="form-control" id="driver" name="driver" value="<?= empty($data) ? "" : $data['driver'] ?>" >
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="card">
-                          <div class="card-block">
-                            <h4 class="info-text" style="padding-left: 0px;font-size: 25px;">Riwayat Status</h4>
-                            <p>Riwayat ini terisi otomatis jika ada perubahan status</p>
-                            <hr>
-                            <div class="form-group row" v-if="mode == 'edit' && (last_status == 'PICKUP' || last_status == 'DALAM PERJALANAN')">
-                              <label class="col-sm-1 col-form-label" style="font-weight: bold;">Remark</label>
-                              <div class="col-sm-5" >
-                                <input type="text" class="form-control" id="remark" name="remark" value="" >
-                              </div>
-                              <label class="col-sm-1 col-form-label" style="font-weight: bold;">Status</label>
-                              <div class="col-sm-3" >
-                                <input type="text" readonly class="form-control" id="status_history" name="status_history" value="DALAM PERJALANAN" >
-                              </div>
-                              <div class="col-sm-2">
-                                <button type="button" id="btnAddHistory" v-on:click="updateHistory()" class="btn hor-grd btn-grd-inverse btn-block" style="float: right;">Tambah</button>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <input type="hidden" id="total-row-history" name="total-row-history" value="0">
-                              <table id="ViewTableHist" class="table table-bordered">
-                                <thead class="text-primary thead-color">
-                                    <tr>
-                                        <th width="50">
-                                          No
-                                        </th>
-                                        <th>
-                                          Catatan
-                                        </th>
-                                        <th>
-                                          Status
-                                        </th>
-                                        <th>
-                                          Created Time
-                                        </th>
-                                        <th>
-                                          Input By
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody-table-hist">
-                                  <template v-for="(log, index) in history">
-                                    <tr>
-                                        <td style="width:1%">{{ (index+1) }}</td>
-                                        <td>{{ log.remark }}</td>
-                                        <td>{{ log.status }}</td>
-                                        <td>{{ log.created_date }}</td>
-                                        <td>{{ log.created_by }}</td>
-                                    </tr>
-                                  </template>
-                                  
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="card">
-                          <div class="card-block">
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">RECEIVED BY</label>
-                              <div class="col-sm-10">
-                                <input type="text" class="form-control" id="received_by" name="received_by" value="<?= empty($data) ? "" : $data['received_by'] ?>" :disabled="last_status != 'DITERIMA' && last_status != 'DALAM PERJALANAN'">
-                              </div>
-                            </div>
-                            <div class="form-group row">
-                              <label class="col-sm-2 col-form-label" style="font-weight: bold;">RECEIVED DATE</label>
-                              <div class="col-sm-10">
-                                <input type="date" class="form-control" id="received_date" name="received_date" value="<?= empty($data) ? "" : $data['received_date'] ?>" v-if="last_status != 'DITERIMA'" :disabled="last_status != 'DITERIMA' && last_status != 'DALAM PERJALANAN'">
-                                <input type="text" class="form-control" id="received_date" name="received_date" value="<?= empty($data) ? "" : $data['received_date'] ?>" v-if="last_status == 'DITERIMA'" disabled>
-                              </div>
-                            </div>
-                            <div class="form-group">
-                              <div class="sub-title" style="color: #2c3e50;">Dokumen Terkait (Foto, Berita Acara, DO/BO,dll)</div>
-                              <div class="dropzone" id="dropzone">
-
-                                <div class="dz-message">
-                                 <h3> Klik atau Drop gambar disini</h3>
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> 
-              
-            </div>
 
             <div id="cost">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Biaya Tambahan (Customer)
-                <button class="btn btn-grd-inverse" id="btnAddBiaya" v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                <button class="btn btn-inverse btn-outline-inverse" id="btnAddBiaya" v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
               </h4>
               <div class="card z-depth-0">
                 <div class="card-block panels-wells">
@@ -871,8 +836,17 @@
                                   <th>
                                     Aktifitas
                                   </th>
-                                  <th width="16%">
-                                    Biaya
+                                  <th width="100">
+                                    Qty
+                                  </th>
+                                  <th width="100">
+                                    Satuan
+                                  </th>
+                                  <th width="150">
+                                    Harga
+                                  </th>
+                                  <th>
+                                    Total
                                   </th>
                               </tr>
                           </thead>
@@ -938,15 +912,86 @@
               </div>
             </div>
 
+            <div class="">
+              <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Riwayat Status
+              </h4>
+              <div class="card z-depth-0">
+                <div class="card-block panels-wells">
+                  <div class="row">
+                    <div class="col">
+                      <div class="well well-lg">
+                        <div class="card">
+                          <div class="card-block">
+                            <h4 class="info-text" style="padding-left: 0px;font-size: 25px;">Riwayat ini terisi otomatis jika ada perubahan status</h4>
+                            <hr>
+                            <div class="form-group row" v-if="mode == 'edit' && (last_status == 'PICKUP' || last_status == 'DALAM PERJALANAN')">
+                              <label class="col-sm-1 col-form-label" style="font-weight: bold;">Remark</label>
+                              <div class="col-sm-5" >
+                                <input type="text" class="form-control" id="remark" name="remark" value="" >
+                              </div>
+                              <label class="col-sm-1 col-form-label" style="font-weight: bold;">Status</label>
+                              <div class="col-sm-3" >
+                                <input type="text" readonly class="form-control" id="status_history" name="status_history" value="DALAM PERJALANAN" >
+                              </div>
+                              <div class="col-sm-2">
+                                <button type="button" id="btnAddHistory" v-on:click="updateHistory()" class="btn hor-grd btn-grd-inverse btn-block" style="float: right;">Tambah</button>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <input type="hidden" id="total-row-history" name="total-row-history" value="0">
+                              <table id="ViewTableHist" class="table table-bordered">
+                                <thead class="text-primary thead-color">
+                                    <tr>
+                                        <th width="50">
+                                          No
+                                        </th>
+                                        <th>
+                                          Catatan
+                                        </th>
+                                        <th>
+                                          Status
+                                        </th>
+                                        <th>
+                                          Created Time
+                                        </th>
+                                        <th>
+                                          Input By
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-table-hist">
+                                  <template v-for="(log, index) in history">
+                                    <tr>
+                                        <td style="width:1%">{{ (index+1) }}</td>
+                                        <td>{{ log.remark }}</td>
+                                        <td>{{ log.status }}</td>
+                                        <td>{{ log.created_date }}</td>
+                                        <td>{{ log.created_by }}</td>
+                                    </tr>
+                                  </template>
+                                  
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             
             <div class="row">
               <div class="col-sm-10 col-sm-offset-1" style="margin-top: 10px;">
                 <input type="hidden" name="id_rs" id="id_rs" value="<?= empty($data) ? "" : $data['id'] ?>">
                 <input type="hidden" id="csrf_token" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
 
-                <button class="btn btn-block btn-grd-success" id="btn-finish" v-if="last_status != 'CLOSED'">Simpan</button>
+                <button class="btn btn-block btn-grd-success" id="btn-finish" v-if="last_status != 'CLOSED'"><i class="icofont icofont-save"></i> &nbsp;Simpan</button>
               </div>
             </div>
+            <button class="btn btn-block btn-grd-success float" id="btn-finish" v-if="last_status != 'CLOSED'">
+              <i class="icofont icofont-save"></i></button>
             <!-- <div v-if="mode == 'edit'">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Riwayat Pengiriman
                 <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse" style="float: right;">Update Status</button>

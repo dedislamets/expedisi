@@ -179,6 +179,9 @@ class Cargo extends CI_Controller {
               $data_biaya = array();
               $data_biaya['id_routing'] = $this->input->post('id_rs',TRUE);
               $data_biaya['aktifitas'] = $this->input->post('aktifitas_biaya_'.$i,TRUE);
+              $data_biaya['qty'] = $this->input->post('qty_biaya_'.$i,TRUE);
+              $data_biaya['satuan'] = $this->input->post('satuan_biaya_'.$i,TRUE);
+              $data_biaya['harga'] = $this->input->post('harga_biaya_'.$i,TRUE);
               $data_biaya['biaya'] = str_replace('.', '',  $this->input->post('biaya_'.$i,TRUE));
 
               if(!empty($this->input->post('id_detail_biaya_'.$i) )){

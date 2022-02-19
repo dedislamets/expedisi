@@ -481,15 +481,13 @@ class Spk extends CI_Controller {
 
       $valid_columns = array(
           0=>'nama_barang',
-          1=>'jenis_barang',
-          2=>'berat_barang',
-          3=>'satuan',
+          1=>'berat_barang',
+          2=>'satuan',
       );
       $valid_sort = array(
           0=>'nama_barang',
-          1=>'jenis_barang',
-          2=>'berat_barang',
-          3=>'satuan',
+          1=>'berat_barang',
+          2=>'satuan',
       );
       if(!isset($valid_sort[$col]))
       {
@@ -528,7 +526,6 @@ class Spk extends CI_Controller {
 
           $data[] = array( 
                       $r->nama_barang,
-                      $r->jenis_barang,
                       $r->berat_barang,
                       $r->satuan,
                       '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="pilih_item(this);void(0)"  data-id="'.$r->id_barang.'"  >

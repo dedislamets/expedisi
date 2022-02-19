@@ -307,7 +307,7 @@
 		$(".no-data").remove();
 		var baris = '<tr>';
 		baris += '<td style="width:1%">'+ nomor+'</td>';
-		baris += '<td style="width:8%"><input type="text" id="kode'+ nomor +'" name="kode'+ nomor +'" placeholder="Kode Item" class="form-control hidden"><input type="text" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control hidden" value=""><a href="javascript:void(0)" class="btn hor-grd btn-grd-success" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+		baris += '<td style="width:8%"><input type="text" id="kode'+ nomor +'" name="kode'+ nomor +'" placeholder="Kode Item" class="form-control hidden"><input type="text" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control hidden" value=""><a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
 		baris += '<td style="width:29%">Nama Item</td>';
 		baris += '<td style="width:10%"><input type="text" name="qty'+ nomor +'" id="qty'+ nomor +'" class="form-control" value="0"/></td>';
 		baris += '<td style="width:25%"><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control"/></td>';
@@ -340,7 +340,7 @@
 		$(".no-data").remove();
 		var baris = '<tr>';
 		baris += '<td style="width:1%">'+ nomor+'</td>';
-		baris += '<td style="width:8%"><input type="text" id="id_detail_multi_'+ nomor +'" name="id_detail_multi_'+ nomor +'" class="form-control hidden" value=""><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelMulti(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+		baris += '<td style="width:8%"><input type="text" id="id_detail_multi_'+ nomor +'" name="id_detail_multi_'+ nomor +'" class="form-control hidden" value=""><input type="hidden" id="deleted_'+ nomor +'" name="deleted_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cancelMulti(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
 		
 		baris += '<td><input type="text" name="aktifitas_'+ nomor +'" id="aktifitas_'+ nomor +'" class="form-control"/></td>';
 	
@@ -367,9 +367,12 @@
 		$(".no-data").remove();
 		var baris = '<tr>';
 		baris += '<td style="width:1%">'+ nomor+'</td>';
-		baris += '<td style="width:8%"><input type="text" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control hidden" value=""><input type="hidden" id="deleted_biaya_'+ nomor +'" name="deleted_biaya_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+		baris += '<td style="width:8%"><input type="text" id="id_detail_biaya_'+ nomor +'" name="id_detail_biaya_'+ nomor +'" class="form-control hidden" value=""><input type="hidden" id="deleted_biaya_'+ nomor +'" name="deleted_biaya_'+ nomor +'" value="0"> <a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cancelBiaya(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
 		
 		baris += '<td><input type="text" name="aktifitas_biaya_'+ nomor +'" id="aktifitas_biaya_'+ nomor +'" class="form-control"/></td>';
+		baris += '<td><input type="number" name="qty_biaya_'+ nomor +'" id="qty_biaya_'+ nomor +'" class="form-control"/></td>';
+		baris += '<td><input type="text" name="satuan_biaya_'+ nomor +'" id="satuan_biaya_'+ nomor +'" class="form-control"/></td>';
+		baris += '<td><input type="number" name="harga_biaya_'+ nomor +'" id="harga_biaya_'+ nomor +'" class="form-control" value="0"/></td>';
 		baris += '<td><input type="number" id="biaya_'+ nomor +'" name="biaya_'+ nomor +'" placeholder="" class="form-control" value="0" ></td>';
 		
 	

@@ -299,7 +299,7 @@
 </div>
 
 <div id="modalBarang" class="modal" >
-	<div class="modal-dialog" role="document" style="margin: 10% auto;max-width: 900px;">
+	<div class="modal-dialog" role="document" style="margin: 10% auto;max-width: 600px;">
 	  	<div class="modal-content">
 		    <div class="modal-header" style="background-color: #404E67;color:#fff">
 	        	
@@ -316,9 +316,6 @@
 	                        <tr>
 	                            <th>
 	                              Nama Barang
-	                            </th>
-	                            <th>
-	                              Jenis Barang
 	                            </th>
 	                            <th class="text-center">
 	                              Berat
