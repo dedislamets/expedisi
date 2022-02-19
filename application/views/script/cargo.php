@@ -468,6 +468,46 @@
         }
     })
 
+    $('#btn-finish-float').on('click', function (event) {
+    	event.preventDefault();
+		var valid = false;
+    	var sParam = $('#form-routing').serialize();
+    	var validator = $('#form-routing').validate({
+							rules: {
+									nomor_rs: {
+							  			required: true
+									},
+									project: {
+							  			required: true
+									},
+									moda_tran: {
+							  			required: true
+									},
+									moda_kat: {
+							  			required: true
+									},
+									agent: {
+							  			required: true
+									},
+								}
+							});
+	 	validator.valid();
+	 	$status = validator.form();
+	 	if($status) {
+	 		if(validateBarang()){
+		 		var link = '<?= base_url(); ?>Cargo/Header';
+		 		$.post(link,sParam, function(data){
+					if(data.error==false){	
+						alertOK();
+						window.location.href = '<?= base_url(); ?>Cargo/edit/' + data.id;
+					}else{	
+						alertError(data.message);				  	
+					}
+				},'json');
+		 	}
+	 	}
+        
+    });
     $('#btn-finish').on('click', function (event) {
     	event.preventDefault();
 		var valid = false;

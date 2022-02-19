@@ -990,7 +990,7 @@
                 <button class="btn btn-block btn-grd-success" id="btn-finish" v-if="last_status != 'CLOSED'"><i class="icofont icofont-save"></i> &nbsp;Simpan</button>
               </div>
             </div>
-            <button class="btn btn-block btn-grd-success float" id="btn-finish" v-if="last_status != 'CLOSED'">
+            <button class="btn btn-block btn-grd-success float" id="btn-finish-float" v-if="last_status != 'CLOSED'">
               <i class="icofont icofont-save"></i></button>
             <!-- <div v-if="mode == 'edit'">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Riwayat Pengiriman

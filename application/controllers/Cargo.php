@@ -76,6 +76,8 @@ class Cargo extends CI_Controller {
       $data['moda_name'] = $this->input->post('text-moda');
 
       $data['agent'] = $this->input->post('agent');
+      $data['agent2'] = $this->input->post('agent2');
+      $data['agent3'] = $this->input->post('agent3');
       // $data['pickup_date'] = $this->input->post('pickup_date');
       // $data['pickup_address'] = $this->input->post('pickup_address');
       // $data['no_kendaraan'] = $this->input->post('nomor_plat');
@@ -114,6 +116,8 @@ class Cargo extends CI_Controller {
       $data['flight_date'] = $this->input->post('flight_date');
 
       $data['agent_hp'] = $this->input->post('agent_hp');
+      $data['agent_hp2'] = $this->input->post('agent_hp2');
+      $data['agent_hp3'] = $this->input->post('agent_hp3');
       $data['armada'] = $this->input->post('armada');
       $data['no_container'] = $this->input->post('no_container');
       $data['link'] = $this->input->post('link');
