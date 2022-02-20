@@ -20,7 +20,8 @@
         	last_status:'<?= empty($data) ? "INPUT" : $data['status'] ?>',
         	tag:['Sesuai Routing'],
         	tag_select: 'Sesuai Routing',
-        	list_routing: []
+        	list_routing: [],
+        	myTable2: ''
         },
         methods: {
         	dropzone: function(){
@@ -85,7 +86,7 @@
 				})
 				if(list.substr(list.length-1) == ",")
 					list = list.slice(0, -1);
-		    	$('#ViewTableSPK').DataTable({
+		    	this.myTable2 = $('#ViewTableSPK').DataTable({
 					ajax: {		            
 			            "url": "<?= base_url(); ?>listrs/dataTableRS?r=" + list,
 			            "type": "GET"
@@ -132,6 +133,31 @@
 
 		}
 	})
+
+	$('#btnsubmit').on('click', function (event) {
+
+        var checked_courses = $('#ViewTableSPK').find('input[name="selected_courses[]"]:checked').length;
+        if (checked_courses != 0) {
+            CheckedTrue();
+            
+        } else {
+            alert("Silahkan pilih terlebih dahulu");
+        }
+
+    });
+
+    function CheckedTrue() {
+        var b = $("#txtSelected");
+        b.val('');
+        var str = "";
+        var rowcollection = app.myTable2.$(':checkbox', { "page": "all" });
+        rowcollection.each(function () {
+            if (this.checked) {
+            	pilih(this.value);
+            }
+        });
+        b.val(str);                            
+    }
 
 
 	$('#ModalTableBrg').DataTable({
@@ -198,7 +224,7 @@
 		$(".no-data").remove();
 		var baris = '<tr>';
 		baris += '<td style="width:1%">'+ nomor+'</td>';
-		baris += '<td style="width:8%"><input type="text" id="kode'+ nomor +'" name="kode'+ nomor +'" placeholder="Kode Item" class="form-control hidden"><input type="text" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control hidden" value=""><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger hidden" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+		baris += '<td style="width:8%;display:none;"><input type="text" id="kode'+ nomor +'" name="kode'+ nomor +'" placeholder="Kode Item" class="form-control hidden"><input type="text" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control hidden" value=""><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger hidden" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
 		baris += '<td style="width:39%">Nama Item</td>';
 		baris += '<td>Berat</td>';
 		baris += '<td style="width:25%"><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control"/></td>';
@@ -364,7 +390,7 @@
 				$("#id_pengirim").val(data['data']['id_pengirim']);
 				$("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
 				$("#alamat_pengirim").text(data['data']['alamat_pengirim']);
-				$("#alamat_penagihan").text(data['data']['alamat_pengirim']);
+				// $("#alamat_penagihan").text(data['data']['alamat_pengirim']);
 				$("#origin").text(data['data']['kec_pengirim'] + ' - ' + data['data']['kota_pengirim']);
 
 				$("#attn_penerima").text(data['data']['attn_penerima']);
@@ -403,7 +429,7 @@
 					$(".no-data").remove();
 					baris = '<tr>';
 					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td style="width:8%"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger hidden" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+					baris += '<td style="width:8%;display:none;"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn hor-grd btn-grd-danger hidden" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
 					baris += '<td><input type="hidden" id="id_routing_item'+ nomor +'" name="id_routing_item'+ nomor +'" class="form-control " value="' + id_rs +'">' + obj.no_routing+'</td>';
 					baris += '<td>' + obj.nama_barang+'</td>';
 					baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';

@@ -162,7 +162,20 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NAMA PROJECT</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="project" name="project" placeholder="Masukkan nama project" value="<?= empty($data) ? "" : $data['nama_project'] ?>">
+                <select name="project" id="project" class="js-example-basic-single col-sm-12" required>
+                  <option value="">Pilih Project</option>
+                  <?php 
+                  foreach($project as $row)
+                  { 
+                    if( empty($data) ? "" : $data['nama_project'] === $row->nama_project){
+                      echo '<option value="'.$row->nama_project.'" selected >'.$row->nama_project.'</option>';
+                    }else{
+                      echo '<option value="'.$row->nama_project.'">'.$row->nama_project.'</option>';
+                    }
+                  }
+                  ?>
+                </select>
+                <!-- <input type="text" class="form-control" id="project" name="project" placeholder="Masukkan nama project" value="<?= empty($data) ? "" : $data['nama_project'] ?>"> -->
               </div>
             </div>
             <div class="form-group row">
@@ -196,7 +209,7 @@
                                 
                                 <div class="form-group">
                                   <label>Nama Pengirim <small>(required)</small></label>
-                                  <input name="nama_pengirim" id="nama_pengirim" type="text" class="form-control" placeholder="">
+                                  <input name="nama_pengirim" id="nama_pengirim" type="text" class="form-control" placeholder="" value="<?= empty($data) ? "" : $data['nama_pengirim']?>">
                                   <input type="hidden" name="id_pengirim" id="id_pengirim" value="<?= empty($data) ? "" : $data['id_pengirim']?>">
                                 </div>
                                 <div class="form-group">
@@ -276,7 +289,7 @@
                               <div class="col-sm-10 col-sm-offset-1">
                                   <div class="form-group">
                                     <label>Nama Penerima <small>(required)</small></label>
-                                    <input name="nama_penerima" id="nama_penerima" type="text" class="form-control" placeholder="" >
+                                    <input name="nama_penerima" id="nama_penerima" type="text" class="form-control" placeholder="" value="<?= empty($data) ? "" : $data['nama_penerima']?>" >
                                     <input type="hidden" name="id_penerima" id="id_penerima" value="<?= empty($data) ? "" : $data['id_penerima']?>">
                                   </div>
                                   <div class="form-group">
@@ -389,12 +402,26 @@
                               <td>
                                 <input type="text" id="kode<?=$urut?>" name="kode<?=$urut?>" class="form-control hidden" value="<?=$row['id_barang']?>">
                                 <input type="text" id="id_detail<?=$urut?>" name="id_detail<?=$urut?>" class="form-control hidden" value="<?=$row['id']?>">
-                                <a href="#" class="btn btn-inverse btn-outline-inverse" onclick="cari_dealer(this)" v-if="last_status != 'CLOSED'">
+                                <a href="#" class="btn btn-inverse btn-outline-inverse hidden" onclick="cari_dealer(this)" v-if="last_status != 'CLOSED'">
                                   <i class="icofont icofont-search"></i> Cari
                                 </a>
                                 <a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cancel(this)" v-if="last_status != 'CLOSED'"><i class="icofont icofont-trash"></i> Del</a>
                               </td>
-                              <td><?=$row['nama_barang']?></td>
+                              <td>
+                                <select id="id_barang<?=$urut?>" name="id_barang<?=$urut?>" class="form-control">
+                                    <option value="">Pilih Barang</option>
+                                    <?php 
+                                    foreach($barang as $res)
+                                    { 
+                                      if( empty($row) ? "" : $row['id_barang'] === $res['id_barang']){
+                                        echo '<option value="'.$res['id_barang'].'" selected >'.$res['nama_barang'].'</option>';
+                                      }else{
+                                        echo '<option value="'.$res['id_barang'].'">'.$res['nama_barang'].'</option>';
+                                      }
+                                    }
+                                    ?>
+                                </select>
+                              </td>
                               <td>
                                 <input type="number" id="qty<?=$urut?>" name="qty<?=$urut?>" placeholder="Qty" class="form-control" style="width:100%" value="<?=$row['qty']?>">
                               </td>
@@ -718,12 +745,7 @@
                         <input type="text" class="form-control" id="agent_hp3" name="agent_hp3" value="<?= empty($data) ? "" : $data['agent_hp3'] ?>">
                       </div>
                     </div>
-                    <div class="form-group row">
-                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">HP AGENT/VENDOR</label>
-                      <div class="col-sm-10">
-                        <input type="text" class="form-control" id="agent_hp" name="agent_hp" value="<?= empty($data) ? "" : $data['agent_hp'] ?>">
-                      </div>
-                    </div>
+
                     <div class="form-group row">
                       <label class="col-sm-2 col-form-label" style="font-weight: bold;">ARMADA</label>
                       <div class="col-sm-10">
@@ -859,7 +881,7 @@
                                 <td style="width:8%">
                                   <input type="hidden" id="id_detail_biaya_<?= $urut ?>" name="id_detail_biaya_<?= $urut ?>" class="form-control " value="<?= $row['id'] ?>">
                                   <input type="hidden" id="deleted_biaya_<?= $urut ?>" name="deleted_biaya_<?= $urut ?>" value="0">
-                                  <a href="javascript:void(0)" class="btn hor-grd btn-grd-danger" onclick="cancelBiaya(this)" v-if="last_status != 'CLOSED'">
+                                  <a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cancelBiaya(this)" v-if="last_status != 'CLOSED'">
                                     <i class="icofont icofont-trash"></i> Del</a>
                                 </td>
                                 
@@ -867,8 +889,17 @@
                                   <input type="text" name="aktifitas_biaya_<?= $urut ?>" id="aktifitas_biaya_<?= $urut ?>" class="form-control" value="<?= $row['aktifitas'] ?>" >
                                 </td>
                                 <td>
-                                  <input type="number" id="biaya_<?= $urut ?>" name="biaya_<?= $urut ?>" value="<?= $row['biaya'] ?>" class="form-control">
+                                  <input type="number" name="qty_biaya_<?= $urut ?>" id="qty_biaya_<?= $urut ?>" class="form-control" value="<?= $row['qty'] ?>" >
                                 </td>
+                                <td>
+                                  <input type="text" name="satuan_biaya_<?= $urut ?>" id="satuan_biaya_<?= $urut ?>" class="form-control" value="<?= $row['satuan'] ?>" >
+                                </td>
+                                <td>
+                                  <input type="number" name="harga_biaya_<?= $urut ?>" id="harga_biaya_<?= $urut ?>" class="form-control" value="<?= $row['harga'] ?>" >
+                                </td>
+                                <td>
+                                  <input type="number" id="biaya_<?= $urut ?>" name="biaya_<?= $urut ?>" value="<?= $row['biaya'] ?>" class="form-control" readonly>
+                                </td> 
                               </tr>
                               <?php $urut++?>
                             <?php endforeach; ?>

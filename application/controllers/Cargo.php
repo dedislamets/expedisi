@@ -29,6 +29,8 @@ class Cargo extends CI_Controller {
       $data['data_multi'] = array();
       $data['data_biaya'] = array();
       $data['moda_only'] = $this->admin->getmaster('tb_moda');
+      $data['project'] = $this->admin->getmaster('tb_project');
+      // $data['barang'] = $this->admin->getmaster('barang');
 
       $moda = $this->db->query("SELECT A.moda_name,A.moda_img, B.moda_kategori,C.* FROM tb_moda A
               INNER JOIN tb_moda_kat B ON A.id=B.id_moda
@@ -88,6 +90,8 @@ class Cargo extends CI_Controller {
       $data['tgl_spk'] = date("Y-m-d", strtotime($this->input->post('tgl_do')));
 
       $data['id_pengirim'] = $this->input->post('id_pengirim');
+      $data['nama_pengirim'] = $this->input->post('nama_pengirim');
+
       $data['alamat_pengirim'] = $this->input->post('alamat_pengirim');
       $data['kota_pengirim'] = $this->input->post('region_pengirim');
       $data['kec_pengirim'] = $this->input->post('kecamatan_pengirim');
@@ -96,6 +100,7 @@ class Cargo extends CI_Controller {
       $data['attn_pengirim'] = $this->input->post('attn_pengirim');
 
       $data['id_penerima'] = $this->input->post('id_penerima');
+      $data['nama_penerima'] = $this->input->post('nama_penerima');
       $data['alamat_penerima'] = $this->input->post('alamat_penerima');
       $data['kota_penerima'] = $this->input->post('region_penerima');
       $data['kec_penerima'] = $this->input->post('kecamatan_penerima');
@@ -216,22 +221,28 @@ class Cargo extends CI_Controller {
               $response['id']= $this->input->post('id_rs', TRUE);
               $total = intval($this->input->post('total-row'));
               for ($i=1; $i <= $total ; $i++) { 
-                if(!empty($this->input->post('kode'.$i) )){
+                // print("<pre>".print_r($this->input->post(),true)."</pre>");exit();
+                if(!empty($this->input->post('id_detail'.$i) )){
                   unset($data);
                   $data['id_routing'] = $this->input->post('id_rs');
                   $data['no_routing'] = $this->input->post('nomor_rs');
-                  $data['id_barang'] = $this->input->post('kode'.$i);
+                  $data['id_barang'] = $this->input->post('id_barang'.$i);
                   $data['qty'] = $this->input->post('qty'.$i);
                   $data['satuan'] = $this->input->post('satuan'.$i);
                   $data['kg'] = $this->input->post('kg'.$i);
 
-                  if(!empty($this->input->post('id_detail'.$i) )){
-                    $this->db->set($data);
-                    $this->db->where(array( "id" => $this->input->post('id_detail'.$i) ));
-                    $this->db->update('tb_routingslip_detail');
-                  }else{
-                    $this->db->insert('tb_routingslip_detail', $data);
-                  }
+                  $this->db->set($data);
+                  $this->db->where(array( "id" => $this->input->post('id_detail'.$i) ));
+                  $this->db->update('tb_routingslip_detail');
+                }else{
+                  unset($data);
+                  $data['id_routing'] = $this->input->post('id_rs');
+                  $data['no_routing'] = $this->input->post('nomor_rs');
+                  $data['id_barang'] = $this->input->post('id_barang'.$i);
+                  $data['qty'] = $this->input->post('qty'.$i);
+                  $data['satuan'] = $this->input->post('satuan'.$i);
+                  $data['kg'] = $this->input->post('kg'.$i);
+                  $this->db->insert('tb_routingslip_detail', $data);
                 }
               }
 
@@ -277,11 +288,11 @@ class Cargo extends CI_Controller {
               $response['id']= $last_id;
               $total = intval($this->input->post('total-row'));
               for ($i=1; $i <= $total ; $i++) { 
-                if(!empty($this->input->post('kode'.$i) )){
+                if(!empty($this->input->post('id_barang'.$i) )){
                   unset($data);
                   $data['no_routing'] = $this->input->post('nomor_rs');
                   $data['id_routing'] = $last_id;
-                  $data['id_barang'] = $this->input->post('kode'.$i);
+                  $data['id_barang'] = $this->input->post('id_barang'.$i);
                   $data['qty'] = $this->input->post('qty'.$i);
                   $data['satuan'] = $this->input->post('satuan'.$i);
                   $data['kg'] = $this->input->post('kg'.$i);
@@ -371,6 +382,8 @@ class Cargo extends CI_Controller {
       $data['zip_pengirim'] = $this->db->query("select distinct kodepos from master_city where kota='". $data['data']['kota_pengirim'] ."' and kecamatan='". $data['data']['kec_pengirim'] ."'")->result();
       $data['kec_penerima'] = $this->db->query("select distinct kecamatan from master_city where kota='". $data['data']['kota_penerima'] ."'")->result();
       $data['zip_penerima'] = $this->db->query("select distinct kodepos from master_city where kota='". $data['data']['kota_penerima'] ."' and kecamatan='". $data['data']['kec_penerima'] ."'")->result();
+      $data['project'] = $this->admin->getmaster('tb_project');
+      $data['barang'] = $this->admin->get_result_array('barang');
 
       $data['totalrow'] = 0;
       $data['totalrowmulti'] = 1;
@@ -427,7 +440,6 @@ class Cargo extends CI_Controller {
 
       $data['moda'] = $data_arr;
 
-      // print("<pre>".print_r($data,true)."</pre>"); exit();
     
       $this->load->view('home',$data,FALSE); 
 
@@ -442,6 +454,11 @@ class Cargo extends CI_Controller {
     );
 
     $data = $this->admin->getmaster('tb_moda_kat',$arr_par);
+    $this->output->set_content_type('application/json')->set_output(json_encode($data));
+  }
+  public function getBarang()
+  {
+    $data = $this->admin->get_result_array('barang');
     $this->output->set_content_type('application/json')->set_output(json_encode($data));
   }
 	public function dataTableDetail()

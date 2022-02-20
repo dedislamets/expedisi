@@ -77,7 +77,7 @@
 							<th>Tgl Pickup</th>
 							<th>Dari</th>
 							<th>Tujuan</th>
-							<th>No PO</th>
+							<th>No PO/NP</th>
 							<th>Nama Barang</th>
 							<th>layanan</th>
 							<th>Qty</th>

@@ -20,6 +20,7 @@
         	last_status:'<?= empty($data) ? "INPUT" : $data['status'] ?>',
         	moda_kat:'<?= empty($data) ? "" : $data['id_moda_kat'] ?>',
         	history: [],
+        	opsi:''
         },
         methods: {
         	dropzone: function(){
@@ -257,6 +258,39 @@
 	    });
 	});
 
+	$(document).on('blur', "[id^=harga_biaya_]", function(){
+		var id = $(this).attr('id');
+		id = id.replace("harga_biaya_",'');
+		var harga = $('#harga_biaya_'+id).val();
+		var qty = $('#qty_biaya_'+id).val();
+		$('#biaya_'+id).val(parseFloat((harga*qty).toFixed(0)).toLocaleString('id-ID'));
+	});
+	$(document).on('blur', "[id^=qty_biaya_]", function(){
+		var id = $(this).attr('id');
+		id = id.replace("qty_biaya_",'');
+		var harga = $('#harga_biaya_'+id).val();
+		var qty = $('#qty_biaya_'+id).val();
+		$('#biaya_'+id).val(parseFloat((harga*qty).toFixed(0)).toLocaleString('id-ID'));		
+	});	
+
+	function formatRupiah(angka) {
+	  	var number_string = angka.replace(/[^,\d]/g, "").toString(),
+		    split = number_string.split(","),
+		    sisa = split[0].length % 3,
+		    rupiah = split[0].substr(0, sisa),
+		    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+	  // tambahkan titik jika yang di input sudah menjadi angka ribuan
+	  if (ribuan) {
+	    separator = sisa ? "." : "";
+	    rupiah += separator + ribuan.join(".");
+	  }
+
+	  rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+	  if(rupiah=="") rupiah = 0;
+	  return rupiah;
+	}
+
 	$('#btnSubmit').on('click', function (e) {
 		var valid = false;
     	var sParam = $('#Form').serialize();
@@ -306,22 +340,38 @@
 		$('#total-row').val(nomor);
 		$(".no-data").remove();
 		var baris = '<tr>';
-		baris += '<td style="width:1%">'+ nomor+'</td>';
-		baris += '<td style="width:8%"><input type="text" id="kode'+ nomor +'" name="kode'+ nomor +'" placeholder="Kode Item" class="form-control hidden"><input type="text" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control hidden" value=""><a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
-		baris += '<td style="width:29%">Nama Item</td>';
-		baris += '<td style="width:10%"><input type="text" name="qty'+ nomor +'" id="qty'+ nomor +'" class="form-control" value="0"/></td>';
-		baris += '<td style="width:25%"><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control"/></td>';
-		baris += '<td style="width:25%"><input type="number" id="kg'+ nomor +'" name="kg'+ nomor +'" placeholder="" class="form-control" style="width:100%" value="0"></td>';
 		
-	
-		baris += '</tr>';
+		try{
+			var option="";
+    		axios.get('<?= base_url()?>cargo/getBarang', { params: {} })
+          	.then(data => {
+          		$.each(data.data,function(i,value){
+            		option +='<option value="'+value.id_barang+'">'+value.nama_barang+'</option>';    	
+        		})
+        		baris += '<td style="width:1%">'+ nomor+'</td>';
+				baris += '<td style="width:8%"><input type="text" id="kode'+ nomor +'" name="kode'+ nomor +'" placeholder="Kode Item" class="form-control hidden"><input type="text" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control hidden" value=""><a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn btn-inverse btn-outline-inverse" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
+				baris += '<td style="width:29%"><select name="id_barang'+ nomor +'" id="id_barang'+ nomor +'" class="js-example-basic-single col-sm-12"><option value="">Pilih Barang</option>'+ option +'</select></td>';
+				baris += '<td style="width:10%"><input type="text" name="qty'+ nomor +'" id="qty'+ nomor +'" class="form-control" value="0"/></td>';
+				baris += '<td style="width:25%"><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control"/></td>';
+				baris += '<td style="width:25%"><input type="number" id="kg'+ nomor +'" name="kg'+ nomor +'" placeholder="" class="form-control" style="width:100%" value="0"></td>';
+				
+			
+				baris += '</tr>';
+				
+				var last = $('#tbody-table tr:last').html();
+				if(last== undefined){
+					$(baris).appendTo("#tbody-table");
+				}else{
+					$('#tbody-table tr:last').after(baris);
+				}
+
+				$(".js-example-basic-single").select2();
+          	});
+    	}catch(e){
+
+    	}
+
 		
-		var last = $('#tbody-table tr:last').html();
-		if(last== undefined){
-			$(baris).appendTo("#tbody-table");
-		}else{
-			$('#tbody-table tr:last').after(baris);
-		}
 		
 		//$('#tbody-table tr:nth-last-child(2) td:first-child').html(nomor);
 		// $('html, body').scrollTop( $(document).height() );
@@ -609,8 +659,8 @@
     	}else{
     		$("#tbody-table").find('tr').each(function (i, el) {
 		        var $tds = $(this).find('td');
-		        if($tds.eq(1).children().val() != undefined){
-			        var productId = $tds.eq(1).children().val().trim();
+		        if($tds.eq(2).children().val() != undefined){
+			        var productId = $tds.eq(2).children().val().trim();
 			        if(productId==""){
 			        	alertError('Item belum dipilih..');
 			        	flag= false;

@@ -15,10 +15,10 @@
 	                    <thead class="text-primary">
 	                        <tr>
 	                            <th>
-	                              No Routing 
+	                              #
 	                            </th>
 	                            <th>
-	                              Tgl Routing 
+	                              No Routing 
 	                            </th>
 	                            <th>
 	                              SPK/DO 
@@ -29,15 +29,6 @@
 	                            <th>
 	                              Penerima
 	                            </th>
-	                            <th>
-	                              Moda
-	                            </th>
-	                            <th>
-	                              Status
-	                            </th>
-	                            <th class="text-left">
-	                              Aksi
-	                            </th>
 	                        </tr>
 	                    </thead>
 	                    <tbody>
@@ -47,6 +38,10 @@
 	            </div>
 			    
 		    </div>
+		    <div class="modal-footer" >
+		    	<input type="hidden" id="txtSelected" name="txtSelected">
+	            <button type="button" class="btn btn-grd-success" id="btnsubmit">Submit</button>
+	        </div>
 	  	</div>
 	</div>
 </div>
@@ -69,9 +64,6 @@
 	                        <tr>
 	                            <th>
 	                              Nama Barang
-	                            </th>
-	                            <th>
-	                              Jenis Barang
 	                            </th>
 	                            <th class="text-center">
 	                              Berat

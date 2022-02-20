@@ -60,8 +60,8 @@ class Listrs extends CI_Controller {
           1=>'R.CreatedDate',
           2=>'spk_no',
           3=>'nama_project',
-          4=>'B.cust_name',
-          5=>'A.cust_name',
+          4=>'nama_pengirim',
+          5=>'nama_penerima',
           6=>'moda_name',
           7=>'R.status',
       );
@@ -70,8 +70,8 @@ class Listrs extends CI_Controller {
           1=>'R.CreatedDate',
           2=>'spk_no',
           3=>'nama_project',
-          4=>'B.cust_name',
-          5=>'A.cust_name',
+          4=>'nama_pengirim',
+          5=>'nama_penerima',
           6=>'moda_name',
           7=>'R.status',
       );
@@ -106,10 +106,10 @@ class Listrs extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("A.`cust_name` penerima,B.`cust_name` pengirim,R.*, spk_no,nama_project");
+      $this->db->select("nama_penerima penerima,`nama_pengirim` pengirim,R.*, spk_no,nama_project");
       $this->db->from("tb_routingslip R");
-      $this->db->join('master_customer A', 'R.id_penerima = A.id');
-      $this->db->join('master_customer B', 'R.id_pengirim = B.id');
+      // $this->db->join('master_customer A', 'R.id_penerima = A.id');
+      // $this->db->join('master_customer B', 'R.id_pengirim = B.id');
       $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
       $this->db->where('U.cabang',$this->session->userdata('cabang'));
       $pengguna = $this->db->get();
@@ -188,8 +188,8 @@ class Listrs extends CI_Controller {
           2=>'nama_project',
           3=>'B.cust_name',
           4=>'A.cust_name',
-          5=>'moda_name',
-          6=>'R.status',
+          // 5=>'moda_name',
+          // 6=>'R.status',
       );
       $valid_sort = array(
           0=>'R.no_routing',
@@ -197,8 +197,8 @@ class Listrs extends CI_Controller {
           2=>'nama_project',
           3=>'B.cust_name',
           4=>'A.cust_name',
-          5=>'moda_name',
-          6=>'R.status',
+          // 5=>'moda_name',
+          // 6=>'R.status',
       );
       if(!isset($valid_sort[$col]))
       {
@@ -252,16 +252,17 @@ class Listrs extends CI_Controller {
       {
 
           $data[] = array( 
+                      '<input type="checkbox" name="selected_courses[]" value="'.$r->id.'">',
                       $r->no_routing,
-                      $r->CreatedDate,
+                      // $r->CreatedDate,
                       $r->spk_no,
                       $r->nama_project,
                       $r->penerima,
-                      $r->moda_name,
-                      $r->status,
-                      '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="pilih('.$r->id.')"  data-id="'.$r->id.'"  >
-                        <i class="icofont icofont-ui-edit"></i>Pilih
-                      </button>',
+                      // $r->moda_name,
+                      // $r->status,
+                      // '<button type="button" rel="tooltip" class="btn btn-warning btn-sm " onclick="pilih('.$r->id.')"  data-id="'.$r->id.'"  >
+                      //   <i class="icofont icofont-ui-edit"></i>Pilih
+                      // </button>',
                  );
       }
       $total_pengguna = $this->totalPengguna($search, $valid_columns);

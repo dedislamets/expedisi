@@ -191,8 +191,8 @@
                 <div class="form-group row" >
                   <label class="col-sm-3 col-form-label" style="font-weight: bold;">ALAMAT PENAGIHAN</label>
                   <div class="col-sm-9">
-                      <textarea rows="3" cols="5" class="form-control" id="alamat_penagihan" name="alamat_penagihan" placeholder="" style="height: auto;" ><?= empty($data) ? "" : $data['alamat_penagihan']?></textarea>
-                      <p style="line-height: 17px;font-size: 13px;color: brown;">* Alamat terisi otomatis sesuai alamat pengirim pada routing slip. Jika tidak sesuai bisa di edit/ubah pada kolom.</p>
+                      <textarea rows="3" cols="5" class="form-control" id="alamat_penagihan" name="alamat_penagihan" placeholder="" style="height: auto;" required ><?= empty($data) ? "" : $data['alamat_penagihan']?></textarea>
+                      <p style="line-height: 17px;font-size: 13px;color: brown;display: none;">* Alamat terisi otomatis sesuai alamat pengirim pada routing slip. Jika tidak sesuai bisa di edit/ubah pada kolom.</p>
                       <!-- <a href="javascript:void(0)" style="float: right;">Ganti Alamat</a> -->
                   </div>
                 </div>
@@ -327,7 +327,7 @@
                               <th>
                                 No
                               </th>
-                              <th>
+                              <th style="display: none;">
                                 Aksi
                               </th>
                               <th>
