@@ -449,7 +449,7 @@
 											<?= empty($data) ? "" : $data['site_name'] ?>
 										</td>
 										<td>
-											<?= empty($data) ? "" : $penerima['cust_name'] ?>
+											<?= empty($data) ? "" : $data['nama_penerima'] ?>
 										</td>
 									</tr>
 									<tr>
