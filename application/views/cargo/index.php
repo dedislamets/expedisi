@@ -208,7 +208,7 @@
                               <div class="col-sm-10 col-sm-offset-1">
                                 
                                 <div class="form-group">
-                                  <label>Nama Pengirim <small>(required)</small></label>
+                                  <label>Site Pengirim <small>(required)</small></label>
                                   <input name="nama_pengirim" id="nama_pengirim" type="text" class="form-control" placeholder="" value="<?= empty($data) ? "" : $data['nama_pengirim']?>">
                                   <input type="hidden" name="id_pengirim" id="id_pengirim" value="<?= empty($data) ? "" : $data['id_pengirim']?>">
                                 </div>
@@ -288,7 +288,7 @@
                             <div class="row">
                               <div class="col-sm-10 col-sm-offset-1">
                                   <div class="form-group">
-                                    <label>Nama Penerima <small>(required)</small></label>
+                                    <label>Site Penerima <small>(required)</small></label>
                                     <input name="nama_penerima" id="nama_penerima" type="text" class="form-control" placeholder="" value="<?= empty($data) ? "" : $data['nama_penerima']?>" >
                                     <input type="hidden" name="id_penerima" id="id_penerima" value="<?= empty($data) ? "" : $data['id_penerima']?>">
                                   </div>
@@ -363,7 +363,7 @@
 
             <div class="row" id="barang">
               <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Input Data Barang
-                  <button class="btn btn-inverse btn-outline-inverse" id="btnAdd" v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah baru</button>
+                  <button class="btn btn-inverse btn-outline-inverse" id="btnAdd" v-if="last_status != 'CLOSED'"><i class="icofont icofont-ui-add"></i> Tambah baris</button>
               </h4>
               <div class="col-sm-12">
                 <div class="dt-responsive table-responsive table-brg">
@@ -378,7 +378,8 @@
                                 Aksi
                               </th>
                               <th>
-                                Nama Barang
+                                Nama Barang <button type="button" class="btn" style="border-radius: 50%;width: 20px;height: 20px;padding: 3px;text-align: center;font-size: 10px;margin-left: 5px;" id="btnCreateBrg" @click="modalbarang($event)">
+                                  <i class="icofont icofont-ui-add"></i></button>
                               </th>
                               <th>
                                 Qty
@@ -610,13 +611,13 @@
                         <input type="time" class="form-control" id="pickup_time" name="pickup_time" value="<?= empty($data) ? "" : $data['pickup_time'] ?>">
                       </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row hidden">
                       <label class="col-sm-2 col-form-label" style="font-weight: bold;">ALAMAT PICKUP</label>
                       <div class="col-sm-10">
                         <textarea rows="5" cols="5" class="form-control" id="pickup_address" name="pickup_address" placeholder="Masukkan alamat pickup" style="height: auto;" ><?= empty($data) ? "" : $data['pickup_address'] ?></textarea>
                       </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row hidden">
                       <label class="col-sm-2 col-form-label" style="font-weight: bold;">SITE NAME</label>
                       <div class="col-sm-10">
                         <input type="text" class="form-control" id="site_name" name="site_name" value="<?= empty($data) ? "" : $data['site_name'] ?>" >

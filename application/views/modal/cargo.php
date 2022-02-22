@@ -248,47 +248,15 @@
 			<form id="FormAdd" name ="FormAdd" class="grab form-horizontal" role="form">
 				<div class="modal-body">
 			
-					
-					<div class="form-group">
-						<div class="input-group">
-							<input type="text" class="form-control" id="cari_barang" name="cari_barang" class="form-control" maxlength="200">
-							<span class="input-group-addon"><i class="icofont icofont-search"></i> &nbsp;&nbsp;Keyword</span>
-						</div>
-					</div>
 					<div class="form-group">
 						<label>Nama Barang<span style="color:red"> *</span></label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="nama_barang" name="nama_barang" class="form-control" maxlength="200" readonly>
+							<input type="text" id="nama_barang" name="nama_barang" class="form-control" style="border-left: 1px solid #E3E3E3;border-right: 1px solid #E3E3E3;">
 						</div>
-					</div>	
-					<div class="form-group">
-						<label>Kode Barang<span style="color:red"> *</span></label>
-						<div class="input-group">
-							<input type="text" class="form-control" id="kode_barang" name="kode_barang" class="form-control" readonly >
-							
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<label>Berat Barang</label>
-						<input type="text" id="berat_barang" name="berat_barang" class="form-control" readonly />
 					</div>		
-					<div class="form-group">
-						<label>Satuan</label>
-						<select id="satuan" name="satuan" class="form-control">
-		                   <option value="Kg">Kg</option>
-		                   <option value="M">Meter</option>
-		                   <option value="Ton">Ton</option>
-		                   
-		                </select>
-					</div>		
-					<div class="form-group">
-						<label>Qty</label>
-						<input type="number" id="qty" name="qty" class="form-control"  />
-					</div>				
-				
 				</div>
 				<div class="modal-footer">
+					<input type="hidden" id="csrf_token_barng" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" >
 		        	<div class="pull-right">
 			            <button type="button" id="btnSubmitBrg" class="btn btn-primary btn-block">Submit</button>
 			        </div>

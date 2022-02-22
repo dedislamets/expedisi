@@ -265,7 +265,7 @@ class Listrs extends CI_Controller {
                       // </button>',
                  );
       }
-      $total_pengguna = $this->totalPengguna($search, $valid_columns);
+      $total_pengguna = $this->totalPenggunaRS($search, $valid_columns);
 
       $output = array(
           "draw" => $draw,
@@ -413,6 +413,38 @@ class Listrs extends CI_Controller {
     $this->db->where('U.cabang',$this->session->userdata('cabang'));
     
     $query = $this->db->join('master_customer B', 'R.id_pengirim = B.id')->get();
+    $result = $query->row();
+    if(isset($result)) return $result->num;
+    return 0;
+  }
+  public function totalPenggunaRS($search, $valid_columns)
+  {
+    $query = $this->db->select("COUNT(*) as num");
+    if(!empty($search))
+      {
+          $x=0;
+          foreach($valid_columns as $sterm)
+          {
+              if($x==0)
+              {
+                  $this->db->like($sterm,$search);
+              }
+              else
+              {
+                  $this->db->or_like($sterm,$search);
+              }
+              $x++;
+          }                 
+      }
+    $this->db->from("tb_routingslip R");
+    // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
+    $this->db->join('master_customer A', 'R.id_penerima = A.id');
+    $this->db->join('master_customer B', 'R.id_pengirim = B.id');
+    $this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
+    $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
+    $this->db->where('U.cabang',$this->session->userdata('cabang'));
+    $query = $this->db->where('I.id_routing', NULL)->get();
+    
     $result = $query->row();
     if(isset($result)) return $result->num;
     return 0;

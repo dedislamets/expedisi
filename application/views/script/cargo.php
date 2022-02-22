@@ -136,7 +136,14 @@
 				$("#phone1").val('');
 				$("#phone2").val('');
 				$("#tipe").val('');
-		    }
+		    },
+		    modalbarang(event){
+		    	$('#ModalAdd').modal({backdrop: 'static', keyboard: false}) ;
+		    },
+		    getBarang: function(){
+		    	var that = this;
+		    	$.get('barang/get', null, function(data){});
+		    },
         }
     });
 
@@ -328,6 +335,34 @@
         
     });
 
+    $('#btnSubmitBrg').on('click', function (e) {
+		var valid = false;
+    	var sParam = $('#FormAdd').serialize();
+    	var validator = $('#FormAdd').validate({
+							rules: {
+									nama_barang: {
+							  			required: true
+									}
+								}
+							});
+	 	validator.valid();
+	 	$status = validator.form();
+	 	if($status) {
+	 		var link = 'barang/Save';
+	 		$.post(link,sParam, function(data){
+				if(data.error==false){	
+					alert('ok');	
+					$('#ModalAdd').modal('hide') ;						
+				}else{	
+					$("#lblMessage").remove();
+					$("<div id='lblMessage' class='alert alert-danger' style='display: inline-block;float: left;width: 68%;padding: 10px;text-align: left;'><strong><i class='ace-icon fa fa-times'></i> "+data.msg+"!</strong></div>").appendTo(".modal-footer");
+											  					  	
+				}
+			},'json');
+	 	}
+        
+    });
+
 	$('#btnAdd').on('click', function (event) {
 		event.preventDefault();
 		var nomor = $('#tbody-table tr:nth-last-child(1) td:first-child').html();
@@ -494,29 +529,29 @@
 		}
 	}
 
-	$( "#nama_barang" ).autocomplete({
-      // source: "<?php echo site_url('Connote/get_autocomplete/?');?>"
-      	source: function( request, response ) {
-          $.ajax({
-            url: "<?=base_url()?>Connote/get_autocomplete",
-            type: 'get',
-            dataType: "json",
-            data: {
-              term: request.term
-            },
-            success: function( data ) {
-              response( data );
-            }
-          });
-        },
-        select: function (event, ui) {
-          $('#nama_barang').val(ui.item.label); // display the selected text
-          $('#kode_barang').val(ui.item.value); 
-          $('#berat_barang').val(ui.item.berat_barang);
-          $('#satuan').val(ui.item.satuan);
-          return false;
-        }
-    })
+	// $( "#nama_barang" ).autocomplete({
+ //      source: "<?php echo site_url('Connote/get_autocomplete/?');?>"
+ //      	source: function( request, response ) {
+ //          $.ajax({
+ //            url: "<?=base_url()?>Connote/get_autocomplete",
+ //            type: 'get',
+ //            dataType: "json",
+ //            data: {
+ //              term: request.term
+ //            },
+ //            success: function( data ) {
+ //              response( data );
+ //            }
+ //          });
+ //        },
+ //        select: function (event, ui) {
+ //          $('#nama_barang').val(ui.item.label); // display the selected text
+ //          $('#kode_barang').val(ui.item.value); 
+ //          $('#berat_barang').val(ui.item.berat_barang);
+ //          $('#satuan').val(ui.item.satuan);
+ //          return false;
+ //        }
+ //    })
 
     $('#btn-finish-float').on('click', function (event) {
     	event.preventDefault();

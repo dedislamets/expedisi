@@ -446,7 +446,7 @@
 									</tr>
 									<tr>
 										<td>
-											<?= empty($data) ? "" : $data['site_name'] ?>
+											<?= empty($data) ? "" : $data['nama_pengirim'] ?>
 										</td>
 										<td>
 											<?= empty($data) ? "" : $data['nama_penerima'] ?>

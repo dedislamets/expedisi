@@ -271,7 +271,7 @@ class Cargo extends CI_Controller {
 	    }else{
         $data['CreatedDate'] = date('Y-m-d H:i:s');
         $data['CreatedBy'] = $recLogin;
-        if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) && !empty($this->input->post('pickup_address') )){
+        if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) /*&& !empty($this->input->post('pickup_address')  )*/){
           $data['status'] = 'PICKUP';
         }
 
@@ -347,7 +347,7 @@ class Cargo extends CI_Controller {
               $this->db->insert('tb_routingslip_history', $data);
               $response['error']= FALSE;
 
-              if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) && !empty($this->input->post('pickup_address') )){
+              if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) /*&& !empty($this->input->post('pickup_address') )*/){
 
                   $data_hist = array();
                   $data_hist['remark'] = 'Barang sudah dipickup';
