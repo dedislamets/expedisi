@@ -141,7 +141,15 @@
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" style="font-weight: bold;">NO ROUTING</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="nomor_rs" name="nomor_rs" value="<?= empty($data) ? "" : $data['no_routing'] ?>" required :readonly="last_status == 'DITERIMA'">
+                <div class="input-group input-group-button" style="margin-bottom: 0">
+                  <div class="input-group-prepend" @click="gantitipe">
+                    <span class="input-group-text btn btn-primary" id="basic-addon9">
+                      <span class="" >{{ tipe_routing }}</span>
+                      <input type="hidden" name="mod_no_routing" id="mod_no_routing" v-model="tipe_routing">
+                    </span>
+                  </div>
+                  <input type="text" class="form-control" id="nomor_rs" name="nomor_rs" value="<?= empty($data) ? $no_routing : $data['no_routing'] ?>" style="height: auto;" required :readonly="last_status == 'DITERIMA' || tipe_routing=='Auto'">
+                </div>
               </div>
             </div>
             
@@ -600,7 +608,12 @@
               <div class="card z-depth-0">
                 <div class="card">
                   <div class="card-block">
-                    
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label" style="font-weight: bold;">REQUESTOR</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="requestor" name="requestor" value="<?= empty($data) ? "" : $data['requestor'] ?>" >
+                      </div>
+                    </div>
                     <div class="form-group row">
                       <label class="col-sm-2 col-form-label" style="font-weight: bold;">TGL PICKUP</label>
                       <div class="col-sm-4">

@@ -327,7 +327,7 @@
                               <th>
                                 No
                               </th>
-                              <th style="display: none;">
+                              <th>
                                 Aksi
                               </th>
                               <th>

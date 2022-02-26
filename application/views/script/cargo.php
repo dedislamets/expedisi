@@ -20,9 +20,19 @@
         	last_status:'<?= empty($data) ? "INPUT" : $data['status'] ?>',
         	moda_kat:'<?= empty($data) ? "" : $data['id_moda_kat'] ?>',
         	history: [],
-        	opsi:''
+        	opsi:'',
+        	tipe_routing: '<?= empty($data) ? "Auto" : $data['mod_no_routing'] ?>'
         },
         methods: {
+        	gantitipe(){
+        		if($("#role").val() =='1' && this.mode == 'new'){
+	        		if(this.tipe_routing == 'Auto'){
+	        			this.tipe_routing = 'Manual';
+	        		}else{
+	        			this.tipe_routing = 'Auto';
+	        		}
+        		}
+        	},
         	dropzone: function(){
 		    	var that = this;
 		    	var foto_upload= new Dropzone("#dropzone",{
@@ -144,6 +154,7 @@
 		    	var that = this;
 		    	$.get('barang/get', null, function(data){});
 		    },
+	
         }
     });
 
@@ -217,7 +228,17 @@
 		]
 
     });
-
+    $('input').keydown( function(e) {
+        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+        if(key == 13) {
+            e.preventDefault();
+            var inputs = $(this).closest('form').find(':input:visible');
+            inputs.eq( inputs.index(this)+ 1 ).focus();
+        }
+    });
+    $('#project').change(function(){
+    	setTimeout(function() { $("#nomor_spk").focus()}, 500);
+    })
 	$(".btnAddPengirim").on('click', function (event) {
 		app.clearCust();
 		$("#tipe").val('pengirim');

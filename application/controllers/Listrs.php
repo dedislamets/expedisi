@@ -188,6 +188,8 @@ class Listrs extends CI_Controller {
           2=>'nama_project',
           3=>'B.cust_name',
           4=>'A.cust_name',
+          5=>'R.nama_penerima',
+          6=>'R.nama_pengirim',
           // 5=>'moda_name',
           // 6=>'R.status',
       );
@@ -197,9 +199,12 @@ class Listrs extends CI_Controller {
           2=>'nama_project',
           3=>'B.cust_name',
           4=>'A.cust_name',
+          5=>'R.nama_penerima',
+          6=>'R.nama_pengirim',
           // 5=>'moda_name',
           // 6=>'R.status',
       );
+      $this->db->order_by('R.CreatedDate DESC');
       if(!isset($valid_sort[$col]))
       {
           $order = null;
@@ -231,19 +236,22 @@ class Listrs extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("A.`cust_name` penerima,B.`cust_name` pengirim,R.*, spk_no,nama_project");
+      $this->db->select("DISTINCT CASE WHEN R.nama_penerima IS NULL THEN A.cust_name ELSE R.nama_penerima END penerima, 
+CASE WHEN R.nama_pengirim IS NULL THEN B.cust_name ELSE R.nama_pengirim END pengirim,R.*, spk_no,nama_project", FALSE);
       $this->db->from("tb_routingslip R");
-      // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
-      $this->db->join('master_customer A', 'R.id_penerima = A.id');
-      $this->db->join('master_customer B', 'R.id_pengirim = B.id');
+      $this->db->join('tb_routingslip_detail S', 'S.id_routing=R.id');
+      $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
+      $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
       $this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
+      $this->db->join('tb_invoice_detail J', 'J.id_routing_detail=S.id AND J.id_routing=S.id_routing','left');
       $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
       $this->db->where('U.cabang',$this->session->userdata('cabang'));
-      $this->db->where('I.id_routing', NULL);
+      $this->db->where('(I.id_routing IS NULL OR J.id_routing_detail IS NULL)');
       // $this->db->where('I.status <>', "DITERIMA");
       if(!empty($this->input->get('r',true))){
         $this->db->where_not_in('R.id', explode(",", $this->input->get('r',true)));
       }
+
       $pengguna = $this->db->get();
       // print("<pre>".print_r($this->db->last_query(),true)."</pre>");exit();
 
@@ -419,7 +427,7 @@ class Listrs extends CI_Controller {
   }
   public function totalPenggunaRS($search, $valid_columns)
   {
-    $query = $this->db->select("COUNT(*) as num");
+    $query = $this->db->select("COUNT(DISTINCT R.no_routing) as num");
     if(!empty($search))
       {
           $x=0;
@@ -437,13 +445,14 @@ class Listrs extends CI_Controller {
           }                 
       }
     $this->db->from("tb_routingslip R");
-    // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
-    $this->db->join('master_customer A', 'R.id_penerima = A.id');
-    $this->db->join('master_customer B', 'R.id_pengirim = B.id');
+    $this->db->join('tb_routingslip_detail S', 'S.id_routing=R.id');
+    $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
+    $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
     $this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
+    $this->db->join('tb_invoice_detail J', 'J.id_routing_detail=S.id AND J.id_routing=S.id_routing','left');
     $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
     $this->db->where('U.cabang',$this->session->userdata('cabang'));
-    $query = $this->db->where('I.id_routing', NULL)->get();
+    $query = $this->db->where('(I.id_routing IS NULL OR J.id_routing_detail IS NULL)')->get();
     
     $result = $query->row();
     if(isset($result)) return $result->num;

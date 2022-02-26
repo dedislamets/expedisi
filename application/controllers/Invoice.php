@@ -202,7 +202,10 @@ class Invoice extends CI_Controller {
     {
       $id= $this->input->get("id");
       $data['data'] = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
-      $data['data_detail'] = $this->admin->get_result_array('tb_routingslip_detail',array( 'id_routing' => $id));
+      $data['data_detail'] = $this->db->query('SELECT A.* 
+                              FROM tb_routingslip_detail A
+                              LEFT JOIN tb_invoice_detail B ON A.id=B.id_routing_detail
+                              WHERE A.id_routing = '. $id .' AND B.id_routing_detail IS NULL')->result_array();
       $data['data_biaya'] = $this->admin->get_result_array('tb_routingslip_biaya',array( 'id_routing' => $id));
       $data['data']['pengirim']= $this->admin->get_row('master_customer',array( 'id' => $data['data']['id_pengirim']),'cust_name');
       $data['data']['penerima']= $this->admin->get_row('master_customer',array( 'id' => $data['data']['id_penerima']),'cust_name');
@@ -370,6 +373,7 @@ class Invoice extends CI_Controller {
                 unset($data);
                 $data['id_invoice'] = $this->input->post('id_invoice');
                 $data['id_routing'] = $this->input->post('id_routing_item'.$i,TRUE);
+                $data['id_routing_detail'] = $this->input->post('id_detail'.$i,TRUE);
                 $data['id_barang'] = $this->input->post('kode'.$i,TRUE);
                 $data['qty'] = $this->input->post('qty_'.$i,TRUE);
                 $data['kg'] = $this->input->post('kg_'.$i,TRUE);
@@ -433,6 +437,7 @@ class Invoice extends CI_Controller {
                   unset($data);
                   $data['id_invoice'] = $last_id;
                   $data['id_routing'] = $this->input->post('id_routing_item'.$i,TRUE);
+                  $data['id_routing_detail'] = $this->input->post('id_detail'.$i,TRUE);
                   $data['id_barang'] = $this->input->post('kode'.$i,TRUE);
                   $data['qty'] = $this->input->post('qty_'.$i,TRUE);
                   $data['kg'] = $this->input->post('kg_'.$i,TRUE);
@@ -521,6 +526,17 @@ class Invoice extends CI_Controller {
     $response = [];
     $response['error'] = TRUE; 
     if($this->admin->deleteTable("id",$this->input->get('id'), 'tb_invoice_opt_charge' )){
+      $response['error'] = FALSE;
+    } 
+
+    $this->output->set_content_type('application/json')->set_output(json_encode($response)); 
+  }
+
+  public function deleteitem()
+  {
+    $response = [];
+    $response['error'] = TRUE; 
+    if($this->admin->deleteTable("id",$this->input->get('id'), 'tb_invoice_item' )){
       $response['error'] = FALSE;
     } 
 

@@ -32,6 +32,20 @@ class Cargo extends CI_Controller {
       $data['project'] = $this->admin->getmaster('tb_project');
       // $data['barang'] = $this->admin->getmaster('barang');
 
+      $last = $this->admin->get_num_rows('tb_routingslip');
+
+      $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) ORDER BY CreatedDate DESC LIMIT 1")->result();
+      if(empty($count)){
+        $last_no = '001';      
+      }else{
+
+        $last_no = $count[0]->no_routing;
+        $last_no = explode("-", $last_no);
+        $last_no = str_pad(($last_no[2]+1), 3, '0', STR_PAD_LEFT);
+      }
+      
+      $data['no_routing'] = "FH-" . date("Y") . date("m") . "-". $last_no;
+
       $moda = $this->db->query("SELECT A.moda_name,A.moda_img, B.moda_kategori,C.* FROM tb_moda A
               INNER JOIN tb_moda_kat B ON A.id=B.id_moda
               INNER JOIN tb_moda_sub C ON B.id=C.id_moda_kat");
@@ -71,7 +85,8 @@ class Cargo extends CI_Controller {
     	$arr_par = array('id' => $this->input->post('id_rs'));
 
       $data['no_routing'] = $this->input->post('nomor_rs');
-      // $data['id_spk'] = $this->input->post('id_spk');
+      $data['mod_no_routing'] = $this->input->post('mod_no_routing');
+      $data['requestor'] = $this->input->post('requestor');
 
       $data['id_moda'] = $this->input->post('moda_tran');
       $data['id_moda_kat'] = $this->input->post('moda_kat');
