@@ -758,6 +758,163 @@
 						
 					</table>
 				</div>
+			<? } elseif ($page == "sj") { ?>
+				<style type="text/css">
+					#page-wrap {
+					    width: 1000px;
+					}
+				</style>
+				<div class="row">
+					<table style="width: 100%; margin-bottom: 10px">
+						<tr>
+							<td style="padding: 10px;border-bottom: none;padding-bottom: 0">
+								<table class="table" style="margin-bottom:10px;margin-top: 10px;">
+									<tr>
+										<td width="35%" style="border-right: none;">
+											<div style="font-weight: bold;font-size: 18px;">
+												Nomor Surat Jalan / Delivery Order (DO) :
+											</div> 
+										</td>
+										<td width="65%" style="text-align: right;border-left: none;font-weight: bold;">
+											PT WAHANA MULTI LOGISTIK<br>
+											Graha Setiawan - Jl Kemang Raya No. 52 Jati Cempaka, Pondok Gede - Bekasi 17411<br>
+											Phone:02184998777 | Fax: 02184994046 | Email: herwinda_winda@wahanamulti.com | Website: www.wmlogistics.co.id
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" style="padding: 0">
+											<table style="width: 100%">
+												<tr>
+													<td width="15%" >
+														<img src="<?= base_url(); ?>assets\images\cropped-logo-wml-180x180.png" style="height: 120px;width: 150px;border: solid 1px;padding: 10px;">
+													</td>
+													<td width="85%" style="padding: 0">
+														<table style="width: 100%">
+															<tr>
+																<td style="padding: 5px">
+																	<h1 style="text-align: center;font-size: 24px;font-weight: bold;">SURAT JALAN / DELIVERY ORDER (DO)</h1>
+																</td>
+															</tr>
+															<tr>
+																<td class="no-border" style="padding: 0;">
+																	<table style="width: 100%">
+																		<tr>
+																			<td style="border-left: none;border-bottom: none;border-top: none;">Penerima, Kepada Yth: <br>
+																				<div style="font-weight: bold;font-size: 20px;"><?= empty($data) ? "" : $data['nama_penerima'] ?></div>
+																			</td>
+																			<td class="no-border" style="padding: 0">
+																				<table style="width: 100%">
+																					<tr>
+																						<td style="text-align: center;padding: 5px;font-weight: bold;">Tanggal</td>
+																					</tr>
+																					<tr>
+																						<td style="height: 68px;text-align: center;">
+																							<?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['CreatedDate']))) ?>
+																						</td>
+																					</tr>
+																				</table>
+																			</td>
+																		</tr>
+																	</table>
+																</td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+												<tr>
+													<td colspan="2">
+														<table style="width: 100%">
+															<tr>
+																<td style="width: 15%; height: 70px;font-weight: bold;">
+																	Nota Pengadaan
+																</td>
+																<td style="width: 55%">Pengirim: <br>
+																	<div style="font-weight: bold;font-size: 20px;"><?= empty($data) ? "" : $data['nama_pengirim'] ?></div>
+																</td>
+																<td style="width: 30%">
+																	Nopol Kendaraan: <?= empty($data) ? "" : $data['no_kendaraan'] ?><br>
+																	Nama Supir: <?= empty($data) ? "" : $data['driver'] ?><br>
+																	No Hp Supir: <?= empty($data) ? "" : $data['agent_hp'] ?><br>
+																</td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+											</table>
+										</td>
+										
+									</tr>
+								</table>
+								<table style="width: 100%">
+									<tr>
+										<td style="font-weight: bold;">Jenis Moda Transportasi</td>
+										<td style="font-weight: bold;">Jenis Barang *</td>
+										<td style="width: 30%;font-weight: bold;">Nama Barang</td>
+										<td style="width: 10%;font-weight: bold;">Jumlah Brg</td>
+										<td style="width: 5%;font-weight: bold;">Satuan</td>
+									</tr>
+									<tr>
+										<td style="width: 17%;text-align: center;"><?= $moda['moda_name'] ?></td>
+										<td style="width: 10%;text-align: center;">(NTE / MATERIAL / ALKER / SARKER)</td>
+										<td colspan="3" style="padding: 0">
+											<table style="width: 100%">
+												<?php 
+													$urut=1;
+				                                  	foreach($data_detail as $row) : ?>
+				                                  		<tr>
+															<td style="width: 29%"><?= $row['nama_barang'] ?></td>
+															<td style="width: 9.7%"><?= $row['qty'] ?></td>
+															<td style="width: 5.2%"><?= $row['satuan'] ?></td>
+														</tr>				                                  		
+				                                <?php
+				                                  	$urut++;
+				                                  	endforeach;
+				                                ?>
+												
+
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="5">&nbsp;</td>
+									</tr>
+									<tr>
+										<td colspan="5" style="padding: 0">
+											<table style="width: 100%">
+												<tr>
+													<td style="text-align: center;width: 35%;font-weight: bold;">PT. WAHANA MULTI LOGISTIK</td>
+													<td style="text-align: center;width: 30%;font-weight: bold;">PENGIRIM (SUPPLIER/TELKOM AKSES)</td>
+													<td style="text-align: center;width: 40%;font-weight: bold;">PENERIMA</td>
+												</tr>
+												<tr>
+													<td style="padding-top: 80px;">
+														Nama : <br>
+														NIK/Jabatan : <br>
+														Tanggal : 
+													</td>
+													<td style="padding-top: 80px;">
+														Nama : <br>
+														NIK/Jabatan : <br>
+														Tanggal : 
+													</td>
+													<td style="padding-top: 80px;">
+														Nama : <br>
+														NIK/Jabatan : <br>
+														Tanggal : 
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td style="border-top: none;font-style: italic;">* Pilih salah satu</td>
+						</tr>
+					</table>
+					
+				</div>
 			<? } ?>
 		</div>
 	</body>

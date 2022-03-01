@@ -118,12 +118,14 @@
       <div class="card z-depth-0">
         <div class="card-header" style="">
           <div class="row">
-              <div class="col-xl-6">
+              <div class="col-xl-4">
                   <h4 style="font-weight: bold;"><?= $title ?> <a href="<?= base_url() ?>listrs"> Back </a></h4>
-                  <span style="font-weight: bold;">Halaman ini menampilkan data connote yang tersimpan</span>
               </div>
               <div class="col-xl-2" >
-                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/rs?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetak" class="btn btn-inverse btn-outline-inverse btn-block" target="_blank">  <i class="icofont icofont-print" ></i>Cetak</a>
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sj?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="btn btn-inverse btn-outline-inverse btn-block" target="_blank">  <i class="icofont icofont-print" ></i>Surat Jalan</a>
+              </div>
+              <div class="col-xl-2" >
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/rs?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetak" class="btn btn-inverse btn-outline-inverse btn-block" target="_blank">  <i class="icofont icofont-print" ></i>Routing Slip</a>
               </div>
               <div class="col-xl-2" >
                 <a v-if="mode == 'edit'" href="<?= base_url() ?>trace/view/<?= empty($data) ? "" : $data['id'] ?>" id="btnTracking" class="btn btn-inverse btn-outline-inverse btn-block">  <i class="icofont icofont-long-drive" ></i>Tracking</a>
