@@ -857,7 +857,7 @@
 										<td style="width: 17%;text-align: center;"><?= $moda['moda_name'] ?></td>
 										<td style="width: 10%;text-align: center;">(NTE / MATERIAL / ALKER / SARKER)</td>
 										<td colspan="3" style="padding: 0">
-											<table style="width: 100%">
+											<table style="width: 100%;min-height: 49px;">
 												<?php 
 													$urut=1;
 				                                  	foreach($data_detail as $row) : ?>
