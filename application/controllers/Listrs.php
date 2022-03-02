@@ -402,7 +402,7 @@ class Listrs extends CI_Controller {
   }
   public function totalPengguna($search, $valid_columns)
   {
-    $query = $this->db->select("COUNT(*) as num");
+    $query = $this->db->select("COUNT(DISTINCT no_routing) as num");
     if(!empty($search))
       {
           $x=0;
@@ -421,8 +421,8 @@ class Listrs extends CI_Controller {
       }
     $this->db->from("tb_routingslip R");
     // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
-    // $this->db->join('master_customer A', 'R.id_penerima = A.id');
-    // $this->db->join('master_customer B', 'R.id_pengirim = B.id')
+    $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
+    $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
     $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
     $query = $this->db->where('U.cabang',$this->session->userdata('cabang')) ->get();
     
