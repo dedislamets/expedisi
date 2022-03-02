@@ -19,10 +19,10 @@ class Cabang extends CI_Controller {
 
 			$this->load->view('home',$data,FALSE); 
 
-        }else{
-            redirect("login");
+    }else{
+        redirect("login");
 
-        }				  
+    }				  
 						
 	}
 

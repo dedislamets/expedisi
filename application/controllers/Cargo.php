@@ -43,8 +43,8 @@ class Cargo extends CI_Controller {
         $last_no = explode("-", $last_no);
         $last_no = str_pad(($last_no[2]+1), 3, '0', STR_PAD_LEFT);
       }
-      
-      $data['no_routing'] = "FH-" . date("Y") . date("m") . "-". $last_no;
+      $data['no_routing'] = "";
+      // $data['no_routing'] = "FH-" . date("Y") . date("m") . "-". $last_no;
 
       $moda = $this->db->query("SELECT A.moda_name,A.moda_img, B.moda_kategori,C.* FROM tb_moda A
               INNER JOIN tb_moda_kat B ON A.id=B.id_moda
@@ -69,6 +69,51 @@ class Cargo extends CI_Controller {
     }				  
 						
 	}
+
+  public function getPrefixAuto()
+  {
+    $prefix = $this->input->get('prefix');
+    $last = $this->admin->get_num_rows('tb_routingslip');
+
+    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) ORDER BY CreatedDate DESC LIMIT 1")->result();
+    if(empty($count)){
+      $last_no = '001';      
+    }else{
+
+      $last_no = $count[0]->no_routing;
+      $last_no = explode("-", $last_no);
+      $last_no = str_pad(($last_no[2]+1), 3, '0', STR_PAD_LEFT);
+    }
+    $pref="";
+    if($prefix == "Bali Tower"){
+      $pref = "BTS";
+    }elseif ($prefix == "FIBERHOME") {
+      $pref = "FH";
+    }elseif ($prefix == "TA Material HO") {
+      $pref = "TA";
+    }elseif ($prefix == "TA Material Kalimantan") {
+      $pref = "TA";
+    }elseif ($prefix == "TA Material KTI") {
+      $pref = "TA";
+    }elseif ($prefix == "TA Material Surabaya") {
+      $pref = "TA";
+    }elseif ($prefix == "TA NTE") {
+      $pref = "TA";
+    }elseif ($prefix == "TA TAG") {
+      $pref = "TA";
+    }elseif ($prefix == "Telkom Indonesia Consumer") {
+      $pref = "TIC";
+    }elseif ($prefix == "Telkom Indonesia") {
+      $pref = "TI";
+    }
+    
+    $nomor = $pref ."-" . date("Y") . date("m") . "-". $last_no;
+    if($prefix == "") $nomor = "";
+
+    $this->output->set_content_type('application/json')->set_output(json_encode($nomor));
+  }
+
+
 
    
 	public function Header()

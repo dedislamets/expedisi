@@ -275,6 +275,13 @@
 		getZipCode($('#kecamatan_penerima option:selected').text(),'zip_penerima',$('#region_penerima option:selected').text());
 	});
 
+	$("#project").change(function(e, params){  
+		 
+		$.get('<?= base_url() ?>cargo/getPrefixAuto' , { prefix	: $(this).val() }, function(data){ 
+			$("#nomor_rs").val(data);
+	    });
+	});
+
 	$("#id_pengirim").change(function(e, params){   
 		$.get('<?= base_url() ?>defaults/getbyid/master_customer/id', { id	: $(this).val() }, function(data){ 
 			$("#nama_pengirim").val(data['cust_name']);			
