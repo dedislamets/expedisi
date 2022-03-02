@@ -242,7 +242,7 @@ class Listrs extends CI_Controller {
 
       $this->db->limit($length,$start);
       $this->db->select("DISTINCT CASE WHEN R.nama_penerima IS NULL THEN A.cust_name ELSE R.nama_penerima END penerima, 
-CASE WHEN R.nama_pengirim IS NULL THEN B.cust_name ELSE R.nama_pengirim END pengirim,R.*, spk_no,nama_project", FALSE);
+      CASE WHEN R.nama_pengirim IS NULL THEN B.cust_name ELSE R.nama_pengirim END pengirim,R.*, spk_no,nama_project", FALSE);
       $this->db->from("tb_routingslip R");
       $this->db->join('tb_routingslip_detail S', 'S.id_routing=R.id');
       $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
@@ -421,11 +421,12 @@ CASE WHEN R.nama_pengirim IS NULL THEN B.cust_name ELSE R.nama_pengirim END peng
       }
     $this->db->from("tb_routingslip R");
     // $this->db->join('tb_spk', 'tb_spk.id = R.id_spk');
-    $this->db->join('master_customer A', 'R.id_penerima = A.id');
+    // $this->db->join('master_customer A', 'R.id_penerima = A.id');
+    // $this->db->join('master_customer B', 'R.id_pengirim = B.id')
     $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
-    $this->db->where('U.cabang',$this->session->userdata('cabang'));
+    $query = $this->db->where('U.cabang',$this->session->userdata('cabang')) ->get();
     
-    $query = $this->db->join('master_customer B', 'R.id_pengirim = B.id')->get();
+    
     $result = $query->row();
     if(isset($result)) return $result->num;
     return 0;
