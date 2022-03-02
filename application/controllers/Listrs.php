@@ -110,8 +110,8 @@ class Listrs extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("CASE WHEN R.nama_penerima IS NULL THEN A.cust_name ELSE R.nama_penerima END penerima, 
-                CASE WHEN R.nama_pengirim IS NULL THEN B.cust_name ELSE R.nama_pengirim END pengirim,R.*, spk_no,nama_project",FALSE);
+      $this->db->select("CASE WHEN IFNULL(R.nama_penerima,'')='' THEN A.cust_name ELSE R.nama_penerima END penerima, 
+                CASE WHEN IFNULL(R.nama_pengirim,'')='' THEN B.cust_name ELSE R.nama_pengirim END pengirim,R.*, spk_no,nama_project",FALSE);
       $this->db->from("tb_routingslip R");
       $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
       $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
@@ -241,8 +241,8 @@ class Listrs extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("DISTINCT CASE WHEN R.nama_penerima IS NULL THEN A.cust_name ELSE R.nama_penerima END penerima, 
-      CASE WHEN R.nama_pengirim IS NULL THEN B.cust_name ELSE R.nama_pengirim END pengirim,R.*, spk_no,nama_project", FALSE);
+      $this->db->select("DISTINCT CASE WHEN IFNULL(R.nama_penerima,'')='' THEN A.cust_name ELSE R.nama_penerima END penerima, 
+      CASE WHEN IFNULL(R.nama_pengirim,'')='' THEN B.cust_name ELSE R.nama_pengirim END pengirim,R.*, spk_no,nama_project", FALSE);
       $this->db->from("tb_routingslip R");
       $this->db->join('tb_routingslip_detail S', 'S.id_routing=R.id');
       $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
