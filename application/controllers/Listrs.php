@@ -64,6 +64,8 @@ class Listrs extends CI_Controller {
           5=>'nama_penerima',
           6=>'moda_name',
           7=>'R.status',
+          8=>'A.cust_name',
+          9=>'B.cust_name',
       );
       $valid_sort = array(
           0=>'no_routing',
@@ -74,6 +76,8 @@ class Listrs extends CI_Controller {
           5=>'nama_penerima',
           6=>'moda_name',
           7=>'R.status',
+          8=>'A.cust_name',
+          9=>'B.cust_name',
       );
       if(!isset($valid_sort[$col]))
       {
@@ -106,10 +110,11 @@ class Listrs extends CI_Controller {
       }
 
       $this->db->limit($length,$start);
-      $this->db->select("nama_penerima penerima,`nama_pengirim` pengirim,R.*, spk_no,nama_project");
+      $this->db->select("CASE WHEN R.nama_penerima IS NULL THEN A.cust_name ELSE R.nama_penerima END penerima, 
+                CASE WHEN R.nama_pengirim IS NULL THEN B.cust_name ELSE R.nama_pengirim END pengirim,R.*, spk_no,nama_project",FALSE);
       $this->db->from("tb_routingslip R");
-      // $this->db->join('master_customer A', 'R.id_penerima = A.id');
-      // $this->db->join('master_customer B', 'R.id_pengirim = B.id');
+      $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
+      $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
       $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
       $this->db->where('U.cabang',$this->session->userdata('cabang'));
       $pengguna = $this->db->get();

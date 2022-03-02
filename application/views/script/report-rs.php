@@ -14,7 +14,7 @@
 		{
 			var start = $("#from_tanggal").val();
 	        var end = $("#to_tanggal").val();
-	        var sa = window.open('reportrs/export?from=' + start + '&to=' + end + '&c=' + $("#project").val() ,'_self');
+	        var sa = window.open('reportrs/export?from=' + start + '&to=' + end + '&c=' + $("#project").val()+ '&req=' + $("#requestor").val() ,'_self');
 			
 		})
 	})

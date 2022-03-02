@@ -21,7 +21,7 @@
                 <div class="card-header" style="padding: 10px 20px;">
                 </div>
                 <div class="card-block panels-wells">
-                    <div class="form-group row m-b-0">
+                    <div class="form-group row">
                         <label class="col-sm-1 col-form-label f-w-700">Project</label>
                         <div class="col-sm-3">
                             <select name="project" id="project" class="js-example-basic-single form-control">
@@ -46,6 +46,20 @@
                             <button class="btn btn-success btn-block btn-round" id="btnExport"><i class="icofont icofont-download"></i> Download</button>
                         </div>
 
+                    </div>
+                    <div class="form-group row m-b-0">
+                        <label class="col-sm-1 col-form-label f-w-700">Requestor</label>
+                        <div class="col-sm-3">
+                            <select name="requestor" id="requestor" class="js-example-basic-single form-control">
+                                <option value="all">Semua</option>
+                                <?php 
+                                  foreach($requestor as $row)
+                                  { 
+                                    echo '<option value="'.$row->requestor.'">'.$row->requestor.'</option>';
+                                  }
+                                ?>
+                            </select>
+                        </div>
                     </div>
                 </div>
               </div>                        
