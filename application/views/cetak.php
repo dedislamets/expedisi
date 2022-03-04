@@ -809,7 +809,7 @@
 																					</tr>
 																					<tr>
 																						<td style="height: 68px;text-align: center;">
-																							<?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['CreatedDate']))) ?>
+																							<?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['tgl_spk']))) ?>
 																						</td>
 																					</tr>
 																				</table>

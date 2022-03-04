@@ -212,7 +212,7 @@ class Trace extends CI_Controller {
       $data = array(
           'driver'   => $this->input->post('driver'),
           'no_kendaraan'  => $this->input->post('nomor_plat'),
-          'pickup_address' => $this->input->post('pickup_address'),
+          // 'pickup_address' => $this->input->post('pickup_address'),
           'status'        => 'PICKUP',
           'pickup_date' => date('Y-m-d'),
           'pickup_time' => date('H:i:s'),

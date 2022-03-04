@@ -14,7 +14,7 @@
           <div class="card">
             <div class="card-block">
 
-              <div id="your-location" class="col-sm-12 <?= ($this->session->userdata('role_id') ==  1 ? "" : "hidden") ?>" style="height: 300px;margin-bottom: 10px;"></div>
+              <div id="your-location" class="col-sm-12 <?= ($this->session->userdata('role_id') ==  1 ? "" : "hidden") ?>" style="margin-bottom: 10px;"></div>
               <input type="hidden" name="lat" id="lat">
               <input type="hidden" name="long" id="long">
               <input type="hidden" name="id_rs" id="id_rs" :value="id">
@@ -47,12 +47,12 @@
                     <input class="form-control" type="date" id="pickup_date" name="pickup_date" value="<?php echo date('Y-m-d'); ?>" disabled />
                   </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                   <label class="col-sm-2 col-form-label" style="font-weight: bold;">PICKUP ADDRESS</label>
                   <div class="col-sm-10">
                     <textarea rows="5" cols="5" class="form-control" id="pickup_address" name="pickup_address" placeholder="Masukkan alamat pickup" style="height: auto;"></textarea>
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group row" v-if="last_status == 'INPUT'">
                   <label class="col-sm-2 col-form-label" style="font-weight: bold;">NOMOR KENDARAAN</label>
                   <div class="col-sm-10">

@@ -283,9 +283,6 @@
     	var sParam = $('#formPickup').serialize();
     	var validator = $('#formPickup').validate({
 							rules: {
-									pickup_address: {
-							  			required: true
-									},
 									nomor_plat: {
 							  			required: true
 									},
