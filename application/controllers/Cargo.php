@@ -75,7 +75,7 @@ class Cargo extends CI_Controller {
     $prefix = $this->input->get('prefix');
     $last = $this->admin->get_num_rows('tb_routingslip');
 
-    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) ORDER BY CreatedDate DESC LIMIT 1")->result();
+    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and mod_no_routing='Auto' ORDER BY CreatedDate DESC LIMIT 1")->result();
     if(empty($count)){
       $last_no = '001';      
     }else{
@@ -113,7 +113,23 @@ class Cargo extends CI_Controller {
     $this->output->set_content_type('application/json')->set_output(json_encode($nomor));
   }
 
+  public function getPrefixAutoNext($no)
+  {
+    $prefix = "";
+    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and mod_no_routing='Auto' ORDER BY CreatedDate DESC LIMIT 1")->result();
+    if(empty($count)){
+      $last_no = '001';      
+    }else{
 
+      $last_no = $count[0]->no_routing;
+      $last_no = explode("-", $last_no);
+      $prefix = $last_no[0];
+      $last_no = str_pad(($last_no[2]+1), 3, '0', STR_PAD_LEFT);
+    }
+    
+    $nomor = $prefix ."-" . date("Y") . date("m") . "-". $last_no;
+    return $nomor;
+  }
 
    
 	public function Header()
@@ -130,6 +146,7 @@ class Cargo extends CI_Controller {
     	$arr_par = array('id' => $this->input->post('id_rs'));
 
       $data['no_routing'] = $this->input->post('nomor_rs');
+
       $data['mod_no_routing'] = $this->input->post('mod_no_routing');
       $data['requestor'] = $this->input->post('requestor');
 
@@ -329,13 +346,18 @@ class Cargo extends CI_Controller {
               }
 	        }
 	    }else{
+        $exist=$this->db->get_where('tb_routingslip',array('no_routing'=>$data['no_routing']));
+        if($exist->num_rows()>0){
+          $data['no_routing'] = $this->getPrefixAutoNext($data['no_routing']);
+        }
+
         $data['CreatedDate'] = date('Y-m-d H:i:s');
         $data['CreatedBy'] = $recLogin;
         if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) /*&& !empty($this->input->post('pickup_address')  )*/){
           $data['status'] = 'PICKUP';
         }
 
-        $result_header = $this->admin->getmaster('tb_routingslip',array('no_routing' => $this->input->post('nomor_rs')));
+        $result_header = $this->admin->getmaster('tb_routingslip',array('no_routing' => $data['no_routing']));
         if($result_header){
           $response['error']= TRUE;
           $response['message'] = "Nomor Routing Slip tidak boleh duplikat !";
