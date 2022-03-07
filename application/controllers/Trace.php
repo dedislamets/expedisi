@@ -215,6 +215,7 @@ class Trace extends CI_Controller {
           // 'pickup_address' => $this->input->post('pickup_address'),
           'status'        => 'PICKUP',
           'pickup_date' => date('Y-m-d'),
+          'etd_pickup' => date("Y-m-d", strtotime($this->input->post('etd_pickup'))),
           'pickup_time' => date('H:i:s'),
                       
       );

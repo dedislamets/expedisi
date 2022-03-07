@@ -94,7 +94,7 @@
                                     
                                 </div>
                                 <div class="col-sm-2">
-                                    <button id="edit-btn" type="button" class="btn btn-block btn-primary waves-effect waves-light f-right">
+                                    <button id="edit-btn" type="button" class="btn btn-block btn-primary waves-effect waves-light f-right hidden">
                                        Lihat Barang
                                     </button>    
                                 </div>
@@ -174,10 +174,10 @@
                                                     <div class="col-sm-6">
                                                       <p style="font-style: italic">{{ log.remark }}</p>
                                                       <p class="m-b-0">Updated by: {{ log.created_by }}</p>
-                                                      <p :id="'address' + log.id" v-if="log.latitude != null" class="lokasi-address <?= ($this->session->userdata('role_id') ==  1 ? "" : "hidden") ?>"></p>
+                                                      <!-- <p :id="'address' + log.id" v-if="log.latitude != null" class="lokasi-address <?= ($this->session->userdata('role_id') ==  1 ? "" : "hidden") ?>"></p> -->
                                                     </div>
                                                     <div class="col-sm-4 <?= ($this->session->userdata('role_id') ==  1 ? "" : "hidden") ?>">
-                                                      <div class="lokasi" v-if="log.latitude != null" :id="'maps' + log.id"></div>
+                                                      <!-- <div class="lokasi" v-if="log.latitude != null" :id="'maps' + log.id"></div> -->
                                                     </div>
                                                     <div class="col-sm-2">
                                                       <div style="font-size: 1.5rem;padding: 10px;text-align: center;font-weight: bold;">{{ log.status }}</div>

@@ -65,6 +65,12 @@
                     <input type="text" class="form-control" id="driver" name="driver" value="">
                   </div>
                 </div>
+                <div class="form-group row" v-if="last_status == 'INPUT'">
+                  <label class="col-sm-2 col-form-label" style="font-weight: bold;">ETD</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="date" id="etd_pickup" name="etd_pickup" value="<?php echo date('Y-m-d'); ?>"  />
+                  </div>
+                </div>
 
                 <div class="form-group" v-if="status_update == 'DITERIMA'">
                   <div class="sub-title">Upload Dokumen Terkait (Foto, Berita Acara, DO/BO,dll)</div>

@@ -16,7 +16,7 @@
 	    },
 	    updated: function () {
 	    	var that = this;
-	    	that.initialize();
+	    	// that.initialize();
 	    	if(that.status_update == 'DITERIMA'){
       			app.dropzone();
 	    		
@@ -200,7 +200,7 @@
 				$("#tgl_routing").text(data['data']['CreatedDate']);
 
 				$("#attn_pengirim").text(data['data']['attn_pengirim']);
-				$("#nama_pengirim").text(data['data']['pengirim']['cust_name']);
+				$("#nama_pengirim").text(data['data']['nama_pengirim']);
 				$("#alamat_pengirim").text(data['data']['alamat_pengirim']);
 				$("#kota_pengirim").text(data['data']['kota_pengirim']);
 				$("#kec_pengirim").text(data['data']['kec_pengirim']);
@@ -208,7 +208,7 @@
 				$("#hp_pengirim").text(data['data']['hp_pengirim']);
 
 				$("#attn_penerima").text(data['data']['attn_penerima']);
-				$("#nama_penerima").text(data['data']['penerima']['cust_name']);
+				$("#nama_penerima").text(data['data']['nama_penerima']);
 				$("#alamat_penerima").text(data['data']['alamat_penerima']);
 				$("#kota_penerima").text(data['data']['kota_penerima']);
 				$("#kec_penerima").text(data['data']['kec_penerima']);
