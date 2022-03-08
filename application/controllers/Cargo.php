@@ -118,7 +118,7 @@ class Cargo extends CI_Controller {
   public function getPrefixAutoNext($no)
   {
     $prefix = "";
-    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and mod_no_routing='Auto' ORDER BY CreatedDate DESC LIMIT 1")->result();
+    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and mod_no_routing='Auto' ORDER BY id DESC LIMIT 1")->result();
     if(empty($count)){
       $last_no = '001';      
     }else{
