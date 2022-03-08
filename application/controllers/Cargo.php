@@ -99,6 +99,8 @@ class Cargo extends CI_Controller {
       $pref = "TA";
     }elseif ($prefix == "TA NTE") {
       $pref = "TA";
+    }elseif ($prefix == "TA NTE KTI") {
+      $pref = "TA";
     }elseif ($prefix == "TA TAG") {
       $pref = "TA";
     }elseif ($prefix == "Telkom Indonesia Consumer") {
