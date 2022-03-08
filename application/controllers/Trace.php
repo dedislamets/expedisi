@@ -279,6 +279,41 @@ class Trace extends CI_Controller {
     $this->output->set_content_type('application/json')->set_output(json_encode($response));
   }
 
+  public function Serti()
+  {       
+      
+    $response = [];
+    $response['error'] = TRUE; 
+    $response['msg']= "Gagal menyimpan.. Terjadi kesalahan pada sistem";
+    $recLogin = $this->session->userdata('user_id');
+    $data = array();
+    
+    $data['received_doc'] = $this->input->post('tgl_terima_doc');
+    $data['sent_acc'] = $this->input->post('tgl_serah_acc');
+    $data['status'] = 'CLOSED';
+    
+    $this->db->set($data);
+    $this->db->where('id', $this->input->post('id_rs'));
+    $result  =  $this->db->update('tb_routingslip');  
+
+    if(!$result){
+        print("<pre>".print_r($this->db->error(),true)."</pre>");
+    }else{
+        $response['error']= FALSE;
+        unset($data);
+        $data['remark'] = 'Serah Terima';
+        $data['id_routing'] = $this->input->post('id_rs');
+        // $data['latitude'] = $this->input->post('lat');
+        // $data['longitude'] = $this->input->post('long');
+        $data['created_by'] = $this->session->userdata('username');
+        $data['status'] = 'CLOSED';
+
+        $this->db->insert('tb_routingslip_history', $data);
+    }
+                          
+    $this->output->set_content_type('application/json')->set_output(json_encode($response));
+  }
+
   public function get()
   {
     if($this->admin->logged_id())

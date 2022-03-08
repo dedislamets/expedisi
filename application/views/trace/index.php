@@ -149,7 +149,7 @@
     <div class="row" v-if="id != ''">
         <h4 class="info-text" style="margin-top: 30px;padding-left: 10px;">Riwayat Pengiriman
             <button type="button" id="btnPickup" data-toggle="modal" data-target="#large-Modal" class="btn hor-grd btn-grd-inverse" v-if="last_status == 'INPUT'" style="float: right;"><i class="icofont icofont-long-drive" ></i>Atur Pickup</button>
-            <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse" style="float: right;" v-if="last_status != 'INPUT' && last_status != 'DITERIMA'" data-toggle="modal" data-target="#large-Modal"><i class="icofont icofont-long-drive" ></i>Update Status</button>
+            <button type="button" id="btnModa" class="btn hor-grd btn-grd-inverse" style="float: right;" v-if="last_status != 'INPUT' && last_status != 'CLOSED'" data-toggle="modal" data-target="#large-Modal"><i class="icofont icofont-long-drive" ></i>Update Status</button>
         </h4>
         <!-- <div class="col-md-12" id="maps4" style="height: 300px;">Lokasi terakhir update yang diambil dari kordinat google maps</div> -->
         <div class="card z-depth-bottom-1">

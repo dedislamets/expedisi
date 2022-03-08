@@ -298,6 +298,9 @@
 	 		if($(".jdl").text() == "UPDATE STATUS LOKASI"){
 	 			link = '<?= base_url(); ?>trace/Update';
 	 		}
+	 		if($(".jdl").text()== "SERAH TERIMA"){
+	 			link = '<?= base_url(); ?>trace/Serti';
+	 		}
 	 		$.post(link,sParam, function(data){
 				if(data.error==false){	
 					alertOK(window.location.reload());
