@@ -93,8 +93,8 @@
 						<tr class="item-row">
 							<td><?=$urut?></td>
 							<td class="item-name"><?= tgl_indo($row["pickup_date"]) ?></td>
-							<td class="item-name"><?= $row["dari"] ?></td>
-							<td class="item-name"><?= $row["tujuan"] ?></td>
+							<td class="item-name"><?= $row["nama_pengirim"] ?></td>
+							<td class="item-name"><?= $row["nama_penerima"] ?></td>
 							<td class="item-name"><?= $row["spk"] ?></td>
 
 							<td class="item-name"><?= $row["nama_barang"] ?></td>

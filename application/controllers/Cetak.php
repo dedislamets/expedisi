@@ -29,7 +29,7 @@ class Cetak extends CI_Controller {
 
           $data['data_detail'][$key]['spk'] = $routing['spk_no'];
           $data['data_detail'][$key]['pickup_date'] = $routing['pickup_date'];
-          $data['data_detail'][$key]['dari'] = $routing['site_name'];
+          $data['data_detail'][$key]['dari'] = $routing['nama_pengirim'];
           $data['data_detail'][$key]['tujuan'] = $routing['nama_penerima'];
           $data['data_detail'][$key]['layanan'] = $routing['moda_name'];
 
