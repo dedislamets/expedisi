@@ -632,7 +632,7 @@
                         <textarea rows="5" cols="5" class="form-control" id="pickup_address" name="pickup_address" placeholder="Masukkan alamat pickup" style="height: auto;" ><?= empty($data) ? "" : $data['pickup_address'] ?></textarea>
                       </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row hidden">
                       <label class="col-sm-2 col-form-label" style="font-weight: bold;">SITE NAME</label>
                       <div class="col-sm-10">
                         <input type="text" class="form-control" id="site_name" name="site_name" value="<?= empty($data) ? "" : $data['site_name'] ?>" >
