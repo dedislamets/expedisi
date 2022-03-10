@@ -30,8 +30,8 @@ class Cetak extends CI_Controller {
 
           $data['data_detail'][$key]['spk'] = $routing['spk_no'];
           $data['data_detail'][$key]['pickup_date'] = $routing['pickup_date'];
-          $data['data_detail'][$key]['nama_pengirim'] = (empty($routing['nama_pengirim']? $pengirim['cust_name'] : $routing['nama_pengirim']);
-          $data['data_detail'][$key]['nama_penerima'] = (empty($routing['nama_penerima']? $penerima['cust_name'] : $routing['nama_penerima']);
+          $data['data_detail'][$key]['nama_pengirim'] = (empty($routing['nama_pengirim'])? $pengirim['cust_name'] : $routing['nama_pengirim']);
+          $data['data_detail'][$key]['nama_penerima'] = (empty($routing['nama_penerima'])? $penerima['cust_name'] : $routing['nama_penerima']);
           $data['data_detail'][$key]['layanan'] = $routing['moda_name'];
 
           $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
