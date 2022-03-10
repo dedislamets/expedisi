@@ -26,11 +26,12 @@ class Cetak extends CI_Controller {
           $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
           $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
           $penerima =  $this->admin->get_array('master_customer',array( 'id' => $routing['id_penerima']));
+          $pengirim =  $this->admin->get_array('master_customer',array( 'id' => $routing['id_pengirim']));
 
           $data['data_detail'][$key]['spk'] = $routing['spk_no'];
           $data['data_detail'][$key]['pickup_date'] = $routing['pickup_date'];
-          $data['data_detail'][$key]['nama_pengirim'] = $routing['nama_pengirim'];
-          $data['data_detail'][$key]['nama_penerima'] = $routing['nama_penerima'];
+          $data['data_detail'][$key]['nama_pengirim'] = (empty($routing['nama_pengirim']? $pengirim['cust_name'] : $routing['nama_pengirim']);
+          $data['data_detail'][$key]['nama_penerima'] = (empty($routing['nama_penerima']? $penerima['cust_name'] : $routing['nama_penerima']);
           $data['data_detail'][$key]['layanan'] = $routing['moda_name'];
 
           $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
