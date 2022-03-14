@@ -800,7 +800,11 @@
 																	<table style="width: 100%">
 																		<tr>
 																			<td style="border-left: none;border-bottom: none;border-top: none;">Penerima, Kepada Yth: <br>
-																				<div style="font-weight: bold;font-size: 20px;"><?= empty($data) ? "" : $data['nama_penerima'] ?></div>
+																				<div style="font-weight: bold;font-size: 20px;">
+																					<?= empty($data) ? "" : $data['nama_penerima'] ?>
+																					<br>
+																					<?= empty($data) ? "" : $data['address_penerima'] ?>	
+																				</div>
 																			</td>
 																			<td class="no-border" style="padding: 0">
 																				<table style="width: 100%">
@@ -829,7 +833,10 @@
 																	Nota Pengadaan
 																</td>
 																<td style="width: 55%">Pengirim: <br>
-																	<div style="font-weight: bold;font-size: 20px;"><?= empty($data) ? "" : $data['nama_pengirim'] ?></div>
+																	<div style="font-weight: bold;font-size: 20px;"><?= empty($data) ? "" : $data['nama_pengirim'] ?>
+																		<br>
+																		<?= empty($data) ? "" : $data['address_pengirim'] ?>
+																	</div>
 																</td>
 																<td style="width: 30%">
 																	Nopol Kendaraan: <?= empty($data) ? "" : $data['no_kendaraan'] ?><br>
