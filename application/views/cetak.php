@@ -803,7 +803,10 @@
 																				<div style="font-weight: bold;font-size: 20px;">
 																					<?= empty($data) ? "" : $data['nama_penerima'] ?>
 																					<br>
-																					<?= empty($data) ? "" : $data['address_penerima'] ?>	
+																					<?= empty($data) ? "" : $data['alamat_penerima'] ?>	
+																					<br>
+																					<?= empty($data) ? "" : "PIC: ". $data['attn_penerima'] ?> 
+																					<?= empty($data['hp_penerima']) ? "" : "/ ". $data['hp_penerima'] ?>
 																				</div>
 																			</td>
 																			<td class="no-border" style="padding: 0">
@@ -833,9 +836,13 @@
 																	Nota Pengadaan
 																</td>
 																<td style="width: 55%">Pengirim: <br>
-																	<div style="font-weight: bold;font-size: 20px;"><?= empty($data) ? "" : $data['nama_pengirim'] ?>
+																	<div style="font-weight: bold;font-size: 20px;">
+																		<?= empty($data) ? "" : $data['nama_pengirim'] ?>
 																		<br>
-																		<?= empty($data) ? "" : $data['address_pengirim'] ?>
+																		<?= empty($data) ? "" : $data['alamat_pengirim'] ?>
+																		<br>
+																		<?= empty($data) ? "" : "PIC: ". $data['attn_pengirim'] ?>
+																		<?= empty($data['hp_pengirim']) ? "" : "/ ". $data['hp_pengirim'] ?>
 																	</div>
 																</td>
 																<td style="width: 30%">
