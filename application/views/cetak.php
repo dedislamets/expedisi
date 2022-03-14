@@ -771,8 +771,8 @@
 								<table class="table" style="margin-bottom:10px;margin-top: 10px;">
 									<tr>
 										<td width="35%" style="border-right: none;">
-											<div style="font-weight: bold;font-size: 18px;">
-												Nomor Surat Jalan / Delivery Order (DO) :
+											<div style="font-weight: bold;font-size: 18px;border: solid 1px #000;padding: 10px;">
+												Nomor Surat Jalan / Delivery Order (DO) : <?= empty($data) ? "" : $data['no_routing'] ?>
 											</div> 
 										</td>
 										<td width="65%" style="text-align: right;border-left: none;font-weight: bold;">
@@ -817,8 +817,14 @@
 																						<td style="text-align: center;padding: 5px;font-weight: bold;">Tanggal</td>
 																					</tr>
 																					<tr>
-																						<td style="height: 68px;text-align: center;">
-																							<?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['tgl_spk']))) ?>
+																						<td style="padding: 0" class="no-border">
+																							<table style="width: 100%">
+																								<tr>
+																									<td style="text-align: center;" class="no-border">
+																										<?= empty($data) ? "" : tgl_indo(date("Y-m-d", strtotime($data['tgl_spk']))) ?>
+																									</td>
+																								</tr>
+																							</table>
 																						</td>
 																					</tr>
 																				</table>
@@ -855,10 +861,19 @@
 																		<?= empty($data['hp_pengirim']) ? "" : "/ ". $data['hp_pengirim'] ?>
 																	</div>
 																</td>
-																<td style="width: 30%">
-																	Nopol Kendaraan: <?= empty($data) ? "" : $data['no_kendaraan'] ?><br>
-																	Nama Supir: <?= empty($data) ? "" : $data['driver'] ?><br>
-																	No Hp Supir: <?= empty($data) ? "" : $data['agent_hp'] ?><br>
+																<td style="width: 30%;padding: 0">
+																	<table width="100%" style="padding: 0">
+																		<tr>
+																			<td>Nopol Kendaraan: <?= empty($data) ? "" : $data['no_kendaraan'] ?></td>
+																		</tr>
+																		<tr>
+																			<td>Nama Supir: <?= empty($data) ? "" : $data['driver'] ?></td>
+																		</tr>
+																		<tr>
+																			<td>No Hp Supir: <?= empty($data) ? "" : $data['agent_hp'] ?></td>
+																		</tr>
+																	</table>
+																
 																</td>
 															</tr>
 														</table>
