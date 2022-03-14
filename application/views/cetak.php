@@ -803,6 +803,8 @@
 																				<div style="font-weight: bold;font-size: 20px;">
 																					<?= empty($data) ? "" : $data['nama_penerima'] ?>
 																					<br>
+																				</div>
+																				<div style="font-weight: bold;font-size: 14px;">
 																					<?= empty($data) ? "" : $data['alamat_penerima'] ?>	
 																					<br>
 																					<?= empty($data) ? "" : "PIC: ". $data['attn_penerima'] ?> 
@@ -839,6 +841,9 @@
 																	<div style="font-weight: bold;font-size: 20px;">
 																		<?= empty($data) ? "" : $data['nama_pengirim'] ?>
 																		<br>
+																		
+																	</div>
+																	<div style="font-weight: bold;font-size: 14px;">
 																		<?= empty($data) ? "" : $data['alamat_pengirim'] ?>
 																		<br>
 																		<?= empty($data) ? "" : "PIC: ". $data['attn_pengirim'] ?>
