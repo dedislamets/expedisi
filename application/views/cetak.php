@@ -835,7 +835,12 @@
 														<table style="width: 100%">
 															<tr>
 																<td style="width: 15%; height: 70px;font-weight: bold;">
-																	Nota Pengadaan
+																	Nota Pengadaan<br>
+																	<div style="font-weight: bold;font-size: 16px;">
+																		<?= empty($data) ? "" : $data['spk_no'] ?>
+																		<br>
+																		
+																	</div>
 																</td>
 																<td style="width: 55%">Pengirim: <br>
 																	<div style="font-weight: bold;font-size: 20px;">
