@@ -543,7 +543,7 @@
 										</td>
 										<td class="no-border" width="1%" style="padding: 10px 5px;">:</td>
 										<td class="no-border" width="49%" >
-											<div style="border: solid 1px grey;padding: 10px;font-size: 12px;"><?= empty($data) ? "" : $data['site_name'] ?></div>
+											<div style="border: solid 1px grey;padding: 10px;font-size: 12px;"><?= empty($data) ? "" : $data['nama_pengirim'] ?></div>
 										</td>
 									</tr>
 									<tr>
@@ -552,7 +552,7 @@
 										</td>
 										<td class="no-border" width="1%" style="padding: 10px 5px;">:</td>
 										<td class="no-border" width="49%" >
-											<div style="border: solid 1px grey;padding: 10px;font-size: 12px;"><?= empty($data) ? "" : $data['alamat_penerima'] ?></div>
+											<div style="border: solid 1px grey;padding: 10px;font-size: 12px;"><?= empty($data) ? "" : $data['nama_penerima'] ?></div>
 										</td>
 									</tr>
 								</table>
