@@ -121,14 +121,16 @@
               <div class="col-xl-4">
                   <h4 style="font-weight: bold;"><?= $title ?> <a href="<?= base_url() ?>listrs"> Back </a></h4>
               </div>
+              <?php if (!empty($prefix) && ($prefix == 'TI' || $prefix == 'TIC')) : ?>
               <div class="col-xl-2" >
-                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sj?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank">  <i class="icofont icofont-print" ></i>&nbsp;SURAT JALAN WAHANA</a>
-                <?php if (!empty($prefix) && ($prefix == 'TI' || $prefix == 'TIC')) : ?>
-                <br>
-                  <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sjti?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank"><i class="icofont icofont-print" ></i>&nbsp;SJ TELKOM IND</a>
-                
-                <?php endif; ?>
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sj?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank">  <i class="icofont icofont-print" ></i>&nbsp;SURAT JALAN WAHANA</a>   <br>
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sjti?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank"><i class="icofont icofont-print" ></i>&nbsp;SJ TELKOM IND</a>
               </div>
+              <?php else: ?>
+              <div class="col-xl-2" >
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sj?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetak" class="btn btn-inverse btn-outline-inverse btn-block" target="_blank">  <i class="icofont icofont-print" ></i>Surat Jalan</a>
+              </div>
+              <?php endif; ?>
               <div class="col-xl-2" >
                 <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/rs?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetak" class="btn btn-inverse btn-outline-inverse btn-block" target="_blank">  <i class="icofont icofont-print" ></i>Routing Slip</a>
               </div>
