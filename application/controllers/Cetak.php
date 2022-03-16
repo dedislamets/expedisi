@@ -102,6 +102,33 @@ class Cetak extends CI_Controller {
     }                    
   }
 
+  public function sjti()
+  {   
+    if($this->admin->logged_id())
+    {
+      $id = $this->input->get('id',TRUE);
+      $data['data'] = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
+      $data['penerima'] =  $this->admin->get_array('master_customer',array( 'id' => $data['data']['id_penerima']));
+      $data['moda'] = $this->admin->get_array('tb_moda',array( 'id' => $data['data']['id_moda']));
+      $data['multi'] = $this->admin->get('tb_routingslip_multi',array( 'id_routing' => $id));
+      $data['data_detail'] = $this->admin->get_result_array('tb_routingslip_detail',array( 'id_routing' => $id));
+      $data['data_biaya'] = $this->admin->get_result_array('tb_routingslip_biaya',array( 'id_routing' => $id));
+
+      foreach ($data['data_detail'] as $key => $value) {
+
+        $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
+        $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
+        $data['data_detail'][$key]['berat'] = $item['berat_barang'];
+      }
+              // print("<pre>".print_r($data['data_detail'],true)."</pre>");exit();
+      $data['page'] = "sj_ti";
+
+      $this->load->view('cetak',$data,FALSE); 
+    }else{
+        redirect("login");
+    }                    
+  }
+
   public function rs()
   {   
     if($this->admin->logged_id())

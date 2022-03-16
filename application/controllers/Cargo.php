@@ -107,6 +107,12 @@ class Cargo extends CI_Controller {
       $pref = "TIC";
     }elseif ($prefix == "Telkom Indonesia") {
       $pref = "TI";
+    }elseif ($prefix == "TA TAG DILLA") {
+      $pref = "TA";
+    }elseif ($prefix == "TA TAG/TOMI") {
+      $pref = "TA";
+    }elseif ($prefix == "OTHER") {
+      $pref = "OTR";
     }
     
     $nomor = $pref ."-" . date("Y") . date("m") . "-". $last_no;

@@ -167,6 +167,19 @@ function tgl_waktu_indo($tanggal){
     setlocale(LC_ALL, 'id-ID', 'id_ID');
     echo strftime("%A, %d %B %Y %T", strtotime($tanggal)) . "\n";
 }
+function nama_hari($tanggal){
+    $day = date('D', strtotime($tanggal));
+    $dayList = array(
+        'Sun' => 'Minggu',
+        'Mon' => 'Senin',
+        'Tue' => 'Selasa',
+        'Wed' => 'Rabu',
+        'Thu' => 'Kamis',
+        'Fri' => 'Jumat',
+        'Sat' => 'Sabtu'
+    );
+    return $dayList[$day];
+}
 
 function Acak($varMsg,$strKey) {
     try {

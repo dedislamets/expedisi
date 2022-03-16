@@ -763,6 +763,7 @@
 					#page-wrap {
 					    width: 1000px;
 					}
+
 				</style>
 				<div class="row">
 					<table style="width: 100%; margin-bottom: 10px">
@@ -954,7 +955,122 @@
 					</table>
 					
 				</div>
-			<? } ?>
+			<? }elseif ($page == "sj_ti") { ?>
+				<style type="text/css">
+					#page-wrap {
+					    width: 650px;
+					}
+					p{
+						font-size: 18px;
+						display: block;
+						width: 100%;
+					}
+					.table1 {
+						display: block;
+					    width: 100%;
+					    padding-left: 20px;
+					    font-size: 18px;
+					}
+					.table2 {
+					    width: 100%;
+					    padding-left: 20px;
+					    font-size: 18px;
+					}
+				</style>
+				<div class="row">
+					<div style="width: 100%">
+						<img src="<?= base_url() ?>assets/images/logo TI.png" style="float: right;" />
+					</div>
+					<h1 style="text-align: center;font-size: 24px;font-weight: bold;width: 100%;margin-bottom: 35px;">SURAT JALAN</h1>
+					<p>Kami yang bertandatangan dibawah ini:</p><br>
+					<table class="no-border table1">
+						<tr>
+							<td class="no-border">Nama Lengkap</td><td class="no-border">:</td>
+							<td class="no-border"><?= $this->session->userdata('username') ?></td>
+						</tr>
+						<tr>
+							<td class="no-border">Nama Perusahaan</td class="no-border"><td class="no-border">:</td><td class="no-border">PT Wahana Multi Logistik</td>
+						</tr>
+						<tr>
+							<td class="no-border">Contact Number</td class="no-border"><td class="no-border">:</td>
+							<td class="no-border"><?= $this->session->userdata('hp') ?></td>
+						</tr>
+						<tr>
+							<td class="no-border">Unit</td><td class="no-border">:</td>
+							<td class="no-border"><?= $this->session->userdata('role') ?></td>
+						</tr>
+					</table>
+					<p>Pada hari ini <?= nama_hari(date('Y-m-d')) ?>, <?= tgl_indo(date('Y-m-d')) ?></p>
+					<p>Telah menyerahkan Material kepada :</p>
+					<table class="no-border table1" style="margin-bottom: 20px;">
+						<tr>
+							<td class="no-border">Nama Lengkap</td><td class="no-border">:</td>
+							<td class="no-border"><?= empty($data) ? "" : $data['attn_penerima'] ?></td>
+						</tr>
+						<tr>
+							<td class="no-border" style="width: 200px;">Nama Perusahaan</td class="no-border"><td class="no-border">:</td>
+							<td class="no-border"><?= empty($data) ? "" : $data['nama_penerima'] ?></td>
+						</tr>
+						<tr>
+							<td class="no-border" style="vertical-align: top;">Alamat</td>
+							<td class="no-border" style="vertical-align: top;">:</td>
+							<td class="no-border"><?= empty($data) ? "" : $data['alamat_penerima'] ?></td>
+						</tr>
+						<tr>
+							<td class="no-border">Contact Number</td class="no-border"><td class="no-border">:</td>
+							<td class="no-border"><?= empty($data) ? "" : $data['hp_penerima'] ?></td>
+						</tr>
+					</table>
+					<p>Rincian sebagai berikut :</p>
+					<table class="table2" style="margin-bottom: 30px;">
+						<thead>
+							<th>No</th>
+							<th>Uraian</th>
+							<th>Unit</th>
+							<th>Qty</th>
+							<th>Keterangan</th>
+						</thead>
+						<tbody>
+							<?php 
+								$urut=1;
+                              	foreach($data_detail as $row) : ?>
+                              		<tr>
+                              			<td style="width: 5%"><?= $urut ?></td>
+										<td style="width: 29%"><?= $row['nama_barang'] ?></td>
+										<td style="width: 5.2%"><?= $row['satuan'] ?></td>
+										<td style="width: 9.7%"><?= $row['qty'] ?></td>
+										<td ></td>
+									</tr>				                                  		
+                            <?php
+                              	$urut++;
+                              	endforeach;
+                            ?>
+                        </tbody>
+						
+					</table>
+
+					<p>Material telah diterima dengan lengkap dan kondisi baik.</p>
+					<p>Catatan :</p>
+					<p style="margin-bottom: 0">________________________________________________________________________</p>
+					<p>________________________________________________________________________</p>
+					<div style="width: 100%;display: contents;margin-top: 90px;">
+						<div style="width: 50%;text-align: center;margin-bottom: 0px">
+							<p>Yang menyerahkan</p>
+							<br>
+							<br>
+							<br>
+							<p>___________________</p>
+						</div>
+						<div style="width: 50%;text-align: center;margin-bottom: 0px">
+							<p>Yang menerima</p>
+							<br>
+							<br>
+							<br>
+							<p>___________________</p>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
 		</div>
 	</body>
 	</html>
