@@ -45,17 +45,18 @@ class Reportrs extends CI_Controller {
         $cust = $this->parse->anti_injection($this->input->get('c',TRUE));
         $requestor = $this->parse->anti_injection($this->input->get('req',TRUE));
 
-        $this->db->select("R.no_routing,createdDate,
+        $this->db->select("R.no_routing,R.createdDate,
             CASE WHEN R.nama_penerima IS NULL THEN mcp.cust_name ELSE R.nama_penerima END cust_name_penerima, 
             CASE WHEN R.nama_pengirim IS NULL THEN mc.cust_name ELSE R.nama_pengirim END cust_name,
             spk_no,`nama_project`,kota_pengirim,kota_penerima,B.`nama_barang`,moda_name,pickup_date,
-          received_date,received_doc,STATUS,agent,RD.`qty`,RD.`satuan`,origin,destination,received_by,requestor", FALSE);
+          received_date,received_doc,R.STATUS,agent,RD.`qty`,RD.`satuan`,origin,destination,received_by,requestor,u.nama_user", FALSE);
         $this->db->from("tb_routingslip R");
         $this->db->join('tb_routingslip_detail RD', 'RD.`id_routing`=R.`id`');
         $this->db->join('barang B', 'B.`id_barang`=RD.`id_barang`');
         $this->db->join('master_customer mc', 'mc.`id`=R.`id_pengirim`','LEFT');
         $this->db->join('master_customer mcp', 'mcp.`id`=R.`id_penerima`','LEFT');
-        $this->db->where("DATE(CreatedDate) BETWEEN '". $start ."' AND '". $end ."'");
+        $this->db->join('tb_user u', 'u.`id_user`=R.`CreatedBy`','LEFT');
+        $this->db->where("DATE(R.CreatedDate) BETWEEN '". $start ."' AND '". $end ."'");
         if($cust != "all"){
           $this->db->where("nama_project", $cust);
         }
@@ -82,8 +83,8 @@ class Reportrs extends CI_Controller {
           ->setCellValue('C1', 'DO/SPK')
           ->setCellValue('D1', 'Project')
           ->setCellValue('E1', 'Routing Date')
-          ->setCellValue('F1', 'Origin')
-          ->setCellValue('G1', 'Destination')
+          ->setCellValue('F1', 'Site Pengirim')
+          ->setCellValue('G1', 'Site Penerima')
           ->setCellValue('H1', 'Pickup Date')
           ->setCellValue('I1', 'Items')
           ->setCellValue('J1', 'Qty')
@@ -94,10 +95,11 @@ class Reportrs extends CI_Controller {
           ->setCellValue('O1', 'Doc Receive Date')
           ->setCellValue('P1', 'Vendor')
           ->setCellValue('Q1', 'Transport')
-          ->setCellValue('R1', 'Customer Name')
-          ->setCellValue('S1', 'Requestor');
+          ->setCellValue('R1', 'Requestor')
+          ->setCellValue('S1', 'Created By')
+          ->setCellValue('T1', 'Created Date');
 
-        $spreadsheet->getActiveSheet()->getStyle('A1:S1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('f4f403');
+        $spreadsheet->getActiveSheet()->getStyle('A1:T1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('f4f403');
 
         $spreadsheet->getActiveSheet()->setTitle('Recapitulation');
 
@@ -110,8 +112,8 @@ class Reportrs extends CI_Controller {
             ->setCellValue('C'.$i, $row->spk_no)
             ->setCellValue('D'.$i, $row->nama_project)
             ->setCellValue('E'.$i, $row->createdDate)
-            ->setCellValue('F'.$i, $row->origin)
-            ->setCellValue('G'.$i, $row->destination)
+            ->setCellValue('F'.$i, $row->cust_name)
+            ->setCellValue('G'.$i, $row->cust_name_penerima)
             ->setCellValue('H'.$i, $row->pickup_date)
             ->setCellValue('I'.$i, $row->nama_barang)
             ->setCellValue('J'.$i, $row->qty)
@@ -122,15 +124,16 @@ class Reportrs extends CI_Controller {
             ->setCellValue('O'.$i, $row->received_doc)
             ->setCellValue('P'.$i, $row->agent)
             ->setCellValue('Q'.$i, $row->moda_name)
-            ->setCellValue('R'.$i, $row->cust_name_penerima)
-            ->setCellValue('S'.$i, $row->requestor);
+            ->setCellValue('R'.$i, $row->requestor)
+            ->setCellValue('S'.$i, $row->nama_user)
+            ->setCellValue('T'.$i, $row->createdDate);
 
-            $spreadsheet->getActiveSheet()->getStyle('A2:S'.$i)->applyFromArray($styleArray);
+            $spreadsheet->getActiveSheet()->getStyle('A2:T'.$i)->applyFromArray($styleArray);
           $i++;
         }
 
 
-        foreach (range('A','S') as $col) {
+        foreach (range('A','T') as $col) {
           $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);  
         }
 
