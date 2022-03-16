@@ -961,7 +961,7 @@
 					    width: 650px;
 					}
 					p{
-						font-size: 18px;
+						font-size: 17px;
 						display: block;
 						width: 100%;
 					}
@@ -969,12 +969,12 @@
 						display: block;
 					    width: 100%;
 					    padding-left: 20px;
-					    font-size: 18px;
+					    font-size: 17px;
 					}
 					.table2 {
 					    width: 100%;
 					    padding-left: 20px;
-					    font-size: 18px;
+					    font-size: 17px;
 					}
 					.kolom-routing{
 						float: left;

@@ -73,13 +73,13 @@ class Cargo extends CI_Controller {
 
     $last_no = explode("-", $no_routing);
     $prefix = $last_no[0];
-    $sj="sj";
-    if($prefix == "TI"){
-      $sj = "sjti";
-    }elseif ($prefix == "TIC") {
-      $sj = "sjti";
-    }
-    return $sj;
+    // $sj="sj";
+    // if($prefix == "TI"){
+    //   $sj = "sjti";
+    // }elseif ($prefix == "TIC") {
+    //   $sj = "sjti";
+    // }
+    return $prefix;
   }
   public function getPrefixAuto()
   {
