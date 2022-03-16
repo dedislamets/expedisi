@@ -69,7 +69,18 @@ class Cargo extends CI_Controller {
     }				  
 						
 	}
+  public function getPrefixProject($no_routing){
 
+    $last_no = explode("-", $no_routing);
+    $prefix = $last_no[0];
+    $sj="sj";
+    if($prefix == "TI"){
+      $sj = "sjti";
+    }elseif ($prefix == "TIC") {
+      $sj = "sjti";
+    }
+    return $sj;
+  }
   public function getPrefixAuto()
   {
     $prefix = $this->input->get('prefix');
@@ -462,9 +473,10 @@ class Cargo extends CI_Controller {
       $data['title'] = 'Edit Routing Slip';
       $data['main'] = 'cargo/index';
       $data['js'] = 'script/cargo';
-      $data['modal'] = 'modal/cargo';  
+      $data['modal'] = 'modal/cargo'; 
 
       $data['data'] = $this->admin->get_array('tb_routingslip',array( 'id' => $id));
+      $data['prefix'] = $this->getPrefixProject($data['data']['no_routing']); 
       $data['moda_only'] = $this->admin->getmaster('tb_moda');
       $data['kota_asal'] = $this->db->query('select distinct kota from master_city')->result();
       $data['kota_tujuan'] = $data['kota_asal'];
@@ -530,7 +542,6 @@ class Cargo extends CI_Controller {
 
       $data['moda'] = $data_arr;
 
-    
       $this->load->view('home',$data,FALSE); 
 
     }else{

@@ -61,6 +61,7 @@ class Users extends CI_Controller {
             3=>'department',
             4=>'jenis_kelamin',
             5=>'cabang',
+            6=>'hp',
         );
         $valid_sort = array(
             0=>'id_user',
@@ -69,6 +70,7 @@ class Users extends CI_Controller {
             3=>'department',
             4=>'jenis_kelamin',
             5=>'cabang',
+            6=>'hp',
         );
         if(!isset($valid_sort[$col]))
         {
@@ -111,6 +113,7 @@ class Users extends CI_Controller {
                         $r->id_user,
                         $r->nama_user,
                         $r->email,
+                        $r->hp,
                         $r->jenis_kelamin,
                         $r->department,
                         $r->cabang,
@@ -182,6 +185,7 @@ class Users extends CI_Controller {
           'email'       => $this->input->post('email',TRUE),
           'department'  => $this->input->post('department',TRUE),
           'cabang'      => $this->input->post('cabang',TRUE),
+          'hp'          => $this->input->post('hp',TRUE),
           'jenis_kelamin'      => $this->input->post('jenis_kelamin',TRUE),
       );
       if(!empty($this->input->post('password',TRUE))){

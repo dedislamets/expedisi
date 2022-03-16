@@ -25,6 +25,10 @@
 							<div class="form-group">
 								<label>Password</label>
 								<input type="password" id="password" name="password" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label>HP</label>
+								<input type="text" id="hp" name="hp" class="form-control" />
 							</div>	
 							<div class="form-group">
 								<label>Department<span style="color:red"> *</span></label>

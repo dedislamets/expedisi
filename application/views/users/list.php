@@ -26,6 +26,9 @@
                               Email
                             </th>
                             <th>
+                              HP
+                            </th>
+                            <th>
                               Gender
                             </th>
                             <th>

@@ -976,9 +976,20 @@
 					    padding-left: 20px;
 					    font-size: 18px;
 					}
+					.kolom-routing{
+						float: left;
+					    margin-top: 58px;
+					    font-size: 17px;
+					    font-weight: bold;
+					    border: solid;
+					    padding: 10px;
+					}
 				</style>
 				<div class="row">
 					<div style="width: 100%">
+						<div class="kolom-routing">
+							NO ROUTING : <?= empty($data) ? "" : $data['no_routing'] ?>
+						</div>
 						<img src="<?= base_url() ?>assets/images/logo TI.png" style="float: right;" />
 					</div>
 					<h1 style="text-align: center;font-size: 24px;font-weight: bold;width: 100%;margin-bottom: 35px;">SURAT JALAN</h1>

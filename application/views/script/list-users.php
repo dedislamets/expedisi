@@ -67,7 +67,7 @@
 				$("#lbl-title").text("Edit");
          		$("#nama_user").val(data['parent'][0]['nama_user']);
 				$("#email").val(data['parent'][0]['email']);
-
+				$("#hp").val(data['parent'][0]['hp']);
 				$("#department").val(data['parent'][0]['department']);
 				$("#cabang").val(data['parent'][0]['cabang']);
 				$("#jenis_kelamin").val(data['parent'][0]['jenis_kelamin']);
