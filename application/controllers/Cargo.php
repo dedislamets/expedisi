@@ -370,7 +370,7 @@ class Cargo extends CI_Controller {
           $data['no_routing'] = $this->getPrefixAutoNext($data['no_routing']);
         }
 
-        $data['CreatedDate'] = date('Y-m-d H:i:s');
+        // $data['CreatedDate'] = date('Y-m-d H:i:s');
         $data['CreatedBy'] = $recLogin;
         if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) /*&& !empty($this->input->post('pickup_address')  )*/){
           $data['status'] = 'PICKUP';
