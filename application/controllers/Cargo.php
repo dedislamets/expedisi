@@ -132,7 +132,7 @@ class Cargo extends CI_Controller {
     $this->output->set_content_type('application/json')->set_output(json_encode($nomor));
   }
 
-  public function getPrefixAutoNext($no)
+  public function getPrefixAutoNext()
   {
     $prefix = "";
     $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and mod_no_routing='Auto' ORDER BY id DESC LIMIT 1")->result();
@@ -365,9 +365,9 @@ class Cargo extends CI_Controller {
               }
 	        }
 	    }else{
-        $exist=$this->db->get_where('tb_routingslip',array('no_routing'=>$data['no_routing']));
-        if($exist->num_rows()>0){
-          $data['no_routing'] = $this->getPrefixAutoNext($data['no_routing']);
+        $exist=$this->admin->getmaster('tb_routingslip',array('no_routing'=>$data['no_routing']));
+        if($exist){
+          $data['no_routing'] = $this->getPrefixAutoNext();
         }
 
         // $data['CreatedDate'] = date('Y-m-d H:i:s');
