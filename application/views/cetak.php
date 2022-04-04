@@ -252,7 +252,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td class="item-name no-border" style="text-align: right;font-weight: 400;">PPN 1%</td>
+										<td class="item-name no-border" style="text-align: right;font-weight: 400;">PPN 1.1%</td>
 										<td style="text-align: right;width: 200px;" class="no-border">Rp <?= number_format($data["tax"]) ?>
 										</td>
 									</tr>
