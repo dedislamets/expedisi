@@ -539,20 +539,18 @@ class Listrs extends CI_Controller {
           
 
           if($i>0 && !empty($rowData[0]) && !empty($rowData[1])){
-            
-            
-
-            $status = "INPUT";
-            if(!empty($rowData[10])){
-              $status = "PICKUP";
-            }elseif (!empty($rowData[15]) && !empty($rowData[16])) {
-              $status = "DITERIMA";
-            }
-
             // $tgl =$rowData[9]->format('Y-m-d H:i:s');
             // print("<pre>".print_r($data,true)."</pre>");
             if($routing != $rowData[1])
             {
+              $status = "INPUT";
+              if(!empty($rowData[10])){
+                $status = "PICKUP";
+              }
+              if (!empty($rowData[15]) && !empty($rowData[16])) {
+                $status = "DITERIMA";
+              }
+
               $arr_moda = explode("-", $rowData[19]);
               $moda = $this->admin->get_array('tb_moda',array( 'moda_name' => strtoupper(trim($arr_moda[0]))));
               $moda_kat = $this->admin->get_array('tb_moda_kat',array( 'moda_kategori' => strtoupper(trim($arr_moda[1]))));

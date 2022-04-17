@@ -438,7 +438,7 @@
                       <tr>
                         <td style="text-align:right;">
                           <span style="width: 70px;display: inline;vertical-align: middle;">Tax/VAT</span> 
-                          <input type="number" id="tax_percent" name="tax_percent" value="<?= empty($data) ? "1" : $data['tax_percent']?>" class="form-control" style="width: 80px;float: right;margin-left: 10px;">
+                          <input type="number" id="tax_percent" name="tax_percent" value="<?= empty($data) ? "1.1" : $data['tax_percent']?>" class="form-control" style="width: 80px;float: right;margin-left: 10px;">
                         </td>
                         <td style="text-align:right;">
                           <input type="text" id="tax" name="tax" class="form-control " readonly style="text-align:right;" value="<?= empty($data) ? "0" : rupiah($data['tax'])?>">
