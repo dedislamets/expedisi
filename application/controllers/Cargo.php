@@ -86,7 +86,7 @@ class Cargo extends CI_Controller {
     $prefix = $this->input->get('prefix');
     $last = $this->admin->get_num_rows('tb_routingslip');
 
-    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and mod_no_routing='Auto' ORDER BY CreatedDate DESC LIMIT 1")->result();
+    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) /*and mod_no_routing='Auto'*/ ORDER BY CreatedDate DESC LIMIT 1")->result();
     if(empty($count)){
       $last_no = '001';      
     }else{
