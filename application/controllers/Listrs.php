@@ -91,7 +91,7 @@ class Listrs extends CI_Controller {
       }
       if($order !=null)
       {
-          $this->db->order_by($order, $dir);
+          // $this->db->order_by($order, $dir);
       }
       
       if(!empty($search))
@@ -119,6 +119,7 @@ class Listrs extends CI_Controller {
       $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
       $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
       $this->db->where('U.cabang',$this->session->userdata('cabang'));
+      $this->db->order_by("SUBSTRING_INDEX(SUBSTRING_INDEX(no_routing, '-', 3), '-', -2) DESC");
       $pengguna = $this->db->get();
        // print("<pre>".print_r($this->db->last_query(),true)."</pre>");exit();
 

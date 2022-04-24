@@ -12,7 +12,7 @@
 			serverSide	: true,			
 			"bPaginate": true,	
 			"autoWidth": true,
-			"order": [[ 1, "desc" ]]
+			// "order": [[ 1, "desc" ]]
 	    });
 
 	})

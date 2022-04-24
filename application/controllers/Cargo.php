@@ -86,11 +86,10 @@ class Cargo extends CI_Controller {
     $prefix = $this->input->get('prefix');
     $last = $this->admin->get_num_rows('tb_routingslip');
 
-    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) /*and mod_no_routing='Auto'*/ ORDER BY CreatedDate DESC LIMIT 1")->result();
+    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) /*and mod_no_routing='Auto'*/ ORDER BY SUBSTRING_INDEX(SUBSTRING_INDEX(no_routing, '-', 3), '-', -2) DESC LIMIT 1")->result();
     if(empty($count)){
       $last_no = '001';      
     }else{
-
       $last_no = $count[0]->no_routing;
       $last_no = explode("-", $last_no);
       $last_no = str_pad(($last_no[2]+1), 3, '0', STR_PAD_LEFT);
@@ -135,7 +134,7 @@ class Cargo extends CI_Controller {
   public function getPrefixAutoNext($last_inv)
   {
     $prefix = "";
-    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and mod_no_routing='Auto' ORDER BY id DESC LIMIT 1")->result();
+    $count = $this->db->query("SELECT no_routing FROM tb_routingslip WHERE MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and mod_no_routing='Auto' ORDER BY SUBSTRING_INDEX(SUBSTRING_INDEX(no_routing, '-', 3), '-', -2) DESC LIMIT 1")->result();
     if(empty($count)){
       $last_no = '001';      
     }else{
@@ -368,10 +367,14 @@ class Cargo extends CI_Controller {
               }
 	        }
 	    }else{
-        $exist=$this->admin->getmaster('tb_routingslip',array('no_routing'=>$data['no_routing']));
+        $exist=$this->db->query("select no_routing from tb_routingslip where MONTH(CreatedDate) = MONTH(CURDATE()) AND YEAR(CreatedDate)=YEAR(CURDATE()) and SUBSTRING(no_routing, -3)='". substr($data['no_routing'], -3) ."'
+          ORDER BY SUBSTRING_INDEX(SUBSTRING_INDEX(no_routing, '-', 3), '-', -2) DESC LIMIT 1")->result();
+
         if($exist){
+
           $data['no_routing'] = $this->getPrefixAutoNext($data['no_routing']);
         }
+        // print("<pre>".print_r($data['no_routing'],true)."</pre>");exit();
 
         // $data['CreatedDate'] = date('Y-m-d H:i:s');
         $data['CreatedBy'] = $recLogin;
