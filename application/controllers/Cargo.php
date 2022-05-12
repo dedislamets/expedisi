@@ -123,6 +123,8 @@ class Cargo extends CI_Controller {
       $pref = "TA";
     }elseif ($prefix == "TA TAG/SUMATERA") {
       $pref = "TA";
+    elseif ($prefix == "TA TA/NANDA") {
+      $pref = "TA";
     }elseif ($prefix == "OTHER") {
       $pref = "OTR";
     }
