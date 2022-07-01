@@ -289,6 +289,251 @@
 						</tr>
 					</table>
 				</div>
+			<? } elseif($page == "invoiceti"){ ?>
+				<div class="row">
+					<table class="table" style="margin-bottom: 0;">
+						<tr>
+							<td style="border:none">
+								<img src="<?= base_url(); ?>assets\images\cropped-logo-wml-180x180.png" style="height: 80px;width: 80px;" class="">
+							</td>
+							<td style="border:none">
+								<h1 style="color: #1616a0;margin-bottom: 0;">PT.Wahana Multi Logistik</h1>
+								<h1 style="font-size: 28px;color: red;">Domestic & International Freight Forwarder</h1>
+							</td>
+							<td style="border:none">
+								<img src="<?= base_url(); ?>assets\images\iso 9001.png" style="height: 80px;width: 120px;">
+								<p style="margin-bottom: 0;font-weight: bold;">Cert no : SMM-0084-18</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<hr>
+				<div class="row">
+					<table style="width: 100%">
+						<tr>
+							<td class="no-border" style="width: 70%">
+								
+							</td>
+							<td class="no-border" style="padding: 10px;">
+								<b>PT. WAHANA MULTI LOGISTIK</b><br>
+								JL.Kemang Raya No.52 Jati Cempaka, Pondok Gede - Bekasi 17411<br>
+								Telp: 021-8499 8777
+							</td>
+						</tr>
+					</table>
+					
+				</div>
+				<div>
+					<h1 class="header-inv" style="background-color: #1616a0;margin-bottom: 0;">INVOICE</h1>
+					<div style="padding: 10px;padding-left: 0;padding-right: 0;">
+						<table style="width: 100%">
+							<tr>
+								<td style="font-weight: bold;">
+									Kepada Yth : <br>
+									<?= empty($data) ? "" : nl2br($data['alamat_penagihan']) ?>
+								</td>
+								<td class="no-border" style="vertical-align: top;padding: 0;">
+									<table id="meta" style="border: solid 1px;width: auto;" >
+										<tr>
+											<td class="no-border">No Invoice</td>
+											<td class="no-border" style="width: 10px">:</td>
+											<td class="no-border"><?= empty($data) ? "" : $data['no_invoice']?></td>
+										</tr>
+										<tr>
+											<td class="no-border">Tanggal</td>
+											<td class="no-border" style="width: 10px">:</td>
+											<td class="no-border"><?= empty($data) ? "" : tgl_indo($data['tgl_invoice'])?></td>
+										</tr>
+										<tr>
+											<td class="no-border">SP No.</td>
+											<td class="no-border" style="width: 10px">:</td>
+											<td class="no-border"><?= empty($data) ? "" : $data['sp_no']?></td>
+										</tr>
+										<tr>
+											<td class="no-border">Tanggal</td>
+											<td class="no-border" style="width: 10px">:</td>
+											<td class="no-border"><?= empty($data) ? "" : tgl_indo($spk['tgl_spk'])?></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<table style="margin-bottom: 0; width: 100%;">
+
+						<tr>
+							<th>No</th>
+							<th>Keterangan</th>
+							<th>Nama Barang</th>
+							<th>Satuan</th>
+							<th>Vol</th>
+							<th>Harga Satuan</th>
+							<th style="text-align: right;">Total</th>
+						</tr>
+
+						<?php 
+	                    $urut=1;
+	                    foreach($data_detail as $row): ?>
+						<tr class="item-row">
+							<td><?=$urut?></td>
+							<td class="item-name"><?= $row["keterangan"] ?></td>
+							<td class="item-name"><?= $row["nama_barang"] ?></td>
+							<td class="item-name"><?= $row["satuan"] ?></td>
+							<td class="item-name"><?= $row["kg"] ?></td>
+							<td style="text-align: right;"><?= ($row["kg"]>0 ? number_format($row["price"]) : number_format($row["price_chartered"])) ?></td>
+							<td style="text-align: right;"><?= number_format($row["subtotal"]) ?></td>						
+						</tr>
+						<?php $urut++?>
+	                    <?php endforeach; ?>
+	                    
+						<tr>
+							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;">SubTotal</td>
+							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["cost"] + $data["subtotal"]) ?></td>
+						</tr>
+						<tr>
+							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;">PPN <?= $data["tax_percent"] ?>%</td>
+							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["tax"]) ?></td>
+						</tr>
+						<tr>
+							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;border-bottom: 1px solid black;">Total</td>
+							<td class="total-value" style="text-align: right;font-weight: bold;border-bottom: 1px solid black;"><?= number_format($data["total"]) ?></td>
+						</tr>
+						
+					</table>
+					<div style="margin-top: 10px;">
+						<table style="border:solid 1px;width: 350px;margin-bottom: 10px;margin-left: 0px;">
+							
+							<tr>
+								<td class="p-10" style="border:none;">Nama Rekening</td>
+								<td class="p-10" style="border:none;">: <?= empty($data) ? "" : $rekening['nama_rekening']?></td>
+							</tr>
+							<tr>
+								<td class="p-10" style="border:none;">No Rekening</td>
+								<td class="p-10" style="border:none;">: <?= empty($data) ? "" : $rekening['rekening']?></td>
+							</tr>
+							<tr>
+								<td class="p-10" style="border:none;">Nama Bank</td>
+								<td class="p-10" style="border:none;">: <?= empty($data) ? "" : $rekening['bank']?> </td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<table style="margin-bottom: 0;width: 100%">
+					<tr>
+						<td width="70%" class="no-border">
+						</td>
+						<td width="30%" style="border:none;padding-top: 30px;">
+							<p style="margin-bottom: 0">BEKASI, <?= tgl_indo($data['tgl_invoice']) ?></p>
+							<p style="font-weight: bold;">PT. WAHANA MULTI LOGISTIK</p>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<br>
+							<p style="font-weight: bold;">Agus Setiawan, SE, MMTr</p>
+						</td>
+					</tr>
+				</table>
+				<div style="break-after:page"></div>
+				<div style="clear: both;"></div>
+				<div class="row">
+					<table class="table" style="margin-bottom: 0;">
+						<tr>
+							<td style="border:none">
+								<img src="<?= base_url(); ?>assets\images\cropped-logo-wml-180x180.png" style="height: 80px;width: 80px;" class="">
+							</td>
+							<td style="border:none">
+								<h1 style="color: #1616a0;">PT.Wahana Multi Logistik</h1>
+								<h4 style="font-size: 18px;color: #1616a0;">Head Office:<br>
+								JL.Kemang Raya No.52 Jati Cempaka, Pondok Gede - Bekasi 17411<br>
+								Telp: 021-8499 8777, Fax : 021-8497 4046
+								</h4>
+							</td>
+						</tr>
+					</table>
+					<hr>
+					<hr>
+					<h1 style="text-align: center;width: 100%;font-size: 24px;font-weight: bold;margin-top: 10px;text-decoration: underline;">OFFICIAL RECEIPT</h1>
+					<h1 style="text-align: center;width: 100%;font-size: 16px;font-weight: bold;margin-top: 10px;">Invoice No.: <?= empty($data) ? "" : $data['no_invoice']?>
+					</h1>
+					<table style="width: 100%">
+						<tr>
+							<td class="no-border" style="font-weight: 400;width: 200px;font-style: italic;font-size: 16px;">Received from</td>
+							<td class="no-border" style="font-weight: bold;font-size: 16px;">
+								: <?= empty($data) ? "" : explode(PHP_EOL, $data['penagihan_to'])[0] ?>
+							</td>
+						</tr>
+						<tr>
+							<td class="no-border" style="font-weight: 400;width: 200px;font-style: italic;font-size: 16px;">The Sum Of</td>
+							<td class="no-border" style="font-weight: bold;font-size: 16px;">
+								<div style="display: inline;position: absolute;padding-top: 16px;">:</div>
+								<div class="jajargenjang">
+									<p style="transform: skew(20deg);padding-top: 10px;padding-left: 12px;"><?= strtoupper(terbilang($data["total"])) ?></p>
+								</div>
+
+							</td>
+						</tr>
+						<tr>
+							<td class="no-border" style="font-weight: 400;width: 200px;font-style: italic;font-size: 16px;vertical-align: top;padding-top: 10px;">Being payment of</td>
+							<td class="no-border" style="font-weight: bold;font-size: 16px;">
+								<table style="margin-bottom: 0; width: 100%;">
+									<tr class="item-row">
+										<td class="item-name no-border">: <?= empty($data) ? "" : $data['remark']?></td>
+										<td style="text-align: right;width: 200px;" class="no-border">Rp <?= number_format($data["subtotal"] ) ?></td>					
+									</tr>
+									<?php 
+				                    $urut=1;
+				                    foreach($data_biaya as $row): ?>
+									<tr class="item-row">
+										<td class="item-name no-border"><?= $row["aktifitas"] ?></td>
+										<td style="text-align: right;" class="no-border"><?= number_format($row["biaya"]) ?></td>					
+									</tr>
+									<?php $urut++?>
+									<?php endforeach; ?>
+									<tr>
+										<td class="item-name no-border" style="text-align: right;font-weight: 400;">Subtotal</td>
+										<td style="text-align: right;width: 200px;text-decoration: overline;" class="no-border">Rp <?= number_format($data["subtotal"] + $data["cost"]) ?>
+										</td>
+									</tr>
+									<tr>
+										<td class="item-name no-border" style="text-align: right;font-weight: 400;">PPN 1.1%</td>
+										<td style="text-align: right;width: 200px;" class="no-border">Rp <?= number_format($data["tax"]) ?>
+										</td>
+									</tr>
+									<tr>
+										<td class="item-name no-border" style="text-align: right;">Grand Total</td>
+										<td style="text-align: right;width: 200px;text-decoration: overline;" class="no-border">Rp <?= number_format($data["total"]) ?>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td class="no-border" style="font-weight: 400;width: 200px;font-style: italic;font-size: 16px;">Amount</td>
+							<td class="no-border" style="font-weight: bold;font-size: 16px;">
+								: Rp <?= number_format($data["total"]) ?>
+							</td>
+						</tr>
+					</table>
+					<table style="margin-bottom: 0;width: 100%">
+						<tr>
+							<td width="70%" class="no-border">
+							</td>
+							<td width="30%" style="border:none;padding-top: 30px;">
+								<p style="margin-bottom: 0">BEKASI, <?= tgl_indo($data['tgl_invoice']) ?></p>
+								<p style="font-weight: bold;">PT. WAHANA MULTI LOGISTIK</p>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<br>
+								<p style="font-weight: bold;">Agus Setiawan, SE, MMTr</p>
+							</td>
+						</tr>
+					</table>
+				</div>
 			<? } elseif ($page == "payment") { ?>
 				<div class="row">
 					<table class="table" style="margin-bottom: 0;">

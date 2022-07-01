@@ -48,6 +48,46 @@ class Cetak extends CI_Controller {
 						
 	}
 
+  public function ti()
+  {   
+    if($this->admin->logged_id())
+    {
+      $data['title'] = 'List Invoice Customer';
+      $data['main'] = 'invoice/list';
+      if(!empty($this->input->get('id',TRUE))){
+        $id = $this->input->get('id',TRUE);
+        $data['data'] = $this->admin->get_array('tb_invoice',array( 'id' => $id));
+        $data['spk'] = $this->admin->get_array('tb_routingslip',array( 'spk_no' => $data['data']['sp_no']));
+        $data['rekening'] = $this->admin->get_array('tb_rekening',array( 'id' => $data['data']['id_rekening']));
+        $data['data_detail'] = $this->admin->get_result_array('tb_invoice_detail',array( 'id_invoice' => $id));
+        $data['data_biaya'] = $this->admin->get_result_array('tb_invoice_opt_charge',array( 'id_invoice' => $id));
+
+        foreach ($data['data_detail'] as $key => $value) {
+          $item = $this->admin->get_array('barang',array( 'id_barang' => $value['id_barang']));
+          $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
+          $penerima =  $this->admin->get_array('master_customer',array( 'id' => $routing['id_penerima']));
+          $pengirim =  $this->admin->get_array('master_customer',array( 'id' => $routing['id_pengirim']));
+
+          $data['data_detail'][$key]['spk'] = $routing['spk_no'];
+          $data['data_detail'][$key]['pickup_date'] = $routing['pickup_date'];
+          $data['data_detail'][$key]['nama_pengirim'] = (empty($routing['nama_pengirim'])? $pengirim['cust_name'] : $routing['nama_pengirim']);
+          $data['data_detail'][$key]['nama_penerima'] = (empty($routing['nama_penerima'])? $penerima['cust_name'] : $routing['nama_penerima']);
+          $data['data_detail'][$key]['layanan'] = $routing['moda_name'];
+
+          $data['data_detail'][$key]['nama_barang'] = $item['nama_barang'];
+          $data['data_detail'][$key]['berat'] = $item['berat_barang'];
+        }
+      }
+      $data['page'] = "invoiceti";
+      $this->load->view('cetak',$data,FALSE); 
+
+    }else{
+        redirect("login");
+
+    }         
+            
+  }
+
   public function payment()
   {   
     if($this->admin->logged_id())
