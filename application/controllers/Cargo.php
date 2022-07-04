@@ -131,6 +131,8 @@ class Cargo extends CI_Controller {
       $pref = "OTR";
     }elseif ($prefix == "INTI") {
       $pref = "INTI";
+    }elseif ($prefix == "ARS") {
+      $pref = "ARS";
     }
     
     $nomor = $pref ."-" . date("Y") . date("m") . "-". $last_no;
