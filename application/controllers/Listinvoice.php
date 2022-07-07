@@ -85,7 +85,7 @@ class Listinvoice extends CI_Controller {
       }
       if($order !=null)
       {
-          // $this->db->order_by($order, $dir);
+          $this->db->order_by($order, $dir);
       }
       
       if(!empty($search))
@@ -112,7 +112,7 @@ class Listinvoice extends CI_Controller {
       $this->db->where('cabang',$this->session->userdata('cabang'));
       // $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       // $this->db->join('master_customer A', 'R.id_penerima = A.id');
-      $this->db->order_by("no_invoice","DESC");
+      // $this->db->order_by("no_invoice","DESC");
 
       $pengguna = $this->db->get();
       // echo $this->db->last_query();exit();
