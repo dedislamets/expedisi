@@ -85,7 +85,7 @@ class Listinvoice extends CI_Controller {
       }
       if($order !=null)
       {
-          $this->db->order_by($order, $dir);
+          // $this->db->order_by($order, $dir);
       }
       
       if(!empty($search))
@@ -112,7 +112,7 @@ class Listinvoice extends CI_Controller {
       $this->db->where('cabang',$this->session->userdata('cabang'));
       // $this->db->join('tb_routingslip R', 'R.id = I.id_routing');
       // $this->db->join('master_customer A', 'R.id_penerima = A.id');
-      // $this->db->order_by("CreatedDate","ASC");
+      $this->db->order_by("no_invoice","DESC");
 
       $pengguna = $this->db->get();
       // echo $this->db->last_query();exit();
@@ -130,7 +130,7 @@ class Listinvoice extends CI_Controller {
                       number_format($r->total),
                       number_format($r->sudah_dibayar),
                       $r->status,
-                      '<a href="invoice/edit/'.$r->id.'"  class="btn btn-warning btn-sm "  >
+                      '<a href="'. (empty($r->sp_no) ? 'invoice' : 'invoiceti') .'/edit/'.$r->id.'"  class="btn btn-warning btn-sm "  >
                         <i class="icofont icofont-ui-edit"></i>
                       </a>' . ($r->status == "LUNAS" || $r->status == "VOID" ? "" : '
                       <button type="button" rel="tooltip" class="btn btn-danger btn-sm " onclick="deleteList(this)"  data-id="'.$r->id.'" >
