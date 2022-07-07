@@ -46,32 +46,39 @@
 				</div>
 				
 				<div>
-					<div style="border: solid 1px black;">
-						<table style="width: 100%">
-							<tr>
-								<td class="no-border" style="font-weight: bold;vertical-align: top;">To :</td>
-								<td class="no-border" style="font-weight: bold;">
-									<?= empty($data) ? "" : nl2br($data['alamat_penagihan']) ?>
-								</td>
-								<td class="no-border">
-									<table id="meta">
-										<tr>
-											<td class="meta-head no-border">Invoice</td>
-											<td class="no-border"><?= empty($data) ? "" : $data['no_invoice']?></td>
-										</tr>
-										<tr>
-
-											<td class="meta-head no-border">Date</td>
-											<td class="no-border"><?= empty($data) ? "" : tgl_indo($data['tgl_invoice'])?></td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<h1 class="header-inv" style="background-color: #1616a0;margin-bottom: 0;">INVOICE</h1>
+					
+					<!---->
 					<table style="margin-bottom: 0; width: 100%;">
-
+                        <tr>
+                            <td colspan="12">
+                                <table style="width: 100%">
+        							<tr>
+        								<td class="no-border" style="font-weight: bold;vertical-align: top;">To :</td>
+        								<td class="no-border" style="font-weight: bold;">
+        									<?= empty($data) ? "" : nl2br($data['alamat_penagihan']) ?>
+        								</td>
+        								<td class="no-border">
+        									<table id="meta">
+        										<tr>
+        											<td class="meta-head no-border">Invoice</td>
+        											<td class="no-border"><?= empty($data) ? "" : $data['no_invoice']?></td>
+        										</tr>
+        										<tr>
+        
+        											<td class="meta-head no-border">Date</td>
+        											<td class="no-border"><?= empty($data) ? "" : tgl_indo($data['tgl_invoice'])?></td>
+        										</tr>
+        									</table>
+        								</td>
+        							</tr>
+        						</table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" style="padding:0">
+                                <h1 class="header-inv" style="background-color: #1616a0;margin-bottom: 0;">INVOICE</h1>
+                            </td>
+                        </tr>
 						<tr>
 							<th>No</th>
 							<th>Tgl Pickup</th>
@@ -79,10 +86,10 @@
 							<th>Tujuan</th>
 							<th>No PO/NP</th>
 							<th>Nama Barang</th>
-							<th>layanan</th>
+							<th>Layanan</th>
 							<th>Qty</th>
 							<th>Satuan</th>
-							<th>Berat/KG</th>
+							<th>Berat / KG</th>
 							<th>Harga</th>
 							<th style="text-align: right;">Subtotal</th>
 						</tr>
@@ -97,7 +104,7 @@
 							<td class="item-name"><?= $row["nama_penerima"] ?></td>
 							<td class="item-name"><?= $row["spk"] ?></td>
 
-							<td class="item-name"><?= $row["nama_barang"] ?></td>
+							<td class="item-name" style="width:100px;"><?= $row["nama_barang"] ?></td>
 							<td class="item-name"><?= $row["layanan"] ?></td>
 							<td class="item-name"><?= $row["qty"] ?></td>
 							<td class="item-name"><?= $row["satuan"] ?></td>
@@ -149,29 +156,30 @@
 						<tr class="item-row">
 							<td colspan="12" style="text-align:left;font-weight: bold;font-style: italic;font-size: 17px;">The Sum Of :  &nbsp;&nbsp;"<?= terbilang($data["total"]) ?>"</td>
 						</tr>
-						
+						<tr>
+                            <td colspan="12" style="padding:0">
+                                <table style="width: 360px;margin-bottom: 10px;margin-left: 10px;">
+        							<tr>
+        								<td colspan="2"style="text-align:left;font-size: 13px;border: none;">
+        									<i><b>Please remit to our account of :</b></i><br>
+        								</td>
+        							</tr>
+        							<tr>
+        								<td class="p-0">Acc. Name</td>
+        								<td class="p-0">: <?= empty($data) ? "" : $rekening['nama_rekening']?></td>
+        							</tr>
+        							<tr>
+        								<td class="p-0">Acc Number</td>
+        								<td class="p-0">: <?= empty($data) ? "" : $rekening['rekening']?></td>
+        							</tr>
+        							<tr>
+        								<td class="p-0">Name of Bank</td>
+        								<td class="p-0">: <?= empty($data) ? "" : $rekening['bank']?> </td>
+        							</tr>
+        						</table>
+                            </td>
+                        </tr>
 					</table>
-					<div style="border: solid 1px black;">
-						<table style="width: 350px;margin-bottom: 10px;margin-left: 10px;">
-							<tr>
-								<td colspan="2"style="text-align:left;font-size: 13px;border: none;">
-									<i><b>Please remit to our account of :</b></i><br>
-								</td>
-							</tr>
-							<tr>
-								<td class="p-0">Acc. Name</td>
-								<td class="p-0">: <?= empty($data) ? "" : $rekening['nama_rekening']?></td>
-							</tr>
-							<tr>
-								<td class="p-0">Acc Number</td>
-								<td class="p-0">: <?= empty($data) ? "" : $rekening['rekening']?></td>
-							</tr>
-							<tr>
-								<td class="p-0">Name of Bank</td>
-								<td class="p-0">: <?= empty($data) ? "" : $rekening['bank']?> </td>
-							</tr>
-						</table>
-					</div>
 				</div>
 				<table style="margin-bottom: 0;width: 100%">
 					<tr>
