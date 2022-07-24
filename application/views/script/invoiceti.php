@@ -271,7 +271,7 @@
 			        var price = $($tds[7]).children().val();
 			        var price_chartered = $($tds[8]).children().val();
 
-			        if($($tds[3]).children()[2].value == ""){
+			        if($($tds[3]).children().val() == ""){
 			        	alertError('Keterangan wajib diisi..');
 			        	flag= false;
 			        }
@@ -357,9 +357,9 @@
 					$(".no-data").remove();
 					baris = '<tr>';
 					baris += '<td style="width:1%">'+ nomor+'</td>';
-					baris += '<td><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn btn-sm hor-grd btn-grd-danger" onclick="cancel(this)"><i class="icofont icofont-trash"></i></a></td>';
+					baris += '<td><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="1"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn btn-sm hor-grd btn-grd-danger" onclick="cancel(this)"><i class="icofont icofont-trash"></i></a></td>';
 					baris += '<td><input type="hidden" id="id_routing_item'+ nomor +'" name="id_routing_item'+ nomor +'" class="form-control " value="' + id_rs +'">' + obj.no_routing+'<br>'+ data['data']['nama_pengirim'] +'</td>';
-					baris += '<td width="250">' + obj.nama_barang+'<br><div style="font-weight: bold;text-decoration: underline;">Keterangan</div><textarea rows="5" class="form-control" id="keterangan_'+ nomor +'" name="keterangan_'+ nomor +'" style="height:auto;"></textarea></td>';
+					baris += '<td width="250"><textarea rows="5" class="form-control" id="keterangan_'+ nomor +'" name="keterangan_'+ nomor +'" style="height:auto;">' + obj.nama_barang+'</textarea></td>';
 					
 					baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';
 					
@@ -424,7 +424,7 @@
 					baris += '<td style="width:1%">'+ nomor+'</td>';
 					baris += '<td style="width:8%;"><input type="hidden" id="kode'+ nomor +'" name="kode'+ nomor +'" class="form-control " value="'+ obj.id_barang +'"><input type="hidden" id="id_detail'+ nomor +'" name="id_detail'+ nomor +'" class="form-control " value="' + obj.id+'"><a href="javascript:void(0)" class="btn hor-grd btn-grd-success hidden" onclick="cari_dealer(this)"><i class="icofont icofont-search"></i> Cari</a><a href="javascript:void(0)" class="btn btn-sm hor-grd btn-grd-danger" onclick="cancel(this)"><i class="icofont icofont-trash"></i> Del</a></td>';
 					baris += '<td><input type="hidden" id="id_routing_item'+ nomor +'" name="id_routing_item'+ nomor +'" class="form-control " value="' + obj.id_routing +'">' + obj.routing+'<br>'+ obj.nama_pengirim +'</td>';
-					baris += '<td width="250">' + obj.nama_barang+'<br><div style="font-weight: bold;text-decoration: underline;">Keterangan</div><textarea rows="5" class="form-control" id="keterangan_'+ nomor +'" name="keterangan_'+ nomor +'" style="height:auto;">' + obj.keterangan+'</textarea></td>';
+					baris += '<td width="250"><textarea rows="5" class="form-control" id="keterangan_'+ nomor +'" name="keterangan_'+ nomor +'" style="height:auto;">' + obj.keterangan+'</textarea></td>';
 					baris += '<td><input type="number" id="qty_'+ nomor +'" name="qty_'+ nomor +'" value="' + obj.qty+'" class="form-control" style="width:100%"></td>';
 					
 					baris += '<td><input type="text" name="satuan'+ nomor +'" id="satuan'+ nomor +'" class="form-control" value="' + obj.satuan+'" /></td>';

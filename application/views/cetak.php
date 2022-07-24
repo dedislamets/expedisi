@@ -372,7 +372,6 @@
 						<tr>
 							<th>No</th>
 							<th>Keterangan</th>
-							<th>Nama Barang</th>
 							<th>Satuan</th>
 							<th>Vol</th>
 							<th>Harga Satuan</th>
@@ -385,7 +384,6 @@
 						<tr class="item-row">
 							<td><?=$urut?></td>
 							<td class="item-name"><?= $row["keterangan"] ?></td>
-							<td class="item-name"><?= $row["nama_barang"] ?></td>
 							<td class="item-name"><?= $row["satuan"] ?></td>
 							<td class="item-name"><?= $row["kg"] ?></td>
 							<td style="text-align: right;"><?= ($row["kg"]>0 ? number_format($row["price"]) : number_format($row["price_chartered"])) ?></td>
@@ -395,15 +393,15 @@
 	                    <?php endforeach; ?>
 	                    
 						<tr>
-							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;">SubTotal</td>
+							<td colspan="5" class="total-line" style="text-align: right;font-weight: bold;">SubTotal</td>
 							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["cost"] + $data["subtotal"]) ?></td>
 						</tr>
 						<tr>
-							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;">PPN <?= $data["tax_percent"] ?>%</td>
+							<td colspan="5" class="total-line" style="text-align: right;font-weight: bold;">PPN <?= $data["tax_percent"] ?>%</td>
 							<td class="total-value" style="text-align: right;font-weight: bold;"><?= number_format($data["tax"]) ?></td>
 						</tr>
 						<tr>
-							<td colspan="6" class="total-line" style="text-align: right;font-weight: bold;border-bottom: 1px solid black;">Total</td>
+							<td colspan="5" class="total-line" style="text-align: right;font-weight: bold;border-bottom: 1px solid black;">Total</td>
 							<td class="total-value" style="text-align: right;font-weight: bold;border-bottom: 1px solid black;"><?= number_format($data["total"]) ?></td>
 						</tr>
 						
