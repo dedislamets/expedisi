@@ -211,6 +211,7 @@ class Listrs extends CI_Controller {
           // 5=>'moda_name',
           // 6=>'R.status',
       );
+      // $this->db->order_by("SUBSTRING_INDEX(SUBSTRING_INDEX(R.no_routing, '-', 3), '-', -2) DESC");
       $this->db->order_by('R.CreatedDate DESC');
       if(!isset($valid_sort[$col]))
       {
@@ -240,6 +241,8 @@ class Listrs extends CI_Controller {
               }
               $x++;
           }                 
+      }else{
+        $this->db->like($valid_columns[0],$search);
       }
 
       $this->db->limit($length,$start);
@@ -257,6 +260,9 @@ class Listrs extends CI_Controller {
       // $this->db->where('I.status <>', "DITERIMA");
       if(!empty($this->input->get('r',true))){
         $this->db->where_not_in('R.id', explode(",", $this->input->get('r',true)));
+      }
+      if(!empty($this->input->get('ti',true))){
+        $this->db->where_in('R.nama_project', array('Telkom Indonesia','Telkom Indonesia Consumer'));
       }
 
       $pengguna = $this->db->get();
@@ -541,7 +547,6 @@ class Listrs extends CI_Controller {
 
           if($i>0 && !empty($rowData[0]) && !empty($rowData[1])){
             // $tgl =$rowData[9]->format('Y-m-d H:i:s');
-            // print("<pre>".print_r($data,true)."</pre>");
             if($routing != $rowData[1])
             {
               $status = "INPUT";
