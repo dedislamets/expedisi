@@ -271,7 +271,7 @@
 	});
 
     $('#btnBrowse').on('click', function (event) {
-    	app.initmodal();
+    	// app.initmodal();
     	$('#modalBrowse').modal({backdrop: 'static', keyboard: false}) ;
     });
     
