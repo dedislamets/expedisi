@@ -242,7 +242,7 @@ class Listrs extends CI_Controller {
               $x++;
           }                 
       }else{
-        $this->db->like($valid_columns[0],$search);
+        $this->db->like($valid_columns[0],"xx");
       }
 
       $this->db->limit($length,$start);
