@@ -725,7 +725,10 @@
 		        if($tds.eq(2).children().val() != undefined){
 			        var productId = $tds.eq(2).children().val().trim();
 			        if(productId==""){
-			        	alertError('Item belum dipilih..');
+			        	alertError('Masukkan nama barang terlebih dahulu..');
+			        	$('html, body').animate({
+					        scrollTop: $("#barang").offset().top-70
+					    }, 2000);
 			        	flag= false;
 			        }
 			    }
