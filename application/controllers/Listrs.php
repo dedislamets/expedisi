@@ -242,7 +242,7 @@ class Listrs extends CI_Controller {
               $x++;
           }                 
       }else{
-        $this->db->like($valid_columns[0],"xx");
+        $this->db->like($valid_columns[0],"");
       }
 
       $this->db->limit($length,$start);
@@ -252,12 +252,14 @@ class Listrs extends CI_Controller {
       $this->db->join('tb_routingslip_detail S', 'S.id_routing=R.id');
       $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
       $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
-      $this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
-      $this->db->join('tb_invoice_detail J', 'J.id_routing_detail=S.id AND J.id_routing=S.id_routing','left');
+      //$this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
+      //$this->db->join('tb_invoice_detail J', 'J.id_routing_detail=S.id AND J.id_routing=S.id_routing','left');
       $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
       $this->db->where('U.cabang',$this->session->userdata('cabang'));
-      $this->db->where('(I.id_routing IS NULL OR J.id_routing_detail IS NULL)');
+      //$this->db->where('(I.id_routing IS NULL OR J.id_routing_detail IS NULL)');
       // $this->db->where('I.status <>', "DITERIMA");
+      $this->db->where('R.id NOT IN (SELECT id_routing FROM tb_invoice_routing WHERE void=0)');
+      $this->db->where('S.id NOT IN (SELECT DISTINCT id_routing_detail FROM tb_invoice_detail)');
       if(!empty($this->input->get('r',true))){
         $this->db->where_not_in('R.id', explode(",", $this->input->get('r',true)));
       }
@@ -462,11 +464,13 @@ class Listrs extends CI_Controller {
     $this->db->join('tb_routingslip_detail S', 'S.id_routing=R.id');
     $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
     $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
-    $this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
-    $this->db->join('tb_invoice_detail J', 'J.id_routing_detail=S.id AND J.id_routing=S.id_routing','left');
+    //$this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
+    //$this->db->join('tb_invoice_detail J', 'J.id_routing_detail=S.id AND J.id_routing=S.id_routing','left');
     $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
     $this->db->where('U.cabang',$this->session->userdata('cabang'));
-    $query = $this->db->where('(I.id_routing IS NULL OR J.id_routing_detail IS NULL)')->get();
+    $this->db->where('R.id NOT IN (SELECT id_routing FROM tb_invoice_routing WHERE void=0)');
+    $this->db->where('S.id NOT IN (SELECT DISTINCT id_routing_detail FROM tb_invoice_detail)');
+    $query = $this->db->get();
     
     $result = $query->row();
     if(isset($result)) return $result->num;
