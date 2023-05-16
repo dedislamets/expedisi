@@ -138,9 +138,9 @@ class Cargo extends CI_Controller {
     }elseif ($prefix == "IBU") {
       $pref = "IBU";
     }elseif ($prefix == "TSEL") {
-      $pref = "TI";
+      $pref = "TSEL";
     }elseif ($prefix == "TCL") {
-      $pref = "TIC";
+      $pref = "TCL";
     }
     
     $nomor = $pref ."-" . date("Y") . date("m") . "-". $last_no;
