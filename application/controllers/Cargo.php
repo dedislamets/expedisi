@@ -141,6 +141,16 @@ class Cargo extends CI_Controller {
       $pref = "TSEL";
     }elseif ($prefix == "TCL") {
       $pref = "TCL";
+    }elseif ($prefix == "Telkomsel - RC") {
+      $pref = "TSEL";
+    }elseif ($prefix == "Telkomsel - other") {
+      $pref = "TSEL";
+    }elseif ($prefix == "Telkomsel - Udara") {
+      $pref = "TSEL";
+    }elseif ($prefix == "Telkomsel - material") {
+      $pref = "TSEL";
+    }elseif ($prefix == "TA - RC") {
+      $pref = "TA";
     }
     
     $nomor = $pref ."-" . date("Y") . date("m") . "-". $last_no;
