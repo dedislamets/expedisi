@@ -126,6 +126,12 @@
                 <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sj?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank">  <i class="icofont icofont-print" ></i>&nbsp;SURAT JALAN WAHANA</a>   <br>
                 <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sjti?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank"><i class="icofont icofont-print" ></i>&nbsp;SJ TELKOM IND</a>
               </div>
+              <?php elseif (!empty($prefix) && ($prefix == 'TSEL')) : ?>
+              <div class="col-xl-2" >
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sj?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank">  <i class="icofont icofont-print" ></i>&nbsp;SURAT JALAN WAHANA</a>   <br>
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sjtsel?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank"><i class="icofont icofont-print" ></i>&nbsp;SJ TSEL</a><br>
+                <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sttsel?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetakSJ" class="" target="_blank"><i class="icofont icofont-print" ></i>&nbsp;SERAH TERIMA</a>
+              </div>
               <?php else: ?>
               <div class="col-xl-2" >
                 <a v-if="mode == 'edit'" href="<?= base_url() ?>cetak/sj?id=<?= empty($data) ? "" : $data['id'] ?>" id="btnCetak" class="btn btn-inverse btn-outline-inverse btn-block" target="_blank">  <i class="icofont icofont-print" ></i>Surat Jalan</a>

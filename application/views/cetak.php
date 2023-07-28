@@ -1332,6 +1332,339 @@
 						</div>
 					</div>
 				</div>
+			<? }elseif ($page == "sj_tsel") { ?>
+				<style type="text/css">
+					#page-wrap {
+					    width: 650px;
+					}
+					p{
+						font-size: 17px;
+						display: block;
+						width: 100%;
+					}
+					.table1 {
+						display: block;
+					    width: 100%;
+					    padding-left: 20px;
+					    font-size: 17px;
+					}
+					.table2 {
+					    width: 100%;
+					    padding-left: 20px;
+					    font-size: 17px;
+					}
+					.kolom-routing{
+						float: left;
+					    margin-top: 58px;
+					    font-size: 17px;
+					    font-weight: bold;
+					    border: solid;
+					    padding: 10px;
+					}
+					table td, table th {
+					    padding: 0px;
+					}
+					.table2 td, .table2 th {
+					    padding: 5px;
+					}
+				</style>
+				<div class="row">
+					<div style="width: 100%;text-align: center;">
+						<img src="<?= base_url() ?>assets/images/logo-tsel.png" />
+					</div>
+					<h1 style="text-align: center;font-size: 24px;font-weight: bold;width: 100%;margin-bottom: 35px;">SURAT JALAN</h1>
+					<table class="no-border table1" style="padding-left: 0">
+						<tr>
+							<td class="no-border">Nomor Surat Jalan</td><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px"><?= empty($data) ? "" : $data['no_routing'] ?></td>
+						</tr>
+						<tr>
+							<td class="no-border">Tanggal Surat Jalan</td>
+							<td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px"> <?= tgl_indo(date('Y-m-d')) ?></td>
+						</tr>
+						<tr>
+							<td class="no-border">WHSO/ Plaza Telkom</td>
+							<td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+						</tr>
+						<tr>
+							<td class="no-border"></td>
+							<td class="no-border"></td>
+							<td class="no-border" style="padding-bottom: 20px">Up : ………………………………………</td>
+						</tr>
+
+						<tr>
+							<td class="no-border" style="width: 200px;">Alamat Pick Up</td><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+						</tr>
+						<tr>
+							<td class="no-border">Telkom Acces Pickup</td><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+						</tr>
+						<tr>
+							<td class="no-border">Tanggal Pickup </td><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+						</tr>
+						<tr>
+							<td class="no-border">Tanggal Kirim</td><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+						</tr>
+					</table>
+					<p style="padding-top: 20px; margin-bottom: 0">Kami yang bertandatangan dibawah ini :</p>
+					<p style="padding-top: 0px;font-style: italic;font-size: 13px">*/diisi oleh kantorpos tujuan</p>
+					<table class="no-border table1" style="padding-left: 0">
+						<tr>
+							<td class="no-border" style="width: 200px;">Nama /NIPTA</td><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+						</tr>
+						<tr>
+							<td class="no-border" style="width: 200px;">Nama Kantor TA</td>
+							<td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+						</tr>
+						<tr>
+							<td class="no-border" style="width: 200px;">Contact Number </td>
+							<td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+						</tr>
+
+						
+					</table>
+					<p style="padding-top: 20px">Pada hari ini ……………. tanggal ……… bulan ……………. Tahun …………</p>
+					<p style="padding-top: 10px">Telah menyerahkan Material NTE Indi Home Kepada :</p>
+					<table class="no-border table1" style="margin-bottom: 20px;">
+						<tr>
+							<td class="no-border">Nama Lengkap/Bagian</td><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px"><?= empty($data) ? "" : $data['attn_penerima'] ?></td>
+						</tr>
+						<tr>
+							<td class="no-border" style="width: 200px;">Nama Perusahaan</td class="no-border"><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px"><?= empty($data) ? "" : $data['nama_penerima'] ?></td>
+						</tr>
+						<tr>
+							<td class="no-border" style="vertical-align: top;">Alamat</td>
+							<td class="no-border" style="vertical-align: top;">:</td>
+							<td class="no-border" style="padding-left: 10px"><?= empty($data) ? "" : $data['alamat_penerima'] ?></td>
+						</tr>
+						<tr>
+							<td class="no-border">Contact Number</td class="no-border"><td class="no-border">:</td>
+							<td class="no-border" style="padding-left: 10px"><?= empty($data) ? "" : $data['hp_penerima'] ?></td>
+						</tr>
+					</table>
+					<p>Rincian sebagai berikut :</p>
+					<table class="table2" style="margin-bottom: 30px;">
+						<thead>
+							<th>No</th>
+							<th>Uraian</th>
+							<th>Unit</th>
+							<th>Qty</th>
+							<th>Keterangan</th>
+						</thead>
+						<tbody>
+							<?php 
+								$urut=1;
+                              	foreach($data_detail as $row) : ?>
+                              		<tr>
+                              			<td style="width: 5%"><?= $urut ?></td>
+										<td style="width: 29%"><?= $row['nama_barang'] ?></td>
+										<td style="width: 5.2%"><?= $row['satuan'] ?></td>
+										<td style="width: 9.7%"><?= $row['qty'] ?></td>
+										<td ></td>
+									</tr>				                                  		
+                            <?php
+                              	$urut++;
+                              	endforeach;
+                            ?>
+                        </tbody>
+						
+					</table>
+
+					<p>Material telah diterima dengan lengkap dan kondisi baik.</p>
+					<p>Catatan :</p>
+					<p style="margin-bottom: 0">________________________________________________________________________</p>
+					<p style="margin-bottom: 0">________________________________________________________________________</p>
+					<p>________________________________________________________________________</p>
+					<div style="width: 100%;display: contents;margin-top: 90px;">
+						<div style="width: 33%;text-align: center;margin-bottom: 0px">
+							<p>Diserahkan oleh</p>
+							<br>
+							<br>
+							<br>
+							<p>___________________</p>
+							<p>Petugas Grapari/Plasa</p>
+						</div>
+						<div style="width: 33%;text-align: center;margin-bottom: 0px">
+							<p>Dikirim oleh</p>
+							<br>
+							<br>
+							<br>
+							<p>___________________</p>
+							<p>Ekspedisi / TA</p>
+						</div>
+						<div style="width: 33%;text-align: center;margin-bottom: 0px">
+							<p>Diterima oleh</p>
+							<br>
+							<br>
+							<br>
+							<p>___________________</p>
+							<p>Petugas WH SO</p>
+						</div>
+					</div>
+				</div>
+			<? }elseif ($page == "st_tsel") { ?>
+				<style type="text/css">
+					#page-wrap {
+					    width: 650px;
+					}
+					p{
+						font-size: 17px;
+						display: block;
+						width: 100%;
+					}
+					.table1 {
+						display: block;
+					    width: 100%;
+					    padding-left: 20px;
+					    font-size: 17px;
+					}
+					.table2 {
+					    width: 100%;
+					    padding-left: 20px;
+					    font-size: 17px;
+					}
+					.kolom-routing{
+						float: left;
+					    margin-top: 58px;
+					    font-size: 17px;
+					    font-weight: bold;
+					    border: solid;
+					    padding: 10px;
+					}
+					table td, table th {
+					    padding: 0px;
+					}
+					.table2 td, .table2 th {
+					    padding: 5px;
+					}
+				</style>
+				<div class="row">
+					
+					<h1 style="text-align: center;font-size: 21px;font-weight: bold;width: 100%;margin-bottom: 0px;padding-top: 0px;">BERITA ACARA SERAH TERIMA <br>PERANGKAT TELKOMSEL</h1>
+					<p style="text-align: center;padding:0;">Nomor : <?= empty($data) ? "" : $data['spk_no'] ?></p>
+					<hr>
+					<p style="padding-top: 20px;margin-bottom: 0">Pada hari ini ……………. tanggal ……… bulan ……………. Tahun …………</p>
+					<p style="padding-top: 0px">Kami yang bertanda tangan dibawah ini:</p>
+
+					<table class="no-border table1" style="padding-left: 20;padding-top: 0px">
+						<tr>
+							<td class="no-border" style="width: 30px;vertical-align: top;">1.</td>
+							<td class="no-border">
+								<table>
+									<tr>
+										<td class="no-border">Nama</td>
+										<td class="no-border">:</td>
+										<td class="no-border" style="padding-left: 10px"></td>
+									</tr>
+									<tr>
+										<td class="no-border">Unit Kerja / Jabatan</td>
+										<td class="no-border">:</td>
+										<td class="no-border" style="padding-left: 10px"></td>
+									</tr>
+									<tr>
+										<td class="no-border">Selanjutnya</td>
+										<td class="no-border">:</td>
+										<td class="no-border" style="padding-left: 10px">PIHAK PERTAMA</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td class="no-border" style="width: 30px;vertical-align: top;">2.</td>
+							<td class="no-border">
+								<table>
+									<tr>
+										<td class="no-border">Nama</td>
+										<td class="no-border">:</td>
+										<td class="no-border" style="padding-left: 10px"></td>
+									</tr>
+									<tr>
+										<td class="no-border">Unit Kerja / Jabatan</td>
+										<td class="no-border">:</td>
+										<td class="no-border" style="padding-left: 10px"></td>
+									</tr>
+									<tr>
+										<td class="no-border">Selanjutnya</td>
+										<td class="no-border">:</td>
+										<td class="no-border" style="padding-left: 10px">PIHAK KEDUA</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<p style="padding-top: 20px; margin-bottom: 20px">Telah dilakukan proses serah terima perangkat – perangkat TELKOMSEL untuk keperluan Pekerjaan Refurbishment antara PIHAK PERTAMA kepada PIHAK KEDUA, Adapun perangkat – perangkat yang diserahkan PIHAK PERTAMA terlampir sebagai berikut :</p>
+					
+					<table class="table2" style="margin-bottom: 20px;">
+						<thead>
+							<th>Item Perangkat</th>
+							<th>Jumlah Unit</th>
+						</thead>
+						<tbody>
+							<?php 
+								$urut=1;
+                              	foreach($data_detail as $row) : ?>
+                              		<tr>
+										<td style="width: 29%"><?= $row['nama_barang'] ?></td>
+										<td style="width: 9.7%"><?= $row['qty'] ?></td>
+									</tr>				                                  		
+                            <?php
+                              	$urut++;
+                              	endforeach;
+                            ?>
+                        </tbody>
+						
+					</table>
+
+					<p>Detil Perangkat terdapat dalam lampiran Berita Acara Serah Terima ini.</p>
+					<p>PIHAK KEDUA telah menerima perangkat sesuai lampiran. Demikian Berita Acara Pemeriksaan ini dibuat untuk dipergunakan sebagaimana mestinya. </p>
+					
+					<table class="table2">
+						<tr>
+							<td style="font-weight: bold;text-align: center;">PIHAK PERTAMA</td>
+							<td style="font-weight: bold;text-align: center;">PIHAK KEDUA</td>
+							<td style="font-weight: bold;text-align: center;">PIHAK KETIGA</td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;height: 80px;"></td>
+							<td style="font-weight: bold;"></td>
+							<td style="font-weight: bold;"></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;">NIK : </td>
+							<td style="font-weight: bold;">NIK : </td>
+							<td style="font-weight: bold;">NIK : </td>
+						</tr>
+					</table>
+					
+					<p style="padding-top: 20px;">Dikirim via …………………… Resi ………………………… tanggal …………………….</p>
+					<p style="text-align: right;margin-bottom: 0">Diterima ditujuan pada tanggal, ………………………</p>
+					<p style="text-align: right;">Jam,……………….. </p>
+
+					<table class="table2" style="margin-bottom: 20px">
+						<tr>
+							<td style="font-weight: bold;text-align: center;">PIHAK EXPEDISI</td>
+							<td style="font-weight: bold;text-align: center;">PIHAK PENERIMA</td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;height: 80px;"></td>
+							<td style="font-weight: bold;"></td>
+						</tr>
+						<tr>
+							<td style="font-weight: bold;">NIK : </td>
+							<td style="font-weight: bold;">NIK : </td>
+						</tr>
+					</table>
+				</div>
 			<?php } ?>
 		</div>
 	</body>
