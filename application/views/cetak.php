@@ -1369,9 +1369,11 @@
 					}
 				</style>
 				<div class="row">
+					<? if($pic == true): ?>
 					<div style="width: 100%;text-align: center;">
 						<img src="<?= base_url() ?>assets/images/logo-tsel.png" />
 					</div>
+					<? endif; ?>
 					<h1 style="text-align: center;font-size: 24px;font-weight: bold;width: 100%;margin-bottom: 35px;">SURAT JALAN</h1>
 					<table class="no-border table1" style="padding-left: 0">
 						<tr>
@@ -1413,7 +1415,7 @@
 					</table>
 					<p style="padding-top: 20px; margin-bottom: 0">Kami yang bertandatangan dibawah ini :</p>
 					<p style="padding-top: 0px;font-style: italic;font-size: 13px">*/diisi oleh kantorpos tujuan</p>
-					<table class="no-border table1" style="padding-left: 0">
+					<table class="no-border table1" style="padding-left: 40px">
 						<tr>
 							<td class="no-border" style="width: 200px;">Nama /NIPTA</td><td class="no-border">:</td>
 							<td class="no-border" style="padding-left: 10px">………………………………………</td>
@@ -1433,7 +1435,7 @@
 					</table>
 					<p style="padding-top: 20px">Pada hari ini ……………. tanggal ……… bulan ……………. Tahun …………</p>
 					<p style="padding-top: 10px">Telah menyerahkan Material NTE Indi Home Kepada :</p>
-					<table class="no-border table1" style="margin-bottom: 20px;">
+					<table class="no-border table1" style="margin-bottom: 20px;margin-left: 20px;">
 						<tr>
 							<td class="no-border">Nama Lengkap/Bagian</td><td class="no-border">:</td>
 							<td class="no-border" style="padding-left: 10px"><?= empty($data) ? "" : $data['attn_penerima'] ?></td>
@@ -1480,7 +1482,7 @@
 						
 					</table>
 
-					<p>Material telah diterima dengan lengkap dan kondisi baik.</p>
+					<p>Material NTE telah diterima dengan lengkap dan kondisi baik.</p>
 					<p>Catatan :</p>
 					<p style="margin-bottom: 0">________________________________________________________________________</p>
 					<p style="margin-bottom: 0">________________________________________________________________________</p>

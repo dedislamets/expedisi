@@ -241,7 +241,7 @@ class Cetak extends CI_Controller {
       }
               // print("<pre>".print_r($data['data_detail'],true)."</pre>");exit();
       $data['page'] = "sj_tsel";
-
+      $data['pic'] = empty($this->input->get('pic',TRUE)) ? true : false;
       $this->load->view('cetak',$data,FALSE); 
     }else{
         redirect("login");
