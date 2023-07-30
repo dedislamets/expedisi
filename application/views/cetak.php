@@ -1388,7 +1388,7 @@
 						<tr>
 							<td class="no-border">WHSO/ Plaza Telkom</td>
 							<td class="no-border">:</td>
-							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+							<td class="no-border" style="padding-left: 10px"><?= ($pic == true) ? "………………………………………" : "Grapari" ?></td>
 						</tr>
 						<tr>
 							<td class="no-border"></td>
@@ -1398,7 +1398,7 @@
 
 						<tr>
 							<td class="no-border" style="width: 200px;">Alamat Pick Up</td><td class="no-border">:</td>
-							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+							<td class="no-border" style="padding-left: 10px"><?= $data['nama_pengirim'] ?></td>
 						</tr>
 						<tr>
 							<td class="no-border">Telkom Acces Pickup</td><td class="no-border">:</td>
@@ -1406,7 +1406,7 @@
 						</tr>
 						<tr>
 							<td class="no-border">Tanggal Pickup </td><td class="no-border">:</td>
-							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+							<td class="no-border" style="padding-left: 10px"><?= tgl_indo($data["pickup_date"]) ?></td>
 						</tr>
 						<tr>
 							<td class="no-border">Tanggal Kirim</td><td class="no-border">:</td>
