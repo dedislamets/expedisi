@@ -1428,7 +1428,7 @@
 						<tr>
 							<td class="no-border" style="width: 200px;">Contact Number </td>
 							<td class="no-border">:</td>
-							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+							<td class="no-border" style="padding-left: 10px"><?= $data['hp_pengirim'] ?></td>
 						</tr>
 
 						
