@@ -1433,7 +1433,7 @@
 
 						
 					</table>
-					<p style="padding-top: 20px">Pada hari ini ……………. tanggal ……… bulan ……………. Tahun …………</p>
+					<p style="padding-top: 20px">Pada hari ini <?= nama_hari(date('Y-m-d')) ?>. tanggal <?= date('d') ?> bulan <?= tgl_indo(date('Y-m-d')) ?> Tahun <?= date('Y') ?></p>
 					<p style="padding-top: 10px">Telah menyerahkan Material NTE Indi Home Kepada :</p>
 					<table class="no-border table1" style="margin-bottom: 20px;margin-left: 20px;">
 						<tr>
