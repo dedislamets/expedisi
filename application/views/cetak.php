@@ -1418,12 +1418,12 @@
 					<table class="no-border table1" style="padding-left: 40px">
 						<tr>
 							<td class="no-border" style="width: 200px;">Nama /NIPTA</td><td class="no-border">:</td>
-							<td class="no-border" style="padding-left: 10px"><?= $data['nama_pengirim'] ?></td>
+							<td class="no-border" style="padding-left: 10px"><?= $data['attn_pengirim'] ?></td>
 						</tr>
 						<tr>
 							<td class="no-border" style="width: 200px;">Nama Kantor TA</td>
 							<td class="no-border">:</td>
-							<td class="no-border" style="padding-left: 10px">………………………………………</td>
+							<td class="no-border" style="padding-left: 10px"><?= $data['nama_pengirim'] ?></td>
 						</tr>
 						<tr>
 							<td class="no-border" style="width: 200px;">Contact Number </td>
