@@ -163,6 +163,30 @@ function tgl_indo($tanggal){
     return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
 }
 
+function bulan($tanggal){
+    $bulan = array (
+        1 =>   'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember'
+    );
+    $pecahkan = explode('-', $tanggal);
+    
+    // variabel pecahkan 0 = tanggal
+    // variabel pecahkan 1 = bulan
+    // variabel pecahkan 2 = tahun
+ 
+    return  $bulan[ (int)$pecahkan[1] ];
+}
+
 function tgl_waktu_indo($tanggal){
     setlocale(LC_ALL, 'id-ID', 'id_ID');
     echo strftime("%A, %d %B %Y %T", strtotime($tanggal)) . "\n";
