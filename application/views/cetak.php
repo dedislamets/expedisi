@@ -1386,7 +1386,11 @@
 							<td class="no-border" style="padding-left: 10px"> <?= tgl_indo(date('Y-m-d')) ?></td>
 						</tr>
 						<tr>
-							<td class="no-border">WHSO/ Plaza Telkom</td>
+							<? if($pic == true): ?>
+								<td class="no-border">Grapari</td>
+							<? else: ?>
+								<td class="no-border">WHSO/ Plaza Telkom</td>
+							<? endif; ?>
 							<td class="no-border">:</td>
 							<td class="no-border" style="padding-left: 10px"><?= ($pic == true) ? "………………………………………" : "Grapari" ?></td>
 						</tr>
@@ -1400,10 +1404,12 @@
 							<td class="no-border" style="width: 200px;">Alamat Pick Up</td><td class="no-border">:</td>
 							<td class="no-border" style="padding-left: 10px"><?= $data['nama_pengirim'] ?></td>
 						</tr>
+						<? if($pic == false): ?>
 						<tr>
 							<td class="no-border">Telkom Acces Pickup</td><td class="no-border">:</td>
 							<td class="no-border" style="padding-left: 10px">………………………………………</td>
 						</tr>
+						<? endif; ?>
 						<tr>
 							<td class="no-border">Tanggal Pickup </td><td class="no-border">:</td>
 							<td class="no-border" style="padding-left: 10px"><?= tgl_indo($data["pickup_date"]) ?></td>
@@ -1416,10 +1422,12 @@
 					<p style="padding-top: 20px; margin-bottom: 0">Kami yang bertandatangan dibawah ini :</p>
 					<p style="padding-top: 0px;font-style: italic;font-size: 13px">*/diisi oleh kantorpos tujuan</p>
 					<table class="no-border table1" style="padding-left: 40px">
+						<? if($pic == false): ?>
 						<tr>
 							<td class="no-border" style="width: 200px;">Nama /NIPTA</td><td class="no-border">:</td>
 							<td class="no-border" style="padding-left: 10px"><?= $data['attn_pengirim'] ?></td>
 						</tr>
+						<? endif; ?>
 						<tr>
 							<td class="no-border" style="width: 200px;">Nama Kantor TA</td>
 							<td class="no-border">:</td>
