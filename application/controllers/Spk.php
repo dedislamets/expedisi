@@ -322,7 +322,7 @@ class Spk extends CI_Controller {
 	{
     $response = [];
     $response['error'] = TRUE; 
-    if($this->admin->deleteTable("id",$this->input->get('id'), 'tb_spk_detail' )){
+    if($this->admin->deleteTable("id",$this->input->get('id'), 'tb_routingslip_detail' )){
       $response['error'] = FALSE;
     } 
 
