@@ -361,14 +361,16 @@ class Cargo extends CI_Controller {
                   $this->db->where(array( "id" => $this->input->post('id_detail'.$i) ));
                   $this->db->update('tb_routingslip_detail');
                 }else{
-                  unset($data);
-                  $data['id_routing'] = $this->input->post('id_rs');
-                  $data['no_routing'] = $this->input->post('nomor_rs');
-                  $data['id_barang'] = $this->input->post('id_barang'.$i);
-                  $data['qty'] = $this->input->post('qty'.$i);
-                  $data['satuan'] = $this->input->post('satuan'.$i);
-                  $data['kg'] = $this->input->post('kg'.$i);
-                  $this->db->insert('tb_routingslip_detail', $data);
+		  if(isset($this->input->post('id_detail'.$i) )){
+	                  unset($data);
+	                  $data['id_routing'] = $this->input->post('id_rs');
+	                  $data['no_routing'] = $this->input->post('nomor_rs');
+	                  $data['id_barang'] = $this->input->post('id_barang'.$i);
+	                  $data['qty'] = $this->input->post('qty'.$i);
+	                  $data['satuan'] = $this->input->post('satuan'.$i);
+	                  $data['kg'] = $this->input->post('kg'.$i);
+	                  $this->db->insert('tb_routingslip_detail', $data);
+		  }
                 }
               }
 
