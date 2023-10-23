@@ -271,7 +271,7 @@ class Cargo extends CI_Controller {
       $data['site_name']      = $this->input->post('site_name');
       $data['received_by']     = $this->input->post('received_by');
 
-	    if($this->input->post('mode') === "edit"){
+     if($this->input->post('mode') === "edit"){
 	        
           if(!empty($this->input->post('driver')) && !empty($this->input->post('pickup_date')) && !empty($this->input->post('pickup_address') )){
             $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $this->input->post('id_rs', TRUE)));
@@ -336,16 +336,16 @@ class Cargo extends CI_Controller {
           $data['EditBy'] = $recLogin;
           $data['EditDate'] = date('Y-m-d H:i:s');
 
-	      	$this->db->set($data);
-	        $this->db->where($arr_par);
-	        $result  =  $this->db->update('tb_routingslip'); 
+	$this->db->set($data);
+	$this->db->where($arr_par);
+	$result  =  $this->db->update('tb_routingslip'); 
 
-	        if(!$result){
+	if(!$result){
               print("<pre>".print_r($this->db->error(),true)."</pre>");
-	        }else{
-	            $response['error']= FALSE;
-              $response['id']= $this->input->post('id_rs', TRUE);
-              $total = intval($this->input->post('total-row'));
+	}else{
+		$response['error']= FALSE;
+              	$response['id']= $this->input->post('id_rs', TRUE);
+              	$total = intval($this->input->post('total-row'));
               for ($i=1; $i <= $total ; $i++) { 
                 // print("<pre>".print_r($this->input->post(),true)."</pre>");exit();
                 if(!empty($this->input->post('id_detail'.$i) )){
@@ -361,7 +361,7 @@ class Cargo extends CI_Controller {
                   $this->db->where(array( "id" => $this->input->post('id_detail'.$i) ));
                   $this->db->update('tb_routingslip_detail');
                 }else{
-		  if(isset($this->input->post('id_detail'.$i) )){
+		  if(!empty($this->input->post('id_barang'.$i) )){
 	                  unset($data);
 	                  $data['id_routing'] = $this->input->post('id_rs');
 	                  $data['no_routing'] = $this->input->post('nomor_rs');
