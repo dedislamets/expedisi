@@ -35,16 +35,14 @@
                             </select>
                         </div>
                         <label class="col-sm-1 col-form-label f-w-700">Dari</label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <input class="form-control form-bg-inverse" type="date" id="from_tanggal" name="from_tanggal"  />
                         </div>
                         <label class="col-sm-1 col-form-label f-w-700">Sampai</label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <input class="form-control form-bg-inverse" type="date" id="to_tanggal" name="to_tanggal"  />
                         </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-success btn-block btn-round" id="btnExport"><i class="icofont icofont-download"></i> Download</button>
-                        </div>
+                        
 
                     </div>
                     <div class="form-group row m-b-0">
@@ -59,6 +57,12 @@
                                   }
                                 ?>
                             </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-success btn-block btn-round" id="btnExport"><i class="icofont icofont-download"></i> Download</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-success btn-block btn-round" id="btnExportRingkas"><i class="icofont icofont-download"></i> Download Ringkas</button>
                         </div>
                     </div>
                 </div>

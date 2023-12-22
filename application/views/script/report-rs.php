@@ -17,5 +17,13 @@
 	        var sa = window.open('reportrs/export?from=' + start + '&to=' + end + '&c=' + $("#project").val()+ '&req=' + $("#requestor").val() ,'_self');
 			
 		})
+
+		$('#btnExportRingkas').on('click', function()
+		{
+			var start = $("#from_tanggal").val();
+	        var end = $("#to_tanggal").val();
+	        var sa = window.open('reportrs/exportringkas?from=' + start + '&to=' + end + '&c=' + $("#project").val()+ '&req=' + $("#requestor").val() ,'_self');
+			
+		})
 	})
 </script>
