@@ -160,13 +160,13 @@ class Reportrs extends CI_Controller {
         $requestor = $this->parse->anti_injection($this->input->get('req',TRUE));
 
         $this->db->select("R.no_routing,R.createdDate,
-            CASE WHEN R.nama_penerima IS NULL THEN mcp.cust_name ELSE R.nama_penerima END cust_name_penerima, 
-            CASE WHEN R.nama_pengirim IS NULL THEN mc.cust_name ELSE R.nama_pengirim END cust_name,
+            R.nama_penerima as cust_name_penerima, 
+            R.nama_pengirim as cust_name,
             spk_no,`nama_project`,kota_pengirim,kota_penerima,moda_name,pickup_date,
           received_date,received_doc,R.STATUS,agent,origin,destination,received_by,requestor,u.nama_user", FALSE);
         $this->db->from("tb_routingslip R");
-        $this->db->join('master_customer mc', 'mc.`id`=R.`id_pengirim`','LEFT');
-        $this->db->join('master_customer mcp', 'mcp.`id`=R.`id_penerima`','LEFT');
+        //$this->db->join('master_customer mc', 'mc.`id`=R.`id_pengirim`','LEFT');
+        //$this->db->join('master_customer mcp', 'mcp.`id`=R.`id_penerima`','LEFT');
         $this->db->join('tb_user u', 'u.`id_user`=R.`CreatedBy`','LEFT');
         $this->db->where("DATE(R.CreatedDate) BETWEEN '". $start ."' AND '". $end ."'");
         if($cust != "all"){
