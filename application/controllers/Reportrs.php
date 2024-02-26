@@ -1,26 +1,26 @@
 <?php
 
 ini_set('max_execution_time', 0); 
-ini_set('memory_limit','2048M');
+ini_set('memory_limit','4096M');
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-// require('./vendor/autoload.php');
+// require('../../tmp/vendor/autoload.php');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Reportrs extends CI_Controller {
-	public function __construct()
-	{
-		parent::__construct();
-	    $this->load->model('admin');
-	   	$this->load->model('M_menu','',TRUE);
-	   	
-	}
-	public function index()
-	{		
-		if($this->admin->logged_id())
+  public function __construct()
+  {
+    parent::__construct();
+      $this->load->model('admin');
+      $this->load->model('M_menu','',TRUE);
+      
+  }
+  public function index()
+  {   
+    if($this->admin->logged_id())
     {
       if(CheckMenuRole('reportrs')){
         redirect("errors");
@@ -33,14 +33,14 @@ class Reportrs extends CI_Controller {
       $data['project'] = $this->db->query("SELECT distinct nama_project FROM `tb_routingslip` ")->result();
       $data['requestor'] = $this->db->query("SELECT distinct requestor FROM `tb_routingslip` ")->result();
 
-			$this->load->view('home',$data,FALSE); 
+      $this->load->view('home',$data,FALSE); 
 
     }else{
         redirect("login");
 
-    }				  
-						
-	}
+    }         
+            
+  }
 
   public function export()
   {
@@ -70,86 +70,91 @@ class Reportrs extends CI_Controller {
         $data = $this->db->get()->result();
         // echo $this->db->last_query();exit();
 
-        $spreadsheet = new Spreadsheet;
-
-        $styleArray = array(
-            'borders' => array(
-                'outline' => array(
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                    'color' => array('argb' => '000000'),
-                ),
-            ),
-        );
-
-        $spreadsheet->setActiveSheetIndex(0)
-          ->setCellValue('A1', 'NO')
-          ->setCellValue('B1', 'Routing Slip')
-          ->setCellValue('C1', 'DO/SPK')
-          ->setCellValue('D1', 'Project')
-          ->setCellValue('E1', 'Routing Date')
-          ->setCellValue('F1', 'Site Pengirim')
-          ->setCellValue('G1', 'Site Penerima')
-          ->setCellValue('H1', 'Pickup Date')
-          ->setCellValue('I1', 'Items')
-          ->setCellValue('J1', 'Qty')
-          ->setCellValue('K1', 'Satuan')
-          ->setCellValue('L1', 'Status')
-          ->setCellValue('M1', 'Receive Date')
-          ->setCellValue('N1', 'Receiver')
-          ->setCellValue('O1', 'Doc Receive Date')
-          ->setCellValue('P1', 'Vendor')
-          ->setCellValue('Q1', 'Transport')
-          ->setCellValue('R1', 'Requestor')
-          ->setCellValue('S1', 'Created By')
-          ->setCellValue('T1', 'Created Date');
-
-        $spreadsheet->getActiveSheet()->getStyle('A1:T1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('f4f403');
-
-        $spreadsheet->getActiveSheet()->setTitle('Recapitulation');
-
+      $headers = array(
+          'NO' => 'integer', 
+          'Routing Slip' => 'string', 
+          'DO/SPK' => 'string', 
+          'Project' => 'string', 
+          'Routing Date' => 'string',
+          'Site Pengirim' => 'string',
+          'Site Penerima' => 'string',
+          'Pickup Date' => 'string',
+          'Items' => 'string',
+          'Qty' => 'integer',
+          'Satuan' => 'string',
+          'Status' => 'string',
+          'Receive Date' => 'string',
+          'Receiver' => 'string',
+          'Doc Receive Date' => 'string',
+          'Vendor' => 'string',
+          'Transport' => 'string',
+          'Requestor' => 'string',
+          'Created By' => 'string',
+          'Created Date' => 'string',
+      );
+      
+      $writer = new XLSXWriter();
+  
+      $keywords = array('xlsx','MySQL','Codeigniter');
+      $writer->setTitle('Routing Slip');
+      $writer->setSubject('Report generated using Codeigniter and XLSXWriter');
+      $writer->setAuthor('Dedi Slamet Supatman');
+      $writer->setCompany('Dedi Slamet Supatman');
+      $writer->setKeywords($keywords);
+      $writer->setDescription('Routing Slip');
+      $writer->setTempDir(sys_get_temp_dir());
+      
+      //write headers
+      $writer->writeSheetHeader('Sheet1', $headers);
+        
         $i=2; 
-        foreach($data as $key=>$row) {
-
-          $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('A'.$i, $key+1)
-            ->setCellValue('B'.$i, $row->no_routing)
-            ->setCellValue('C'.$i, $row->spk_no)
-            ->setCellValue('D'.$i, $row->nama_project)
-            ->setCellValue('E'.$i, $row->createdDate)
-            ->setCellValue('F'.$i, $row->cust_name)
-            ->setCellValue('G'.$i, $row->cust_name_penerima)
-            ->setCellValue('H'.$i, $row->pickup_date)
-            ->setCellValue('I'.$i, $row->nama_barang)
-            ->setCellValue('J'.$i, $row->qty)
-            ->setCellValue('K'.$i, $row->satuan)
-            ->setCellValue('L'.$i, $row->STATUS)
-            ->setCellValue('M'.$i, $row->received_date)
-            ->setCellValue('N'.$i, $row->received_by)
-            ->setCellValue('O'.$i, $row->received_doc)
-            ->setCellValue('P'.$i, $row->agent)
-            ->setCellValue('Q'.$i, $row->moda_name)
-            ->setCellValue('R'.$i, $row->requestor)
-            ->setCellValue('S'.$i, $row->nama_user)
-            ->setCellValue('T'.$i, $row->createdDate);
-
-            $spreadsheet->getActiveSheet()->getStyle('A2:T'.$i)->applyFromArray($styleArray);
-          $i++;
-        }
-
-
-        foreach (range('A','T') as $col) {
-          $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);  
-        }
-
-       
-        // exit();
-        $writer = new Xlsx($spreadsheet);
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Report Routing Slip.xlsx"');
-        header('Cache-Control: max-age=0');
-
-        $writer->save('php://output');
+      foreach($data as $key=>$row) :
+       $writer->writeSheetRow('Sheet1',array(
+            $key+1, 
+            $row->no_routing, 
+            $row->spk_no, 
+            $row->nama_project, 
+            $row->createdDate,
+            $row->cust_name,
+            $row->cust_name_penerima,
+            $row->pickup_date,
+            $row->nama_barang,
+            $row->qty,
+            $row->satuan,
+            $row->STATUS,
+            $row->received_date,
+            $row->received_by,
+            $row->received_doc,
+            $row->agent,
+            $row->moda_name,
+            $row->requestor,
+            $row->nama_user,
+            $row->createdDate,
+            )
+      );
+      $i++;
+      endforeach;
+  
+      $fileLocation = 'Report Routing Slip ('. $start .' sd '. $end .').xlsx';
+      
+      $writer->writeToFile($fileLocation);
+      
+      //force download
+      header('Content-Description: File Transfer');
+      header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      header("Content-Disposition: attachment; filename=".basename($fileLocation));
+      header("Content-Transfer-Encoding: binary");
+      header("Expires: 0");
+      header("Pragma: public");
+      header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+      header('Content-Length: ' . filesize($fileLocation)); //Remove
+    
+      ob_clean();
+      flush();
+    
+      readfile($fileLocation);
+      unlink($fileLocation);
+      exit(0);
   }
 
   public function exportringkas()
@@ -176,82 +181,87 @@ class Reportrs extends CI_Controller {
           $this->db->where("requestor", $requestor);
         }
         $data = $this->db->get()->result();
-        //echo $this->db->last_query();exit();
-
-        $spreadsheet = new Spreadsheet;
-
-        $styleArray = array(
-            'borders' => array(
-                'outline' => array(
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                    'color' => array('argb' => '000000'),
-                ),
-            ),
-        );
-
-        $spreadsheet->setActiveSheetIndex(0)
-          ->setCellValue('A1', 'NO')
-          ->setCellValue('B1', 'Routing Slip')
-          ->setCellValue('C1', 'DO/SPK')
-          ->setCellValue('D1', 'Project')
-          ->setCellValue('E1', 'Routing Date')
-          ->setCellValue('F1', 'Site Pengirim')
-          ->setCellValue('G1', 'Site Penerima')
-          ->setCellValue('H1', 'Pickup Date')
-          ->setCellValue('I1', 'Status')
-          ->setCellValue('J1', 'Receive Date')
-          ->setCellValue('K1', 'Receiver')
-          ->setCellValue('L1', 'Doc Receive Date')
-          ->setCellValue('M1', 'Vendor')
-          ->setCellValue('N1', 'Transport')
-          ->setCellValue('O1', 'Requestor')
-          ->setCellValue('P1', 'Created By')
-          ->setCellValue('Q1', 'Created Date');
-
-        $spreadsheet->getActiveSheet()->getStyle('A1:Q1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('f4f403');
-
-        $spreadsheet->getActiveSheet()->setTitle('Recapitulation');
-
+        
+        $headers = array(
+          'NO' => 'integer', 
+          'Routing Slip' => 'string', 
+          'DO/SPK' => 'string', 
+          'Project' => 'string', 
+          'Routing Date' => 'string',
+          'Site Pengirim' => 'string',
+          'Site Penerima' => 'string',
+          'Pickup Date' => 'string',
+          'Status' => 'string',
+          'Receive Date' => 'string',
+          'Receiver' => 'string',
+          'Doc Receive Date' => 'string',
+          'Vendor' => 'string',
+          'Transport' => 'string',
+          'Requestor' => 'string',
+          'Created By' => 'string',
+          'Created Date' => 'string',
+      );
+      
+      $writer = new XLSXWriter();
+  
+      $keywords = array('xlsx','MySQL','Codeigniter');
+      $writer->setTitle('Routing Slip');
+      $writer->setSubject('Report generated using Codeigniter and XLSXWriter');
+      $writer->setAuthor('Dedi Slamet Supatman');
+      $writer->setCompany('Dedi Slamet Supatman');
+      $writer->setKeywords($keywords);
+      $writer->setDescription('Routing Slip');
+      $writer->setTempDir(sys_get_temp_dir());
+      
+      //write headers
+      $writer->writeSheetHeader('Sheet1', $headers);
+        
         $i=2; 
-        foreach($data as $key=>$row) {
-
-          $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('A'.$i, $key+1)
-            ->setCellValue('B'.$i, $row->no_routing)
-            ->setCellValue('C'.$i, $row->spk_no)
-            ->setCellValue('D'.$i, $row->nama_project)
-            ->setCellValue('E'.$i, $row->createdDate)
-            ->setCellValue('F'.$i, $row->cust_name)
-            ->setCellValue('G'.$i, $row->cust_name_penerima)
-            ->setCellValue('H'.$i, $row->pickup_date)
-            ->setCellValue('I'.$i, $row->STATUS)
-            ->setCellValue('J'.$i, $row->received_date)
-            ->setCellValue('K'.$i, $row->received_by)
-            ->setCellValue('L'.$i, $row->received_doc)
-            ->setCellValue('M'.$i, $row->agent)
-            ->setCellValue('N'.$i, $row->moda_name)
-            ->setCellValue('O'.$i, $row->requestor)
-            ->setCellValue('P'.$i, $row->nama_user)
-            ->setCellValue('Q'.$i, $row->createdDate);
-
-            $spreadsheet->getActiveSheet()->getStyle('A2:Q'.$i)->applyFromArray($styleArray);
-          $i++;
-        }
-
-
-        foreach (range('A','Q') as $col) {
-          $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);  
-        }
-
-       
-        // exit();
-        $writer = new Xlsx($spreadsheet);
-
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Report Ringkas Routing Slip.xlsx"');
-        header('Cache-Control: max-age=0');
-
-        $writer->save('php://output');
+      foreach($data as $key=>$row) :
+       $writer->writeSheetRow('Sheet1',array(
+            $key+1, 
+            $row->no_routing, 
+            $row->spk_no, 
+            $row->nama_project, 
+            $row->createdDate,
+            $row->cust_name,
+            $row->cust_name_penerima,
+            $row->pickup_date,
+            $row->STATUS,
+            $row->received_date,
+            $row->received_by,
+            $row->received_doc,
+            $row->agent,
+            $row->moda_name,
+            $row->requestor,
+            $row->nama_user,
+            $row->createdDate,
+            )
+      );
+      $i++;
+      endforeach;
+  
+      $fileLocation = 'Report Ringkas Routing Slip ('. $start .' sd '. $end .').xlsx';
+      
+      $writer->writeToFile($fileLocation);
+      
+      //force download
+      header('Content-Description: File Transfer');
+      header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      header("Content-Disposition: attachment; filename=".basename($fileLocation));
+      header("Content-Transfer-Encoding: binary");
+      header("Expires: 0");
+      header("Pragma: public");
+      header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+      header('Content-Length: ' . filesize($fileLocation)); //Remove
+    
+      ob_clean();
+      flush();
+    
+      readfile($fileLocation);
+      unlink($fileLocation);
+      exit(0);
+      
   }
 
 }
