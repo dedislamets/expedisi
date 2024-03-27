@@ -288,9 +288,13 @@ class Invoice extends CI_Controller {
       $data['totalrowbiaya'] = 1;
       $data['data_biaya'] = $this->admin->get_result_array('tb_invoice_opt_charge',array( 'id_invoice' => $id));
       foreach ($data['data_biaya'] as $key => $value) {
-        $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
-        $data['data_biaya'][$key]['routing'] = $routing['no_routing'];
-        $data['totalrowbiaya'] ++;
+        if($value['id_routing'] > 0){
+          $routing = $this->admin->get_array('tb_routingslip',array( 'id' => $value['id_routing']));
+          $data['data_biaya'][$key]['routing'] = $routing['no_routing'];
+          $data['totalrowbiaya'] ++;
+        }else{
+          $data['data_biaya'][$key]['routing'] = "-";
+        }
       }
 
       $this->output->set_content_type('application/json')->set_output(json_encode($data));
