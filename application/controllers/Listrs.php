@@ -117,7 +117,7 @@ class Listrs extends CI_Controller {
       $this->db->from("tb_routingslip R");
       $this->db->join('master_customer A', 'R.id_penerima = A.id','LEFT');
       $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
-      $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
+      $this->db->join('tb_user U', 'U.id_user = R.CreatedBy','LEFT');
       $this->db->where('U.cabang',$this->session->userdata('cabang'));
       $this->db->order_by("SUBSTRING_INDEX(SUBSTRING_INDEX(no_routing, '-', 3), '-', -2) DESC");
       $pengguna = $this->db->get();
