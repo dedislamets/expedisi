@@ -254,7 +254,7 @@ class Listrs extends CI_Controller {
       $this->db->join('master_customer B', 'R.id_pengirim = B.id','LEFT');
       //$this->db->join('tb_invoice_routing I', 'I.id_routing = R.id AND VOID=0','left');
       //$this->db->join('tb_invoice_detail J', 'J.id_routing_detail=S.id AND J.id_routing=S.id_routing','left');
-      $this->db->join('tb_user U', 'U.id_user = R.CreatedBy');
+      $this->db->join('tb_user U', 'U.id_user = R.CreatedBy','LEFT');
       $this->db->where('U.cabang',$this->session->userdata('cabang'));
       //$this->db->where('(I.id_routing IS NULL OR J.id_routing_detail IS NULL)');
       // $this->db->where('I.status <>', "DITERIMA");
