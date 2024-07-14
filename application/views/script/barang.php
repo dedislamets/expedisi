@@ -87,13 +87,32 @@
     });
 
 	function hapus(val) {
-		var r = confirm("Yakin dihapus?");
-		if (r == true) {
+		Swal.fire({
+		  title: 'Yakin dihapus?',
+		  text: "Barang ini akan dilakukan dihapus!",
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Ya, yakin!'
+		}).then((result) => {
 			
-			$.get('Barang/delete', { id: $(val).data('id') }, function(data){ 
-				window.location.reload();
-			})
-		
-		}
+		  	if(result.isConfirmed){
+		  		$.get('Barang/delete', { id: $(val).data('id') }, function(data){ 
+					//window.location.reload();
+				})
+				.done(function(data) {
+					if(data.error==false){									
+						window.location.reload();
+					}else{	
+						alertError(error.responseText);
+												  					  	
+					}
+				})
+				.fail(function(error) {
+				    alertError(error.responseText);
+				})
+		  	}
+		})
 	}
 </script>

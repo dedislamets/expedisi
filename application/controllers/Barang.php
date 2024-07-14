@@ -12,7 +12,7 @@ class Barang extends CI_Controller {
 	{		
 		if($this->admin->logged_id())
     {
-      if(CheckMenuRole('cargo')){
+      if(CheckMenuRole('barang')){
         redirect("barang");
       }
 			$data['title'] = 'Master Barang';
@@ -213,9 +213,32 @@ class Barang extends CI_Controller {
   {
       $response = [];
       $response['error'] = TRUE; 
-      if($this->admin->deleteTable("id_barang",$this->input->get('id'), 'barang' )){
-        $response['error'] = FALSE;
-      } 
+
+      try {
+        $barang = $this->admin->get_array('barang',array('id_barang' => $this->input->get('id', TRUE)));
+
+        if(empty( $barang)){
+            $response['error']= TRUE;
+            throw new Exception('Barang not found !');
+        }else{
+          $routing = $this->admin->get_array('tb_routingslip_detail',array('id_barang' => $barang['id_barang'] ));
+
+          if(!empty($routing)) {
+            throw new Exception('Barang already used in routingslip, can not deleted !');
+          }
+        }
+
+        $result = $this->admin->deleteTable("id_barang",$this->input->get('id',TRUE), 'barang' );
+        if(!$result){
+            print("<pre>".print_r($this->db->error(),true)."</pre>");
+        }else{
+            $response['error']= FALSE;
+        }
+      }catch (Exception $e) {
+        $response['error']= TRUE;
+        $response['message'] = $e->getMessage();
+        $this->output->set_status_header(502);
+      }
 
       $this->output->set_content_type('application/json')->set_output(json_encode($response)); 
   }
