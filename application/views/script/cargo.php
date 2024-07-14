@@ -278,8 +278,19 @@
 	$("#project").change(function(e, params){  
 		 
 		$.get('<?= base_url() ?>cargo/getPrefixAuto' , { prefix	: $(this).val() }, function(data){ 
-			$("#nomor_rs").val(data);
-	    });
+			
+	    })
+	    .done(function(data) {
+			if(data.error==false){									
+				$("#nomor_rs").val(data.nomor);
+			}else{	
+				alertError(error.responseText);
+										  					  	
+			}
+		})
+		.fail(function(error) {
+		    alertError(error.responseText);
+		});
 	});
 
 	$("#id_pengirim").change(function(e, params){   
